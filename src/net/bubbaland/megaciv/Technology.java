@@ -86,7 +86,8 @@ public class Technology {
 		return this.baseCost;
 	}
 
-	public int getCost(ArrayList<Technology> techs) {
+	public int getCost(Civilization civ) {
+		ArrayList<Technology> techs = civ.getTechs();
 		int cost = this.baseCost;
 		for (Technology tech : techs) {
 			for (Type type : tech.typeCredits.keySet()) {
@@ -100,7 +101,11 @@ public class Technology {
 				}
 			}
 		}
-		// other credits
+		for (Type type : civ.getTypeCredits().keySet()) {
+			if (this.types.contains(type)) {
+				cost = -civ.getTypeCredits().get(type);
+			}
+		}
 		return cost;
 	}
 
