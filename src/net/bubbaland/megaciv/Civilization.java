@@ -2,6 +2,7 @@ package net.bubbaland.megaciv;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,9 +21,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.Technology.Type;
 
-public class Civilization implements Comparable<Civilization> {
+public class Civilization implements Comparable<Civilization>, Serializable {
 
-	public final static String CIV_CONSTANTS_FILENAME = "Civ_Constants.xml";
+	private static final long	serialVersionUID		= 4382391763222389219L;
+
+	public final static String	CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
 
 	public static enum Region {
 		EAST, WEST
@@ -116,7 +119,7 @@ public class Civilization implements Comparable<Civilization> {
 		this.census = census;
 	}
 
-	public void getTech(Technology newTech) {
+	public void addTech(Technology newTech) {
 		this.techs.add(newTech);
 	}
 
