@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -98,26 +99,41 @@ public class Civilization implements Comparable<Civilization> {
 		return AST_TABLE.get(this.name);
 	}
 
+	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs) {
+		Collections.sort(civs);
+		return civs;
+	}
+
+	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs) {
+		Collections.sort(civs, new CensusComparator());
+		return civs;
+	}
+
+	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs) {
+		Collections.sort(civs, new AstPositionComparator());
+		return civs;
+	}
+
 	@Override
 	/* Compare by AST Rank (default) */
 	public int compareTo(Civilization otherCiv) {
 		return Integer.compare(this.getAST(), otherCiv.getAST());
 	}
 
-}
-
-class CensusComparator implements Comparator<Civilization> {
-	public int compare(Civilization civ1, Civilization civ2) {
-		int result = Integer.compare(civ1.getCensus(), civ2.getCensus());
-		if (result == 0) {
-			result = civ1.compareTo(civ2);
+	private final static class CensusComparator implements Comparator<Civilization> {
+		public int compare(Civilization civ1, Civilization civ2) {
+			int result = Integer.compare(civ1.getCensus(), civ2.getCensus());
+			if (result == 0) {
+				result = civ1.compareTo(civ2);
+			}
+			return result;
 		}
-		return result;
+	}
+
+	private final static class AstPositionComparator implements Comparator<Civilization> {
+		public int compare(Civilization civ1, Civilization civ2) {
+			return Integer.compare(civ1.getAST(), civ2.getAST());
+		}
 	}
 }
 
-class AstPositionComparator implements Comparator<Civilization> {
-	public int compare(Civilization civ1, Civilization civ2) {
-		return Integer.compare(civ1.getAST(), civ2.getAST());
-	}
-}
