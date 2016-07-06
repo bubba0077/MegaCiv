@@ -1,9 +1,20 @@
 package net.bubbaland.megaciv;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,27 +22,57 @@ import net.bubbaland.megaciv.Technology.Type;
 
 public class Civilization implements Comparable<Civilization> {
 
-	private static final HashMap<String, Integer> AST_TABLE;
-	static {
-		AST_TABLE = new HashMap<String, Integer>();
-		AST_TABLE.put("Minoa", 1);
-		AST_TABLE.put("Saba", 2);
-		AST_TABLE.put("Assyria", 3);
-		AST_TABLE.put("Maurya", 4);
-		AST_TABLE.put("Celt", 5);
-		AST_TABLE.put("Babylon", 6);
-		AST_TABLE.put("Carthage", 7);
-		AST_TABLE.put("Dravidia", 8);
-		AST_TABLE.put("Hatti", 9);
-		AST_TABLE.put("Kushan", 10);
-		AST_TABLE.put("Rome", 11);
-		AST_TABLE.put("Persia", 12);
-		AST_TABLE.put("Iberia", 13);
-		AST_TABLE.put("Nubia", 14);
-		AST_TABLE.put("Hellas", 15);
-		AST_TABLE.put("Indus", 16);
-		AST_TABLE.put("Egypt", 17);
-		AST_TABLE.put("Parthia", 18);
+	public final static String CIV_CONSTANTS_FILENAME = "Civ_Constants.xml";
+
+	public static enum Region {
+		EAST, WEST
+	};
+
+	private static HashMap<String, AstTableData> AST_TABLE;
+
+	public static void initializeAst(boolean useExpert) {
+		AST_TABLE = new HashMap<String, AstTableData>();
+		final String difficulty = useExpert ? "Expert" : "Basic";
+
+		try {
+			final InputStream fileStream = Civilization.class.getResourceAsStream(CIV_CONSTANTS_FILENAME);
+
+			final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			final Document doc = dBuilder.parse(fileStream);
+			doc.getDocumentElement().normalize();
+			NodeList civNodes = doc.getElementsByTagName("Civilization");
+
+			for (int c = 0; c < civNodes.getLength(); c++) {
+				final Element civElement = (Element) civNodes.item(c);
+				final String name = civElement.getAttribute("name");
+				Region region = null;
+				switch (civElement.getElementsByTagName("Region").item(0).getTextContent()) {
+					case "East":
+						region = Region.EAST;
+					case "West":
+						region = Region.WEST;
+				}
+				final int astPosition = Integer
+						.parseInt(civElement.getElementsByTagName("AstPosition").item(0).getTextContent());
+				final Element civAstElement = (Element) civElement.getElementsByTagName(difficulty);
+				final int earlyBronzeStart = Integer
+						.parseInt(civAstElement.getElementsByTagName("EarlyBronzeStart").item(0).getTextContent());
+				final int middleBronzeStart = Integer
+						.parseInt(civAstElement.getElementsByTagName("MiddleBronzeStart").item(0).getTextContent());
+				final int lateBronzeStart = Integer
+						.parseInt(civAstElement.getElementsByTagName("LateBronzeStart").item(0).getTextContent());
+				final int earlyIronStart = Integer
+						.parseInt(civAstElement.getElementsByTagName("EarlyIronStart").item(0).getTextContent());
+				final int lateIronStart = Integer
+						.parseInt(civAstElement.getElementsByTagName("LateIronStart").item(0).getTextContent());
+				AST_TABLE.put(name, new AstTableData(astPosition, region, earlyBronzeStart, middleBronzeStart,
+						lateBronzeStart, earlyIronStart, lateIronStart));
+			}
+
+		} catch (final ParserConfigurationException | SAXException | IOException e) {
+
+		}
 	}
 
 	@JsonProperty("name")
@@ -96,7 +137,7 @@ public class Civilization implements Comparable<Civilization> {
 	}
 
 	public int getAST() {
-		return AST_TABLE.get(this.name);
+		return AST_TABLE.get(this.name).astRank;
 	}
 
 	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs) {
@@ -134,6 +175,89 @@ public class Civilization implements Comparable<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
 			return Integer.compare(civ1.getAST(), civ2.getAST());
 		}
+	}
+
+	private final static class AstTableData {
+		@JsonProperty("astRank")
+		final private int		astRank;
+		@JsonProperty("earlyBronzeStart")
+		final private int		earlyBronzeStart;
+		@JsonProperty("middleBronzeStart")
+		final private int		middleBronzeStart;
+		@JsonProperty("lateBronzeStart")
+		final private int		lateBronzeStart;
+		@JsonProperty("earlyIronStart")
+		final private int		earlyIronStart;
+		@JsonProperty("lateIronStart")
+		final private int		lateIronStart;
+		@JsonProperty("region")
+		final private Region	region;
+
+		public AstTableData(@JsonProperty("astRank") final int astRank, @JsonProperty("region") final Region region,
+				@JsonProperty("earlyBronzeStart") final int earlyBronzeStart,
+				@JsonProperty("middleBronzeStart") final int middleBronzeStart,
+				@JsonProperty("lateBronzeStart") final int lateBronzeStart,
+				@JsonProperty("earlyIronStart") final int earlyIronStart,
+				@JsonProperty("lateIronStart") final int lateIronStart) {
+			this.astRank = astRank;
+			this.earlyBronzeStart = earlyBronzeStart;
+			this.middleBronzeStart = middleBronzeStart;
+			this.lateBronzeStart = lateBronzeStart;
+			this.earlyIronStart = earlyIronStart;
+			this.lateIronStart = lateIronStart;
+			this.region = region;
+		}
+
+		// /**
+		// * @return the isEast
+		// */
+		// public boolean isEast() {
+		// return this.isEast;
+		// }
+		//
+		// /**
+		// * @return the astRank
+		// */
+		// public int getAstRank() {
+		// return this.astRank;
+		// }
+		//
+		// /**
+		// * @return the earlyBronzeStart
+		// */
+		// public int getEarlyBronzeStart() {
+		// return this.earlyBronzeStart;
+		// }
+		//
+		// /**
+		// * @return the middleBronzeStart
+		// */
+		// public int getMiddleBronzeStart() {
+		// return this.middleBronzeStart;
+		// }
+		//
+		// /**
+		// * @return the lateBronzeStart
+		// */
+		// public int getLateBronzeStart() {
+		// return this.lateBronzeStart;
+		// }
+		//
+		// /**
+		// * @return the earlyIronStart
+		// */
+		// public int getEarlyIronStart() {
+		// return this.earlyIronStart;
+		// }
+		//
+		// /**
+		// * @return the lateIronStart
+		// */
+		// public int getLateIronStart() {
+		// return this.lateIronStart;
+		// }
+
+
 	}
 }
 
