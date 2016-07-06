@@ -37,8 +37,8 @@ public class Technology {
 	private final String						text;
 	@JsonProperty("baseCost")
 	private final int							baseCost;
-	@JsonProperty("points")
-	private final int							points;
+	@JsonProperty("vp")
+	private final int							vp;
 	@JsonProperty("types")
 	private final ArrayList<Type>				types;
 	@JsonProperty("typeCredits")
@@ -50,20 +50,20 @@ public class Technology {
 		this.name = name;
 		this.types = (ArrayList<Type>) Arrays.asList(types);
 		this.baseCost = baseCost;
-		this.points = ( baseCost >= 200 ) ? 6 : ( baseCost >= 100 ) ? 3 : 1;
+		this.vp = ( baseCost >= 200 ) ? 6 : ( baseCost >= 100 ) ? 3 : 1;
 		this.typeCredits = new HashMap<Type, Integer>();
 		this.techCredits = new HashMap<Technology, Integer>();
 		this.text = text;
 	}
 
 	private Technology(@JsonProperty("name") String name, @JsonProperty("types") ArrayList<Type> types,
-			@JsonProperty("baseCost") int baseCost, @JsonProperty("points") int points,
-			@JsonProperty("text") String text, @JsonProperty("typeCredits") HashMap<Type, Integer> typeCredits,
+			@JsonProperty("baseCost") int baseCost, @JsonProperty("vp") int vp, @JsonProperty("text") String text,
+			@JsonProperty("typeCredits") HashMap<Type, Integer> typeCredits,
 			@JsonProperty("techCredits") HashMap<Technology, Integer> techCredits) {
 		this.name = name;
 		this.types = types;
 		this.baseCost = baseCost;
-		this.points = points;
+		this.vp = vp;
 		this.typeCredits = typeCredits;
 		this.techCredits = techCredits;
 		this.text = text;
@@ -109,13 +109,17 @@ public class Technology {
 		return cost;
 	}
 
+	public int getVP() {
+		return this.vp;
+	}
+
 	public String toString() {
 		String s = this.name + "\n";
 		for (Type t : this.types) {
 			s += t.toString() + " (" + COLOR.get(t) + ") ";
 		}
 		s += "\n";
-		s += "Base Cost: " + this.baseCost + "   VP: " + this.points + "\n";
+		s += "Base Cost: " + this.baseCost + "   VP: " + this.vp + "\n";
 		s += "Credits: ";
 		for (Type t : this.typeCredits.keySet()) {
 			s += this.typeCredits.get(t) + " " + t.toString() + " ";

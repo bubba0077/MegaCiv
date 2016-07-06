@@ -31,6 +31,10 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 		EAST, WEST
 	};
 
+	public static enum Age {
+		STONE, EARLY_BRONZE, MIDDLE_BRONZE, LATE_BRONZE, EARLY_IRON, LATE_IRON
+	}
+
 	private static HashMap<String, AstTableData> AST_TABLE;
 
 	public static void initializeAst(boolean useExpert) {
@@ -82,41 +86,73 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 	private String							name;
 	@JsonProperty("player")
 	private String							player;
-	@JsonProperty("census")
-	private int								census;
+	@JsonProperty("population")
+	private int								population;
 	@JsonProperty("astPosition")
 	private int								astPosition;
+	@JsonProperty("nCities")
+	private int								nCities;
 	@JsonProperty("techs")
 	private ArrayList<Technology>			techs;
 	@JsonProperty("typeCredits")
 	private final HashMap<Type, Integer>	typeCredits;
 
+	private Age								age;
+
 	public Civilization(String name, String player) {
-		this(name, player, 1, new ArrayList<Technology>(), new HashMap<Type, Integer>(), 0);
+		this(name, player, 1, 0, new ArrayList<Technology>(), new HashMap<Type, Integer>(), 0);
 	}
 
 	public Civilization(@JsonProperty("name") String name, @JsonProperty("player") String player,
-			@JsonProperty("census") int census, @JsonProperty("techs") ArrayList<Technology> techs,
+			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
+			@JsonProperty("techs") ArrayList<Technology> techs,
 			@JsonProperty("typeCredits") HashMap<Type, Integer> typeCredits,
 			@JsonProperty("astPosition") int astPosition) {
 		this.name = name;
 		this.player = player;
-		this.census = census;
+		this.population = population;
 		this.techs = techs;
 		this.astPosition = astPosition;
 		this.typeCredits = typeCredits;
+		this.determineAge();
+	}
+
+	private void determineAge() {
+		this.age = this.astPosition >= this.getLateIronStart() ? Age.LATE_IRON : this.astPosition >= this
+				.getEarlyIronStart() ? Age.EARLY_IRON : this.astPosition >= this
+						.getLateBronzeStart() ? Age.LATE_BRONZE : this.astPosition >= this
+								.getMiddleBronzeStart() ? Age.MIDDLE_BRONZE : this.astPosition >= this
+										.getEarlyBronzeStart() ? Age.EARLY_BRONZE : Age.STONE;
+	}
+
+	public void incrementAST() {
+		this.astPosition++;
+		this.determineAge();
+	}
+
+	public void decrementAST() {
+		this.astPosition--;
+		this.determineAge();
+	}
+
+	public Age getAge() {
+		return this.age;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public int getCensus() {
-		return census;
+	public int getPopulation() {
+		return this.population;
+	}
+
+	public void takeCensus(int population) {
+		this.population = population;
 	}
 
 	public void setCensus(int census) {
-		this.census = census;
+		this.population = census;
 	}
 
 	public void addTech(Technology newTech) {
@@ -128,7 +164,7 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 	}
 
 	public String getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	public void setPlayer(String player) {
@@ -137,6 +173,12 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 
 	public HashMap<Type, Integer> getTypeCredits() {
 		return this.typeCredits;
+	}
+
+	public void addTypeCredits(HashMap<Technology.Type, Integer> newCredits) {
+		for (Technology.Type type : newCredits.keySet()) {
+			this.typeCredits.put(type, this.typeCredits.get(type) + newCredits.get(type));
+		}
 	}
 
 	public int getAST() {
@@ -151,7 +193,7 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 		return AST_TABLE.get(this.name).middleBronzeStart;
 	}
 
-	public int lateEarlyBronzeStart() {
+	public int getLateBronzeStart() {
 		return AST_TABLE.get(this.name).lateBronzeStart;
 	}
 
@@ -178,6 +220,15 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 		return civs;
 	}
 
+	public int getVP() {
+		int vp = this.nCities + this.astPosition * 5;
+		for (Technology tech : this.techs) {
+			vp = +tech.getVP();
+		}
+		// Need to add adjustment for Late Iron Age only bonus
+		return vp;
+	}
+
 	@Override
 	/* Compare by AST Rank (default) */
 	public int compareTo(Civilization otherCiv) {
@@ -186,7 +237,7 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 
 	private final static class CensusComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
-			int result = Integer.compare(civ1.getCensus(), civ2.getCensus());
+			int result = Integer.compare(civ1.getPopulation(), civ2.getPopulation());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
 			}
