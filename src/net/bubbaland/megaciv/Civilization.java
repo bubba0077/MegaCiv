@@ -140,6 +140,26 @@ public class Civilization implements Comparable<Civilization> {
 		return AST_TABLE.get(this.name).astRank;
 	}
 
+	public int getEarlyBronzeStart() {
+		return AST_TABLE.get(this.name).earlyBronzeStart;
+	}
+
+	public int getMiddleBronzeStart() {
+		return AST_TABLE.get(this.name).middleBronzeStart;
+	}
+
+	public int lateEarlyBronzeStart() {
+		return AST_TABLE.get(this.name).lateBronzeStart;
+	}
+
+	public int getEarlyIronStart() {
+		return AST_TABLE.get(this.name).earlyIronStart;
+	}
+
+	public int getLateIronStart() {
+		return AST_TABLE.get(this.name).lateIronStart;
+	}
+
 	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs) {
 		Collections.sort(civs);
 		return civs;
@@ -207,57 +227,6 @@ public class Civilization implements Comparable<Civilization> {
 			this.lateIronStart = lateIronStart;
 			this.region = region;
 		}
-
-		// /**
-		// * @return the isEast
-		// */
-		// public boolean isEast() {
-		// return this.isEast;
-		// }
-		//
-		// /**
-		// * @return the astRank
-		// */
-		// public int getAstRank() {
-		// return this.astRank;
-		// }
-		//
-		// /**
-		// * @return the earlyBronzeStart
-		// */
-		// public int getEarlyBronzeStart() {
-		// return this.earlyBronzeStart;
-		// }
-		//
-		// /**
-		// * @return the middleBronzeStart
-		// */
-		// public int getMiddleBronzeStart() {
-		// return this.middleBronzeStart;
-		// }
-		//
-		// /**
-		// * @return the lateBronzeStart
-		// */
-		// public int getLateBronzeStart() {
-		// return this.lateBronzeStart;
-		// }
-		//
-		// /**
-		// * @return the earlyIronStart
-		// */
-		// public int getEarlyIronStart() {
-		// return this.earlyIronStart;
-		// }
-		//
-		// /**
-		// * @return the lateIronStart
-		// */
-		// public int getLateIronStart() {
-		// return this.lateIronStart;
-		// }
-
-
 	}
 }
 
