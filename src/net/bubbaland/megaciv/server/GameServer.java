@@ -9,7 +9,8 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.server.Server;
 
-import net.bubbaland.megaciv.*;
+import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.messages.ClientMessage;
 
 public class GameServer extends Server {
 

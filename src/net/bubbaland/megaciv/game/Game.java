@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv;
+package net.bubbaland.megaciv.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv;
+package net.bubbaland.megaciv.game;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import net.bubbaland.megaciv.Technology.Type;
+import net.bubbaland.megaciv.game.Technology.Type;
 
 public class Civilization implements Comparable<Civilization>, Serializable {
 

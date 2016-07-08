@@ -9,6 +9,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import net.bubbaland.megaciv.*;
+import net.bubbaland.megaciv.messages.ClientMessage;
+import net.bubbaland.megaciv.messages.ServerMessage;
 
 @ServerEndpoint(decoders = { ClientMessage.MessageDecoder.class }, encoders = {
 		ServerMessage.MessageEncoder.class }, value = "/")
