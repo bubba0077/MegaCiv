@@ -1,4 +1,4 @@
-package net.bubbland.megaciv.server;
+package net.bubbaland.megaciv.server;
 
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -14,10 +14,16 @@ import net.bubbaland.megaciv.*;
 		ServerMessage.MessageEncoder.class }, value = "/")
 public class ServerMessageReceiver {
 
-	private static GameServer server = new GameServer();
+	private User				user;
+
+	private static GameServer	server	= new GameServer();
 
 	public ServerMessageReceiver() {
+		this.user = new User();
+	}
 
+	public User getUser() {
+		return this.user;
 	}
 
 	/**
