@@ -36,6 +36,4 @@ public class Game {
 	public int nCivilizations() {
 		return this.civs.size();
 	}
-
-
 }

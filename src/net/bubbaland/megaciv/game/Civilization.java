@@ -151,7 +151,7 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 		this.population = population;
 	}
 
-	public void setCensus(int census) {
+	public void setPopulation(int census) {
 		this.population = census;
 	}
 
