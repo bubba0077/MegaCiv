@@ -9,19 +9,22 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import net.bubbaland.megaciv.*;
-import net.bubbaland.megaciv.messages.ClientMessage;
-import net.bubbaland.megaciv.messages.ServerMessage;
+import net.bubbaland.megaciv.messages.client.ClientMessage;
+import net.bubbaland.megaciv.messages.server.ServerMessage;
 
 @ServerEndpoint(decoders = { ClientMessage.MessageDecoder.class }, encoders = {
 		ServerMessage.MessageEncoder.class }, value = "/")
-public class ServerMessageReceiver {
+public class ClientMessageReceiver {
 
 	private User				user;
+	private static GameServer	server	= null;
 
-	private static GameServer	server	= new GameServer();
-
-	public ServerMessageReceiver() {
+	public ClientMessageReceiver() {
 		this.user = new User();
+	}
+
+	static void registerServer(GameServer server) {
+		ClientMessageReceiver.server = server;
 	}
 
 	public User getUser() {
@@ -36,7 +39,10 @@ public class ServerMessageReceiver {
 	 */
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
-		server.addUser(session, this);
+		System.out.println("User" + session.getId() + " connected");
+		this.user.setUserName("User" + session.getId());
+		ClientMessageReceiver.server.addUser(session, this);
+		ClientMessageReceiver.server.sendGame(session);
 	}
 
 	/**
@@ -47,6 +53,9 @@ public class ServerMessageReceiver {
 	 */
 	@OnMessage
 	public void onMessage(ClientMessage message, Session session) {
+		if (server == null) {
+			System.out.println("Server still null!");
+		}
 		server.processIncomingMessage(message, session);
 	}
 
@@ -57,6 +66,9 @@ public class ServerMessageReceiver {
 	 */
 	@OnError
 	public void onError(Session session, Throwable throwable) {
+		if (server == null) {
+			System.out.println("Server still null!");
+		}
 		server.communicationsError(session, throwable);
 	}
 

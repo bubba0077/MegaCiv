@@ -29,16 +29,16 @@ import javazoom.jl.player.Player;
  */
 public class BubbaFrame extends JFrame implements WindowListener {
 
-	private static final long	serialVersionUID	= -3639363131235278472L;
+	private static final long			serialVersionUID	= -3639363131235278472L;
 
 	// The status bar at the bottom
-	final private JLabel		statusBar;
+	final protected JLabel				statusBar;
 
 	protected final BubbaGuiController	gui;
 
-	private boolean				initComplete;
+	private boolean						initComplete;
 
-	protected BubbaMainPanel	mainPanel;
+	protected BubbaMainPanel			mainPanel;
 
 	/**
 	 * Internal constructor containing code common to the public constructors.
@@ -63,7 +63,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			private static final long serialVersionUID = -3431542881790392652L;
 
 			@Override
-			public void updateGUI(boolean forceUpdate) {
+			public void updateGui(boolean forceUpdate) {
 			}
 
 			@Override
@@ -110,23 +110,10 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		this.loadProperties();
 
 		this.initComplete = true;
+		this.setCursor(null);
 	}
 
 	public BubbaGuiController getGui() {
-		return this.gui;
-	}
-
-
-	/**
-	 * Get the root client.
-	 *
-	 * @return The root client
-	 */
-	// public TriviaClient getClient() {
-	// return this.client;
-	// }
-
-	public BubbaGuiController getGUI() {
 		return this.gui;
 	}
 
@@ -156,7 +143,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 
-	public void updateGUI(boolean forceUpdate) {
+	public void updateGui(boolean forceUpdate) {
 		while (!this.initComplete) {
 			try {
 				Thread.sleep(10);
@@ -198,8 +185,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 	/**
-	 * Load property for this window name. First looks for property specific to this iteration of TriviaFrame, then
-	 * looks to the default version.
+	 * Load property for this window name. First looks for property specific to this iteration of Frame, then looks to
+	 * the default version.
 	 *
 	 * @param id
 	 *            The frame's name
@@ -232,7 +219,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		if (window instanceof BubbaFrame) {
 			( (BubbaFrame) window ).saveProperties();
 
-			if (this.gui.getNWindows() == 1) {
+			if (this.gui.getNWindows() == 0) {
 				// This is the last window, go through exit procedures
 				this.gui.endProgram();
 			} else {

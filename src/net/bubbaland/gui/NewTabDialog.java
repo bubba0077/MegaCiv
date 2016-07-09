@@ -59,7 +59,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		// Create the tab selector
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		this.tabSelector = new JComboBox<String>(tabNames);
+		this.tabSelector = new JComboBox<String>(this.tabNames);
 		this.tabSelector.setFont(this.tabSelector.getFont().deriveFont(textAreaFontSize));
 		this.add(this.tabSelector, constraints);
 		this.tabSelector.addItemListener(this);
@@ -78,7 +78,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		final String[] options = { "Add", "Add All", "Cancel" };
 
 		// Display the dialog box
-		this.dialog = new BubbaDialog(this.parent, "Add tab", this, JOptionPane.PLAIN_MESSAGE,
+		this.dialog = new BubbaDialog(this.parent.getGui(), "Add tab", this, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.YES_NO_CANCEL_OPTION, null, options);
 		this.dialog.setName("Add Tab");
 		this.dialog.setVisible(true);
@@ -106,17 +106,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 
 		static {
 			SORT_ORDER = new Hashtable<String, Integer>(0);
-			SORT_ORDER.put("Workflow", 0);
-			SORT_ORDER.put("Current", 1);
-			SORT_ORDER.put("History", 2);
-			SORT_ORDER.put("By Round", 3);
-			SORT_ORDER.put("Standings", 4);
-			SORT_ORDER.put("Place Chart", 5);
-			SORT_ORDER.put("Score Chart", 6);
-			SORT_ORDER.put("Cumul. Score Chart", 7);
-			SORT_ORDER.put("Team Comparison", 8);
-			SORT_ORDER.put("*Open Questions", 9);
-			SORT_ORDER.put("*Answer Queue", 10);
+			SORT_ORDER.put("AST", 0);
 		}
 
 		@Override
@@ -175,7 +165,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 				exception.printStackTrace();
 			}
 			this.parent.getTabbedPane().addTab(altName, newTab);
-			newTab.updateGUI(true);
+			newTab.updateGui(true);
 			// Make the new tab the selected one
 			final int tabLocation = pane.indexOfTab(altName);
 			pane.setSelectedIndex(tabLocation);

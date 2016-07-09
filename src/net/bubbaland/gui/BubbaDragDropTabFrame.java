@@ -17,6 +17,8 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.bubbaland.megaciv.client.gui.AstPanel;
+
 public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener, ChangeListener {
 
 	/**
@@ -58,12 +60,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	 */
 	public BubbaDragDropTabFrame(BubbaGuiController gui, String[] initialTabs) {
 		this(gui);
-		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		for (final String tabName : initialTabs) {
 			try {
 				BubbaMainPanel newTab = this.tabFactory(this, tabName.replaceFirst(" \\([0-9]*\\)", ""));
 				this.tabbedPane.addTab(tabName, newTab);
-				newTab.updateGUI(true);
+				newTab.updateGui(true);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException exception) {
 				// TODO Auto-generated catch block
@@ -73,13 +74,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		this.tabbedPane.setSelectedIndex(0);
 		this.tabbedPane.addChangeListener(this);
 		this.loadPosition();
-		this.setCursor(null);
 	}
 
 	public BubbaDragDropTabFrame(BubbaGuiController gui) {
 		super(gui);
-		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		this.tabInformationHash = new Hashtable<String, TabInformation>();
+		this.initTabInfoHash();
 
 		// Create drag & drop tabbed pane
 		this.tabbedPane = new BubbaDnDTabbedPane(this);
@@ -98,6 +97,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 
 		// Load the properties
 		this.loadProperties();
+
+	}
+
+	protected void initTabInfoHash() {
+		this.tabInformationHash = new Hashtable<String, TabInformation>();
 	}
 
 	/**
@@ -124,7 +128,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
-		return this.tabInformationHash.get(tabType).getTabClass().getConstructor(this.getClass()).newInstance(this);
+		return this.tabInformationHash.get(tabType).getTabClass()
+				.getConstructor(BubbaGuiController.class, BubbaFrame.class).newInstance(this.gui, this);
 	}
 
 	/**
@@ -141,8 +146,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		private final Class<BubbaMainPanel>	tabClass;
 		private final String				tabDescription;
 
-		public TabInformation(String tabDescription, Class<BubbaMainPanel> tabClass) {
-			this.tabClass = tabClass;
+		public TabInformation(String tabDescription, Class<?> tabClass) {
+			this.tabClass = (Class<BubbaMainPanel>) tabClass;
 			this.tabDescription = tabDescription;
 		}
 
@@ -159,8 +164,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		this.gui.registerWindow(this);
 	}
 
-	public void updateGUI(boolean forceUpdate) {
-		super.updateGUI(forceUpdate);
+	public void updateGui(boolean forceUpdate) {
+		super.updateGui(forceUpdate);
 
 		// Propagate update to tabs
 		while (this.tabbedPane == null) {
@@ -174,7 +179,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 			final int index = this.tabbedPane.indexOfTab(tabName);
 			final Component component = this.tabbedPane.getComponentAt(index);
 			if (component instanceof BubbaMainPanel) {
-				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).updateGUI(forceUpdate);
+				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).updateGui(forceUpdate);
 			}
 		}
 	}
@@ -184,6 +189,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	 */
 	public void loadProperties() {
 		super.loadProperties();
+
+		if (this.tabbedPane == null) {
+			this.gui.log("tabbedPane is null");
+			return;
+		}
 
 		// Tell all of the tabs to reload the properties
 		for (final String tabName : this.tabbedPane.getTabNames()) {

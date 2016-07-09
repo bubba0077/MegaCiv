@@ -155,14 +155,6 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 		warningColor = new Color(new BigInteger(properties.getProperty("Dialog.Warning.Color"), 16).intValue());
 
 		/**
-		 * Slider Paddings (used by AnswerEntryPanel)
-		 */
-		sliderPaddingBottom = Integer.parseInt(properties.getProperty("Dialog.AnswerEntry.Slider.Padding.Bottom"));
-		sliderPaddingTop = Integer.parseInt(properties.getProperty("Dialog.AnswerEntry.Slider.Padding.Top"));
-		sliderPaddingLeft = Integer.parseInt(properties.getProperty("Dialog.AnswerEntry.Slider.Padding.Left"));
-		sliderPaddingRight = Integer.parseInt(properties.getProperty("Dialog.AnswerEntry.Slider.Padding.Right"));
-
-		/**
 		 * Font Sizes
 		 */
 		fontSize = Float.parseFloat(properties.getProperty("Dialog.FontSize"));

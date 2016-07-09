@@ -81,6 +81,7 @@ public abstract class BubbaGuiController {
 			System.out.println("Couldn't load default properties file, aborting!");
 			System.exit(-1);
 		}
+		BubbaDialogPanel.loadProperties(properties);
 	}
 
 	/**
@@ -130,9 +131,9 @@ public abstract class BubbaGuiController {
 		for (final BubbaFrame frame : this.windowList) {
 			windowNames.add(frame.getTitle());
 		}
-		String name = "Trivia";
+		String name = "MegaCiv";
 		for (int i = 1; windowNames.contains(name); i++) {
-			name = "Trivia (" + i + ")";
+			name = "MegaCiv (" + i + ")";
 		}
 		return name;
 	}
@@ -184,7 +185,7 @@ public abstract class BubbaGuiController {
 	/**
 	 * Add the current window contents to properties, then save the properties to the settings file and exit.
 	 */
-	protected void endProgram() {
+	public void endProgram() {
 		// Remove previously saved windows
 		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
 			properties.remove("Window" + f);
@@ -195,6 +196,12 @@ public abstract class BubbaGuiController {
 		}
 		this.savePropertyFile();
 		System.exit(0);
+	}
+
+	public void updateGui(boolean forceUpdate) {
+		for (BubbaFrame frame : this.windowList) {
+			frame.updateGui(forceUpdate);
+		}
 	}
 
 

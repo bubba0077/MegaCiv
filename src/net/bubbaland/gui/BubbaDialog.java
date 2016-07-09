@@ -24,12 +24,12 @@ import javax.swing.WindowConstants;
  */
 public class BubbaDialog extends JDialog implements WindowListener, PropertyChangeListener {
 
-	private static final long	serialVersionUID	= 5954954270512670220L;
+	private static final long			serialVersionUID	= 5954954270512670220L;
 
 	// The internal option pane
-	private final JOptionPane	optionPane;
+	private final JOptionPane			optionPane;
 
-	private final BubbaFrame	parent;
+	private final BubbaGuiController	gui;
 
 	/**
 	 * Create a TriviaDialog with no arguments for the JOptionPane
@@ -39,8 +39,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param title
 	 *            Title for the dialog
 	 */
-	public BubbaDialog(BubbaFrame frame, String title) {
-		this(frame, title, new JOptionPane());
+	public BubbaDialog(BubbaGuiController gui, String title) {
+		this(gui, title, new JOptionPane());
 	}
 
 	/**
@@ -54,10 +54,10 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param optionPane
 	 *            Option pane to use
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, final JOptionPane optionPane) {
-		super(frame, title, JDialog.ModalityType.TOOLKIT_MODAL);
+	public BubbaDialog(BubbaGuiController gui, String title, final JOptionPane optionPane) {
+		super(null, title, JDialog.ModalityType.TOOLKIT_MODAL);
 		this.optionPane = optionPane;
-		this.parent = frame;
+		this.gui = gui;
 		this.setName(title);
 		this.addWindowListener(this);
 
@@ -81,8 +81,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param panel
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel) {
-		this(frame, title, new JOptionPane(panel));
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel) {
+		this(gui, title, new JOptionPane(panel));
 		this.addWindowListener(panel);
 	}
 
@@ -98,8 +98,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param messageType
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel, int messageType) {
-		this(frame, title, new JOptionPane(panel, messageType));
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType) {
+		this(gui, title, new JOptionPane(panel, messageType));
 		this.addWindowListener(panel);
 	}
 
@@ -117,8 +117,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param optionType
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel, int messageType, int optionType) {
-		this(frame, title, new JOptionPane(panel, messageType, optionType));
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType) {
+		this(gui, title, new JOptionPane(panel, messageType, optionType));
 		this.addWindowListener(panel);
 	}
 
@@ -138,9 +138,9 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param icon
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel, int messageType, int optionType,
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
 			Icon icon) {
-		this(frame, title, new JOptionPane(panel, messageType, optionType, icon));
+		this(gui, title, new JOptionPane(panel, messageType, optionType, icon));
 		this.addWindowListener(panel);
 	}
 
@@ -162,9 +162,9 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param options
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel, int messageType, int optionType,
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
 			Icon icon, Object[] options) {
-		this(frame, title, new JOptionPane(panel, messageType, optionType, icon, options));
+		this(gui, title, new JOptionPane(panel, messageType, optionType, icon, options));
 		this.addWindowListener(panel);
 	}
 
@@ -188,10 +188,10 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param initialValue
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaFrame frame, String title, BubbaDialogPanel panel, int messageType, int optionType,
+	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
 			Icon icon, Object[] options, Object initialValue) {
 		this.optionPane = new JOptionPane(panel, messageType, optionType, icon, options, initialValue);
-		this.parent = frame;
+		this.gui = gui;
 		this.addWindowListener(panel);
 	}
 
@@ -207,7 +207,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 */
 	@Override
 	public void dispose() {
-		this.parent.getGui().savePosition(this);
+		this.gui.savePosition(this);
 		super.dispose();
 	}
 
@@ -273,10 +273,10 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 		try {
 			final String frameID = this.getName();
 
-			final int x = Integer.parseInt(this.parent.getGui().getProperties().getProperty(frameID + ".X"));
-			final int y = Integer.parseInt(this.parent.getGui().getProperties().getProperty(frameID + ".Y"));
-			final int width = Integer.parseInt(this.parent.getGui().getProperties().getProperty(frameID + ".Width"));
-			final int height = Integer.parseInt(this.parent.getGui().getProperties().getProperty(frameID + ".Height"));
+			final int x = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".X"));
+			final int y = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Y"));
+			final int width = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Width"));
+			final int height = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Height"));
 
 			this.setBounds(x, y, width, height);
 

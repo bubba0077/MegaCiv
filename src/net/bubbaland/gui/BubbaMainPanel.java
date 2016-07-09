@@ -11,9 +11,9 @@ import java.util.Properties;
  */
 public abstract class BubbaMainPanel extends BubbaPanel {
 
-	private static final long	serialVersionUID	= -5381727804575779591L;
+	private static final long			serialVersionUID	= -5381727804575779591L;
 
-	protected BubbaFrame		frame;
+	protected BubbaFrame				frame;
 	final protected BubbaGuiController	gui;
 
 	/**
@@ -37,11 +37,11 @@ public abstract class BubbaMainPanel extends BubbaPanel {
 	/**
 	 * Requires all sub-classes to have a method that updates their contents.
 	 */
-	public void updateGUI() {
-		this.updateGUI(false);
+	public void updateGui() {
+		this.updateGui(false);
 	}
 
-	public abstract void updateGUI(boolean forceUpdate);
+	public abstract void updateGui(boolean forceUpdate);
 
 	protected abstract void loadProperties(Properties properties);
 
