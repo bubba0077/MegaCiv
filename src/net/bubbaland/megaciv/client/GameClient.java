@@ -17,10 +17,8 @@ import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 
 import net.bubbaland.megaciv.game.Game;
-import net.bubbaland.megaciv.messages.*;
-import net.bubbaland.megaciv.messages.client.ClientMessage;
-import net.bubbaland.megaciv.messages.server.GameDataMessage;
-import net.bubbaland.megaciv.messages.server.ServerMessage;
+import net.bubbaland.megaciv.messages.client.*;
+import net.bubbaland.megaciv.messages.server.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GameClient implements Runnable {
@@ -83,18 +81,14 @@ public class GameClient implements Runnable {
 	 */
 	@OnMessage
 	public void onMessage(ServerMessage message, Session session) {
-		String messageType = message.getClass().toString();
-		this.log(messageType + " received");
-		switch (message.messageType()) {
-			case "GameData":
-				this.game = ( (GameDataMessage) message ).getGame();
+		String messageType = message.getClass().getSimpleName();
+		switch (messageType) {
+			case "GameDataMessage":
+				( (GameDataMessage) message ).getGame();
 			default:
-				this.log("Unknown message type received!");
+
 		}
 	}
-
-	@OnMessage
-
 
 	/**
 	 * Handle error in communicating with a client
@@ -103,7 +97,8 @@ public class GameClient implements Runnable {
 	 */
 	@OnError
 	public void onError(Session session, Throwable throwable) {
-		// TODO Auto-generated method stub
+		this.log("Error receiving message from " + session.getRequestURI());
+		throwable.printStackTrace();
 	}
 
 	/**

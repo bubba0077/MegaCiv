@@ -17,9 +17,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import net.bubbaland.megaciv.game.Technology.Type;
+import net.bubbaland.megaciv.game.Game.Technology;
 
 public class Civilization implements Comparable<Civilization>, Serializable {
 
@@ -83,30 +84,31 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 	}
 
 	@JsonProperty("name")
-	private String							name;
+	private String									name;
 	@JsonProperty("player")
-	private String							player;
+	private String									player;
 	@JsonProperty("population")
-	private int								population;
+	private int										population;
 	@JsonProperty("astPosition")
-	private int								astPosition;
+	private int										astPosition;
 	@JsonProperty("nCities")
-	private int								nCities;
+	private int										nCities;
 	@JsonProperty("techs")
-	private ArrayList<Technology>			techs;
+	private ArrayList<Technology>					techs;
 	@JsonProperty("typeCredits")
-	private final HashMap<Type, Integer>	typeCredits;
+	private final HashMap<Technology.Type, Integer>	typeCredits;
 
-	private Age								age;
+	private Age										age;
 
 	public Civilization(String name, String player) {
-		this(name, player, 1, 0, new ArrayList<Technology>(), new HashMap<Type, Integer>(), 0);
+		this(name, player, 1, 0, new ArrayList<Technology>(), new HashMap<Technology.Type, Integer>(), 0);
 	}
 
+	@JsonCreator
 	public Civilization(@JsonProperty("name") String name, @JsonProperty("player") String player,
 			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
 			@JsonProperty("techs") ArrayList<Technology> techs,
-			@JsonProperty("typeCredits") HashMap<Type, Integer> typeCredits,
+			@JsonProperty("typeCredits") HashMap<Technology.Type, Integer> typeCredits,
 			@JsonProperty("astPosition") int astPosition) {
 		this.name = name;
 		this.player = player;
@@ -171,7 +173,7 @@ public class Civilization implements Comparable<Civilization>, Serializable {
 		this.player = player;
 	}
 
-	public HashMap<Type, Integer> getTypeCredits() {
+	public HashMap<Technology.Type, Integer> getTypeCredits() {
 		return this.typeCredits;
 	}
 

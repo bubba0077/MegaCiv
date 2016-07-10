@@ -121,6 +121,9 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	 * @return The description associated with the tab name
 	 */
 	public String getTabDescription(String tabName) {
+		if (tabInformationHash.get(tabName) == null) {
+			return "";
+		}
 		return tabInformationHash.get(tabName).getTabDescription();
 	}
 
@@ -191,7 +194,6 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		super.loadProperties();
 
 		if (this.tabbedPane == null) {
-			this.gui.log("tabbedPane is null");
 			return;
 		}
 

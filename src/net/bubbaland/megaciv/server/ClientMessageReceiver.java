@@ -39,8 +39,8 @@ public class ClientMessageReceiver {
 	 */
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
-		System.out.println("User" + session.getId() + " connected");
-		this.user.setUserName("User" + session.getId());
+		System.out.println("User " + session.getId() + " connected");
+		this.user.setUserName("User " + session.getId());
 		ClientMessageReceiver.server.addUser(session, this);
 		ClientMessageReceiver.server.sendGame(session);
 	}

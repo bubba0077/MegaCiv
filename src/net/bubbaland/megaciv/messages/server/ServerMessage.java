@@ -2,7 +2,6 @@ package net.bubbaland.megaciv.messages.server;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EncodeException;
@@ -12,27 +11,16 @@ import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ServerMessage {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type")
+public abstract class ServerMessage {
 
-	protected static JsonFactory	jsonFactory	= new JsonFactory();
-	private final String			messageType;
-
-	protected ServerMessage(String messageType) {
-		this.messageType = messageType;
-	}
-
-	public ServerMessage() {
-		this.messageType = "Unknown";
-	}
-
-	public String messageType() {
-		return this.messageType;
-	}
+	protected static JsonFactory jsonFactory = new JsonFactory();
 
 	public static class MessageEncoder implements Encoder.Text<ServerMessage> {
 		@Override
