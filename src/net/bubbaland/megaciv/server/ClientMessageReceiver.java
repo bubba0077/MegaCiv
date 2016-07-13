@@ -9,8 +9,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import net.bubbaland.megaciv.*;
-import net.bubbaland.megaciv.messages.client.ClientMessage;
-import net.bubbaland.megaciv.messages.server.ServerMessage;
+import net.bubbaland.megaciv.client.messages.ClientMessage;
+import net.bubbaland.megaciv.server.messages.ServerMessage;
 
 @ServerEndpoint(decoders = { ClientMessage.MessageDecoder.class }, encoders = {
 		ServerMessage.MessageEncoder.class }, value = "/")
@@ -42,7 +42,6 @@ public class ClientMessageReceiver {
 		System.out.println("User " + session.getId() + " connected");
 		this.user.setUserName("User " + session.getId());
 		ClientMessageReceiver.server.addUser(session, this);
-		ClientMessageReceiver.server.sendGame(session);
 	}
 
 	/**
@@ -53,9 +52,6 @@ public class ClientMessageReceiver {
 	 */
 	@OnMessage
 	public void onMessage(ClientMessage message, Session session) {
-		if (server == null) {
-			System.out.println("Server still null!");
-		}
 		server.processIncomingMessage(message, session);
 	}
 

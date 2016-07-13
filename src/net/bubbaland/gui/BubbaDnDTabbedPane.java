@@ -76,14 +76,16 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 
 	// private final TriviaFrame frame;
 	private final JPanel								blankPanel;
+	private final BubbaGuiController					controller;
 	private BubbaDragDropTabFrame						frame;
 
 	private static final ImageIcon						addTabIcon			= new ImageIcon(
 			BubbaDnDTabbedPane.class.getResource("images/plus.png"));
 
-	public BubbaDnDTabbedPane(BubbaDragDropTabFrame frame) {
+	public BubbaDnDTabbedPane(BubbaGuiController controller, BubbaDragDropTabFrame frame) {
 		super();
 		this.frame = frame;
+		this.controller = controller;
 		this.tearTab = new TearAwayTab(this.frame.getGui());
 		this.blankPanel = new JPanel();
 		registerTabbedPane(this);
@@ -251,7 +253,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	public void mouseClicked(MouseEvent event) {
 		final int addButtonIndex = this.indexOfComponent(this.blankPanel);
 		if (addButtonIndex > -1 && this.getBoundsAt(addButtonIndex).contains(event.getPoint())) {
-			new NewTabDialog(this.frame);
+			new NewTabDialog(this.controller, this.frame);
 		}
 	}
 

@@ -29,30 +29,38 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
+import net.bubbaland.megaciv.client.gui.GuiController;
+
 /**
  * Abstract class providing common methods for all trivia panels.
  *
  * @author Walter Kolczynski
  *
  */
-public class BubbaPanel extends JPanel {
+public abstract class BubbaPanel extends JPanel {
 
-	private static final long serialVersionUID = 7023089773420890665L;
+	private static final long			serialVersionUID	= 7023089773420890665L;
 
-	public BubbaPanel() {
+	protected final BubbaGuiController	controller;
+
+	public BubbaPanel(BubbaGuiController controller) {
 		super();
+		this.controller = controller;
 	}
 
-	public BubbaPanel(boolean isDoubleBuffered) {
+	public BubbaPanel(BubbaGuiController controller, boolean isDoubleBuffered) {
 		super(isDoubleBuffered);
+		this.controller = controller;
 	}
 
-	public BubbaPanel(LayoutManager layout) {
+	public BubbaPanel(BubbaGuiController controller, LayoutManager layout) {
 		super(layout);
+		this.controller = controller;
 	}
 
-	public BubbaPanel(LayoutManager layout, boolean isDoubleBuffered) {
+	public BubbaPanel(BubbaGuiController controller, LayoutManager layout, boolean isDoubleBuffered) {
 		super(layout, isDoubleBuffered);
+		this.controller = controller;
 	}
 
 	/**
@@ -575,5 +583,4 @@ public class BubbaPanel extends JPanel {
 			super.processMouseWheelEvent(e);
 		}
 	}
-
 }

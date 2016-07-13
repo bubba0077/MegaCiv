@@ -67,7 +67,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			}
 
 			@Override
-			protected void loadProperties(Properties properties) {
+			protected void loadProperties() {
 			}
 		};
 
@@ -142,7 +142,6 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		this.statusBar.setText(message);
 	}
 
-
 	public void updateGui(boolean forceUpdate) {
 		while (!this.initComplete) {
 			try {
@@ -150,6 +149,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			} catch (InterruptedException exception) {
 			}
 		}
+		this.mainPanel.updateGui(forceUpdate);
 	}
 
 	/**

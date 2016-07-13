@@ -2,16 +2,17 @@ package net.bubbaland.megaciv.server;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.websocket.DeploymentException;
 import javax.websocket.Session;
 
 import org.glassfish.tyrus.server.Server;
-
+import net.bubbaland.megaciv.client.messages.*;
+import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
-import net.bubbaland.megaciv.messages.client.*;
-import net.bubbaland.megaciv.messages.server.*;
+import net.bubbaland.megaciv.server.messages.*;
 
 public class GameServer extends Server {
 
@@ -54,7 +55,42 @@ public class GameServer extends Server {
 	}
 
 	public void processIncomingMessage(ClientMessage message, Session session) {
-		// TODO Auto-generated method stub
+		String messageType = message.getClass().getSimpleName();
+		switch (messageType) {
+			case "NewGameMessage":
+				this.game = new Game();
+				this.log("Created new game");
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			case "AddCivilizationMessage":
+				this.game.addCivilization(( (AddCivilizationMessage) message ).getCivNames());
+				this.broadcastMessage(new GameDataMessage(this.game));
+				this.log(this.game.toString());
+				break;
+			case "AssignPlayerMessage":
+				Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
+				String player = ( (AssignPlayerMessage) message ).getPlayer();
+				civ.setPlayer(player);
+				this.log("Assigned " + civ.getName() + " to " + player);
+				this.broadcastMessage(new GameDataMessage(this.game));
+				this.log(this.game.toString());
+				break;
+			case "CensusMessage":
+				HashMap<Civilization.Name, Integer> census = ( (CensusMessage) message ).getCensus();
+				for (Civilization.Name name : census.keySet()) {
+					this.game.getCivilization(name).setPopulation(census.get(name));
+				}
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			case "CityUpdateMessage":
+				HashMap<Civilization.Name, Integer> cityCount = ( (CityUpdateMessage) message ).getCityCount();
+				for (Civilization.Name name : cityCount.keySet()) {
+					this.game.getCivilization(name).setCityCount(cityCount.get(name));
+				}
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			default:
+		}
 	}
 
 	public void communicationsError(Session session, Throwable throwable) {
@@ -87,6 +123,12 @@ public class GameServer extends Server {
 		if (session == null) return;
 		session.getAsyncRemote().sendObject(message);
 		this.log("Sent message to " + sessionList.get(session).getUser());
+	}
+
+	private void broadcastMessage(ServerMessage message) {
+		for (Session session : this.sessionList.keySet()) {
+			this.sendMessage(session, message);
+		}
 	}
 
 	public static void main(String args[]) {

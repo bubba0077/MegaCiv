@@ -14,12 +14,12 @@ public class WaitDialog extends BubbaDialogPanel {
 
 	private static final long	serialVersionUID	= 6237850645754945230L;
 
-	private final GuiController	gui;
+	private final GuiController	controller;
 
-	public WaitDialog(GuiController gui) {
-		super();
+	public WaitDialog(GuiController controller) {
+		super(controller);
 
-		this.gui = gui;
+		this.controller = controller;
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -35,8 +35,8 @@ public class WaitDialog extends BubbaDialogPanel {
 		this.add(label, constraints);
 
 		final Object[] options = { "Exit" };
-		this.dialog = new BubbaDialog(gui, "Awaiting Data", this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_OPTION,
-				null, options);
+		this.dialog = new BubbaDialog(controller, "Awaiting Data", this, JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.OK_OPTION, null, options);
 		// this.dialog.setModal(false);
 		this.dialog.pack();
 		// this.setVisible(true);
@@ -57,7 +57,7 @@ public class WaitDialog extends BubbaDialogPanel {
 	public void windowClosed(WindowEvent event) {
 		super.windowClosed(event);
 		if (this.dialog.getValue().equals("Exit") || this.dialog.getValue().equals(JOptionPane.CLOSED_OPTION)) {
-			this.gui.endProgram();
+			this.controller.endProgram();
 		}
 	}
 }

@@ -10,18 +10,17 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
 import net.bubbaland.megaciv.client.GameClient;
-import net.bubbaland.megaciv.messages.*;
-import net.bubbaland.megaciv.messages.client.ClientMessage;
-import net.bubbaland.megaciv.messages.server.ServerMessage;
+import net.bubbaland.megaciv.client.messages.*;
+import net.bubbaland.megaciv.server.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GuiClient extends GameClient {
 
 	private final GuiController gui;
 
-	public GuiClient(final String serverURL) {
+	public GuiClient(final String serverURL, GuiController gui) {
 		super(serverURL);
-		this.gui = new GuiController(this);
+		this.gui = gui;
 	}
 
 	@OnClose
@@ -38,6 +37,7 @@ public class GuiClient extends GameClient {
 	@OnMessage
 	public void onMessage(ServerMessage message, Session session) {
 		super.onMessage(message, session);
+		this.gui.updateGui(true);
 	}
 
 	/**
@@ -50,27 +50,14 @@ public class GuiClient extends GameClient {
 		super.onError(session, throwable);
 	}
 
-	public static void main(String[] args) {
-		// Schedule a job to create and show the GUI
-		final String serverURL;
-		if (args.length > 0) {
-			serverURL = args[0];
-		} else {
-			serverURL = "ws://localhost:1100";
-		}
-		new GuiClient(serverURL);
-	}
-
 	public void log(String message) {
 		super.log(message);
-		if (this.gui != null) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					GuiClient.this.gui.log(message);
-				}
-			});
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				GuiClient.this.gui.log(message);
+			}
+		});
 	}
 
 }

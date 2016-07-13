@@ -11,22 +11,20 @@ import java.util.Properties;
  */
 public abstract class BubbaMainPanel extends BubbaPanel {
 
-	private static final long			serialVersionUID	= -5381727804575779591L;
+	private static final long	serialVersionUID	= -5381727804575779591L;
 
-	protected BubbaFrame				frame;
-	final protected BubbaGuiController	gui;
+	protected BubbaFrame		frame;
 
 	/**
 	 * Instantiates a new Trivia Panel
 	 *
-	 * @param bubbaGui
+	 * @param controller
 	 *            TODO
 	 * @param frame
 	 *            TODO
 	 */
-	public BubbaMainPanel(BubbaGuiController bubbaGui, BubbaFrame frame) {
-		super(new GridBagLayout());
-		this.gui = bubbaGui;
+	public BubbaMainPanel(BubbaGuiController controller, BubbaFrame frame) {
+		super(controller, new GridBagLayout());
 		this.frame = frame;
 	}
 
@@ -43,7 +41,7 @@ public abstract class BubbaMainPanel extends BubbaPanel {
 
 	public abstract void updateGui(boolean forceUpdate);
 
-	protected abstract void loadProperties(Properties properties);
+	protected abstract void loadProperties();
 
 
 }

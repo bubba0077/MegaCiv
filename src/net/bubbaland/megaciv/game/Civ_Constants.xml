@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AstTable>
 <Civilization name="Minoa">
     <Region>West</Region>
-	<AstPosition>1</AstPosition>
+	<AstRank>1</AstRank>
 	<Basic>
 		<EarlyBronzeStart>6</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -19,7 +20,7 @@
 </Civilization>
 <Civilization name="Saba">
     <Region>East</Region>
-	<AstPosition>2</AstPosition>
+	<AstRank>2</AstRank>
 	<Basic>
 		<EarlyBronzeStart>6</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -37,7 +38,7 @@
 </Civilization>
 <Civilization name="Assyria">
     <Region>West</Region>
-	<AstPosition>3</AstPosition>
+	<AstRank>3</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -55,7 +56,7 @@
 </Civilization>
 <Civilization name="Maurya">
     <Region>East</Region>
-	<AstPosition>4</AstPosition>
+	<AstRank>4</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -73,7 +74,7 @@
 </Civilization>
 <Civilization name="Celt">
     <Region>West</Region>
-	<AstPosition>5</AstPosition>
+	<AstRank>5</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -91,7 +92,7 @@
 </Civilization>
 <Civilization name="Babylon">
     <Region>East</Region>
-	<AstPosition>6</AstPosition>
+	<AstRank>6</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -109,7 +110,7 @@
 </Civilization>
 <Civilization name="Carthage">
     <Region>West</Region>
-	<AstPosition>7</AstPosition>
+	<AstRank>7</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -127,7 +128,7 @@
 </Civilization>
 <Civilization name="Dravidia">
     <Region>East</Region>
-	<AstPosition>8</AstPosition>
+	<AstRank>8</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -145,7 +146,7 @@
 </Civilization>
 <Civilization name="Hatti">
     <Region>West</Region>
-	<AstPosition>9</AstPosition>
+	<AstRank>9</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -163,7 +164,7 @@
 </Civilization>
 <Civilization name="Kushan">
     <Region>East</Region>
-	<AstPosition>10</AstPosition>
+	<AstRank>10</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -181,7 +182,7 @@
 </Civilization>
 <Civilization name="Rome">
     <Region>West</Region>
-	<AstPosition>11</AstPosition>
+	<AstRank>11</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -199,7 +200,7 @@
 </Civilization>
 <Civilization name="Persia">
     <Region>East</Region>
-	<AstPosition>12</AstPosition>
+	<AstRank>12</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -217,7 +218,7 @@
 </Civilization>
 <Civilization name="Iberia">
     <Region>West</Region>
-	<AstPosition>13</AstPosition>
+	<AstRank>13</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -235,7 +236,7 @@
 </Civilization>
 <Civilization name="Nubia">
     <Region>East</Region>
-	<AstPosition>14</AstPosition>
+	<AstRank>14</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -253,7 +254,7 @@
 </Civilization>
 <Civilization name="Hellas">
     <Region>West</Region>
-	<AstPosition>15</AstPosition>
+	<AstRank>15</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -271,7 +272,7 @@
 </Civilization>
 <Civilization name="Indus">
     <Region>East</Region>
-	<AstPosition>16</AstPosition>
+	<AstRank>16</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -289,7 +290,7 @@
 </Civilization>
 <Civilization name="Egypt">
     <Region>West</Region>
-	<AstPosition>17</AstPosition>
+	<AstRank>17</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>8</MiddleBronzeStart>
@@ -307,7 +308,7 @@
 </Civilization>
 <Civilization name="Parthia">
     <Region>East</Region>
-	<AstPosition>18</AstPosition>
+	<AstRank>18</AstRank>
 	<Basic>
 		<EarlyBronzeStart>5</EarlyBronzeStart>
 		<MiddleBronzeStart>9</MiddleBronzeStart>
@@ -323,3 +324,4 @@
 		<LateIronStart>15</LateIronStart>
     </Expert>
 </Civilization>
+</AstTable>

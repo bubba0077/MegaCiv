@@ -36,8 +36,8 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 
 	protected BubbaDialog		dialog;
 
-	public BubbaDialogPanel() {
-		super(new GridBagLayout());
+	public BubbaDialogPanel(BubbaGuiController controller) {
+		super(controller, new GridBagLayout());
 	}
 
 	/**

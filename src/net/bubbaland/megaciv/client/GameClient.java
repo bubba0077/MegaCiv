@@ -3,10 +3,14 @@ package net.bubbaland.megaciv.client;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.DeploymentException;
+import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -16,9 +20,10 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.client.ClientManager;
 
+import net.bubbaland.megaciv.client.messages.*;
+import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
-import net.bubbaland.megaciv.messages.client.*;
-import net.bubbaland.megaciv.messages.server.*;
+import net.bubbaland.megaciv.server.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GameClient implements Runnable {
@@ -30,14 +35,20 @@ public class GameClient implements Runnable {
 	private Session				session;
 	private boolean				isConnected;
 
-	private Game				game;
+	private volatile Game		game;
 
 	public GameClient(final String serverUrl) {
 		this.serverUrl = serverUrl;
 		this.session = null;
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
-		this.run();
+
+		this.game = new Game();
+		this.game.addCivilization(new ArrayList<Civilization.Name>(Arrays.asList(Civilization.Name.values())));
+	}
+
+	public Game getGame() {
+		return this.game;
 	}
 
 	public void setTimestampFormat(SimpleDateFormat timestampFormat) {
@@ -84,9 +95,9 @@ public class GameClient implements Runnable {
 		String messageType = message.getClass().getSimpleName();
 		switch (messageType) {
 			case "GameDataMessage":
-				( (GameDataMessage) message ).getGame();
+				this.game = ( (GameDataMessage) message ).getGame();
+				// this.log(this.game.toString());
 			default:
-
 		}
 	}
 
@@ -122,6 +133,23 @@ public class GameClient implements Runnable {
 		final String timestamp = timestampFormat.format(new Date());
 		// Print message to console
 		System.out.println(timestamp + " " + message);
+	}
+
+	/**
+	 * Send a message to the specified client
+	 *
+	 * @param session
+	 * @param message
+	 */
+	public void sendMessage(ClientMessage message) {
+		// if (this.session == null) return;
+		// this.session.getAsyncRemote().sendObject(message);
+		// this.log("Sent message to server");
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			System.out.println("Trying to send message from Event Dispatch Thread!");
+		}
+		this.session.getAsyncRemote().sendObject(message);
 	}
 
 }

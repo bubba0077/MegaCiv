@@ -1,8 +1,7 @@
-package net.bubbaland.megaciv.messages.client;
+package net.bubbaland.megaciv.server.messages;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EncodeException;
@@ -10,31 +9,27 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.bubbaland.megaciv.messages.server.GameDataMessage;
-
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public abstract class ClientMessage {
+public abstract class ServerMessage {
 
 	protected static JsonFactory jsonFactory = new JsonFactory();
 
-	public static class MessageEncoder implements Encoder.Text<ClientMessage> {
+	public static class MessageEncoder implements Encoder.Text<ServerMessage> {
 		@Override
 		public void init(final EndpointConfig config) {
 		}
 
 		@Override
-		public String encode(final ClientMessage message) throws EncodeException {
-			// System.out.println("Encoding ClientMessage with command " + message.command);
+		public String encode(final ServerMessage message) throws EncodeException {
+			// System.out.println("Encoding ServerMessage with command " + message.command);
 			final StringWriter writer = new StringWriter();
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -55,26 +50,26 @@ public abstract class ClientMessage {
 		}
 	}
 
-	public static class MessageDecoder implements Decoder.Text<ClientMessage> {
+	public static class MessageDecoder implements Decoder.Text<ServerMessage> {
 
 		@Override
 		public void init(final EndpointConfig config) {
 		}
 
 		@Override
-		public ClientMessage decode(final String str) throws DecodeException {
-			// System.out.println("Decoding ClientMessage");
+		public ServerMessage decode(final String str) throws DecodeException {
+			// System.out.println("Decoding ServerMessage");
 			final ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			ClientMessage message = null;
+			ServerMessage message = null;
 			try {
-				message = mapper.readValue(str, ClientMessage.class);
+				message = mapper.readValue(str, ServerMessage.class);
 			} catch (final IOException exception) {
 				exception.printStackTrace();
 			}
-			// System.out.println("Decoded ClientMessage with command " + message.getCommand());
+			// System.out.println("Decoded ServerMessage with command " + message.getCommand());
 			return message;
 		}
 

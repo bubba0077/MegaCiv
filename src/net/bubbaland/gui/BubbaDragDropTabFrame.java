@@ -1,7 +1,6 @@
 package net.bubbaland.gui;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.dnd.DropTargetDropEvent;
@@ -16,8 +15,6 @@ import java.util.Set;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import net.bubbaland.megaciv.client.gui.AstPanel;
 
 public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener, ChangeListener {
 
@@ -60,28 +57,18 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	 */
 	public BubbaDragDropTabFrame(BubbaGuiController gui, String[] initialTabs) {
 		this(gui);
-		for (final String tabName : initialTabs) {
-			try {
-				BubbaMainPanel newTab = this.tabFactory(this, tabName.replaceFirst(" \\([0-9]*\\)", ""));
-				this.tabbedPane.addTab(tabName, newTab);
-				newTab.updateGui(true);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException exception) {
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
-			}
-		}
+		this.addTabs(initialTabs);
 		this.tabbedPane.setSelectedIndex(0);
 		this.tabbedPane.addChangeListener(this);
 		this.loadPosition();
 	}
 
-	public BubbaDragDropTabFrame(BubbaGuiController gui) {
-		super(gui);
+	public BubbaDragDropTabFrame(BubbaGuiController controller) {
+		super(controller);
 		this.initTabInfoHash();
 
 		// Create drag & drop tabbed pane
-		this.tabbedPane = new BubbaDnDTabbedPane(this);
+		this.tabbedPane = new BubbaDnDTabbedPane(controller, this);
 		this.tabbedPane.setName("Tabbed Pane");
 
 		// Set up layout constraints
@@ -95,9 +82,29 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		// Add the tabbed pane to the panel
 		this.mainPanel.add(this.tabbedPane, constraints);
 
+		this.gui.registerWindow(this);
+
 		// Load the properties
 		this.loadProperties();
 
+	}
+
+	protected void addTab(String tabName) {
+		try {
+			BubbaMainPanel newTab = this.tabFactory(this, tabName.replaceFirst(" \\([0-9]*\\)", ""));
+			this.tabbedPane.addTab(tabName, newTab);
+			newTab.updateGui(true);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
+
+	protected void addTabs(String[] tabs) {
+		for (final String tabName : tabs) {
+			this.addTab(tabName);
+		}
 	}
 
 	protected void initTabInfoHash() {
@@ -127,7 +134,6 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		return tabInformationHash.get(tabName).getTabDescription();
 	}
 
-	// public abstract BubbaMainPanel tabFactory(BubbaFrame frame, String tabType);
 	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -149,6 +155,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		private final Class<BubbaMainPanel>	tabClass;
 		private final String				tabDescription;
 
+		@SuppressWarnings("unchecked")
 		public TabInformation(String tabDescription, Class<?> tabClass) {
 			this.tabClass = (Class<BubbaMainPanel>) tabClass;
 			this.tabDescription = tabDescription;
@@ -172,7 +179,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 
 		// Propagate update to tabs
 		while (this.tabbedPane == null) {
-			// System.out.println("Awaiting tabbed pane");
+			System.out.println("Can't update null tabbedPane!");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {
@@ -202,7 +209,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 			final int index = this.tabbedPane.indexOfTab(tabName);
 			final Component component = this.tabbedPane.getComponentAt(index);
 			if (component instanceof BubbaMainPanel) {
-				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).loadProperties(this.gui.getProperties());
+				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).loadProperties();
 			}
 		}
 	}

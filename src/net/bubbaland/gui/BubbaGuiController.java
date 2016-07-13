@@ -9,26 +9,30 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
+
+import javax.swing.SwingUtilities;
+
 import net.bubbaland.megaciv.client.GameClient;
 
 public abstract class BubbaGuiController {
 
-	final private Properties			properties;
+	private Properties						properties;
 
 	// List of active windows
-	final private ArrayList<BubbaFrame>	windowList;
+	protected final ArrayList<BubbaFrame>	windowList;
 
 	// Format for log timestamps
-	private final SimpleDateFormat		timestampFormat;
+	private final SimpleDateFormat			timestampFormat;
 
 	// File name to store window positions
-	private final String				defaultsFilename;
+	private final String					defaultsFilename;
 	// File name to store window positions
-	protected final String				settingsFilename;
+	protected final String					settingsFilename;
 
 	protected BubbaGuiController(String defaultsFilename, String settingsFilename, String settingsVersion) {
 		// this.tabInformationHash = tabInformationHash;
@@ -47,12 +51,7 @@ public abstract class BubbaGuiController {
 		 * Load saved properties from file
 		 */
 		final File file = new File(System.getProperty("user.home") + "/" + settingsFilename);
-		try {
-			final BufferedReader fileBuffer = new BufferedReader(new FileReader(file));
-			properties.load(fileBuffer);
-		} catch (final IOException e) {
-			System.out.println("Couldn't load properties file, may not exist yet.");
-		}
+		this.loadProperties(file);
 
 		/**
 		 * If the version doesn't match, reload defaults
@@ -82,6 +81,18 @@ public abstract class BubbaGuiController {
 			System.exit(-1);
 		}
 		BubbaDialogPanel.loadProperties(properties);
+	}
+
+	public void loadProperties(final File file) {
+		try {
+			final BufferedReader fileBuffer = new BufferedReader(new FileReader(file));
+			properties.load(fileBuffer);
+		} catch (final IOException e) {
+			System.out.println("Couldn't load properties file, may not exist yet.");
+		}
+		for (final BubbaFrame frame : this.windowList) {
+			frame.loadProperties();
+		}
 	}
 
 	/**
@@ -170,8 +181,6 @@ public abstract class BubbaGuiController {
 			// Display message in status bar
 			panel.log(timestamp + " " + message);
 		}
-		// Print message to console
-		System.out.println(timestamp + " " + message);
 	}
 
 	public int getNWindows() {
@@ -199,10 +208,14 @@ public abstract class BubbaGuiController {
 	}
 
 	public void updateGui(boolean forceUpdate) {
-		for (BubbaFrame frame : this.windowList) {
-			frame.updateGui(forceUpdate);
+		for (final BubbaFrame frame : this.windowList) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					frame.updateGui(forceUpdate);
+				}
+			});
 		}
 	}
-
 
 }

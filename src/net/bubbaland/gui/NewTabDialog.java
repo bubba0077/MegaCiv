@@ -39,8 +39,8 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 	private final Set<String>			tabNameSet;
 	private final String[]				tabNames;
 
-	public NewTabDialog(BubbaDragDropTabFrame frame) {
-		super();
+	public NewTabDialog(BubbaGuiController controller, BubbaDragDropTabFrame frame) {
+		super(controller);
 
 		this.parent = frame;
 
