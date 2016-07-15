@@ -3,10 +3,7 @@ package net.bubbaland.megaciv.client.gui;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -55,7 +52,9 @@ public class ScrollingAstPanel extends BubbaPanel {
 																	}
 																};
 
-	private ArrayList<RowPanel>							civRows;
+
+	private HashMap<Integer, RowPanel>					civRows;
+	private HeaderPanel									headerPanel;
 
 	private final GuiClient								client;
 
@@ -81,16 +80,17 @@ public class ScrollingAstPanel extends BubbaPanel {
 		constraints.weighty = 1.0;
 
 		loadProperties();
-		this.updateGui(true);
 
-		// this.header = new HashMap<Column, JLabel>();
+		this.headerPanel = new HeaderPanel(this.controller);
+		this.add(this.headerPanel, constraints);
+
+		this.updateGui(true);
 
 	}
 
-	public void redoRows(ArrayList<Civilization.Name> civNames) {
-		System.out.println("Recreating rows");
+	public synchronized void redoRows(ArrayList<Civilization.Name> civNames) {
 		if (this.civRows != null) {
-			for (RowPanel panel : this.civRows) {
+			for (RowPanel panel : this.civRows.values()) {
 				this.remove(panel);
 			}
 		}
@@ -99,19 +99,19 @@ public class ScrollingAstPanel extends BubbaPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 
-		this.civRows = new ArrayList<RowPanel>();
+		this.civRows = new HashMap<Integer, RowPanel>();
 		for (Civilization.Name name : civNames) {
 			RowPanel panel = new RowPanel(this.controller);
-			constraints.gridy = civNames.indexOf(name);
-			this.civRows.add(panel);
+			constraints.gridy = civNames.indexOf(name) + 1;
+			this.civRows.put(civNames.indexOf(name), panel);
 			this.add(panel, constraints);
 		}
 	}
 
-	public void updateGui(boolean forceUpdate) {
+	public synchronized void updateGui(boolean forceUpdate) {
 		loadProperties();
 
 		Game game = this.client.getGame();
@@ -121,6 +121,28 @@ public class ScrollingAstPanel extends BubbaPanel {
 
 		ArrayList<Civilization> sortedCivs = Civilization.sortBy(this.client.getGame().getCivilizations(),
 				this.sortOption);
+
+		if (sortedCivs.size() == 0) {
+			return;
+		}
+
+		Civilization firstCiv = sortedCivs.get(0);
+
+		for (Civilization.Age age : Civilization.Age.values()) {
+			int ageStart = firstCiv.getAgeStart(age);
+			int ageEnd = this.client.getGame().lastAstStep();
+			Civilization.Age nextAge = age.nextAge();
+			if (nextAge != null) {
+				ageEnd = firstCiv.getAgeStart(nextAge) - 1;
+			}
+			int diff = age == Civilization.Age.STONE ? ageEnd - ageStart : ageEnd - ageStart + 1;
+			Color foregroundColor = this.controller.getAstForegroundColor(age);
+			Color backgroundColor = this.controller.getAstBackgroundColor(age);
+
+			BubbaPanel.setLabelProperties(this.headerPanel.getAgeHeader(age), width.get(Column.AST01) * diff,
+					this.rowHeight, foregroundColor, backgroundColor, 14.0f);
+		}
+
 		for (Civilization civ : sortedCivs) {
 			Civilization.Name name = civ.getName();
 			RowPanel panel = this.civRows.get(sortedCivs.indexOf(civ));
@@ -149,6 +171,8 @@ public class ScrollingAstPanel extends BubbaPanel {
 							foregroundColor = this.controller.getAstForegroundColor(civ.getAge(astStep));
 							backgroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
 						}
+						// System.out.println(this.getClass().getSimpleName() + " " + col + " " + civ.getAge(astStep));
+						label.setVisible(astStep <= this.client.getGame().lastAstStep());
 				}
 				label.setText(text);
 				setLabelProperties(label, this.width.get(col), this.rowHeight, foregroundColor, backgroundColor,
@@ -187,6 +211,74 @@ public class ScrollingAstPanel extends BubbaPanel {
 		}
 
 		this.rowHeight = Integer.parseInt(props.getProperty("AstTable.Row.Height"));
+
+	}
+
+	private class HeaderPanel extends BubbaPanel {
+
+		private static final long						serialVersionUID	= 810881884756701202L;
+
+		private final HashMap<Civilization.Age, JLabel>	ageLabels;
+
+		public HeaderPanel(BubbaGuiController controller) {
+			super(controller, new GridBagLayout());
+			final GridBagConstraints constraints = new GridBagConstraints();
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.anchor = GridBagConstraints.SOUTH;
+			constraints.weighty = 1.0;
+			constraints.gridy = 0;
+
+			for (Column col : Column.values()) {
+				constraints.weightx = 0.0;
+				constraints.gridx = colData.get(col).getColumnLocation();
+
+				String string = Game.capitalizeFirst(col.toString());
+
+				int width = ScrollingAstPanel.this.width.get(col);
+				int height = ScrollingAstPanel.this.rowHeight;
+
+				float fontSize = 14.0f;
+
+				Color foreground = Color.WHITE;
+				Color background = Color.BLACK;
+
+				int justification = JLabel.CENTER;
+
+				switch (col) {
+					case CIV:
+						constraints.weightx = 1.0;
+						string = "Civilization (Player)";
+						justification = JLabel.LEFT;
+						break;
+					case POPULATION:
+						string = "Pop";
+						break;
+					case CITIES:
+						break;
+					case AST:
+						string = "Pos";
+						break;
+					default:
+						continue;
+				}
+
+				this.enclosedLabelFactory(string, width, height, foreground, background, constraints, fontSize,
+						justification, JLabel.BOTTOM);
+			}
+
+			constraints.weightx = 0.0;
+
+			this.ageLabels = new HashMap<Civilization.Age, JLabel>();
+			for (Civilization.Age age : Civilization.Age.values()) {
+				constraints.gridx = colData.get(Column.AST01).getColumnLocation() + age.ordinal();
+				this.ageLabels.put(age, this.enclosedLabelFactory("", constraints, JLabel.LEFT, JLabel.BOTTOM));
+			}
+
+		}
+
+		public JLabel getAgeHeader(Civilization.Age age) {
+			return this.ageLabels.get(age);
+		}
 
 	}
 

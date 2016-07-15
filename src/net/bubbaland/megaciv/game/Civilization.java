@@ -1,6 +1,5 @@
 package net.bubbaland.megaciv.game;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -21,7 +20,6 @@ import org.xml.sax.SAXException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import net.bubbaland.megaciv.game.Civilization.AstTableData.AstSubTableData;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 
 public class Civilization implements Serializable, Comparable<Civilization> {
@@ -33,26 +31,36 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public static enum Region {
-		EAST, WEST
+		EAST, WEST, BOTH
 	};
 
 	public static enum Age {
-		STONE, EARLY_BRONZE, MIDDLE_BRONZE, LATE_BRONZE, EARLY_IRON, LATE_IRON
+		STONE, EARLY_BRONZE, MIDDLE_BRONZE, LATE_BRONZE, EARLY_IRON, LATE_IRON {
+			@Override
+			public Age nextAge() {
+				return null;
+			}
+		};
+
+		public Age nextAge() {
+			return values()[this.ordinal() + 1];
+		}
+
 	}
 
 	public static enum SortOption {
 		AST, POPULATION, AST_POSITION;
 	}
 
-	public final static HashMap<Civilization.Name, AstTableData>	astTable;
+	public final static HashMap<Civilization.Name, AstTableData>										astTable;
+	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	startingCivs;
 
-	private HashMap<Civilization.Name, Color>						civColors;
-
-	public final static String										CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
+	public final static String																			CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
 
 
 	static {
 		astTable = new HashMap<Civilization.Name, AstTableData>();
+		startingCivs = new HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>();
 
 		try {
 			final InputStream fileStream = Civilization.class.getResourceAsStream(CIV_CONSTANTS_FILENAME);
@@ -61,23 +69,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			final Document doc = dBuilder.parse(fileStream);
 			doc.getDocumentElement().normalize();
-			final Element astTableElement = doc.getDocumentElement();
+			final Element astTableElement = (Element) doc.getDocumentElement().getElementsByTagName("AstTable").item(0);
 			NodeList civNodes = astTableElement.getElementsByTagName("Civilization");
 
 			for (int c = 0; c < civNodes.getLength(); c++) {
 				final Element civElement = (Element) civNodes.item(c);
 				final Civilization.Name name = Civilization.Name.valueOf(civElement.getAttribute("name").toUpperCase());
-				Region region = null;
-				switch (civElement.getElementsByTagName("Region").item(0).getTextContent()) {
-					case "East":
-						region = Region.EAST;
-					case "West":
-						region = Region.WEST;
-				}
+				Region region = Region
+						.valueOf(civElement.getElementsByTagName("Region").item(0).getTextContent().toUpperCase());
 				final int astRank = Integer
 						.parseInt(civElement.getElementsByTagName("AstRank").item(0).getTextContent());
 
-				HashMap<Difficulty, AstSubTableData> hash = new HashMap<Difficulty, AstSubTableData>();
+				HashMap<Difficulty, HashMap<Age, Integer>> hash = new HashMap<Difficulty, HashMap<Age, Integer>>();
 				for (Difficulty difficulty : Game.Difficulty.values()) {
 					final Element civAstElement = (Element) civElement
 							.getElementsByTagName(Game.capitalizeFirst(difficulty.name())).item(0);
@@ -92,13 +95,58 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					final int lateIronStart = Integer
 							.parseInt(civAstElement.getElementsByTagName("LateIronStart").item(0).getTextContent());
 
+					hash.put(difficulty, new HashMap<Age, Integer>() {
+						private static final long serialVersionUID = 1L;
 
-					hash.put(difficulty, new AstSubTableData(earlyBronzeStart, middleBronzeStart, lateBronzeStart,
-							earlyIronStart, lateIronStart));
+						{
+							put(Age.STONE, 0);
+							put(Age.EARLY_BRONZE, earlyBronzeStart);
+							put(Age.MIDDLE_BRONZE, middleBronzeStart);
+							put(Age.LATE_BRONZE, lateBronzeStart);
+							put(Age.EARLY_IRON, earlyIronStart);
+							put(Age.LATE_IRON, lateIronStart);
+
+						}
+					});
 				}
 
 				astTable.put(name, new AstTableData(astRank, region, hash));
 			}
+
+			final Element startingCivElement = (Element) doc.getDocumentElement().getElementsByTagName("StartingCivs")
+					.item(0);
+			NodeList startingNodes = startingCivElement.getElementsByTagName("PlayerCount");
+
+			for (int i = 0; i < startingNodes.getLength(); i++) {
+				final Element startingElement = (Element) startingNodes.item(i);
+				final int nCivs = Integer.parseInt(startingElement.getAttribute("count"));
+				NodeList regionsNodes = startingElement.getElementsByTagName("Region");
+
+				HashMap<Region, ArrayList<Name>> regionHash = new HashMap<Region, ArrayList<Name>>();
+
+				for (int node = 0; node < regionsNodes.getLength(); node++) {
+					Element regionElement = ( (Element) regionsNodes.item(node) );
+					Region region = Region.valueOf(regionElement.getAttribute("name").toUpperCase());
+
+					ArrayList<Name> civs = new ArrayList<Name>();
+
+					civNodes = regionElement.getElementsByTagName("Civilization");
+
+					for (int c = 0; c < civNodes.getLength(); c++) {
+						final Element civElement = (Element) civNodes.item(c);
+						final Civilization.Name name = Civilization.Name
+								.valueOf(civElement.getAttribute("name").toUpperCase());
+						civs.add(name);
+					}
+
+					regionHash.put(region, civs);
+
+				}
+
+				startingCivs.put(nCivs, regionHash);
+
+			}
+
 
 		} catch (final ParserConfigurationException | SAXException | IOException e) {
 
@@ -140,6 +188,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.astPosition = astPosition;
 		this.typeCredits = typeCredits;
 		this.difficulty = difficulty;
+
 	}
 
 	public Name getName() {
@@ -159,11 +208,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public Age getAge(int astStep) {
-		return astStep >= this.getLateIronStart() ? Age.LATE_IRON : astStep >= this
-				.getEarlyIronStart() ? Age.EARLY_IRON : astStep >= this
-						.getLateBronzeStart() ? Age.LATE_BRONZE : astStep >= this
-								.getMiddleBronzeStart() ? Age.MIDDLE_BRONZE : astStep >= this
-										.getEarlyBronzeStart() ? Age.EARLY_BRONZE : Age.STONE;
+		Age age = Age.STONE;
+		for (Age a : Age.values()) {
+			if (astStep >= this.getAgeStart(a)) {
+				age = a;
+			} else {
+				return age;
+			}
+		}
+		return age;
 	}
 
 	public Age getCurrentAge() {
@@ -171,11 +224,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public Age getNextStepAge() {
-		return this.astPosition + 1 >= this.getLateIronStart() ? Age.LATE_IRON : this.astPosition >= this
-				.getEarlyIronStart() ? Age.EARLY_IRON : this.astPosition >= this
-						.getLateBronzeStart() ? Age.LATE_BRONZE : this.astPosition >= this
-								.getMiddleBronzeStart() ? Age.MIDDLE_BRONZE : this.astPosition >= this
-										.getEarlyBronzeStart() ? Age.EARLY_BRONZE : Age.STONE;
+		return this.getAge(this.astPosition + 1);
+	}
+
+	public int getAgeStart(Civilization.Age age) {
+		return Civilization.astTable.get(this.getName()).getAgeStart(age, this.difficulty);
 	}
 
 	public void setDifficulty(Difficulty difficulty) {
@@ -230,26 +283,6 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public int getAst() {
 		return astTable.get(this.name).astRank;
-	}
-
-	public int getEarlyBronzeStart() {
-		return astTable.get(this.name).getEarlyBronzeStart(difficulty);
-	}
-
-	public int getMiddleBronzeStart() {
-		return astTable.get(this.name).getMiddleBronzeStart(difficulty);
-	}
-
-	public int getLateBronzeStart() {
-		return astTable.get(this.name).getLateBronzeStart(difficulty);
-	}
-
-	public int getEarlyIronStart() {
-		return astTable.get(this.name).getEarlyIronStart(difficulty);
-	}
-
-	public int getLateIronStart() {
-		return astTable.get(this.name).getLateIronStart(difficulty);
 	}
 
 	public static ArrayList<Civilization> sortBy(ArrayList<Civilization> civs, Civilization.SortOption sort) {
@@ -332,15 +365,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	static final class AstTableData {
 		@JsonProperty("astRank")
-		public final int										astRank;
+		public final int												astRank;
 		@JsonProperty("region")
-		public final Region										region;
+		public final Region												region;
 		@JsonProperty("subTable")
-		public final HashMap<Game.Difficulty, AstSubTableData>	subTable;
+		public final HashMap<Game.Difficulty, HashMap<Age, Integer>>	subTable;
 
 		@JsonCreator
 		public AstTableData(@JsonProperty("astRank") final int astRank, @JsonProperty("region") final Region region,
-				@JsonProperty("subTable") HashMap<Game.Difficulty, AstSubTableData> subTable) {
+				@JsonProperty("subTable") HashMap<Game.Difficulty, HashMap<Age, Integer>> subTable) {
 			this.astRank = astRank;
 			this.region = region;
 			this.subTable = subTable;
@@ -354,51 +387,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			return this.region;
 		}
 
-		public int getEarlyBronzeStart(Difficulty difficulty) {
-			return this.subTable.get(difficulty).earlyBronzeStart;
+		public int getAgeStart(Age age, Difficulty difficulty) {
+			return this.subTable.get(difficulty).get(age).intValue();
 		}
-
-		public int getMiddleBronzeStart(Difficulty difficulty) {
-			return this.subTable.get(difficulty).middleBronzeStart;
-		}
-
-		public int getLateBronzeStart(Difficulty difficulty) {
-			return this.subTable.get(difficulty).lateBronzeStart;
-		}
-
-		public int getEarlyIronStart(Difficulty difficulty) {
-			return this.subTable.get(difficulty).earlyIronStart;
-		}
-
-		public int getLateIronStart(Difficulty difficulty) {
-			return this.subTable.get(difficulty).lateIronStart;
-		}
-
-		static final class AstSubTableData {
-			@JsonProperty("earlyBronzeStart")
-			public final int	earlyBronzeStart;
-			@JsonProperty("middleBronzeStart")
-			public final int	middleBronzeStart;
-			@JsonProperty("lateBronzeStart")
-			public final int	lateBronzeStart;
-			@JsonProperty("earlyIronStart")
-			public final int	earlyIronStart;
-			@JsonProperty("lateIronStart")
-			public final int	lateIronStart;
-
-			private AstSubTableData(@JsonProperty("earlyBronzeStart") final int earlyBronzeStart,
-					@JsonProperty("middleBronzeStart") final int middleBronzeStart,
-					@JsonProperty("lateBronzeStart") final int lateBronzeStart,
-					@JsonProperty("earlyIronStart") final int earlyIronStart,
-					@JsonProperty("lateIronStart") final int lateIronStart) {
-				this.earlyBronzeStart = earlyBronzeStart;
-				this.middleBronzeStart = middleBronzeStart;
-				this.lateBronzeStart = lateBronzeStart;
-				this.earlyIronStart = earlyIronStart;
-				this.lateIronStart = lateIronStart;
-			}
-		}
-
 	}
 
 

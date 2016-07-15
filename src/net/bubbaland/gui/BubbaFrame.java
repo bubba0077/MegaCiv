@@ -34,7 +34,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	// The status bar at the bottom
 	final protected JLabel				statusBar;
 
-	protected final BubbaGuiController	gui;
+	protected final BubbaGuiController	controller;
 
 	private boolean						initComplete;
 
@@ -46,20 +46,20 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 * @param client
 	 *            The root client
 	 */
-	protected BubbaFrame(BubbaGuiController gui) {
+	protected BubbaFrame(BubbaGuiController controller) {
 		super();
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		this.gui = gui;
+		this.controller = controller;
 
-		final String title = this.gui.nextWindowName();
+		final String title = this.controller.nextWindowName();
 		this.setTitle(title);
 		this.setName(title);
 		this.loadPosition();
 		this.addWindowListener(this);
 
 		// Create a new panel to hold all GUI elements for the frame
-		this.mainPanel = new BubbaMainPanel(this.gui, this) {
+		this.mainPanel = new BubbaMainPanel(this.controller, this) {
 			private static final long serialVersionUID = -3431542881790392652L;
 
 			@Override
@@ -114,7 +114,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 	public BubbaGuiController getGui() {
-		return this.gui;
+		return this.controller;
 	}
 
 	/**
@@ -160,10 +160,10 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		try {
 			final String frameID = this.getName();
 
-			final int x = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".X"));
-			final int y = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Y"));
-			final int width = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Width"));
-			final int height = Integer.parseInt(this.gui.getProperties().getProperty(frameID + ".Height"));
+			final int x = Integer.parseInt(this.controller.getProperties().getProperty(frameID + ".X"));
+			final int y = Integer.parseInt(this.controller.getProperties().getProperty(frameID + ".Y"));
+			final int width = Integer.parseInt(this.controller.getProperties().getProperty(frameID + ".Width"));
+			final int height = Integer.parseInt(this.controller.getProperties().getProperty(frameID + ".Height"));
 
 			this.setBounds(x, y, width, height);
 
@@ -180,8 +180,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		final String id = this.getTitle();
 		final int height = this.statusBar.getPreferredSize().getSize().height;
 		final float fontSize = this.statusBar.getFont().getSize2D();
-		this.gui.getProperties().setProperty(id + "." + "StatusBar.Height", height + "");
-		this.gui.getProperties().setProperty(id + "." + "StatusBar.FontSize", fontSize + "");
+		this.controller.getProperties().setProperty(id + "." + "StatusBar.Height", height + "");
+		this.controller.getProperties().setProperty(id + "." + "StatusBar.FontSize", fontSize + "");
 	}
 
 	/**
@@ -195,8 +195,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 * @return The property requested
 	 */
 	private String loadProperty(String id, String propertyName) {
-		return this.gui.getProperties().getProperty(id + "." + propertyName,
-				this.gui.getProperties().getProperty(propertyName));
+		return this.controller.getProperties().getProperty(id + "." + propertyName,
+				this.controller.getProperties().getProperty(propertyName));
 	}
 
 	@Override
@@ -215,17 +215,10 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	public void windowClosing(WindowEvent e) {
 		final Window window = e.getWindow();
 		// Save the window position
-		this.gui.savePosition(window);
+		this.controller.savePosition(window);
 		if (window instanceof BubbaFrame) {
 			( (BubbaFrame) window ).saveProperties();
-
-			if (this.gui.getNWindows() == 0) {
-				// This is the last window, go through exit procedures
-				this.gui.endProgram();
-			} else {
-				// Remove window from the list
-				this.gui.unregisterWindow((BubbaFrame) window);
-			}
+			this.controller.unregisterWindow((BubbaFrame) window);
 		}
 	}
 
@@ -304,7 +297,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 					}
 				}.start();
 			} catch (final Exception e) {
-				System.out.println("Couldn't open audio file");
+				System.out.println(this.getClass().getSimpleName() + "Couldn't open audio file");
 				e.printStackTrace();
 			}
 		}

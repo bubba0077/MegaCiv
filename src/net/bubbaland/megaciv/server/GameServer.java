@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv.server;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -59,17 +60,18 @@ public class GameServer extends Server {
 		switch (messageType) {
 			case "NewGameMessage":
 				this.game = new Game();
-				this.log("Created new game");
+				HashMap<Civilization.Name, String> startingCivs = ( (NewGameMessage) message ).getCivNames();
+				this.game.addCivilization(new ArrayList<Civilization.Name>(startingCivs.keySet()));
+				for (Civilization.Name name : startingCivs.keySet()) {
+					this.game.getCivilization(name).setPlayer(startingCivs.get(name));
+				}
+				this.log("Created new game with the following civilizations: " + startingCivs);
 				this.broadcastMessage(new GameDataMessage(this.game));
-				break;
-			case "AddCivilizationMessage":
-				this.game.addCivilization(( (AddCivilizationMessage) message ).getCivNames());
-				this.broadcastMessage(new GameDataMessage(this.game));
-				this.log(this.game.toString());
 				break;
 			case "AssignPlayerMessage":
 				Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
 				String player = ( (AssignPlayerMessage) message ).getPlayer();
+				System.out.println(civ == null);
 				civ.setPlayer(player);
 				this.log("Assigned " + civ.getName() + " to " + player);
 				this.broadcastMessage(new GameDataMessage(this.game));

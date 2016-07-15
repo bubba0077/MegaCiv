@@ -1,4 +1,266 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<Data>
+<StartingCivs>
+<PlayerCount count="5">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+</Region>
+<Region name="East">
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="6">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Iberia"></Civilization>	
+	<Civilization name="Carthage"></Civilization>
+</Region>
+<Region name="East">
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="7">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Rome"></Civilization>
+</Region>
+<Region name="East">
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="8">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Iberia"></Civilization>	
+</Region>
+<Region name="East">
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>	
+	<Civilization name="Dravidia"></Civilization>
+	<Civilization name="Maurya"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="9">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Celt"></Civilization>
+</Region>
+<Region name="East">
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>	
+	<Civilization name="Dravidia"></Civilization>
+	<Civilization name="Maurya"></Civilization>	
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="10">
+<Region name="West">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Parthia"></Civilization>	
+</Region>
+</PlayerCount>
+<PlayerCount count="11">
+<Region name="East">
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Kushan"></Civilization>	
+	<Civilization name="Indus"></Civilization>	
+	<Civilization name="Maurya"></Civilization>
+	<Civilization name="Dravidia"></Civilization>	
+</Region>
+</PlayerCount>
+<PlayerCount count="12">
+<Region name="Both">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="13">
+<Region name="Both">
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="14">
+<Region name="Both">
+	<Civilization name="Celt"></Civilization>
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+<PlayerCount count="15">
+<Region name="Both">
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount><PlayerCount count="16">
+<Region name="Both">
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+	<Civilization name="Celt"></Civilization>
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount><PlayerCount count="17">
+<Region name="Both">
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Maurya"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+	<Civilization name="Dravidia"></Civilization>
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount><PlayerCount count="18">
+<Region name="Both">
+	<Civilization name="Celt"></Civilization>
+	<Civilization name="Indus"></Civilization>
+	<Civilization name="Maurya"></Civilization>
+	<Civilization name="Kushan"></Civilization>
+	<Civilization name="Dravidia"></Civilization>
+	<Civilization name="Hellas"></Civilization>
+	<Civilization name="Minoa"></Civilization>
+	<Civilization name="Hatti"></Civilization>
+	<Civilization name="Assyria"></Civilization>
+	<Civilization name="Egypt"></Civilization>
+	<Civilization name="Rome"></Civilization>
+	<Civilization name="Carthage"></Civilization>
+	<Civilization name="Iberia"></Civilization>
+	<Civilization name="Parthia"></Civilization>
+	<Civilization name="Persia"></Civilization>
+	<Civilization name="Babylon"></Civilization>
+	<Civilization name="Saba"></Civilization>
+	<Civilization name="Nubia"></Civilization>
+</Region>
+</PlayerCount>
+</StartingCivs>
 <AstTable>
 <Civilization name="Minoa">
     <Region>West</Region>
@@ -325,3 +587,4 @@
     </Expert>
 </Civilization>
 </AstTable>
+</Data>

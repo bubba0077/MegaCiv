@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.DeploymentException;
-import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -141,15 +140,28 @@ public class GameClient implements Runnable {
 	 * @param session
 	 * @param message
 	 */
-	public void sendMessage(ClientMessage message) {
+	public void sendMessage(final ClientMessage message) {
 		// if (this.session == null) return;
 		// this.session.getAsyncRemote().sendObject(message);
 		// this.log("Sent message to server");
 
-		if (SwingUtilities.isEventDispatchThread()) {
-			System.out.println("Trying to send message from Event Dispatch Thread!");
-		}
-		this.session.getAsyncRemote().sendObject(message);
+		( new SwingWorker<Void, Void>() {
+			@Override
+			public Void doInBackground() {
+				GameClient.this.session.getAsyncRemote().sendObject(message);
+				return null;
+			}
+
+			@Override
+			public void done() {
+
+			}
+		} ).execute();
+
+		// if (SwingUtilities.isEventDispatchThread()) {
+		// System.out.println(this.getClass().getSimpleName() + "Trying to send message from Event Dispatch Thread!");
+		// }
+		// this.session.getAsyncRemote().sendObject(message);
 	}
 
 }

@@ -1,15 +1,13 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.util.Properties;
-
 import javax.swing.BorderFactory;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 
 import net.bubbaland.gui.BubbaFrame;
-import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaMainPanel;
-import net.bubbaland.megaciv.client.GameClient;
 
 public class AstPanel extends BubbaMainPanel {
 
@@ -23,7 +21,8 @@ public class AstPanel extends BubbaMainPanel {
 	public AstPanel(GuiClient client, GuiController controller, BubbaFrame frame) {
 		super(controller, frame);
 		if (client == null) {
-			System.out.println("Creating " + this.getClass().getSimpleName() + " with null client!");
+			System.out.println(this.getClass().getSimpleName() + "Creating " + this.getClass().getSimpleName()
+					+ " with null client!");
 		}
 		this.client = client;
 
@@ -34,14 +33,20 @@ public class AstPanel extends BubbaMainPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+
+		this.add(this.controlPanel, constraints);
+
+		constraints.gridy = 1;
+		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+		separator.setPreferredSize(new Dimension(1, 5));
+		this.add(separator, constraints);
+
 		constraints.weighty = 1.0;
-
-		// this.add(this.scrollingPanel, constraints);
-
-		final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.controlPanel, this.scrollingPanel);
-		splitPane.setResizeWeight(0.0);
-		splitPane.setBorder(BorderFactory.createEmptyBorder());
-		this.add(splitPane, constraints);
+		constraints.gridy = 2;
+		this.add(this.scrollingPanel, constraints);
 	}
 
 	@Override

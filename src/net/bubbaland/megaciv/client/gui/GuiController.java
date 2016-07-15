@@ -10,7 +10,6 @@ import javax.swing.SwingUtilities;
 
 import net.bubbaland.gui.*;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Civilization.Age;
 
 public class GuiController extends BubbaGuiController {
 
@@ -56,6 +55,8 @@ public class GuiController extends BubbaGuiController {
 			});
 		}
 
+		new NewGameDialog(this.client, this);
+
 		// Create startup frames
 		new MegaCivFrame(this.client, this);
 
@@ -94,7 +95,7 @@ public class GuiController extends BubbaGuiController {
 		this.civForegroundColors = new HashMap<Civilization.Name, Color>();
 		this.civBackgroundColors = new HashMap<Civilization.Name, Color>();
 		for (Civilization.Name name : Civilization.Name.values()) {
-			System.out.println("Civilization." + name + ".ForegroundColor");
+			// System.out.println(this.getClass().getSimpleName() + "Civilization." + name + ".ForegroundColor");
 			this.civForegroundColors.put(name,
 					new Color(new BigInteger(
 							this.getProperties().getProperty("Civilization." + name + ".ForegroundColor"), 16)
@@ -107,6 +108,8 @@ public class GuiController extends BubbaGuiController {
 		this.astForegroundColors = new HashMap<Civilization.Age, Color>();
 		this.astBackgroundColors = new HashMap<Civilization.Age, Color>();
 		for (Civilization.Age age : Civilization.Age.values()) {
+			// System.out.println(this.getClass().getSimpleName() + " " + age + " "
+			// + this.getProperties().getProperty("AstTable." + age + ".BackgroundColor"));
 			this.astForegroundColors
 					.put(age,
 							new Color(new BigInteger(
@@ -121,7 +124,19 @@ public class GuiController extends BubbaGuiController {
 
 	}
 
+	/**
+	 * Add the current window contents to properties, then save the properties to the settings file and exit.
+	 */
 	public void endProgram() {
+		// Remove previously saved windows
+		// for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
+		// properties.remove("Window" + f);
+		// }
+		// for (BubbaFrame window : this.windowList) {
+		// window.saveProperties();
+		// this.savePosition(window);
+		// }
+		// this.savePropertyFile();
 		System.exit(0);
 	}
 

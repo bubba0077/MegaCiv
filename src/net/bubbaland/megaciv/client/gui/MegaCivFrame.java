@@ -1,16 +1,9 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.bubbaland.gui.BubbaDragDropTabFrame;
 import net.bubbaland.gui.BubbaFrame;
 import net.bubbaland.gui.BubbaMainPanel;
-import net.bubbaland.megaciv.client.messages.AddCivilizationMessage;
-import net.bubbaland.megaciv.client.messages.AssignPlayerMessage;
-import net.bubbaland.megaciv.client.messages.NewGameMessage;
-import net.bubbaland.megaciv.game.Civilization;
 
 public class MegaCivFrame extends BubbaDragDropTabFrame {
 
@@ -27,15 +20,6 @@ public class MegaCivFrame extends BubbaDragDropTabFrame {
 		this.controller = controller;
 		this.addTabs(START_TABS);
 		this.tabbedPane.setSelectedIndex(0);
-
-		// TODO Test code
-		ArrayList<Civilization.Name> civs = new ArrayList<Civilization.Name>(Arrays.asList(Civilization.Name.values()));
-
-		this.client.sendMessage(new NewGameMessage());
-		this.client.sendMessage(new AddCivilizationMessage(civs));
-		this.client.sendMessage(new AssignPlayerMessage(Civilization.Name.ASSYRIA, "Player A"));
-		this.client.sendMessage(new AssignPlayerMessage(Civilization.Name.CARTHAGE, "Player C"));
-		this.client.sendMessage(new AssignPlayerMessage(Civilization.Name.EGYPT, "Player E"));
 	}
 
 	@Override

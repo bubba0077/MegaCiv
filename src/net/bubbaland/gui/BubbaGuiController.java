@@ -21,7 +21,7 @@ import net.bubbaland.megaciv.client.GameClient;
 
 public abstract class BubbaGuiController {
 
-	private Properties						properties;
+	protected Properties					properties;
 
 	// List of active windows
 	protected final ArrayList<BubbaFrame>	windowList;
@@ -58,7 +58,7 @@ public abstract class BubbaGuiController {
 		 */
 		final String version = properties.getProperty("SettingsVersion");
 		if (version == null || !version.equals(settingsVersion)) {
-			System.out.println("Using defaults");
+			System.out.println(this.getClass().getSimpleName() + "Using defaults");
 			loadDefaults();
 			properties.setProperty("SettingsVersion", settingsVersion);
 		}
@@ -77,7 +77,7 @@ public abstract class BubbaGuiController {
 		try {
 			properties.load(defaults);
 		} catch (final IOException e) {
-			System.out.println("Couldn't load default properties file, aborting!");
+			System.out.println(this.getClass().getSimpleName() + "Couldn't load default properties file, aborting!");
 			System.exit(-1);
 		}
 		BubbaDialogPanel.loadProperties(properties);
@@ -88,7 +88,7 @@ public abstract class BubbaGuiController {
 			final BufferedReader fileBuffer = new BufferedReader(new FileReader(file));
 			properties.load(fileBuffer);
 		} catch (final IOException e) {
-			System.out.println("Couldn't load properties file, may not exist yet.");
+			System.out.println(this.getClass().getSimpleName() + "Couldn't load properties file, may not exist yet.");
 		}
 		for (final BubbaFrame frame : this.windowList) {
 			frame.loadProperties();
@@ -105,7 +105,7 @@ public abstract class BubbaGuiController {
 			properties.store(outfileBuffer, "MegaCiv");
 			outfileBuffer.close();
 		} catch (final IOException e) {
-			System.out.println("Error saving properties.");
+			System.out.println(this.getClass().getSimpleName() + "Error saving properties.");
 		}
 	}
 
@@ -167,6 +167,9 @@ public abstract class BubbaGuiController {
 	 */
 	public void unregisterWindow(BubbaFrame frame) {
 		this.windowList.remove(frame);
+		if (this.windowList.size() == 0) {
+			this.endProgram();
+		}
 	}
 
 	/**

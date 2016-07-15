@@ -1,0 +1,261 @@
+package net.bubbaland.megaciv.client.gui;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import net.bubbaland.gui.BubbaDialog;
+import net.bubbaland.gui.BubbaDialogPanel;
+import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.messages.NewGameMessage;
+import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.game.Civilization.Region;
+
+public class NewGameDialog extends BubbaDialogPanel implements ActionListener, ChangeListener {
+
+	private static final long							serialVersionUID	= -2854507573608809889L;
+
+	private final JToggleButton							customButton;
+	private final JSpinner								nCivSpinner;
+	private final JRadioButton							eastRadioButton, westRadioButton;
+	private final HashMap<Civilization.Name, CivPanel>	civPanels;
+	private final GuiClient								client;
+
+	public NewGameDialog(GuiClient client, GuiController controller) {
+		super(controller);
+		this.client = client;
+
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 3;
+		this.add(new JLabel("Number of civilizations:"), constraints);
+		constraints.gridwidth = 1;
+
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		this.nCivSpinner = new JSpinner(new SpinnerNumberModel(5, 5, 18, 1));
+		this.nCivSpinner.addChangeListener(this);
+		this.add(this.nCivSpinner, constraints);
+
+		ButtonGroup regionGroup = new ButtonGroup();
+
+		constraints.weightx = 1.0;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.westRadioButton = new JRadioButton("West");
+		this.westRadioButton.setSelected(true);
+		this.westRadioButton.setActionCommand("West");
+		this.westRadioButton.addActionListener(this);
+		this.add(this.westRadioButton, constraints);
+
+		constraints.weightx = 1.0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		this.eastRadioButton = new JRadioButton("East");
+		this.westRadioButton.setActionCommand("East");
+		this.eastRadioButton.addActionListener(this);
+		this.add(this.eastRadioButton, constraints);
+
+		regionGroup.add(this.eastRadioButton);
+		regionGroup.add(this.westRadioButton);
+
+		constraints.weightx = 1.0;
+		constraints.gridx = 2;
+		constraints.gridy = 1;
+		this.add(new JPanel(), constraints);
+
+		constraints.weightx = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 1;
+		this.customButton = new JToggleButton("Custom Setup");
+		this.customButton.setActionCommand("Custom");
+		this.customButton.addActionListener(this);
+		this.add(this.customButton, constraints);
+
+		constraints.gridwidth = 2;
+		constraints.weightx = 0.5;
+		constraints.weighty = 0.0;
+		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
+		for (Civilization.Name name : Civilization.Name.values()) {
+			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
+			constraints.gridy = 2 + name.ordinal() / 2;
+			CivPanel panel = new CivPanel(controller, name);
+			this.civPanels.put(name, panel);
+			this.add(panel, constraints);
+		}
+
+		this.setDefaultCivs();
+
+		this.dialog = new BubbaDialog(this.controller, "New Game Setup", this, JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.OK_CANCEL_OPTION);
+		this.dialog.setVisible(true);
+	}
+
+	public void setDefaultCivs() {
+		int nCivs = (int) this.nCivSpinner.getValue();
+
+		this.eastRadioButton.setEnabled(Civilization.startingCivs.get(nCivs).get(Region.EAST) != null);
+		this.westRadioButton.setEnabled(Civilization.startingCivs.get(nCivs).get(Region.WEST) != null);
+
+		Region region = null;
+
+		if (this.eastRadioButton.isEnabled()) {
+			if (this.westRadioButton.isEnabled()) {
+				region = this.eastRadioButton.isSelected() ? Region.EAST : Region.WEST;
+			} else {
+				this.eastRadioButton.setSelected(true);
+				this.westRadioButton.setSelected(false);
+				region = Region.EAST;
+			}
+		} else {
+			if (this.westRadioButton.isEnabled()) {
+				this.eastRadioButton.setSelected(false);
+				this.westRadioButton.setSelected(true);
+				region = Region.WEST;
+			} else {
+				region = Region.BOTH;
+			}
+		}
+
+		ArrayList<Civilization.Name> startingCivs = Civilization.startingCivs.get(nCivs).get(region);
+
+		for (Civilization.Name name : Civilization.Name.values()) {
+			CivPanel panel = this.civPanels.get(name);
+			panel.setSelected(startingCivs.contains(name));
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
+		switch (command) {
+			case "East":
+			case "West":
+				this.setDefaultCivs();
+				break;
+			case "Custom":
+				boolean isCustom = ( (JToggleButton) event.getSource() ).isSelected();
+				for (Civilization.Name name : Civilization.Name.values()) {
+					this.civPanels.get(name).setEnabled(isCustom);
+				}
+				this.nCivSpinner.setEnabled(!isCustom);
+				this.eastRadioButton.setEnabled(!isCustom);
+				this.westRadioButton.setEnabled(!isCustom);
+				if (!isCustom) {
+					this.setDefaultCivs();
+				}
+				break;
+		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent event) {
+		this.setDefaultCivs();
+	}
+
+	public void windowClosed(WindowEvent event) {
+		super.windowClosed(event);
+
+		// If the OK button was pressed, open the question
+		final int option = ( (Integer) this.dialog.getValue() ).intValue();
+
+		if (option == JOptionPane.OK_OPTION) {
+			HashMap<Civilization.Name, String> startingCivs = new HashMap<Civilization.Name, String>();
+			for (CivPanel panel : this.civPanels.values()) {
+				if (panel.isSelected()) {
+					Civilization.Name name = panel.getCivName();
+					startingCivs.put(name, panel.getPlayerName());
+				}
+			}
+			this.client.log("Starting new game with the following civilizations: " + startingCivs);
+			this.client.sendMessage(new NewGameMessage(startingCivs));
+		}
+	}
+
+	private class CivPanel extends BubbaPanel implements ActionListener {
+
+		private static final long		serialVersionUID	= -6238439277458238770L;
+
+		private final JCheckBox			checkbox;
+		private final JTextField		textField;
+		private final Civilization.Name	name;
+
+		public CivPanel(GuiController controller, Civilization.Name name) {
+			super(controller, new GridBagLayout());
+			this.name = name;
+
+			final GridBagConstraints constraints = new GridBagConstraints();
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.anchor = GridBagConstraints.WEST;
+			constraints.weightx = 0.0;
+			constraints.weighty = 0.0;
+
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
+			this.checkbox.setPreferredSize(new Dimension(80, 0));
+			this.checkbox.addActionListener(this);
+			this.add(this.checkbox, constraints);
+
+			constraints.weightx = 1.0;
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			this.textField = new JTextField(Game.capitalizeFirst(name.toString()) + " player", 20);
+			this.add(this.textField, constraints);
+
+			this.setEnabled(false);
+		}
+
+		public Civilization.Name getCivName() {
+			return this.name;
+		}
+
+		public String getPlayerName() {
+			return this.textField.getText();
+		}
+
+		public void setSelected(boolean selected) {
+			this.checkbox.setSelected(selected);
+			this.textField.setEnabled(selected);
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.checkbox.setEnabled(enabled);
+		}
+
+		public boolean isSelected() {
+			return this.checkbox.isSelected();
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			this.setSelected(this.isSelected());
+		}
+
+	}
+
+}

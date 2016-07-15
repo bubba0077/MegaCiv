@@ -82,7 +82,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		// Add the tabbed pane to the panel
 		this.mainPanel.add(this.tabbedPane, constraints);
 
-		this.gui.registerWindow(this);
+		this.controller.registerWindow(this);
 
 		// Load the properties
 		this.loadProperties();
@@ -138,7 +138,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		return this.tabInformationHash.get(tabType).getTabClass()
-				.getConstructor(BubbaGuiController.class, BubbaFrame.class).newInstance(this.gui, this);
+				.getConstructor(BubbaGuiController.class, BubbaFrame.class).newInstance(this.controller, this);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	}
 
 	public void newWindow(DropTargetDropEvent a_event, Point location) {
-		this.gui.registerWindow(this);
+		this.controller.registerWindow(this);
 	}
 
 	public void updateGui(boolean forceUpdate) {
@@ -179,7 +179,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 
 		// Propagate update to tabs
 		while (this.tabbedPane == null) {
-			System.out.println("Can't update null tabbedPane!");
+			System.out.println(this.getClass().getSimpleName() + "Can't update null tabbedPane!");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {
@@ -221,8 +221,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		super.saveProperties();
 		final String id = this.getTitle();
 		final String[] tabNames = this.tabbedPane.getTabNames();
-		this.gui.getProperties().setProperty(id + "." + "OpenTabs", this.tabbedPane.getTabNames().toString());
-		this.gui.getProperties().setProperty("Window" + id, Arrays.toString(tabNames));
+		this.controller.getProperties().setProperty(id + "." + "OpenTabs", this.tabbedPane.getTabNames().toString());
+		this.controller.getProperties().setProperty("Window" + id, Arrays.toString(tabNames));
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 						public void actionPerformed(ActionEvent e) {
 							if (!BubbaDragDropTabFrame.this.isVisible()) {
 								BubbaDnDTabbedPane.unregisterTabbedPane(BubbaDragDropTabFrame.this.tabbedPane);
-								BubbaDragDropTabFrame.this.gui.unregisterWindow(BubbaDragDropTabFrame.this);
+								BubbaDragDropTabFrame.this.controller.unregisterWindow(BubbaDragDropTabFrame.this);
 								BubbaDragDropTabFrame.this.dispose();
 							}
 						}
@@ -252,7 +252,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 				}
 				break;
 			default:
-				this.gui.log("Unknown state change registered in TriviaFrame");
+				this.controller.log("Unknown state change registered in TriviaFrame");
 		}
 	}
 

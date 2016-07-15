@@ -64,6 +64,16 @@ public class Game implements Serializable {
 		}
 	}
 
+	public int lastAstStep() {
+		switch (difficulty) {
+			case BASIC:
+				return 16;
+			case EXPERT:
+				return 16;
+		}
+		return -1;
+	}
+
 	public ArrayList<Civilization> getCivilizations() {
 		return new ArrayList<Civilization>(this.civs.values());
 	}
