@@ -80,6 +80,7 @@ public class GameServer extends Server {
 			case "CensusMessage":
 				HashMap<Civilization.Name, Integer> census = ( (CensusMessage) message ).getCensus();
 				for (Civilization.Name name : census.keySet()) {
+					System.out.println(name + " " + census.get(name) + " " + this.game.getCivilization(name));
 					this.game.getCivilization(name).setPopulation(census.get(name));
 				}
 				this.broadcastMessage(new GameDataMessage(this.game));

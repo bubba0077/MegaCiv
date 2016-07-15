@@ -73,8 +73,10 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		String command = e.getActionCommand();
 		switch (command) {
 			case "Take Census":
+				new CensusDialog(this.client, this.controller);
 				break;
 			case "Update Cities":
+				new CityUpdateDialog(this.client, this.controller);
 				break;
 			case "Purchase Techs":
 				break;

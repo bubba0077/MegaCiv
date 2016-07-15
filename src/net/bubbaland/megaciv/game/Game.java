@@ -13,6 +13,7 @@ public class Game implements Serializable {
 
 	private static final long	serialVersionUID	= 3617165171580835437L;
 
+	public static final int		MAX_CITIES			= 9;
 	public static final int		MAX_POPULATION		= 55;
 
 	@JsonProperty("version")
