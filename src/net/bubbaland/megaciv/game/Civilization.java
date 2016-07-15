@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -49,7 +50,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public static enum SortOption {
-		AST, POPULATION, AST_POSITION;
+		AST, POPULATION, CITIES, AST_POSITION, VP;
+	}
+
+	public static enum SortDirection {
+		ASCENDING, DESCENDING;
 	}
 
 	public final static HashMap<Civilization.Name, AstTableData>										astTable;
@@ -285,21 +290,42 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return astTable.get(this.name).astRank;
 	}
 
-	public static ArrayList<Civilization> sortBy(ArrayList<Civilization> civs, Civilization.SortOption sort) {
+	public static ArrayList<Civilization> sortBy(ArrayList<Civilization> civs, Civilization.SortOption sort,
+			SortDirection direction) {
 		switch (sort) {
 			case AST:
-				return sortByAst(civs);
+				return sortByAst(civs, direction);
+			case CITIES:
+				return sortByCities(civs, direction);
 			case POPULATION:
-				return sortByCensus(civs);
+				return sortByCensus(civs, direction);
 			case AST_POSITION:
-				return sortByAstPosition(civs);
+				return sortByAstPosition(civs, direction);
+			case VP:
+				return sortByVP(civs, direction);
 		}
 		return null;
 	}
 
-	public static ArrayList<Civilization.Name> sortByToName(ArrayList<Civilization> civs,
-			Civilization.SortOption sort) {
-		ArrayList<Civilization> sortedCivs = sortBy(civs, sort);
+	public static ArrayList<Civilization> sortByVP(ArrayList<Civilization> civs, SortDirection direction) {
+		Collections.sort(civs, new VpComparator());
+		if (direction == SortDirection.DESCENDING) {
+			Collections.sort(civs, Collections.reverseOrder());
+		}
+		return civs;
+	}
+
+	public static ArrayList<Civilization> sortByCities(ArrayList<Civilization> civs, SortDirection direction) {
+		Collections.sort(civs, new CityComparator());
+		if (direction == SortDirection.DESCENDING) {
+			Collections.sort(civs, Collections.reverseOrder());
+		}
+		return civs;
+	}
+
+	public static ArrayList<Civilization.Name> sortByToName(ArrayList<Civilization> civs, Civilization.SortOption sort,
+			SortDirection direction) {
+		ArrayList<Civilization> sortedCivs = sortBy(civs, sort, direction);
 		ArrayList<Civilization.Name> sortedNames = new ArrayList<Civilization.Name>();
 		for (Civilization civ : sortedCivs) {
 			sortedNames.add(civ.getName());
@@ -307,18 +333,27 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return sortedNames;
 	}
 
-	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs) {
+	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs);
+		if (direction == SortDirection.DESCENDING) {
+			Collections.sort(civs, Collections.reverseOrder());
+		}
 		return civs;
 	}
 
-	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs) {
+	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CensusComparator());
+		if (direction == SortDirection.DESCENDING) {
+			Collections.sort(civs, Collections.reverseOrder());
+		}
 		return civs;
 	}
 
-	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs) {
+	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new AstPositionComparator());
+		if (direction == SortDirection.DESCENDING) {
+			Collections.sort(civs, Collections.reverseOrder());
+		}
 		return civs;
 	}
 
@@ -344,6 +379,26 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	private final static class CensusComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
 			int result = Integer.compare(civ1.getPopulation(), civ2.getPopulation());
+			if (result == 0) {
+				result = civ1.compareTo(civ2);
+			}
+			return result;
+		}
+	}
+
+	private final static class VpComparator implements Comparator<Civilization> {
+		public int compare(Civilization civ1, Civilization civ2) {
+			int result = Integer.compare(civ1.getVP(), civ2.getVP());
+			if (result == 0) {
+				result = civ1.compareTo(civ2);
+			}
+			return result;
+		}
+	}
+
+	private final static class CityComparator implements Comparator<Civilization> {
+		public int compare(Civilization civ1, Civilization civ2) {
+			int result = Integer.compare(civ1.getCityCount(), civ2.getCityCount());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
 			}

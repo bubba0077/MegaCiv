@@ -3,11 +3,15 @@ package net.bubbaland.megaciv.client.gui;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
@@ -21,56 +25,105 @@ public class ScrollingAstPanel extends BubbaPanel {
 	private static final long serialVersionUID = -1197287409680075891L;
 
 	private enum Column {
-		CIV, POPULATION, CITIES, AST, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11, AST12, AST13, AST14, AST15, AST16
+		CIV, POPULATION, CITIES, VP, AST, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11, AST12, AST13, AST14, AST15, AST16
 	}
 
-	private final static HashMap<Column, ColumnData>	colData	= new HashMap<Column, ColumnData>() {
-																	private static final long serialVersionUID = 1L;
+	private static final HashMap<Column, Civilization.SortOption>	sortHash	= new HashMap<Column, Civilization.SortOption>() {
+																					private static final long serialVersionUID = -3473350095491262976L;
 
-																	{
-																		put(Column.CIV, new ColumnData("Civ", 0));
-																		put(Column.POPULATION,
-																				new ColumnData("Pop", 1));
-																		put(Column.CITIES, new ColumnData("Cities", 2));
-																		put(Column.AST, new ColumnData("AST", 3));
-																		put(Column.AST01, new ColumnData("", 4));
-																		put(Column.AST02, new ColumnData("", 5));
-																		put(Column.AST03, new ColumnData("", 6));
-																		put(Column.AST04, new ColumnData("", 7));
-																		put(Column.AST05, new ColumnData("", 8));
-																		put(Column.AST06, new ColumnData("", 9));
-																		put(Column.AST07, new ColumnData("", 10));
-																		put(Column.AST08, new ColumnData("", 11));
-																		put(Column.AST09, new ColumnData("", 12));
-																		put(Column.AST10, new ColumnData("", 13));
-																		put(Column.AST11, new ColumnData("", 14));
-																		put(Column.AST12, new ColumnData("", 15));
-																		put(Column.AST13, new ColumnData("", 16));
-																		put(Column.AST14, new ColumnData("", 17));
-																		put(Column.AST15, new ColumnData("", 18));
-																		put(Column.AST16, new ColumnData("", 19));
-																	}
-																};
+																					{
+																						put(Column.AST,
+																								Civilization.SortOption.AST);
+																						put(Column.POPULATION,
+																								Civilization.SortOption.POPULATION);
+																						put(Column.CITIES,
+																								Civilization.SortOption.CITIES);
+																						// put(null,
+																						// Civilization.SortOption.AST_POSITION
+																						// );
+																						put(Column.VP,
+																								Civilization.SortOption.VP);
+																					}
+																				};
+
+	/** Sort icons */
+	private static final ImageIcon									UP_ARROW	= new ImageIcon(
+			BubbaPanel.class.getResource("images/upArrow.png"));
+	private static final ImageIcon									DOWN_ARROW	= new ImageIcon(
+			BubbaPanel.class.getResource("images/downArrow.png"));
+
+	private final static HashMap<Column, ColumnData>				colData		= new HashMap<Column, ColumnData>() {
+																					private static final long serialVersionUID = 1L;
+
+																					{
+																						put(Column.AST, new ColumnData(
+																								"AST", 0));
+																						put(Column.CIV, new ColumnData(
+																								"Civ", 1));
+																						put(Column.POPULATION,
+																								new ColumnData("Pop",
+																										2));
+																						put(Column.CITIES,
+																								new ColumnData("Cities",
+																										3));
+																						put(Column.VP, new ColumnData(
+																								"VP", 4));
+																						put(Column.AST01,
+																								new ColumnData("", 5));
+																						put(Column.AST02,
+																								new ColumnData("", 6));
+																						put(Column.AST03,
+																								new ColumnData("", 7));
+																						put(Column.AST04,
+																								new ColumnData("", 8));
+																						put(Column.AST05,
+																								new ColumnData("", 9));
+																						put(Column.AST06,
+																								new ColumnData("", 10));
+																						put(Column.AST07,
+																								new ColumnData("", 11));
+																						put(Column.AST08,
+																								new ColumnData("", 12));
+																						put(Column.AST09,
+																								new ColumnData("", 13));
+																						put(Column.AST10,
+																								new ColumnData("", 14));
+																						put(Column.AST11,
+																								new ColumnData("", 15));
+																						put(Column.AST12,
+																								new ColumnData("", 16));
+																						put(Column.AST13,
+																								new ColumnData("", 17));
+																						put(Column.AST14,
+																								new ColumnData("", 18));
+																						put(Column.AST15,
+																								new ColumnData("", 19));
+																						put(Column.AST16,
+																								new ColumnData("", 20));
+																					}
+																				};
 
 
-	private HashMap<Integer, RowPanel>					civRows;
-	private HeaderPanel									headerPanel;
+	private HashMap<Integer, RowPanel>								civRows;
+	private HeaderPanel												headerPanel;
 
-	private final GuiClient								client;
+	private final GuiClient											client;
 
-	private HashMap<Column, Integer>					width;
-	private HashMap<Column, Float>						fontSize;
-	private int											rowHeight;
+	private HashMap<Column, Integer>								width;
+	private HashMap<Column, Float>									fontSize;
+	private int														rowHeight;
 
-	private final GuiController							controller;
+	private final GuiController										controller;
 
-	private Civilization.SortOption						sortOption;
+	private Civilization.SortOption									sortOption;
+	private Civilization.SortDirection								sortDirection;
 
 	public ScrollingAstPanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 		this.client = client;
 		this.controller = controller;
 		this.sortOption = Civilization.SortOption.AST;
+		this.sortDirection = Civilization.SortDirection.ASCENDING;
 		this.civRows = null;
 
 		// Set up layout constraints
@@ -85,7 +138,6 @@ public class ScrollingAstPanel extends BubbaPanel {
 		this.add(this.headerPanel, constraints);
 
 		this.updateGui(true);
-
 	}
 
 	public synchronized void redoRows(ArrayList<Civilization.Name> civNames) {
@@ -120,9 +172,9 @@ public class ScrollingAstPanel extends BubbaPanel {
 		}
 
 		ArrayList<Civilization> sortedCivs = Civilization.sortBy(this.client.getGame().getCivilizations(),
-				this.sortOption);
+				this.sortOption, this.sortDirection);
 
-		if (sortedCivs.size() == 0) {
+		if (sortedCivs.size() == 0 || this.headerPanel == null) {
 			return;
 		}
 
@@ -153,7 +205,7 @@ public class ScrollingAstPanel extends BubbaPanel {
 				Color backgroundColor = this.controller.getCivBackgroundColor(name);
 				switch (col) {
 					case AST:
-						text = civ.getAstPosition() + "";
+						text = civ.getAst() + "";
 						break;
 					case POPULATION:
 						text = civ.getPopulation() + "";
@@ -163,6 +215,9 @@ public class ScrollingAstPanel extends BubbaPanel {
 						break;
 					case CIV:
 						text = Game.capitalizeFirst(name.toString()) + " (" + civ.getPlayer() + ")";
+						break;
+					case VP:
+						text = civ.getVP() + "";
 						break;
 					default:
 						text = "";
@@ -198,6 +253,7 @@ public class ScrollingAstPanel extends BubbaPanel {
 				case POPULATION:
 				case CITIES:
 				case AST:
+				case VP:
 					width = Integer.parseInt(props.getProperty("AstTable." + col + ".Width"));
 					fontSize = Float.parseFloat(props.getProperty("AstTable." + col + ".FontSize"));
 					break;
@@ -214,10 +270,11 @@ public class ScrollingAstPanel extends BubbaPanel {
 
 	}
 
-	private class HeaderPanel extends BubbaPanel {
+	private class HeaderPanel extends BubbaPanel implements MouseListener {
 
 		private static final long						serialVersionUID	= 810881884756701202L;
 
+		private final HashMap<Column, JLabel>			colLabels;
 		private final HashMap<Civilization.Age, JLabel>	ageLabels;
 
 		public HeaderPanel(BubbaGuiController controller) {
@@ -227,6 +284,8 @@ public class ScrollingAstPanel extends BubbaPanel {
 			constraints.anchor = GridBagConstraints.SOUTH;
 			constraints.weighty = 1.0;
 			constraints.gridy = 0;
+
+			this.colLabels = new HashMap<Column, JLabel>();
 
 			for (Column col : Column.values()) {
 				constraints.weightx = 0.0;
@@ -256,14 +315,20 @@ public class ScrollingAstPanel extends BubbaPanel {
 					case CITIES:
 						break;
 					case AST:
-						string = "Pos";
+						string = "AST";
+						break;
+					case VP:
+						string = "VP";
 						break;
 					default:
 						continue;
 				}
 
-				this.enclosedLabelFactory(string, width, height, foreground, background, constraints, fontSize,
-						justification, JLabel.BOTTOM);
+				JLabel label = this.enclosedLabelFactory(string, width, height, foreground, background, constraints,
+						fontSize, justification, JLabel.BOTTOM);
+				this.colLabels.put(col, label);
+				label.setName(col.toString());
+				label.addMouseListener(this);
 			}
 
 			constraints.weightx = 0.0;
@@ -274,10 +339,69 @@ public class ScrollingAstPanel extends BubbaPanel {
 				this.ageLabels.put(age, this.enclosedLabelFactory("", constraints, JLabel.LEFT, JLabel.BOTTOM));
 			}
 
+			this.updateGui(true);
 		}
 
 		public JLabel getAgeHeader(Civilization.Age age) {
 			return this.ageLabels.get(age);
+		}
+
+		public void updateGui(boolean forceUpdate) {
+			for (Column col : this.colLabels.keySet()) {
+				if (ScrollingAstPanel.sortHash.get(col) == ScrollingAstPanel.this.sortOption) {
+					switch (ScrollingAstPanel.this.sortDirection) {
+						case ASCENDING:
+							this.colLabels.get(col).setIcon(UP_ARROW);
+							break;
+						case DESCENDING:
+							this.colLabels.get(col).setIcon(DOWN_ARROW);
+							break;
+					}
+				} else {
+					this.colLabels.get(col).setIcon(null);
+				}
+			}
+			ScrollingAstPanel.this.updateGui(true);
+		}
+
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			final String source = ( (JComponent) e.getSource() ).getName();
+			Column col = Column.valueOf(source);
+			if (ScrollingAstPanel.sortHash.get(col) == ScrollingAstPanel.this.sortOption) {
+				switch (ScrollingAstPanel.this.sortDirection) {
+					case ASCENDING:
+						ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
+						break;
+					case DESCENDING:
+						ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+						break;
+				}
+			} else {
+				Civilization.SortOption newSort = ScrollingAstPanel.sortHash.get(col);
+				if (newSort != null) {
+					ScrollingAstPanel.this.sortOption = ScrollingAstPanel.sortHash.get(col);
+					ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+				}
+			}
+			this.updateGui(true);
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
 		}
 
 	}
@@ -316,6 +440,7 @@ public class ScrollingAstPanel extends BubbaPanel {
 					case POPULATION:
 					case CITIES:
 					case AST:
+					case VP:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						break;
 					default:

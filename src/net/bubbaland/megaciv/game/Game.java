@@ -7,9 +7,13 @@ import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import net.bubbaland.megaciv.game.Civilization.SortDirection;
+
 public class Game implements Serializable {
 
 	private static final long	serialVersionUID	= 3617165171580835437L;
+
+	public static final int		MAX_POPULATION		= 55;
 
 	@JsonProperty("version")
 	private int					version;
@@ -97,7 +101,7 @@ public class Game implements Serializable {
 	public String toString() {
 		String s = "Game Data:\n";
 		s = s + "AST Difficulty: " + this.difficulty + "\n";
-		for (Civilization civ : Civilization.sortByAst(this.getCivilizations())) {
+		for (Civilization civ : Civilization.sortByAst(this.getCivilizations(), SortDirection.ASCENDING)) {
 			s = s + civ.toFullString() + "\n\n";
 		}
 		return s;
