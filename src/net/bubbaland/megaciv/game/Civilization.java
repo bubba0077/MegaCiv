@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -57,15 +56,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		ASCENDING, DESCENDING;
 	}
 
-	public final static HashMap<Civilization.Name, AstTableData>										astTable;
-	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	startingCivs;
+	public final static HashMap<Game.Difficulty, HashMap<Civilization.Age, AstRequirements>>			AGE_REQUIREMENTS;
+
+	public final static HashMap<Civilization.Name, AstTableData>										AST_TABLE;
+	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	DEFAULT_STARTING_CIVS;
 
 	public final static String																			CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
 
 
 	static {
-		astTable = new HashMap<Civilization.Name, AstTableData>();
-		startingCivs = new HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>();
+		AST_TABLE = new HashMap<Civilization.Name, AstTableData>();
+		DEFAULT_STARTING_CIVS = new HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>();
+		AGE_REQUIREMENTS = new HashMap<Game.Difficulty, HashMap<Civilization.Age, AstRequirements>>();
 
 		try {
 			final InputStream fileStream = Civilization.class.getResourceAsStream(CIV_CONSTANTS_FILENAME);
@@ -115,7 +117,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					});
 				}
 
-				astTable.put(name, new AstTableData(astRank, region, hash));
+				AST_TABLE.put(name, new AstTableData(astRank, region, hash));
 			}
 
 			final Element startingCivElement = (Element) doc.getDocumentElement().getElementsByTagName("StartingCivs")
@@ -145,11 +147,39 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 
 					regionHash.put(region, civs);
-
 				}
 
-				startingCivs.put(nCivs, regionHash);
+				DEFAULT_STARTING_CIVS.put(nCivs, regionHash);
+			}
 
+			final Element requirementElement = (Element) doc.getDocumentElement()
+					.getElementsByTagName("AstRequirements").item(0);
+			NodeList difficultyNodes = requirementElement.getElementsByTagName("Difficulty");
+			for (int d = 0; d < difficultyNodes.getLength(); d++) {
+				Difficulty difficulty = Difficulty.valueOf(( (Element) difficultyNodes.item(d) ).getAttribute("level"));
+				NodeList ageNodes = requirementElement.getElementsByTagName("Age");
+
+				HashMap<Age, AstRequirements> astReqs = new HashMap<Age, AstRequirements>();
+				for (int a = 0; a < ageNodes.getLength(); a++) {
+					Element ageElement = ( (Element) ageNodes.item(a) );
+					Age age = Age.valueOf(ageElement.getAttribute("name"));
+					String reqText = ageElement.getElementsByTagName("Text").item(0).getTextContent();
+					int minCities = Integer
+							.parseInt(ageElement.getElementsByTagName("MinCities").item(0).getTextContent());
+					int minAdvances = Integer
+							.parseInt(ageElement.getElementsByTagName("MinAdvances").item(0).getTextContent());
+					int minLevelOneTechs = Integer
+							.parseInt(ageElement.getElementsByTagName("MinL1Techs").item(0).getTextContent());
+					int minLevelTwoPlusTechs = Integer
+							.parseInt(ageElement.getElementsByTagName("MinL2PlusTechs").item(0).getTextContent());
+					int minLevelThreeTechs = Integer
+							.parseInt(ageElement.getElementsByTagName("MinL3Techs").item(0).getTextContent());
+					int minTechVP = Integer
+							.parseInt(ageElement.getElementsByTagName("MinTechVP").item(0).getTextContent());
+					astReqs.put(age, new AstRequirements(reqText, minCities, minAdvances, minLevelOneTechs,
+							minLevelTwoPlusTechs, minLevelThreeTechs, minTechVP));
+				}
+				AGE_REQUIREMENTS.put(difficulty, astReqs);
 			}
 
 
@@ -232,8 +262,27 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return this.getAge(this.astPosition + 1);
 	}
 
+	public int getTechCountByVP(int vp) {
+		int n = 0;
+		for (Technology tech : this.techs) {
+			if (tech.getVP() == vp) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	public boolean passAstReqirements() {
+		AstRequirements reqs = AGE_REQUIREMENTS.get(this.difficulty).get(this.getNextStepAge());
+		return this.getCityCount() >= reqs.getMinCities() && this.techs.size() >= reqs.getMinAdvances()
+				&& this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs()
+				&& this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs.getMinLevelTwoPlusTechs()
+				&& this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs()
+				&& this.getVPfromTech() >= reqs.getMinTechVP();
+	}
+
 	public int getAgeStart(Civilization.Age age) {
-		return Civilization.astTable.get(this.getName()).getAgeStart(age, this.difficulty);
+		return Civilization.AST_TABLE.get(this.getName()).getAgeStart(age, this.difficulty);
 	}
 
 	public void setDifficulty(Difficulty difficulty) {
@@ -287,7 +336,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public int getAst() {
-		return astTable.get(this.name).astRank;
+		return AST_TABLE.get(this.name).astRank;
 	}
 
 	public static ArrayList<Civilization> sortBy(ArrayList<Civilization> civs, Civilization.SortOption sort,
@@ -310,7 +359,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization> sortByVP(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new VpComparator());
 		if (direction == SortDirection.DESCENDING) {
-			Collections.sort(civs, Collections.reverseOrder());
+			Collections.reverse(civs);
 		}
 		return civs;
 	}
@@ -318,7 +367,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization> sortByCities(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CityComparator());
 		if (direction == SortDirection.DESCENDING) {
-			Collections.sort(civs, Collections.reverseOrder());
+			Collections.reverse(civs);
 		}
 		return civs;
 	}
@@ -336,7 +385,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs);
 		if (direction == SortDirection.DESCENDING) {
-			Collections.sort(civs, Collections.reverseOrder());
+			Collections.reverse(civs);
 		}
 		return civs;
 	}
@@ -344,7 +393,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CensusComparator());
 		if (direction == SortDirection.DESCENDING) {
-			Collections.sort(civs, Collections.reverseOrder());
+			Collections.reverse(civs);
 		}
 		return civs;
 	}
@@ -352,18 +401,22 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new AstPositionComparator());
 		if (direction == SortDirection.DESCENDING) {
-			Collections.sort(civs, Collections.reverseOrder());
+			Collections.reverse(civs);
 		}
 		return civs;
 	}
 
-	public int getVP() {
-		int vp = this.nCities + this.astPosition * 5;
+	public int getVPfromTech() {
+		int vp = 0;
 		for (Technology tech : this.techs) {
 			vp = +tech.getVP();
 		}
-		// Need to add adjustment for Late Iron Age only bonus
 		return vp;
+	}
+
+	public int getVP() {
+		return this.nCities + this.astPosition * 5 + getVPfromTech();
+		// TODO Need to add adjustment for Late Iron Age only bonus
 	}
 
 	public String toFullString() {
@@ -416,6 +469,88 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public int compareTo(Civilization otherCiv) {
 		int result = this.name.compareTo(otherCiv.name);
 		return result;
+	}
+
+	public static final class AstRequirements {
+
+		@JsonProperty("minCities")
+		private final int minCities;
+
+		/**
+		 * @return the minCities
+		 */
+		public int getMinCities() {
+			return this.minCities;
+		}
+
+		/**
+		 * @return the minAdvances
+		 */
+		public int getMinAdvances() {
+			return this.minAdvances;
+		}
+
+		/**
+		 * @return the minLevelOneTechs
+		 */
+		public int getMinLevelOneTechs() {
+			return this.minLevelOneTechs;
+		}
+
+		/**
+		 * @return the minLevelTwoPlusTechs
+		 */
+		public int getMinLevelTwoPlusTechs() {
+			return this.minLevelTwoPlusTechs;
+		}
+
+		/**
+		 * @return the minLevelThreeTechs
+		 */
+		public int getMinLevelThreeTechs() {
+			return this.minLevelThreeTechs;
+		}
+
+		/**
+		 * @return the minTechVP
+		 */
+		public int getMinTechVP() {
+			return this.minTechVP;
+		}
+
+		public String getText() {
+			return this.text;
+		}
+
+		@JsonProperty("minAdvances")
+		private final int		minAdvances;
+		@JsonProperty("minLevelOneTechs")
+		private final int		minLevelOneTechs;
+		@JsonProperty("minLevelTwoPlusTechs")
+		private final int		minLevelTwoPlusTechs;
+		@JsonProperty("minLevelThreeTechs")
+		private final int		minLevelThreeTechs;
+		@JsonProperty("minTechVP")
+		private final int		minTechVP;
+		@JsonProperty("text")
+		private final String	text;
+
+		@JsonCreator
+		public AstRequirements(@JsonProperty("text") final String text, @JsonProperty("minCities") final int minCities,
+				@JsonProperty("minAdvances") final int minAdvances,
+				@JsonProperty("minLevelOneTechs") final int minLevelOneTechs,
+				@JsonProperty("minLevelTwoPlusTechs") final int minLevelTwoPlusTechs,
+				@JsonProperty("minLevelThreeTechs") final int minLevelThreeTechs,
+				@JsonProperty("minTechVP") final int minTechVP) {
+			this.text = text;
+			this.minCities = minCities;
+			this.minAdvances = minAdvances;
+			this.minLevelOneTechs = minLevelOneTechs;
+			this.minLevelTwoPlusTechs = minLevelTwoPlusTechs;
+			this.minLevelThreeTechs = minLevelThreeTechs;
+			this.minTechVP = minTechVP;
+		}
+
 	}
 
 	static final class AstTableData {

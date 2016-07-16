@@ -119,8 +119,8 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	public void setDefaultCivs() {
 		int nCivs = (int) this.nCivSpinner.getValue();
 
-		this.eastRadioButton.setEnabled(Civilization.startingCivs.get(nCivs).get(Region.EAST) != null);
-		this.westRadioButton.setEnabled(Civilization.startingCivs.get(nCivs).get(Region.WEST) != null);
+		this.eastRadioButton.setEnabled(Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
+		this.westRadioButton.setEnabled(Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
 
 		Region region = null;
 
@@ -142,7 +142,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			}
 		}
 
-		ArrayList<Civilization.Name> startingCivs = Civilization.startingCivs.get(nCivs).get(region);
+		ArrayList<Civilization.Name> startingCivs = Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
 
 		for (Civilization.Name name : Civilization.Name.values()) {
 			CivPanel panel = this.civPanels.get(name);

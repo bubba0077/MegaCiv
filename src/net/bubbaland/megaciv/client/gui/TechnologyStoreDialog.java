@@ -111,6 +111,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		this.frame.add(this);
 		this.frame.pack();
+		this.frame.setResizable(false);
 		this.frame.setVisible(true);
 	}
 

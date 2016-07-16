@@ -123,7 +123,7 @@ public class ScrollingAstPanel extends BubbaPanel {
 		this.client = client;
 		this.controller = controller;
 		this.sortOption = Civilization.SortOption.AST;
-		this.sortDirection = Civilization.SortDirection.ASCENDING;
+		this.sortDirection = Civilization.SortDirection.DESCENDING;
 		this.civRows = null;
 
 		// Set up layout constraints
@@ -223,11 +223,12 @@ public class ScrollingAstPanel extends BubbaPanel {
 					default:
 						text = "";
 						int astStep = Integer.parseInt(col.toString().substring(3));
+						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						if (astStep > civ.getAstPosition()) {
+							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstForegroundColor(civ.getAge(astStep));
 							backgroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
 						}
-						// System.out.println(this.getClass().getSimpleName() + " " + col + " " + civ.getAge(astStep));
 						label.setVisible(astStep <= this.client.getGame().lastAstStep());
 				}
 				label.setText(text);
@@ -352,10 +353,10 @@ public class ScrollingAstPanel extends BubbaPanel {
 				if (ScrollingAstPanel.sortHash.get(col) == ScrollingAstPanel.this.sortOption) {
 					switch (ScrollingAstPanel.this.sortDirection) {
 						case ASCENDING:
-							this.colLabels.get(col).setIcon(UP_ARROW);
+							this.colLabels.get(col).setIcon(DOWN_ARROW);
 							break;
 						case DESCENDING:
-							this.colLabels.get(col).setIcon(DOWN_ARROW);
+							this.colLabels.get(col).setIcon(UP_ARROW);
 							break;
 					}
 				} else {

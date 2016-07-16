@@ -587,4 +587,118 @@
     </Expert>
 </Civilization>
 </AstTable>
+<AstRequirements>
+	<Difficulty level="BASIC">
+		<Age name="STONE">
+			<Text>No Requirements</Text>
+			<MinCities>0</MinCities>
+			<MinAdvances>0</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>0</MinL2PlusTechs>
+			<MinL3Techs>0</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+		<Age name="EARLY_BRONZE">
+			<Text>2 Cities</Text>
+			<MinCities>2</MinCities>
+			<MinAdvances>0</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>0</MinL2PlusTechs>
+			<MinL3Techs>0</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+		<Age name="MIDDLE_BRONZE">
+			<Text>3 Cities and 3 Advances</Text>
+			<MinCities>3</MinCities>
+			<MinAdvances>3</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>0</MinL2PlusTechs>
+			<MinL3Techs>0</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+		<Age name="LATE_BRONZE">
+			<Text>3 Cities and 3 Advances worth 100 or more</Text>
+			<MinCities>3</MinCities>
+			<MinAdvances>0</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>3</MinL2PlusTechs>
+			<MinL3Techs>0</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+		<Age name="EARLY_IRON">
+			<Text>4 Cities and 2 Advances worth 200 or more</Text>
+			<MinCities>4</MinCities>
+			<MinAdvances>0</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>0</MinL2PlusTechs>
+			<MinL3Techs>2</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+		<Age name="LATE_IRON">
+			<Text>5 Cities and 3 Advances worth 200 or more</Text>
+			<MinCities>5</MinCities>
+			<MinAdvances>0</MinAdvances>
+			<MinL1Techs>0</MinL1Techs>
+			<MinL2PlusTechs>0</MinL2PlusTechs>
+			<MinL3Techs>3</MinL3Techs>
+			<MinTechVP>0</MinTechVP>
+		</Age>
+	</Difficulty>
+	<Difficulty level="EXPERT">
+	<Age name="STONE">
+		<Text>No Requirements</Text>	
+		<MinCities>0</MinCities>
+		<MinAdvances>0</MinAdvances>
+		<MinL1Techs>0</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>0</MinTechVP>
+	</Age>
+	<Age name="EARLY_BRONZE">
+		<Text>3 Cities</Text>	
+		<MinCities>3</MinCities>
+		<MinAdvances>0</MinAdvances>
+		<MinL1Techs>0</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>0</MinTechVP>
+	</Age>
+	<Age name="MIDDLE_BRONZE">
+		<Text>3 Cities and 5 VP in Advances</Text>
+		<MinCities>3</MinCities>
+		<MinAdvances>0</MinAdvances>
+		<MinL1Techs>0</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>5</MinTechVP>
+		</Age>
+	<Age name="LATE_BRONZE">
+	<Text>4 Cities and 12 Advances</Text>	
+		<MinCities>4</MinCities>
+		<MinAdvances>12</MinAdvances>
+		<MinL1Techs>0</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>0</MinTechVP>
+		</Age>
+	<Age name="EARLY_IRON">
+	<Text>5 Cities and 38 VP in Advances and 10 Advances worth less than 100</Text>
+		<MinCities>5</MinCities>
+		<MinAdvances>0</MinAdvances>
+		<MinL1Techs>10</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>38</MinTechVP>
+		</Age>
+	<Age name="LATE_IRON">
+	<Text>6 Cities and 56 VP in Advances and 17 Advances worth less than 100</Text>
+		<MinCities>6</MinCities>
+		<MinAdvances>0</MinAdvances>
+		<MinL1Techs>17</MinL1Techs>
+		<MinL2PlusTechs>0</MinL2PlusTechs>
+		<MinL3Techs>0</MinL3Techs>
+		<MinTechVP>56</MinTechVP>
+	</Age>
+</Difficulty>
+</AstRequirements>
 </Data>
