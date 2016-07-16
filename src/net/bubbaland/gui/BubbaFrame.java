@@ -17,7 +17,6 @@ import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
-import javazoom.jl.player.Player;
 
 /**
  * Creates a top-level window for displaying the GUI.
@@ -271,35 +270,4 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		public void processMouseEvent(MouseEvent e, MenuElement path[], MenuSelectionManager manager) {
 		}
 	}
-
-	protected static class BubbaAudio {
-		private final String filename;
-
-		public BubbaAudio(String filename) {
-			this.filename = filename;
-		}
-
-		public void play() {
-			try {
-				final Player player = new Player(BubbaGuiController.class.getResourceAsStream(this.filename));
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-							player.play();
-						} catch (final Exception e) {
-
-						} finally {
-							player.close();
-						}
-					}
-				}.start();
-			} catch (final Exception e) {
-				System.out.println(this.getClass().getSimpleName() + "Couldn't open audio file");
-				e.printStackTrace();
-			}
-		}
-	}
-
-
 }

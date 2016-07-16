@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import net.bubbaland.gui.BubbaGuiController;
@@ -20,7 +21,7 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 
-public class ScrollingAstPanel extends BubbaPanel {
+public class AstTablePanel extends BubbaPanel {
 
 	private static final long serialVersionUID = -1197287409680075891L;
 
@@ -118,19 +119,19 @@ public class ScrollingAstPanel extends BubbaPanel {
 	private Civilization.SortOption									sortOption;
 	private Civilization.SortDirection								sortDirection;
 
-	public ScrollingAstPanel(GuiClient client, GuiController controller) {
+	public AstTablePanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 		this.client = client;
 		this.controller = controller;
 		this.sortOption = Civilization.SortOption.AST;
-		this.sortDirection = Civilization.SortDirection.DESCENDING;
+		this.sortDirection = Civilization.SortDirection.ASCENDING;
 		this.civRows = null;
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.0;
 
 		loadProperties();
 
@@ -161,6 +162,10 @@ public class ScrollingAstPanel extends BubbaPanel {
 			this.civRows.put(civNames.indexOf(name), panel);
 			this.add(panel, constraints);
 		}
+
+		constraints.weighty = 1.0;
+		constraints.gridy = civNames.size() + 2;
+		this.add(new JPanel(), constraints);
 	}
 
 	public synchronized void updateGui(boolean forceUpdate) {
@@ -295,8 +300,8 @@ public class ScrollingAstPanel extends BubbaPanel {
 
 				String string = Game.capitalizeFirst(col.toString());
 
-				int width = ScrollingAstPanel.this.width.get(col);
-				int height = ScrollingAstPanel.this.rowHeight;
+				int width = AstTablePanel.this.width.get(col);
+				int height = AstTablePanel.this.rowHeight;
 
 				float fontSize = 14.0f;
 
@@ -350,8 +355,8 @@ public class ScrollingAstPanel extends BubbaPanel {
 
 		public void updateGui(boolean forceUpdate) {
 			for (Column col : this.colLabels.keySet()) {
-				if (ScrollingAstPanel.sortHash.get(col) == ScrollingAstPanel.this.sortOption) {
-					switch (ScrollingAstPanel.this.sortDirection) {
+				if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
+					switch (AstTablePanel.this.sortDirection) {
 						case ASCENDING:
 							this.colLabels.get(col).setIcon(DOWN_ARROW);
 							break;
@@ -363,7 +368,7 @@ public class ScrollingAstPanel extends BubbaPanel {
 					this.colLabels.get(col).setIcon(null);
 				}
 			}
-			ScrollingAstPanel.this.updateGui(true);
+			AstTablePanel.this.updateGui(true);
 		}
 
 
@@ -371,20 +376,20 @@ public class ScrollingAstPanel extends BubbaPanel {
 		public void mouseClicked(MouseEvent e) {
 			final String source = ( (JComponent) e.getSource() ).getName();
 			Column col = Column.valueOf(source);
-			if (ScrollingAstPanel.sortHash.get(col) == ScrollingAstPanel.this.sortOption) {
-				switch (ScrollingAstPanel.this.sortDirection) {
+			if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
+				switch (AstTablePanel.this.sortDirection) {
 					case ASCENDING:
-						ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
+						AstTablePanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
 						break;
 					case DESCENDING:
-						ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+						AstTablePanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
 						break;
 				}
 			} else {
-				Civilization.SortOption newSort = ScrollingAstPanel.sortHash.get(col);
+				Civilization.SortOption newSort = AstTablePanel.sortHash.get(col);
 				if (newSort != null) {
-					ScrollingAstPanel.this.sortOption = ScrollingAstPanel.sortHash.get(col);
-					ScrollingAstPanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+					AstTablePanel.this.sortOption = AstTablePanel.sortHash.get(col);
+					AstTablePanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
 				}
 			}
 			this.updateGui(true);

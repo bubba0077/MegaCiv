@@ -2,20 +2,23 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import net.bubbaland.gui.BubbaFrame;
 import net.bubbaland.gui.BubbaMainPanel;
 
-public class AstPanel extends BubbaMainPanel {
+public class AstTabPanel extends BubbaMainPanel {
 
-	private static final long	serialVersionUID	= -1864908035328333195L;
+	private static final long		serialVersionUID	= -1864908035328333195L;
 
-	private ControlsPanel		controlPanel;
-	private ScrollingAstPanel	scrollingPanel;
+	private final ControlsPanel		controlPanel;
+	private final AstTablePanel	scrollingPanel;
+	private final CountdownPanel	countdownPanel;
 
-	private final GuiClient		client;
+	private final GuiClient			client;
 
-	public AstPanel(GuiClient client, GuiController controller, BubbaFrame frame) {
+	public AstTabPanel(GuiClient client, GuiController controller, BubbaFrame frame) {
 		super(controller, frame);
 		if (client == null) {
 			System.out.println(this.getClass().getSimpleName() + "Creating " + this.getClass().getSimpleName()
@@ -23,19 +26,31 @@ public class AstPanel extends BubbaMainPanel {
 		}
 		this.client = client;
 
+		this.countdownPanel = new CountdownPanel(client, controller);
 		this.controlPanel = new ControlsPanel(client, controller);
-		this.scrollingPanel = new ScrollingAstPanel(client, controller);
+		this.scrollingPanel = new AstTablePanel(client, controller);
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.weightx = 1.0;
+		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 
 		this.add(this.controlPanel, constraints);
 
+		constraints.weightx = 1.0;
+		constraints.gridx = 1;
+		this.add(new JPanel(), constraints);
+		constraints.weightx = 0.0;
+
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		this.add(this.countdownPanel, constraints);
+
+		constraints.gridwidth = 3;
+		constraints.gridx = 0;
 		constraints.gridy = 1;
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
 		separator.setPreferredSize(new Dimension(1, 5));

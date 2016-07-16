@@ -25,7 +25,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame {
 	@Override
 	protected void initTabInfoHash() {
 		super.initTabInfoHash();
-		this.tabInformationHash.put("AST", new TabInformation("Panel showing AST", AstPanel.class));
+		this.tabInformationHash.put("AST", new TabInformation("Panel showing AST", AstTabPanel.class));
 	}
 
 	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType)
