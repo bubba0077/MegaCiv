@@ -1,7 +1,6 @@
 package net.bubbaland.gui;
 
 import java.awt.GridBagLayout;
-import java.util.Properties;
 
 /**
  * Super-class for most of the panels in the trivia GUI.

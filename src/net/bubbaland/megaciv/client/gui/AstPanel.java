@@ -2,10 +2,7 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import javax.swing.BorderFactory;
 import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
-
 import net.bubbaland.gui.BubbaFrame;
 import net.bubbaland.gui.BubbaMainPanel;
 

@@ -29,8 +29,6 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
-import net.bubbaland.megaciv.client.gui.GuiController;
-
 /**
  * Abstract class providing common methods for all trivia panels.
  *
