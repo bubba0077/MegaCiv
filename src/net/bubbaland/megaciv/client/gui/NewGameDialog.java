@@ -112,6 +112,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		this.dialog = new BubbaDialog(this.controller, "New Game Setup", this, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
+		this.dialog.setModal(true);
 		this.dialog.setVisible(true);
 	}
 

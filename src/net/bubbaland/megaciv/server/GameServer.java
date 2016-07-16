@@ -13,6 +13,7 @@ import org.glassfish.tyrus.server.Server;
 import net.bubbaland.megaciv.client.messages.*;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.server.messages.*;
 
 public class GameServer extends Server {
@@ -68,7 +69,7 @@ public class GameServer extends Server {
 				this.log("Created new game with the following civilizations: " + startingCivs);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
-			case "AssignPlayerMessage":
+			case "AssignPlayerMessage": {
 				Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
 				String player = ( (AssignPlayerMessage) message ).getPlayer();
 				System.out.println(civ == null);
@@ -77,6 +78,7 @@ public class GameServer extends Server {
 				this.broadcastMessage(new GameDataMessage(this.game));
 				this.log(this.game.toString());
 				break;
+			}
 			case "CensusMessage":
 				HashMap<Civilization.Name, Integer> census = ( (CensusMessage) message ).getCensus();
 				for (Civilization.Name name : census.keySet()) {
@@ -92,6 +94,14 @@ public class GameServer extends Server {
 				}
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
+			case "TechPurchaseMessage": {
+				Civilization.Name name = ( (TechPurchaseMessage) message ).getCivName();
+				Civilization civ = this.game.getCivilization(name);
+				for (Technology newTech : ( (TechPurchaseMessage) message ).getTechs()) {
+					civ.addTech(newTech);
+				}
+				this.broadcastMessage(new GameDataMessage(this.game));
+			}
 			default:
 		}
 	}

@@ -79,6 +79,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 				new CityUpdateDialog(this.client, this.controller);
 				break;
 			case "Purchase Techs":
+				new TechnologyStoreDialog(this.client, this.controller);
 				break;
 			case "Advance AST":
 				break;

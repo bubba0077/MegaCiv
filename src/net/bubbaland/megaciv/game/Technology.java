@@ -1165,9 +1165,16 @@ public enum Technology {
 		return this.text;
 	}
 
-	public Technology.Type[] getTypes() {
-		Technology.Type[] types = null;
-		return this.types.toArray(types);
+	public ArrayList<String> getColors() {
+		ArrayList<String> colors = new ArrayList<String>();
+		for (Type type : this.getTypes()) {
+			colors.add(COLOR.get(type));
+		}
+		return colors;
+	}
+
+	public ArrayList<Technology.Type> getTypes() {
+		return this.types;
 	}
 
 	public int getBaseCost() {
@@ -1180,28 +1187,28 @@ public enum Technology {
 		for (Technology tech : techs) {
 			for (Technology.Type type : tech.typeCredits.keySet()) {
 				if (this.types.contains(type)) {
-					cost = -tech.typeCredits.get(type);
+					cost = cost - tech.typeCredits.get(type);
 				}
 			}
 			for (Technology tech2 : tech.techCredits.keySet()) {
 				if (this.equals(tech2)) {
-					cost = -tech.techCredits.get(tech2);
+					cost = cost - tech.techCredits.get(tech2);
 				}
 			}
 		}
 		for (Technology.Type type : civ.getTypeCredits().keySet()) {
 			if (this.types.contains(type)) {
-				cost = -civ.getTypeCredits().get(type);
+				cost = cost - civ.getTypeCredits().get(type);
 			}
 		}
-		return cost;
+		return Math.max(cost, 0);
 	}
 
 	public int getVP() {
 		return this.vp;
 	}
 
-	public String toString() {
+	public String toFullString() {
 		String s = this.name + "\n";
 		for (Technology.Type t : this.types) {
 			s += t.toString() + " (" + COLOR.get(t) + ") ";

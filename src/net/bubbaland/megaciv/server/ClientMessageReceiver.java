@@ -42,6 +42,7 @@ public class ClientMessageReceiver {
 		System.out.println("User " + session.getId() + " connected");
 		this.user.setUserName("User " + session.getId());
 		ClientMessageReceiver.server.addUser(session, this);
+		ClientMessageReceiver.server.sendGame(session);
 	}
 
 	/**

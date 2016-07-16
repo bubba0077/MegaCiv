@@ -3,8 +3,6 @@ package net.bubbaland.megaciv.client;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import javax.swing.SwingWorker;
@@ -20,7 +18,6 @@ import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 
 import net.bubbaland.megaciv.client.messages.*;
-import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.server.messages.*;
 
@@ -39,11 +36,9 @@ public class GameClient implements Runnable {
 	public GameClient(final String serverUrl) {
 		this.serverUrl = serverUrl;
 		this.session = null;
+		this.game = null;
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
-
-		this.game = new Game();
-		this.game.addCivilization(new ArrayList<Civilization.Name>(Arrays.asList(Civilization.Name.values())));
 	}
 
 	public Game getGame() {

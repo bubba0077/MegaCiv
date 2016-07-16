@@ -164,9 +164,10 @@ public class ScrollingAstPanel extends BubbaPanel {
 	}
 
 	public synchronized void updateGui(boolean forceUpdate) {
-		loadProperties();
-
 		Game game = this.client.getGame();
+		if (game == null) {
+			return;
+		}
 		if (this.civRows == null || game.getNCivilizations() != this.civRows.size()) {
 			this.redoRows(game.getCivilizationNames());
 		}
