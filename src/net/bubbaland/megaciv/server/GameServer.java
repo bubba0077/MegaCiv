@@ -15,6 +15,7 @@ import net.bubbaland.megaciv.User;
 import net.bubbaland.megaciv.client.messages.*;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.server.messages.*;
 
@@ -69,7 +70,10 @@ public class GameServer extends Server {
 				for (Civilization.Name name : startingCivs.keySet()) {
 					this.game.getCivilization(name).setPlayer(startingCivs.get(name));
 				}
-				this.log(user + " created new game with the following civilizations: " + startingCivs);
+				Difficulty difficulty = ( (NewGameMessage) message ).getDifficulty();
+				this.game.setDifficulty(difficulty);
+				this.log(user + " created new " + Game.capitalizeFirst(difficulty.toString())
+						+ " game with the following civilizations: " + startingCivs);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "AssignPlayerMessage": {

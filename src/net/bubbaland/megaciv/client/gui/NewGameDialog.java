@@ -28,6 +28,7 @@ import net.bubbaland.megaciv.client.messages.NewGameMessage;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Civilization.Region;
+import net.bubbaland.megaciv.game.Game.Difficulty;
 
 public class NewGameDialog extends BubbaDialogPanel implements ActionListener, ChangeListener {
 
@@ -36,6 +37,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JToggleButton							customButton;
 	private final JSpinner								nCivSpinner;
 	private final JRadioButton							eastRadioButton, westRadioButton;
+	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 	private final GuiClient								client;
 
@@ -46,25 +48,25 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.weightx = 0.0;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridwidth = 3;
+		constraints.gridheight = 2;
 		this.add(new JLabel("Number of civilizations:"), constraints);
-		constraints.gridwidth = 1;
 
-		constraints.gridx = 2;
+		constraints.weightx = 0.0;
+		constraints.gridx = 1;
 		constraints.gridy = 0;
 		this.nCivSpinner = new JSpinner(new SpinnerNumberModel(5, 5, 18, 1));
 		this.nCivSpinner.addChangeListener(this);
 		this.add(this.nCivSpinner, constraints);
+		constraints.gridheight = 1;
 
 		ButtonGroup regionGroup = new ButtonGroup();
 
-		constraints.weightx = 1.0;
-		constraints.gridx = 0;
+		constraints.gridx = 3;
 		constraints.gridy = 1;
 		this.westRadioButton = new JRadioButton("West");
 		this.westRadioButton.setSelected(true);
@@ -72,37 +74,56 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.westRadioButton.addActionListener(this);
 		this.add(this.westRadioButton, constraints);
 
-		constraints.weightx = 1.0;
-		constraints.gridx = 1;
+		constraints.gridx = 4;
 		constraints.gridy = 1;
 		this.eastRadioButton = new JRadioButton("East");
-		this.westRadioButton.setActionCommand("East");
+		this.eastRadioButton.setActionCommand("East");
 		this.eastRadioButton.addActionListener(this);
 		this.add(this.eastRadioButton, constraints);
 
 		regionGroup.add(this.eastRadioButton);
 		regionGroup.add(this.westRadioButton);
 
-		constraints.weightx = 1.0;
-		constraints.gridx = 2;
-		constraints.gridy = 1;
-		this.add(new JPanel(), constraints);
+		ButtonGroup difficultyGroup = new ButtonGroup();
 
-		constraints.weightx = 0.0;
 		constraints.gridx = 3;
+		constraints.gridy = 0;
+		this.basicRadioButton = new JRadioButton("Basic");
+		this.basicRadioButton.setActionCommand("Basic");
+		this.basicRadioButton.setSelected(true);
+		this.basicRadioButton.addActionListener(this);
+		this.add(this.basicRadioButton, constraints);
+
+		constraints.gridx = 4;
+		constraints.gridy = 0;
+		this.expertRadioButton = new JRadioButton("Expert");
+		this.expertRadioButton.setActionCommand("Expert");
+		this.expertRadioButton.addActionListener(this);
+		this.add(this.expertRadioButton, constraints);
+
+		difficultyGroup.add(this.basicRadioButton);
+		difficultyGroup.add(this.expertRadioButton);
+
+		// constraints.weightx = 1.0;
+		// constraints.gridx = 2;
+		// constraints.gridy = 1;
+		// this.add(new JPanel(), constraints);
+
+		constraints.weightx = 1.0;
+		constraints.gridx = 5;
 		constraints.gridy = 1;
 		this.customButton = new JToggleButton("Custom Setup");
 		this.customButton.setActionCommand("Custom");
 		this.customButton.addActionListener(this);
 		this.add(this.customButton, constraints);
 
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		constraints.weightx = 0.5;
-		constraints.weighty = 0.0;
+		constraints.weighty = 1.0;
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		for (Civilization.Name name : Civilization.Name.values()) {
 			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
-			constraints.gridy = 2 + name.ordinal() / 2;
+			constraints.gridy = 3 + name.ordinal() / 2;
 			CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.put(name, panel);
 			this.add(panel, constraints);
@@ -192,8 +213,10 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 					startingCivs.put(name, panel.getPlayerName());
 				}
 			}
+			Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
+
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
-			this.client.sendMessage(new NewGameMessage(startingCivs));
+			this.client.sendMessage(new NewGameMessage(startingCivs, difficulty));
 		}
 	}
 
