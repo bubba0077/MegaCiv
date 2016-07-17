@@ -5,12 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import net.bubbaland.gui.AutoFocusSpinner;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -79,12 +81,17 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 		private static final long		serialVersionUID	= -487711727769927447L;
 
 		private final JLabel			label;
-		private final JSpinner			spinner;
+		private final AutoFocusSpinner	spinner;
 		private final Civilization.Name	name;
 
 		public CivPanel(BubbaGuiController controller, Civilization.Name name) {
 			super(controller);
 			this.name = name;
+
+			Properties props = controller.getProperties();
+			int civHeight = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Height"));
+			int civWidth = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Width"));
+			float fontSize = Float.parseFloat(props.getProperty("CityUpdateDialog.FontSize"));
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -94,16 +101,16 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.label = new JLabel(Game.capitalizeFirst(name.toString()), JLabel.LEFT);
-			this.label.setPreferredSize(new Dimension(120, 20));
-			this.add(this.label, constraints);
+			this.label = this.enclosedLabelFactory(Game.capitalizeFirst(name.toString()), civWidth, civHeight, null,
+					null, constraints, fontSize, JLabel.LEFT, JLabel.CENTER);
 			constraints.weightx = 0.0;
 
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			this.spinner = new JSpinner(
+			this.spinner = new AutoFocusSpinner(
 					new SpinnerNumberModel(CityUpdateDialog.this.client.getGame().getCivilization(name).getCityCount(),
 							0, Game.MAX_CITIES, 1));
+			this.spinner.setFont(this.spinner.getFont().deriveFont(fontSize));
 			this.add(this.spinner, constraints);
 		}
 
