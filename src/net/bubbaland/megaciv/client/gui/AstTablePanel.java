@@ -470,7 +470,10 @@ public class AstTablePanel extends BubbaPanel {
 
 	private class FillerPanel extends BubbaPanel {
 
-		private static final long serialVersionUID = 1832956209036106492L;
+		private static final long	serialVersionUID	= 1832956209036106492L;
+
+		private int					width;
+		private Image				scaledImage;
 
 		public FillerPanel() {
 			super(AstTablePanel.this.controller);
@@ -479,10 +482,12 @@ public class AstTablePanel extends BubbaPanel {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			int width = this.getWidth();
-			double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
-			Image scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),
-					Image.SCALE_SMOOTH);
+			if (width != this.getWidth()) {
+				this.width = this.getWidth();
+				double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
+				this.scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),
+						Image.SCALE_SMOOTH);
+			}
 			g.drawImage(scaledImage, 0, 0, this);
 		}
 
