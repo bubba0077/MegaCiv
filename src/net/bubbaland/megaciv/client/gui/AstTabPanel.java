@@ -13,7 +13,7 @@ public class AstTabPanel extends BubbaMainPanel {
 	private static final long		serialVersionUID	= -1864908035328333195L;
 
 	private final ControlsPanel		controlPanel;
-	private final AstTablePanel	scrollingPanel;
+	private final AstTablePanel		scrollingPanel;
 	private final CountdownPanel	countdownPanel;
 
 	private final GuiClient			client;
@@ -66,12 +66,14 @@ public class AstTabPanel extends BubbaMainPanel {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
 		this.controlPanel.updateGui(forceUpdate);
 		this.scrollingPanel.updateGui(forceUpdate);
+		this.countdownPanel.updateGui();
 	}
 
 	@Override
 	protected void loadProperties() {
 		this.controlPanel.loadProperties();
 		this.scrollingPanel.loadProperties();
+		this.countdownPanel.loadProperties();
 	}
 
 }

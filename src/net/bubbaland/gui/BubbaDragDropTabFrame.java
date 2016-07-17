@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -17,9 +16,7 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.bubbaland.gui.BubbaDragDropTabFrame.TabInformation;
-
-public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener, ChangeListener {
+public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener {
 
 	/**
 	 * 
@@ -92,10 +89,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 
 	}
 
-	protected void addTab(String tabName) {
+	public void addTab(String tabName) {
 		try {
 			BubbaMainPanel newTab = this.tabFactory(this, tabName.replaceFirst(" \\([0-9]*\\)", ""));
 			this.tabbedPane.addTab(tabName, newTab);
+			this.tabbedPane.setSelectedComponent(newTab);
 			newTab.updateGui(true);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException exception) {
@@ -104,7 +102,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 		}
 	}
 
-	protected void addTabs(String[] tabs) {
+	public void addTabs(String[] tabs) {
 		for (final String tabName : tabs) {
 			this.addTab(tabName);
 		}
@@ -275,11 +273,5 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	public void windowClosing(WindowEvent e) {
 		super.windowClosing(e);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-	}
-
 
 }

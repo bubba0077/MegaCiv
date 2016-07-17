@@ -1,25 +1,25 @@
 package net.bubbaland.megaciv.client.gui;
 
-import java.lang.reflect.InvocationTargetException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import net.bubbaland.gui.BubbaDragDropTabFrame;
 import net.bubbaland.gui.BubbaFrame;
-import net.bubbaland.gui.BubbaMainPanel;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.Game;
 
-public class MegaCivFrame extends BubbaDragDropTabFrame {
+public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListener {
 
 	private static final long	serialVersionUID	= -8995125745966985308L;
-
-	private static String[]		START_TABS			= { "AST", "Minoa" };
 
 	private final GuiController	controller;
 	private final GuiClient		client;
@@ -29,8 +29,20 @@ public class MegaCivFrame extends BubbaDragDropTabFrame {
 		this.client = client;
 		this.controller = controller;
 		this.initTabInfoHash();
-		this.addTabs(START_TABS);
-		this.tabbedPane.setSelectedIndex(0);
+
+		// Create Menu
+		final JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+
+		final JMenu gameMenu = new JMenu("Game");
+		gameMenu.setMnemonic(KeyEvent.VK_G);
+		menuBar.add(gameMenu);
+
+		JMenuItem menuItem = new JMenuItem("New Game");
+		menuItem.setMnemonic(KeyEvent.VK_N);
+		menuItem.setActionCommand("New Game");
+		menuItem.addActionListener(this);
+		gameMenu.add(menuItem);
 	}
 
 	@Override
@@ -64,8 +76,21 @@ public class MegaCivFrame extends BubbaDragDropTabFrame {
 	}
 
 	public void updateGui(boolean forceUpdate) {
-		// this.client.log("Updating " + this.getClass().getSimpleName());
 		super.updateGui(forceUpdate);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
+		switch (command) {
+			case "New Game":
+				new NewGameDialog(this.client, this.controller);
+				break;
+			default:
+				this.log("Unknown action command " + command + "received by " + this.getClass().getSimpleName());
+		}
+
+
 	}
 
 }

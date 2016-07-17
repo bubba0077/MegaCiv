@@ -52,7 +52,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.client = client;
 
 		Game game = this.client.getGame();
-		ArrayList<Civilization.Name> civNames = game.getCivilizationNames();
+		ArrayList<Civilization.Name> civNames = Civilization.sortByToName(game.getCivilizations(),
+				Civilization.SortOption.AST, Civilization.SortDirection.ASCENDING);
 		Civilization.Name[] civNameArray = new Civilization.Name[civNames.size()];
 		civNameArray = civNames.toArray(civNameArray);
 
@@ -77,9 +78,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
 			checkbox.addChangeListener(this);
-
-			// ArrayList<Color> colors = tech.getColors();
-			// checkbox.setBackground(colors.get(0));
 
 			constraints.gridx = 0 + tech.ordinal() / N_ROWS;
 			constraints.gridy = 1 + tech.ordinal() % N_ROWS;

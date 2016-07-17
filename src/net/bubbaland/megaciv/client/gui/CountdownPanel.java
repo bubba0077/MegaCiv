@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Properties;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,10 +25,14 @@ import net.bubbaland.gui.BubbaPanel;
 
 public class CountdownPanel extends BubbaPanel implements ActionListener {
 
-	private static final long		serialVersionUID	= 8183502027042074947L;
+	private static final long		serialVersionUID			= 8183502027042074947L;
 
-	private final static BubbaAudio	BEEP				= new BubbaAudio(CountdownPanel.class, "audio/beep.mp3");
-	private final static BubbaAudio	ALARM				= new BubbaAudio(CountdownPanel.class, "audio/finalSound.mp3");
+	private final static BubbaAudio	BEEP						= new BubbaAudio(CountdownPanel.class,
+			"audio/beep.mp3");
+	private final static BubbaAudio	ALARM						= new BubbaAudio(CountdownPanel.class,
+			"audio/finalSound.mp3");
+
+	public final int				STARTING_TIMER_LENGTH_SEC	= 300;
 
 	private int						timerLength;
 	private volatile int			deciseconds;
@@ -40,7 +46,7 @@ public class CountdownPanel extends BubbaPanel implements ActionListener {
 	public CountdownPanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 
-		this.timerLength = 600 * 5;
+		this.timerLength = STARTING_TIMER_LENGTH_SEC * 10;
 
 		this.setBackground(Color.BLACK);
 		this.setForeground(Color.WHITE);
@@ -149,6 +155,13 @@ public class CountdownPanel extends BubbaPanel implements ActionListener {
 				this.resetTimer();
 				break;
 		}
+	}
+
+	public void loadProperties() {
+		Properties props = this.controller.getProperties();
+
+		float fontSize = Float.parseFloat(props.getProperty("Stopwatch.FontSize"));
+
 	}
 
 	private class SetTimerDialog extends BubbaDialogPanel {

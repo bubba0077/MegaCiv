@@ -27,7 +27,6 @@ public class GuiController extends BubbaGuiController {
 	private final GuiClient						client;
 	private WaitDialog							waitDialog;
 
-	private HashMap<Civilization.Name, Color>	civForegroundColors, civBackgroundColors;
 	private HashMap<Civilization.Age, Color>	astForegroundColors, astBackgroundColors;
 
 	public GuiController(String serverUrl) {
@@ -56,10 +55,11 @@ public class GuiController extends BubbaGuiController {
 			});
 		}
 
-		// new NewGameDialog(this.client, this);
-
 		// Create startup frames
-		new MegaCivFrame(this.client, this);
+		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
+			new MegaCivFrame(this.client, this)
+					.addTabs(this.properties.getProperty("Window" + f).replaceAll("[\\[\\]]", "").split(", "));
+		}
 
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
