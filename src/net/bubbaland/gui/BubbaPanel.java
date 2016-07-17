@@ -360,9 +360,10 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The new font size
 	 */
 	protected static void setButtonProperties(Component button, int width, int height, Color foreground,
-			float fontSize) {
+			Color background, float fontSize) {
 		if (!( button instanceof JButton || button instanceof JToggleButton )) return;
 		button.setForeground(foreground);
+		button.setBackground(background);
 		button.setFont(button.getFont().deriveFont(fontSize));
 		button.setPreferredSize(new Dimension(width, height));
 		button.setMinimumSize(new Dimension(width, height));

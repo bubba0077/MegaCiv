@@ -75,10 +75,10 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		int height = Integer.parseInt(props.getProperty("ControlPanel.Height"));
 		float fontSize = Float.parseFloat(props.getProperty("ControlPanel.FontSize"));
 
-		BubbaPanel.setButtonProperties(this.censusButton, width, height, null, fontSize);
-		BubbaPanel.setButtonProperties(this.cityButton, width, height, null, fontSize);
-		BubbaPanel.setButtonProperties(this.techButton, width, height, null, fontSize);
-		BubbaPanel.setButtonProperties(this.astButton, width, height, null, fontSize);
+		BubbaPanel.setButtonProperties(this.censusButton, width, height, null, null, fontSize);
+		BubbaPanel.setButtonProperties(this.cityButton, width, height, null, null, fontSize);
+		BubbaPanel.setButtonProperties(this.techButton, width, height, null, null, fontSize);
+		BubbaPanel.setButtonProperties(this.astButton, width, height, null, null, fontSize);
 	}
 
 	@Override

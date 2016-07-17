@@ -86,16 +86,36 @@ CivInfoPanel.Tech.Unowned=aaaaaa
 CivInfoPanel.Tech.Background=ffffff
 CivInfoPanel.Tech.Width=200
 CivInfoPanel.Tech.Height=20
-CivInfoPanel.Tech.FontSize=16.0
+CivInfoPanel.Tech.FontSize=14.0
+
+CensusDialog.Civ.Height=20
+CensusDialog.Civ.Width=100
+CensusDialog.FontSize=16.0
 
 CityUpdateDialog.Civ.Height=20
 CityUpdateDialog.Civ.Width=100
 CityUpdateDialog.FontSize=16.0
 
-AdvanceAstDialog.Civ.Height=20
+AdvanceAstDialog.Civ.Height=60
 AdvanceAstDialog.Civ.Width=100
 AdvanceAstDialog.Civ.FontSize=16.0
 
-AdvanceAstDialog.Req.Height=48
-AdvanceAstDialog.Req.Width=150
+AdvanceAstDialog.Req.Height=60
+AdvanceAstDialog.Req.Width=200
 AdvanceAstDialog.Req.FontSize=16.0
+
+NewGameDialog.Civ.Height=20
+NewGameDialog.Civ.Width=100
+NewGameDialog.FontSize=16.0
+
+TechStoreDialog.BuyButton.Height=24
+TechStoreDialog.BuyButton.Width=100
+TechStoreDialog.BuyButton.FontSize=24.0
+
+TechStoreDialog.ResetButton.Height=24
+TechStoreDialog.ResetButton.Width=100
+TechStoreDialog.ResetButton.FontSize=16.0
+
+TechStoreDialog.NextButton.Height=24
+TechStoreDialog.NextButton.Width=100
+TechStoreDialog.NextButton.FontSize=16.0

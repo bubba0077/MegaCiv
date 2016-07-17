@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -239,6 +241,18 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			super(controller, new GridBagLayout());
 			this.name = name;
 
+			Properties props = controller.getProperties();
+			int civHeight = Integer.parseInt(props.getProperty("CensusDialog.Civ.Height"));
+			int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
+			float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
+
+			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
+			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			foreground = null;
+			background = null;
+
+			this.setBackground(background);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.WEST;
@@ -248,7 +262,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
-			this.checkbox.setPreferredSize(new Dimension(80, 0));
+			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, foreground, background, fontSize);
 			this.checkbox.addActionListener(this);
 			this.add(this.checkbox, constraints);
 
@@ -256,6 +270,8 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			this.textField = new JTextField(Game.capitalizeFirst(name.toString()) + " player", 20);
+			this.textField.setForeground(foreground);
+			this.textField.setBackground(background);
 			this.add(this.textField, constraints);
 
 			this.setEnabled(false);

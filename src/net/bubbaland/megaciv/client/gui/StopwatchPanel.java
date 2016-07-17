@@ -177,8 +177,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 		float buttonFontSize = Float.parseFloat(props.getProperty("Stopwatch.Button.FontSize"));
 		float clockFontSize = Float.parseFloat(props.getProperty("Stopwatch.Clock.FontSize"));
 
-		BubbaPanel.setButtonProperties(this.resetButton, buttonWidth, buttonHeight, null, buttonFontSize);
-		BubbaPanel.setButtonProperties(this.setButton, buttonWidth, buttonHeight, null, buttonFontSize);
+		BubbaPanel.setButtonProperties(this.resetButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
+		BubbaPanel.setButtonProperties(this.setButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
 
 		BubbaPanel.setLabelProperties(this.clockLabel, clockWidth, clockHeight, foreground, background, clockFontSize);
 	}

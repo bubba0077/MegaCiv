@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ChangeEvent;
@@ -49,6 +50,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	private final GuiClient							client;
 	private final JFrame							frame;
 	private final JButton							buyNextButton, nextButton, resetButton;
+	private final JPanel							spacerPanel;
 
 	public TechnologyStoreDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller, new GridBagLayout());
@@ -66,9 +68,10 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.anchor = GridBagConstraints.CENTER;
 
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
+		constraints.gridwidth = 1;
 		this.civComboBox = new JComboBox<Civilization.Name>(civNameArray);
 		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer()));
 		this.civComboBox.setActionCommand("Civ Changed");
@@ -76,9 +79,14 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.add(this.civComboBox, constraints);
-		constraints.gridwidth = 1;
 
-		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridwidth = 3;
+		this.spacerPanel = new JPanel();
+		this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+		this.add(this.spacerPanel, constraints);
+		constraints.gridwidth = 1;
 
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
@@ -94,16 +102,19 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		}
 
 		constraints.gridx = 3;
-		constraints.gridy = 0;
+		constraints.gridy = 1 + N_ROWS;
+		constraints.weighty = 1.0;
+		constraints.gridheight = 2;
 		this.buyNextButton = new JButton("Buy");
 		this.buyNextButton.setActionCommand("Buy");
 		this.buyNextButton.addActionListener(this);
 		this.add(this.buyNextButton, constraints);
+		constraints.gridheight = 1;
 
 		constraints.gridx = 1;
 		constraints.gridy = 2 + N_ROWS;
 
-		this.nextButton = new JButton("Next");
+		this.nextButton = new JButton("Next Civ");
 		this.nextButton.setActionCommand("Next");
 		this.nextButton.addActionListener(this);
 		this.add(this.nextButton, constraints);
@@ -117,16 +128,12 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		resetCheckboxes();
 
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-
 		this.updateTotalCost();
 
 		this.loadProperties();
 
 		this.frame.add(this);
+		this.frame.setTitle("Purchase Technologies");
 		this.frame.pack();
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
@@ -135,7 +142,20 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	public void loadProperties() {
 		Properties props = this.controller.getProperties();
 
+		BubbaPanel.setButtonProperties(this.buyNextButton,
+				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Width")),
+				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Height")), null, null,
+				Float.parseFloat(props.getProperty("TechStoreDialog.BuyButton.FontSize")));
 
+		BubbaPanel.setButtonProperties(this.resetButton,
+				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Width")),
+				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Height")), null, null,
+				Float.parseFloat(props.getProperty("TechStoreDialog.ResetButton.FontSize")));
+
+		BubbaPanel.setButtonProperties(this.nextButton,
+				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Width")),
+				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Height")), null, null,
+				Float.parseFloat(props.getProperty("TechStoreDialog.NextButton.FontSize")));
 	}
 
 	private void resetCheckboxes() {
@@ -211,7 +231,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		for (int c : costs.values()) {
 			cost = cost + c;
 		}
-		this.buyNextButton.setText("Buy   ( " + String.format("%04d", cost) + " )");
+		this.buyNextButton.setText("Buy (" + String.format("%04d", cost) + ")");
 		if (cost > 0) {
 			this.buyNextButton.setForeground(new Color(new BigInteger("00b300", 16).intValue()));
 		} else {
@@ -244,6 +264,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 					new AdditionalCreditDialog(controller, civName, Technology.MONUMENT.toString(), 4);
 				}
 				this.client.sendMessage(new TechPurchaseMessage(civName, newTechs));
+				// Intentional fall through
 			case "Next":
 				int nextIndex = this.civComboBox.getSelectedIndex() + 1;
 				if (nextIndex == this.civComboBox.getItemCount()) {
@@ -251,9 +272,12 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 					return;
 				}
 				this.civComboBox.setSelectedIndex(nextIndex);
+				// Intentional fall through
 			case "Civ Changed":
 				this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 				this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+				this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+				// Intentional fall through
 			case "Reset":
 				this.resetCheckboxes();
 		}

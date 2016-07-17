@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
@@ -39,13 +40,8 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-
 		this.civPanels = new ArrayList<CivPanel>();
 
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
 
 		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
 		for (Civilization.Name name : civNames) {
@@ -109,6 +105,9 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
 			float reqFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Req.FontSize"));
 
+			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
+			Color background = Civilization.BACKGROUND_COLORS.get(name);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.NORTHWEST;
@@ -118,7 +117,8 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
-			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, null, civFontSize);
+			this.checkbox.setFont(this.checkbox.getFont().deriveFont(fontSize));
+			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, foreground, background, civFontSize);
 			this.add(this.checkbox, constraints);
 
 			Game game = AdvanceAstDialog.this.client.getGame();
@@ -132,8 +132,9 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			constraints.gridheight = 2;
-			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, null, null, constraints,
-					reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, foreground, background,
+					constraints, reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
+					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
 		}

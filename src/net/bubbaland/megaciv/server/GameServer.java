@@ -16,6 +16,7 @@ import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.Technology;
+import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.server.messages.*;
 
 public class GameServer extends Server {
@@ -121,6 +122,14 @@ public class GameServer extends Server {
 					}
 				}
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			case "AdditionalCreditMessage":
+				HashMap<Type, Integer> credits = ( (AdditionalCreditMessage) message ).getCredits();
+				Civilization.Name name = ( (AdditionalCreditMessage) message ).getCivName();
+				Civilization civ = this.game.getCivilization(name);
+				civ.addTypeCredits(credits);
+				this.log("Additional credits add to " + name.toString() + " by " + user + ": " + credits);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			default:

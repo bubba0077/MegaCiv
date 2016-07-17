@@ -87,12 +87,14 @@ public class CensusDialog extends BubbaDialogPanel {
 			this.name = name;
 
 			Properties props = controller.getProperties();
-			int civHeight = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Height"));
-			int civWidth = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Width"));
-			float fontSize = Float.parseFloat(props.getProperty("CityUpdateDialog.FontSize"));
+			int civHeight = Integer.parseInt(props.getProperty("CensusDialog.Civ.Height"));
+			int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
+			float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
 
 			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
 			Color background = Civilization.BACKGROUND_COLORS.get(name);
+
+			this.setBackground(background);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -112,8 +114,6 @@ public class CensusDialog extends BubbaDialogPanel {
 					new SpinnerNumberModel(CensusDialog.this.client.getGame().getCivilization(name).getPopulation(), 1,
 							Game.MAX_POPULATION, 1));
 			this.spinner.setFont(this.spinner.getFont().deriveFont(fontSize));
-			this.spinner.setForeground(foreground);
-			this.spinner.setBackground(background);
 			this.add(this.spinner, constraints);
 		}
 

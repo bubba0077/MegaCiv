@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -77,7 +78,6 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 		private static final long		serialVersionUID	= -487711727769927447L;
 
-		private final JLabel			label;
 		private final AutoFocusSpinner	spinner;
 		private final Civilization.Name	name;
 
@@ -90,6 +90,11 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 			int civWidth = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Width"));
 			float fontSize = Float.parseFloat(props.getProperty("CityUpdateDialog.FontSize"));
 
+			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
+			Color background = Civilization.BACKGROUND_COLORS.get(name);
+
+			this.setBackground(background);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.CENTER;
@@ -98,8 +103,8 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.label = this.enclosedLabelFactory(Game.capitalizeFirst(name.toString()), civWidth, civHeight, null,
-					null, constraints, fontSize, JLabel.LEFT, JLabel.CENTER);
+			this.enclosedLabelFactory(Game.capitalizeFirst(name.toString()), civWidth, civHeight, foreground,
+					background, constraints, fontSize, JLabel.LEFT, JLabel.CENTER);
 			constraints.weightx = 0.0;
 
 			constraints.gridx = 1;
