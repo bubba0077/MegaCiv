@@ -1,6 +1,5 @@
 package net.bubbaland.megaciv.client.gui;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Properties;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import net.bubbaland.gui.AutoFocusSpinner;

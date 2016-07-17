@@ -1,7 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
