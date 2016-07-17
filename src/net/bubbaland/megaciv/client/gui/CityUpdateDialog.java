@@ -25,6 +25,8 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 	private final GuiClient								client;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 
+	private final int									N_ROWS				= 9;
+
 	public CityUpdateDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
@@ -39,7 +41,8 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		for (Civilization.Name name : this.client.getGame().getCivilizationNames()) {
 			CivPanel panel = new CivPanel(controller, name);
-			constraints.gridy = name.ordinal();
+			constraints.gridx = name.ordinal() / N_ROWS;
+			constraints.gridy = name.ordinal() % N_ROWS;
 			this.add(panel, constraints);
 			this.civPanels.put(name, panel);
 		}

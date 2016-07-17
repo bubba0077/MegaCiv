@@ -23,6 +23,8 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 	private final GuiClient				client;
 	private final ArrayList<CivPanel>	civPanels;
 
+	private final int					N_ROWS				= 9;
+
 	public AdvanceAstDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
@@ -42,8 +44,8 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		constraints.weighty = 0.0;
 
 		for (Civilization.Name name : this.client.getGame().getCivilizationNames()) {
-			constraints.gridx = 0;
-			constraints.gridy = name.ordinal();
+			constraints.gridx = name.ordinal() / N_ROWS;
+			constraints.gridy = name.ordinal() % N_ROWS;
 
 			CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.add(panel);

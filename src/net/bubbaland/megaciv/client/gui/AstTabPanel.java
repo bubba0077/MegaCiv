@@ -12,8 +12,8 @@ public class AstTabPanel extends BubbaMainPanel {
 	private static final long		serialVersionUID	= -1864908035328333195L;
 
 	private final ControlsPanel		controlPanel;
-	private final AstTablePanel		scrollingPanel;
-	private final CountdownPanel	countdownPanel;
+	private final AstTablePanel		astTablePanel;
+	private final StopwatchPanel	countdownPanel;
 
 	private final GuiClient			client;
 
@@ -25,9 +25,9 @@ public class AstTabPanel extends BubbaMainPanel {
 		}
 		this.client = client;
 
-		this.countdownPanel = new CountdownPanel(client, controller);
+		this.countdownPanel = new StopwatchPanel(client, controller);
 		this.controlPanel = new ControlsPanel(client, controller);
-		this.scrollingPanel = new AstTablePanel(client, controller);
+		this.astTablePanel = new AstTablePanel(client, controller);
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -57,21 +57,23 @@ public class AstTabPanel extends BubbaMainPanel {
 
 		constraints.weighty = 1.0;
 		constraints.gridy = 2;
-		this.add(this.scrollingPanel, constraints);
+		this.add(this.astTablePanel, constraints);
+
+		this.loadProperties();
 	}
 
 	@Override
 	public void updateGui(boolean forceUpdate) {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
 		this.controlPanel.updateGui(forceUpdate);
-		this.scrollingPanel.updateGui(forceUpdate);
+		this.astTablePanel.updateGui(forceUpdate);
 		this.countdownPanel.updateGui();
 	}
 
 	@Override
-	protected void loadProperties() {
+	public void loadProperties() {
 		this.controlPanel.loadProperties();
-		this.scrollingPanel.loadProperties();
+		this.astTablePanel.loadProperties();
 		this.countdownPanel.loadProperties();
 	}
 

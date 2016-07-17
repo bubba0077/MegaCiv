@@ -196,50 +196,50 @@ public class CivInfoPanel extends BubbaMainPanel {
 		}
 
 		public void loadProperties() {
-			Properties prop = CivInfoPanel.this.controller.getProperties();
+			Properties props = CivInfoPanel.this.controller.getProperties();
 
 			Color foreground = new Color(
-					new BigInteger(prop.getProperty("CivInfoPanel.Stat.Foreground"), 16).intValue());
+					new BigInteger(props.getProperty("CivInfoPanel.Stat.Foreground"), 16).intValue());
 			Color background = new Color(
-					new BigInteger(prop.getProperty("CivInfoPanel.Stat.Background"), 16).intValue());
+					new BigInteger(props.getProperty("CivInfoPanel.Stat.Background"), 16).intValue());
 
-			int heightTop = Integer.parseInt(prop.getProperty("CivInfoPanel.Stat.Top.Height"));
-			int heightBottom = Integer.parseInt(prop.getProperty("CivInfoPanel.Stat.Bottom.Height"));
+			int heightTop = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Top.Height"));
+			int heightBottom = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Bottom.Height"));
 
-			int creditWidth = Integer.parseInt(prop.getProperty("CivInfoPanel.Credit.Width"));
+			int creditWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Credit.Width"));
 
-			float creditFontSizeTop = Float.parseFloat(prop.getProperty("CivInfoPanel.Credit.Top.FontSize"));
-			float creditFontSize = Float.parseFloat(prop.getProperty("CivInfoPanel.Credit.FontSize"));
+			float creditFontSizeTop = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.Top.FontSize"));
+			float creditFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.FontSize"));
 
 			this.setBackground(background);
 
 			BubbaPanel.setLabelProperties(this.populationLabel,
-					Integer.parseInt(prop.getProperty("CivInfoPanel.Population.Width")), heightBottom, foreground,
-					background, Float.parseFloat(prop.getProperty("CivInfoPanel.Population.FontSize")));
+					Integer.parseInt(props.getProperty("CivInfoPanel.Population.Width")), heightBottom, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.Population.FontSize")));
 
-			BubbaPanel.setLabelProperties(this.cityLabel, Integer.parseInt(prop.getProperty("CivInfoPanel.City.Width")),
+			BubbaPanel.setLabelProperties(this.cityLabel, Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")),
 					heightBottom, foreground, background,
-					Float.parseFloat(prop.getProperty("CivInfoPanel.City.FontSize")));
+					Float.parseFloat(props.getProperty("CivInfoPanel.City.FontSize")));
 
-			BubbaPanel.setLabelProperties(this.vpLabel, Integer.parseInt(prop.getProperty("CivInfoPanel.VP.Width")),
+			BubbaPanel.setLabelProperties(this.vpLabel, Integer.parseInt(props.getProperty("CivInfoPanel.VP.Width")),
 					heightBottom, foreground, background,
-					Float.parseFloat(prop.getProperty("CivInfoPanel.VP.FontSize")));
+					Float.parseFloat(props.getProperty("CivInfoPanel.VP.FontSize")));
 
 			BubbaPanel.setLabelProperties(this.populationLabel0,
-					Integer.parseInt(prop.getProperty("CivInfoPanel.Population.Width")), heightTop, foreground,
-					background, Float.parseFloat(prop.getProperty("CivInfoPanel.Population.Top.FontSize")));
+					Integer.parseInt(props.getProperty("CivInfoPanel.Population.Width")), heightTop, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.Population.Top.FontSize")));
 
 			BubbaPanel.setLabelProperties(this.cityLabel0,
-					Integer.parseInt(prop.getProperty("CivInfoPanel.City.Width")), heightTop, foreground, background,
-					Float.parseFloat(prop.getProperty("CivInfoPanel.City.Top.FontSize")));
+					Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")), heightTop, foreground, background,
+					Float.parseFloat(props.getProperty("CivInfoPanel.City.Top.FontSize")));
 
-			BubbaPanel.setLabelProperties(this.vpLabel0, Integer.parseInt(prop.getProperty("CivInfoPanel.VP.Width")),
+			BubbaPanel.setLabelProperties(this.vpLabel0, Integer.parseInt(props.getProperty("CivInfoPanel.VP.Width")),
 					heightTop, foreground, background,
-					Float.parseFloat(prop.getProperty("CivInfoPanel.VP.Top.FontSize")));
+					Float.parseFloat(props.getProperty("CivInfoPanel.VP.Top.FontSize")));
 
 			BubbaPanel.setLabelProperties(this.creditLabel0,
-					Integer.parseInt(prop.getProperty("CivInfoPanel.Credit0.Width")), heightBottom, foreground,
-					background, Float.parseFloat(prop.getProperty("CivInfoPanel.Credit0.FontSize")));
+					Integer.parseInt(props.getProperty("CivInfoPanel.Credit0.Width")), heightBottom, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.Credit0.FontSize")));
 
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				BubbaPanel.setLabelProperties(this.creditLabelsTop.get(type), creditWidth, heightTop, type.getColor(),

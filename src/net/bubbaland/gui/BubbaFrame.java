@@ -165,7 +165,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			this.setBounds(x, y, width, height);
 
 		} catch (final NumberFormatException e) {
-			this.setSize(800, 800);
+			this.setSize(800, 600);
 			this.setLocationRelativeTo(null);
 		}
 	}

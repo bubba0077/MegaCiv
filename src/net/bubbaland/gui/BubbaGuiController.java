@@ -24,7 +24,7 @@ public abstract class BubbaGuiController {
 	protected final ArrayList<BubbaFrame>	windowList;
 
 	// Format for log timestamps
-	private final SimpleDateFormat			timestampFormat;
+	private SimpleDateFormat				timestampFormat;
 
 	// File name to store window positions
 	private final String					defaultsFilename;
@@ -38,6 +38,8 @@ public abstract class BubbaGuiController {
 
 		this.properties = new Properties();
 		this.windowList = new ArrayList<BubbaFrame>();
+
+		timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 
 		/**
 		 * Default properties
@@ -69,6 +71,7 @@ public abstract class BubbaGuiController {
 	 *
 	 */
 	public void loadDefaults() {
+		this.log("Loading defaults");
 		properties.clear();
 		final InputStream defaults = this.getClass().getResourceAsStream(defaultsFilename);
 		try {
@@ -78,6 +81,10 @@ public abstract class BubbaGuiController {
 			System.exit(-1);
 		}
 		BubbaDialogPanel.loadProperties(properties);
+
+		for (final BubbaFrame frame : this.windowList) {
+			frame.loadProperties();
+		}
 	}
 
 	public void loadProperties(final File file) {
@@ -177,9 +184,9 @@ public abstract class BubbaGuiController {
 	 */
 	public void log(String message) {
 		final String timestamp = timestampFormat.format(new Date());
-		for (final BubbaFrame panel : this.windowList) {
+		for (final BubbaFrame frame : this.windowList) {
 			// Display message in status bar
-			panel.log(timestamp + " " + message);
+			frame.log(timestamp + " " + message);
 		}
 	}
 

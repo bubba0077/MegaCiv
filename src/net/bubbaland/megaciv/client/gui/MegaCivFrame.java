@@ -42,6 +42,11 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		menuItem.setActionCommand("New Game");
 		menuItem.addActionListener(this);
 		gameMenu.add(menuItem);
+
+		menuItem = new JMenuItem("Load Defaults");
+		menuItem.setActionCommand("Load Defaults");
+		menuItem.addActionListener(this);
+		gameMenu.add(menuItem);
 	}
 
 	@Override
@@ -84,6 +89,9 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		switch (command) {
 			case "New Game":
 				new NewGameDialog(this.client, this.controller);
+				break;
+			case "Load Defaults":
+				this.controller.loadDefaults();
 				break;
 			default:
 				this.log("Unknown action command " + command + "received by " + this.getClass().getSimpleName());

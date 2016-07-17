@@ -1,7 +1,7 @@
 #MegaCiv
 TimestampFormat=[yyyy MMM dd HH:mm:ss]
-StatusBar.Height=14
-StatusBar.FontSize=12.0
+StatusBar.Height=0
+StatusBar.FontSize=10.0
 
 Window0=[AST]
 
@@ -9,9 +9,19 @@ Dialog.FontSize=20.0
 Dialog.TextArea.FontSize=16.0
 Dialog.Warning.Color=FF0000
 
-ControlPanel.Height=50
-FixedPanel.Width=200
+ControlPanel.Width=120
+ControlPanel.Height=30
+ControlPanel.FontSize=14.0
 
+Stopwatch.Button.Width=60
+Stopwatch.Button.Height=15
+Stopwatch.Button.FontSize=14.0
+Stopwatch.Clock.Width=150
+Stopwatch.Clock.Height=30
+Stopwatch.Clock.FontSize=36.0
+Stopwatch.Clock.ForegroundColor=ffffff
+Stopwatch.Clock.BackgroundColor=000000
+Stopwatch.Set.FontSize=24.0
 
 AstTable.STONE.ForegroundColor=000000
 AstTable.STONE.BackgroundColor=f7eaca
@@ -26,19 +36,23 @@ AstTable.EARLY_IRON.BackgroundColor=f7eaca
 AstTable.LATE_IRON.ForegroundColor=000000
 AstTable.LATE_IRON.BackgroundColor=f5f4f9
 
-AstTable.Row.Height=32
+AstTable.Header.Height=18
+AstTable.Header.FontSize=12.0
+AstTable.Header.ForegroundColor=ffffff
+AstTable.Header.BackgroundColor=000000
+AstTable.Row.Height=24
 AstTable.AST.Width=44
-AstTable.AST.FontSize=30.0
+AstTable.AST.FontSize=20.0
 AstTable.CIV.Width=300
-AstTable.CIV.FontSize=24.0
-AstTable.VP.Width=60
-AstTable.VP.FontSize=30.0
-AstTable.POPULATION.Width=40
-AstTable.POPULATION.FontSize=30.0
-AstTable.CITIES.Width=40
-AstTable.CITIES.FontSize=30.0
-AstTable.AstStep.Width=32
-AstTable.AstStep.FontSize=30.0
+AstTable.CIV.FontSize=18.0
+AstTable.VP.Width=40
+AstTable.VP.FontSize=20.0
+AstTable.POPULATION.Width=30
+AstTable.POPULATION.FontSize=20.0
+AstTable.CITIES.Width=36
+AstTable.CITIES.FontSize=20.0
+AstTable.AstStep.Width=24
+AstTable.AstStep.FontSize=16.0
 
 
 
@@ -48,14 +62,14 @@ CivInfoPanel.CivName.FontSize=36.0
 CivInfoPanel.Age.Width=200
 CivInfoPanel.Age.FontSize=24.0
 
-CivInfoPanel.Stat.Top.Height=15
+CivInfoPanel.Stat.Top.Height=18
 CivInfoPanel.Stat.Bottom.Height=30
 CivInfoPanel.Stat.Foreground=ffffff
 CivInfoPanel.Stat.Background=000000
 CivInfoPanel.Population.Width=40
 CivInfoPanel.Population.Top.FontSize=14.0
 CivInfoPanel.Population.FontSize=30.0
-CivInfoPanel.City.Width=40
+CivInfoPanel.City.Width=50
 CivInfoPanel.City.Top.FontSize=14.0
 CivInfoPanel.City.FontSize=30.0
 CivInfoPanel.VP.Width=60
@@ -73,5 +87,3 @@ CivInfoPanel.Tech.Background=ffffff
 CivInfoPanel.Tech.Width=200
 CivInfoPanel.Tech.Height=20
 CivInfoPanel.Tech.FontSize=16.0
-
-Stopwatch.FontSize=48.0

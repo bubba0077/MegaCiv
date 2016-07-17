@@ -1,15 +1,21 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -54,19 +60,30 @@ public class AstTablePanel extends BubbaPanel {
 	private static final ImageIcon									DOWN_ARROW	= new ImageIcon(
 			BubbaPanel.class.getResource("images/downArrow.png"));
 
-	private HashMap<Integer, RowPanel>								civRows;
-	private HeaderPanel												headerPanel;
+	private static BufferedImage									FILLER_IMAGE;
+	static {
+		try {
+			FILLER_IMAGE = ImageIO.read(BubbaPanel.class.getResource("images/filler.png"));
+		} catch (IOException exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
 
-	private final GuiClient											client;
+	private HashMap<Integer, RowPanel>	civRows;
+	private HeaderPanel					headerPanel;
+	private FillerPanel					fillerPanel;
 
-	private HashMap<Column, Integer>								width;
-	private HashMap<Column, Float>									fontSize;
-	private int														rowHeight;
+	private final GuiClient				client;
 
-	private final GuiController										controller;
+	private HashMap<Column, Integer>	width;
+	private HashMap<Column, Float>		fontSize;
+	private int							rowHeight;
 
-	private Civilization.SortOption									sortOption;
-	private Civilization.SortDirection								sortDirection;
+	private final GuiController			controller;
+
+	private Civilization.SortOption		sortOption;
+	private Civilization.SortDirection	sortDirection;
 
 	public AstTablePanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
@@ -76,16 +93,24 @@ public class AstTablePanel extends BubbaPanel {
 		this.sortDirection = Civilization.SortDirection.ASCENDING;
 		this.civRows = null;
 
+		this.setBackground(Color.BLUE);
+
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-
-		loadProperties();
+		constraints.weighty = 0.0;
 
 		this.headerPanel = new HeaderPanel(this.controller);
 		this.add(this.headerPanel, constraints);
+
+		constraints.weighty = 1.0;
+		constraints.gridy = 1;
+		this.fillerPanel = new FillerPanel();
+		this.add(this.fillerPanel, constraints);
+
+		loadProperties();
 
 		this.updateGui(true);
 	}
@@ -96,6 +121,8 @@ public class AstTablePanel extends BubbaPanel {
 				this.remove(panel);
 			}
 		}
+		this.remove(this.fillerPanel);
+
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -114,7 +141,8 @@ public class AstTablePanel extends BubbaPanel {
 
 		constraints.weighty = 1.0;
 		constraints.gridy = civNames.size() + 2;
-		this.add(new JPanel(), constraints);
+		this.fillerPanel = new FillerPanel();
+		this.add(this.fillerPanel, constraints);
 	}
 
 	public synchronized void updateGui(boolean forceUpdate) {
@@ -210,6 +238,15 @@ public class AstTablePanel extends BubbaPanel {
 
 		this.rowHeight = Integer.parseInt(props.getProperty("AstTable.Row.Height"));
 
+		if (this.civRows != null) {
+			for (RowPanel panel : this.civRows.values()) {
+				panel.loadProperties();
+			}
+		}
+
+		this.headerPanel.loadProperties();
+
+		this.updateGui(true);
 	}
 
 	private class HeaderPanel extends BubbaPanel implements MouseListener {
@@ -221,9 +258,12 @@ public class AstTablePanel extends BubbaPanel {
 
 		public HeaderPanel(BubbaGuiController controller) {
 			super(controller, new GridBagLayout());
+
+			this.setBackground(Color.RED);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
-			// constraints.anchor = GridBagConstraints.SOUTH;
+			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
 			constraints.weighty = 1.0;
 			constraints.gridy = 0;
 
@@ -235,14 +275,6 @@ public class AstTablePanel extends BubbaPanel {
 
 				String string = Game.capitalizeFirst(col.toString());
 
-				int width = AstTablePanel.this.width.get(col);
-				int height = AstTablePanel.this.rowHeight;
-
-				float fontSize = 14.0f;
-
-				Color foreground = Color.WHITE;
-				Color background = Color.BLACK;
-
 				int justification = JLabel.CENTER;
 
 				switch (col) {
@@ -252,6 +284,7 @@ public class AstTablePanel extends BubbaPanel {
 					case CIV:
 						string = "Civilization (Player)";
 						justification = JLabel.LEFT;
+						constraints.weightx = 0.0625;
 						break;
 					case POPULATION:
 						string = "Pop";
@@ -263,16 +296,33 @@ public class AstTablePanel extends BubbaPanel {
 						break;
 					default:
 						string = "";
-						background = Color.RED;
-						constraints.weightx = 1.0;
+						// constraints.weightx = 1.0;
 				}
 
-				JLabel label = this.enclosedLabelFactory(string, width, height, foreground, background, constraints,
-						fontSize, justification, JLabel.BOTTOM);
+				JLabel label = this.enclosedLabelFactory(string, constraints, justification, JLabel.BOTTOM);
 				this.colLabels.put(col, label);
 				label.setName(col.toString());
 				label.addMouseListener(this);
 			}
+		}
+
+		public void loadProperties() {
+			Properties props = this.controller.getProperties();
+			int height = Integer.parseInt(props.getProperty("AstTable.Header.Height"));
+
+			Color foreground = new Color(
+					new BigInteger(props.getProperty("AstTable.Header.ForegroundColor"), 16).intValue());
+			Color background = new Color(
+					new BigInteger(props.getProperty("AstTable.Header.BackgroundColor"), 16).intValue());
+
+			float fontSize = Float.parseFloat(props.getProperty("AstTable.Header.FontSize"));
+
+			for (Column col : EnumSet.allOf(Column.class)) {
+				int width = AstTablePanel.this.width.get(col);
+				JLabel label = this.colLabels.get(col);
+				BubbaPanel.setLabelProperties(label, width, height, foreground, background, fontSize);
+			}
+
 		}
 
 		public void updateGui(boolean forceUpdate, Civilization firstCiv) {
@@ -356,9 +406,12 @@ public class AstTablePanel extends BubbaPanel {
 
 		public RowPanel(BubbaGuiController controller) {
 			super(controller, new GridBagLayout());
+
+			this.setBackground(Color.RED);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
-			constraints.anchor = GridBagConstraints.CENTER;
+			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
 			constraints.weighty = 1.0;
 			constraints.gridy = 0;
 
@@ -370,6 +423,7 @@ public class AstTablePanel extends BubbaPanel {
 				switch (col) {
 					case CIV:
 						justification = JLabel.LEFT;
+						constraints.weightx = 0.0625;
 						break;
 					case CITIES:
 						justification = JLabel.CENTER;
@@ -379,7 +433,7 @@ public class AstTablePanel extends BubbaPanel {
 					case VP:
 						break;
 					default:
-						constraints.weightx = 1.0;
+						// constraints.weightx = 1.0;
 				}
 				constraints.gridx = col.ordinal();
 				JLabel label = this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
@@ -398,7 +452,15 @@ public class AstTablePanel extends BubbaPanel {
 				this.labels.put(col, label);
 			}
 
-			this.setBorder(BorderFactory.createEmptyBorder());
+			// this.setBorder(BorderFactory.createEmptyBorder());
+		}
+
+		public void loadProperties() {
+			for (Column col : EnumSet.allOf(Column.class)) {
+				JLabel label = this.labels.get(col);
+				BubbaPanel.setLabelProperties(label, AstTablePanel.this.width.get(col), AstTablePanel.this.rowHeight,
+						null, null, AstTablePanel.this.fontSize.get(col));
+			}
 		}
 
 		public JLabel getLabel(Column col) {
@@ -406,4 +468,23 @@ public class AstTablePanel extends BubbaPanel {
 		}
 	}
 
+	private class FillerPanel extends BubbaPanel {
+
+		private static final long serialVersionUID = 1832956209036106492L;
+
+		public FillerPanel() {
+			super(AstTablePanel.this.controller);
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			int width = this.getWidth();
+			double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
+			Image scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),
+					Image.SCALE_SMOOTH);
+			g.drawImage(scaledImage, 0, 0, this);
+		}
+
+	}
 }
