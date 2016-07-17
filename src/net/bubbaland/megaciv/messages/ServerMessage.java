@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv.server.messages;
+package net.bubbaland.megaciv.messages;
 
 import java.io.IOException;
 import java.io.StringWriter;

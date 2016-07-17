@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv.client.messages;
+package net.bubbaland.megaciv.messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

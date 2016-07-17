@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv;
+package net.bubbaland.megaciv.game;
 
 import java.io.Serializable;
 import java.time.Duration;

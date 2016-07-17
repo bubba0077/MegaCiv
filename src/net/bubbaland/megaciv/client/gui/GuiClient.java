@@ -10,8 +10,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
 import net.bubbaland.megaciv.client.GameClient;
-import net.bubbaland.megaciv.client.messages.*;
-import net.bubbaland.megaciv.server.messages.*;
+import net.bubbaland.megaciv.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GuiClient extends GameClient {

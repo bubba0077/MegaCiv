@@ -21,9 +21,8 @@ import org.glassfish.tyrus.client.ClientManager;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.bubbaland.megaciv.client.messages.*;
 import net.bubbaland.megaciv.game.Game;
-import net.bubbaland.megaciv.server.messages.*;
+import net.bubbaland.megaciv.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GameClient implements Runnable {

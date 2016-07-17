@@ -10,15 +10,13 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.server.Server;
 
-import net.bubbaland.megaciv.User;
-import net.bubbaland.megaciv.client.messages.*;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.Technology;
+import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.game.Technology.Type;
-import net.bubbaland.megaciv.server.messages.*;
-
+import net.bubbaland.megaciv.messages.*;
 
 public class GameServer extends Server {
 

@@ -27,11 +27,11 @@ import javax.swing.event.ChangeListener;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaPanel;
-import net.bubbaland.megaciv.client.messages.NewGameMessage;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Civilization.Region;
 import net.bubbaland.megaciv.game.Game.Difficulty;
+import net.bubbaland.megaciv.messages.NewGameMessage;
 
 public class NewGameDialog extends BubbaDialogPanel implements ActionListener, ChangeListener {
 

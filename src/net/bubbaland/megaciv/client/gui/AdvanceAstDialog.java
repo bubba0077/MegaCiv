@@ -17,9 +17,9 @@ import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
-import net.bubbaland.megaciv.client.messages.AdvanceAstMessage;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 
 public class AdvanceAstDialog extends BubbaDialogPanel {
 
