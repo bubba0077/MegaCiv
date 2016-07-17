@@ -19,6 +19,7 @@ import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.server.messages.*;
 
+
 public class GameServer extends Server {
 
 	private Game										game;
@@ -130,6 +131,11 @@ public class GameServer extends Server {
 				Civilization civ = this.game.getCivilization(name);
 				civ.addTypeCredits(credits);
 				this.log("Additional credits add to " + name.toString() + " by " + user + ": " + credits);
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			case "LoadGameMessage":
+				this.game = ( (LoadGameMessage) message ).getGame();
+				this.log("Game loaded from save by " + user);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			default:

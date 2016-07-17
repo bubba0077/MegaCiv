@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
 import org.glassfish.tyrus.client.ClientManager;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.bubbaland.megaciv.client.messages.*;
 import net.bubbaland.megaciv.game.Game;
@@ -136,10 +140,6 @@ public class GameClient implements Runnable {
 	 * @param message
 	 */
 	public void sendMessage(final ClientMessage message) {
-		// if (this.session == null) return;
-		// this.session.getAsyncRemote().sendObject(message);
-		// this.log("Sent message to server");
-
 		( new SwingWorker<Void, Void>() {
 			@Override
 			public Void doInBackground() {
@@ -157,6 +157,25 @@ public class GameClient implements Runnable {
 		// System.out.println(this.getClass().getSimpleName() + "Trying to send message from Event Dispatch Thread!");
 		// }
 		// this.session.getAsyncRemote().sendObject(message);
+	}
+
+	public void saveGame(File file) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.writeValue(file, this.game);
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public void loadGame(File file) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		try {
+			this.sendMessage(new LoadGameMessage(mapper.readValue(file, Game.class)));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 	}
 
 }

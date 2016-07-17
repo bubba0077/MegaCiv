@@ -16,9 +16,6 @@ public class Game implements Serializable {
 	public static final int		MAX_CITIES			= 9;
 	public static final int		MAX_POPULATION		= 55;
 
-	@JsonProperty("version")
-	private int					version;
-
 	public static enum Difficulty {
 		BASIC, EXPERT
 	}
@@ -43,24 +40,20 @@ public class Game implements Serializable {
 	public Game() {
 		this.civs = new HashMap<Civilization.Name, Civilization>();
 		this.turnNumber = 1;
-		this.version = 0;
 		this.setDifficulty(Difficulty.BASIC);
 	}
 
 	@JsonCreator
 	public Game(@JsonProperty("civs") HashMap<Civilization.Name, Civilization> civs,
-			@JsonProperty("turnNumber") int turnNumber, @JsonProperty("difficulty") Difficulty difficulty,
-			@JsonProperty("version") int version) {
+			@JsonProperty("turnNumber") int turnNumber, @JsonProperty("difficulty") Difficulty difficulty) {
 		this.civs = civs;
 		this.turnNumber = turnNumber;
-		this.version = version;
 		this.difficulty = difficulty;
 	}
 
 	public void addCivilization(Civilization.Name name) {
 		Civilization civ = new Civilization(name, difficulty);
 		this.civs.put(name, civ);
-		this.version++;
 	}
 
 	public void addCivilization(ArrayList<Civilization.Name> names) {

@@ -51,7 +51,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		this.tabNameSet = this.parent.getTabNames();
 		this.tabNames = new String[this.tabNameSet.size()];
 		tabNameSet.toArray(this.tabNames);
-		Arrays.sort(this.tabNames, new TabCompare());
+		Arrays.sort(this.tabNames, new TabComparator());
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -104,7 +104,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 	 * @author Walter Kolczynski
 	 *
 	 */
-	public static class TabCompare implements Comparator<String> {
+	public static class TabComparator implements Comparator<String> {
 
 		final static private Hashtable<String, Integer> SORT_ORDER;
 
@@ -150,6 +150,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 				return;
 		}
 		// Add all the tabs in the list to the tabbed pane
+		newTabs.sort(new TabComparator());
 		for (String tabName : newTabs) {
 			// Remove leading star now, since we don't want it in the tab name
 			if (tabName.startsWith("*")) {

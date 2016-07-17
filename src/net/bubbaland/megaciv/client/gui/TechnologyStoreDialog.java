@@ -315,7 +315,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			}
 
 			this.dialog = new BubbaDialog(this.controller,
-					"Select Additional Credits for " + Game.capitalizeFirst(techName), this, JOptionPane.PLAIN_MESSAGE);
+					"Select Additional Credits for " + Game.capitalizeFirst(techName) + " (5 each)", this,
+					JOptionPane.PLAIN_MESSAGE);
 			this.dialog.setModal(true);
 			this.dialog.setVisible(true);
 		}
