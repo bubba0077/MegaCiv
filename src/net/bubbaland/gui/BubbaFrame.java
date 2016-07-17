@@ -212,7 +212,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	public void windowClosing(WindowEvent e) {
 		final Window window = e.getWindow();
 		// Save the window position
-		this.controller.savePosition(window);
+		this.controller.savePositionAndSize(window);
 		if (window instanceof BubbaFrame) {
 			( (BubbaFrame) window ).saveProperties();
 			this.controller.unregisterWindow((BubbaFrame) window);

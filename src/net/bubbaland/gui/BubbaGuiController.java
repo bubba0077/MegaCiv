@@ -121,7 +121,7 @@ public abstract class BubbaGuiController {
 	 *            The window whose size and position is to be saved
 	 *
 	 */
-	public void savePosition(Window window) {
+	public void savePositionAndSize(Window window) {
 		final Rectangle r = window.getBounds();
 		final int x = (int) r.getX();
 		final int y = (int) r.getY();
@@ -134,6 +134,24 @@ public abstract class BubbaGuiController {
 		properties.setProperty(frameID + ".Y", y + "");
 		properties.setProperty(frameID + ".Width", width + "");
 		properties.setProperty(frameID + ".Height", height + "");
+	}
+
+	/**
+	 * Save the position and size of the window to file.
+	 *
+	 * @param window
+	 *            The window whose size and position is to be saved
+	 *
+	 */
+	public void savePosition(Window window) {
+		final Rectangle r = window.getBounds();
+		final int x = (int) r.getX();
+		final int y = (int) r.getY();
+
+		final String frameID = window.getName();
+
+		properties.setProperty(frameID + ".X", x + "");
+		properties.setProperty(frameID + ".Y", y + "");
 	}
 
 	/**
@@ -208,7 +226,7 @@ public abstract class BubbaGuiController {
 		}
 		for (BubbaFrame window : this.windowList) {
 			window.saveProperties();
-			this.savePosition(window);
+			this.savePositionAndSize(window);
 		}
 		this.savePropertyFile();
 		System.exit(0);
