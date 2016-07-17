@@ -65,7 +65,7 @@ public class Game implements Serializable {
 	public int lastAstStep() {
 		switch (difficulty) {
 			case BASIC:
-				return 16;
+				return 15;
 			case EXPERT:
 				return 16;
 		}
