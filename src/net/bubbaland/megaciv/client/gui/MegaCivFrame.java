@@ -3,20 +3,15 @@ package net.bubbaland.megaciv.client.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.bubbaland.gui.BubbaDragDropTabFrame;
 import net.bubbaland.megaciv.game.Civilization;
