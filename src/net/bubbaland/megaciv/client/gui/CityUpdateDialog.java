@@ -3,6 +3,7 @@ package net.bubbaland.megaciv.client.gui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -25,7 +26,7 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 	private final GuiClient								client;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 
-	private final int									N_ROWS				= 9;
+	private final static int							N_COLUMNS			= 2;
 
 	public CityUpdateDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller);
@@ -39,10 +40,12 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 		constraints.gridx = 0;
 
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
-		for (Civilization.Name name : this.client.getGame().getCivilizationNames()) {
+		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
+		for (int n = 0; n < civNames.size(); n++) {
+			Civilization.Name name = civNames.get(n);
 			CivPanel panel = new CivPanel(controller, name);
-			constraints.gridx = name.ordinal() / N_ROWS;
-			constraints.gridy = name.ordinal() % N_ROWS;
+			constraints.gridx = n % N_COLUMNS;
+			constraints.gridy = n / N_COLUMNS;
 			this.add(panel, constraints);
 			this.civPanels.put(name, panel);
 		}
