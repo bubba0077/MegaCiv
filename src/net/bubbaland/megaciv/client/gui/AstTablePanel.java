@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -186,7 +187,7 @@ public class AstTablePanel extends BubbaPanel {
 
 		Civilization firstCiv = sortedCivs.get(0);
 
-		for (Civilization.Age age : Civilization.Age.values()) {
+		for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
 			int ageStart = firstCiv.getAgeStart(age);
 			int ageEnd = this.client.getGame().lastAstStep();
 			Civilization.Age nextAge = age.nextAge();
@@ -204,11 +205,11 @@ public class AstTablePanel extends BubbaPanel {
 		for (Civilization civ : sortedCivs) {
 			Civilization.Name name = civ.getName();
 			RowPanel panel = this.civRows.get(sortedCivs.indexOf(civ));
-			for (Column col : Column.values()) {
+			for (Column col : EnumSet.allOf(Column.class)) {
 				JLabel label = panel.getLabel(col);
 				String text = "";
-				Color foregroundColor = this.controller.getCivForegroundColor(name);
-				Color backgroundColor = this.controller.getCivBackgroundColor(name);
+				Color foregroundColor = Civilization.FOREGROUND_COLORS.get(name);
+				Color backgroundColor = Civilization.BACKGROUND_COLORS.get(name);
 				switch (col) {
 					case AST:
 						text = civ.getAst() + "";
@@ -251,7 +252,7 @@ public class AstTablePanel extends BubbaPanel {
 		this.width = new HashMap<Column, Integer>();
 		this.fontSize = new HashMap<Column, Float>();
 
-		for (Column col : Column.values()) {
+		for (Column col : EnumSet.allOf(Column.class)) {
 			int width;
 			float fontSize;
 
@@ -294,7 +295,7 @@ public class AstTablePanel extends BubbaPanel {
 
 			this.colLabels = new HashMap<Column, JLabel>();
 
-			for (Column col : Column.values()) {
+			for (Column col : EnumSet.allOf(Column.class)) {
 				constraints.weightx = 0.0;
 				constraints.gridx = colData.get(col).getColumnLocation();
 
@@ -341,7 +342,7 @@ public class AstTablePanel extends BubbaPanel {
 			constraints.weightx = 0.0;
 
 			this.ageLabels = new HashMap<Civilization.Age, JLabel>();
-			for (Civilization.Age age : Civilization.Age.values()) {
+			for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
 				constraints.gridx = colData.get(Column.AST01).getColumnLocation() + age.ordinal();
 				this.ageLabels.put(age, this.enclosedLabelFactory("", constraints, JLabel.LEFT, JLabel.BOTTOM));
 			}
@@ -429,7 +430,7 @@ public class AstTablePanel extends BubbaPanel {
 
 			this.labels = new HashMap<Column, JLabel>();
 
-			for (Column col : Column.values()) {
+			for (Column col : EnumSet.allOf(Column.class)) {
 				int justification = JLabel.RIGHT;
 				switch (col) {
 					case CIV:

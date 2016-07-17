@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -15,6 +16,9 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+
+import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.Game;
 
 /**
  * Creates a dialog that allows the user to select a tab to be added to the tabbed pane.
@@ -107,6 +111,9 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		static {
 			SORT_ORDER = new Hashtable<String, Integer>(0);
 			SORT_ORDER.put("AST", 0);
+			for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+				SORT_ORDER.put(Game.capitalizeFirst(name.toString()), name.ordinal());
+			}
 		}
 
 		@Override

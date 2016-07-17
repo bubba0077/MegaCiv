@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.game;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -1118,19 +1119,27 @@ public enum Technology {
 	}, "(*) Acquire 10 additional points of credit tokens in any combination of colors.");
 
 	public enum Type {
-		SCIENCE, ARTS, CRAFTS, CIVICS, RELIGION
+		SCIENCE("green", Color.GREEN), ARTS("blue", Color.BLUE), CRAFTS("orange", Color.ORANGE), CIVICS("red",
+				Color.RED), RELIGION("yellow", Color.YELLOW);
+
+		public String getHtmlColor() {
+			return this.htmlColor;
+		}
+
+		public Color getColor() {
+			return this.color;
+		}
+
+		private final String	htmlColor;
+		private final Color		color;
+
+		private Type(String htmlColor, Color color) {
+			this.htmlColor = htmlColor;
+			this.color = color;
+		}
+
+
 	};
-
-	private final static HashMap<Technology.Type, String> COLOR;
-
-	static {
-		COLOR = new HashMap<Technology.Type, String>();
-		COLOR.put(Type.SCIENCE, "green");
-		COLOR.put(Type.ARTS, "blue");
-		COLOR.put(Type.CRAFTS, "orange");
-		COLOR.put(Type.CIVICS, "red");
-		COLOR.put(Type.RELIGION, "yellow");
-	}
 
 	@JsonProperty("name")
 	private final String							name;
@@ -1165,13 +1174,13 @@ public enum Technology {
 		return this.text;
 	}
 
-	public ArrayList<String> getColors() {
-		ArrayList<String> colors = new ArrayList<String>();
-		for (Type type : this.getTypes()) {
-			colors.add(COLOR.get(type));
-		}
-		return colors;
-	}
+	// public ArrayList<String> getColors() {
+	// ArrayList<String> colors = new ArrayList<String>();
+	// for (Type type : this.getTypes()) {
+	// colors.add(HTML_COLOR.get(type));
+	// }
+	// return colors;
+	// }
 
 	public ArrayList<Technology.Type> getTypes() {
 		return this.types;
@@ -1182,26 +1191,30 @@ public enum Technology {
 	}
 
 	public int getCost(Civilization civ) {
-		ArrayList<Technology> techs = civ.getTechs();
+		ArrayList<Technology> ownedTechs = civ.getTechs();
 		int cost = this.baseCost;
-		for (Technology tech : techs) {
+		for (Technology tech : ownedTechs) {
 			for (Technology.Type type : tech.typeCredits.keySet()) {
 				if (this.types.contains(type)) {
-					cost = cost - tech.typeCredits.get(type);
+					cost = cost - tech.getTypeCredit(type);
 				}
 			}
-			for (Technology tech2 : tech.techCredits.keySet()) {
-				if (this.equals(tech2)) {
-					cost = cost - tech.techCredits.get(tech2);
-				}
-			}
+			cost = cost - tech.getTechCredit(this);
 		}
-		for (Technology.Type type : civ.getTypeCredits().keySet()) {
+		for (Technology.Type type : civ.getExtraTypeCredits().keySet()) {
 			if (this.types.contains(type)) {
-				cost = cost - civ.getTypeCredits().get(type);
+				cost = cost - civ.getExtraTypeCredits().get(type);
 			}
 		}
 		return Math.max(cost, 0);
+	}
+
+	public int getTechCredit(Technology tech) {
+		return this.techCredits.containsKey(tech) ? this.techCredits.get(tech) : 0;
+	}
+
+	public int getTypeCredit(Type type) {
+		return this.typeCredits.containsKey(type) ? this.typeCredits.get(type) : 0;
 	}
 
 	public int getVP() {
@@ -1211,7 +1224,7 @@ public enum Technology {
 	public String toFullString() {
 		String s = this.name + "\n";
 		for (Technology.Type t : this.types) {
-			s += t.toString() + " (" + COLOR.get(t) + ") ";
+			s += t.toString() + " (" + t.getHtmlColor() + ") ";
 		}
 		s += "\n";
 		s += "Base Cost: " + this.baseCost + "   VP: " + this.vp + "\n";

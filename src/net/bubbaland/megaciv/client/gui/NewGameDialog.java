@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
@@ -127,7 +128,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		constraints.weightx = 0.5;
 		constraints.weighty = 1.0;
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
-		for (Civilization.Name name : Civilization.Name.values()) {
+		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
 			constraints.gridy = 4 + name.ordinal() / 2;
 			CivPanel panel = new CivPanel(controller, name);
@@ -171,7 +172,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		ArrayList<Civilization.Name> startingCivs = Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
 
-		for (Civilization.Name name : Civilization.Name.values()) {
+		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			CivPanel panel = this.civPanels.get(name);
 			panel.setSelected(startingCivs.contains(name));
 		}
@@ -187,7 +188,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 				break;
 			case "Custom":
 				boolean isCustom = ( (JToggleButton) event.getSource() ).isSelected();
-				for (Civilization.Name name : Civilization.Name.values()) {
+				for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 					this.civPanels.get(name).setEnabled(isCustom);
 				}
 				this.nCivSpinner.setEnabled(!isCustom);

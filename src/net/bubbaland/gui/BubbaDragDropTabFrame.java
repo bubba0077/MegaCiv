@@ -9,12 +9,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
 
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.bubbaland.gui.BubbaDragDropTabFrame.TabInformation;
 
 public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener, ChangeListener {
 
@@ -137,8 +140,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
-		return this.tabInformationHash.get(tabType).getTabClass()
-				.getConstructor(BubbaGuiController.class, BubbaFrame.class).newInstance(this.controller, this);
+		TabInformation tabInfo = this.tabInformationHash.get(tabType);
+		return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses()).newInstance(tabInfo.getArguments());
 	}
 
 	/**
@@ -154,11 +157,24 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ActionListener,
 
 		private final Class<BubbaMainPanel>	tabClass;
 		private final String				tabDescription;
+		private final Class<?>[]			argumentClasses;
+		private final Object[]				arguments;
 
 		@SuppressWarnings("unchecked")
-		public TabInformation(String tabDescription, Class<?> tabClass) {
+		public TabInformation(String tabDescription, Class<? extends BubbaMainPanel> tabClass,
+				Class<?>[] argumentClasses, Object[] arguments) {
 			this.tabClass = (Class<BubbaMainPanel>) tabClass;
 			this.tabDescription = tabDescription;
+			this.argumentClasses = argumentClasses;
+			this.arguments = arguments;
+		}
+
+		public Class<?>[] getArgumentClasses() {
+			return this.argumentClasses;
+		}
+
+		public Object[] getArguments() {
+			return this.arguments;
 		}
 
 		public Class<BubbaMainPanel> getTabClass() {

@@ -1,12 +1,16 @@
 package net.bubbaland.megaciv.game;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +31,26 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	private static final long serialVersionUID = -9210563148479097901L;
 
 	public static enum Name {
-		MINOA, SABA, ASSYRIA, MAURYA, CELT, BABYLON, CARTHAGE, DRAVIDIA, HATTI, KUSHAN, ROME, PERSIA, IBERIA, NUBIA, HELLAS, INDUS, EGYPT, PARTHIA
+		MINOA, SABA, ASSYRIA, MAURYA, CELT, BABYLON, CARTHAGE, DRAVIDIA, HATTI, KUSHAN, ROME, PERSIA, IBERIA, NUBIA, HELLAS, INDUS, EGYPT, PARTHIA;
+
+		public final static HashSet<String> strings = new HashSet<String>() {
+			private static final long serialVersionUID = -4960803070653152009L;
+
+			{
+				for (Civilization.Name name : EnumSet.allOf(Name.class)) {
+					add(name.toString());
+				}
+			}
+		};
+
+		public static boolean contains(String s) {
+			for (String s1 : strings) {
+				if (s1.equalsIgnoreCase(s)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	public static enum Region {
@@ -59,15 +82,19 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public final static HashMap<Game.Difficulty, HashMap<Civilization.Age, AstRequirements>>			AGE_REQUIREMENTS;
 
 	public final static HashMap<Civilization.Name, AstTableData>										AST_TABLE;
+	public final static HashMap<Civilization.Name, Color>												FOREGROUND_COLORS,
+			BACKGROUND_COLORS;
 	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	DEFAULT_STARTING_CIVS;
 
 	public final static String																			CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
-
 
 	static {
 		AST_TABLE = new HashMap<Civilization.Name, AstTableData>();
 		DEFAULT_STARTING_CIVS = new HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>();
 		AGE_REQUIREMENTS = new HashMap<Game.Difficulty, HashMap<Civilization.Age, AstRequirements>>();
+
+		FOREGROUND_COLORS = new HashMap<Civilization.Name, Color>();
+		BACKGROUND_COLORS = new HashMap<Civilization.Name, Color>();
 
 		try {
 			final InputStream fileStream = Civilization.class.getResourceAsStream(CIV_CONSTANTS_FILENAME);
@@ -87,8 +114,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				final int astRank = Integer
 						.parseInt(civElement.getElementsByTagName("AstRank").item(0).getTextContent());
 
+
 				HashMap<Difficulty, HashMap<Age, Integer>> hash = new HashMap<Difficulty, HashMap<Age, Integer>>();
-				for (Difficulty difficulty : Game.Difficulty.values()) {
+				for (Difficulty difficulty : EnumSet.allOf(Game.Difficulty.class)) {
 					final Element civAstElement = (Element) civElement
 							.getElementsByTagName(Game.capitalizeFirst(difficulty.name())).item(0);
 					final int earlyBronzeStart = Integer
@@ -118,6 +146,17 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				}
 
 				AST_TABLE.put(name, new AstTableData(astRank, region, hash));
+
+				FOREGROUND_COLORS
+						.put(name,
+								new Color(new BigInteger(
+										civElement.getElementsByTagName("Foreground").item(0).getTextContent(), 16)
+												.intValue()));
+				BACKGROUND_COLORS
+						.put(name,
+								new Color(new BigInteger(
+										civElement.getElementsByTagName("Background").item(0).getTextContent(), 16)
+												.intValue()));
 			}
 
 			final Element startingCivElement = (Element) doc.getDocumentElement().getElementsByTagName("StartingCivs")
@@ -201,12 +240,20 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	@JsonProperty("techs")
 	private ArrayList<Technology>					techs;
 	@JsonProperty("typeCredits")
-	private final HashMap<Technology.Type, Integer>	typeCredits;
+	private final HashMap<Technology.Type, Integer>	extraTypeCredits;
 	@JsonProperty("difficulty")
 	private Difficulty								difficulty;
 
 	public Civilization(Name name, Difficulty difficulty) {
-		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology.Type, Integer>(), 0, difficulty);
+		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology.Type, Integer>() {
+			private static final long serialVersionUID = 6611228131955386821L;
+
+			{
+				for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+					put(type, 0);
+				}
+			}
+		}, 0, difficulty);
 	}
 
 	@JsonCreator
@@ -221,7 +268,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.nCities = nCities;
 		this.techs = techs;
 		this.astPosition = astPosition;
-		this.typeCredits = typeCredits;
+		this.extraTypeCredits = typeCredits;
 		this.difficulty = difficulty;
 
 	}
@@ -244,7 +291,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public Age getAge(int astStep) {
 		Age age = Age.STONE;
-		for (Age a : Age.values()) {
+		for (Age a : EnumSet.allOf(Age.class)) {
 			if (astStep >= this.getAgeStart(a)) {
 				age = a;
 			} else {
@@ -321,13 +368,21 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.player = player;
 	}
 
-	public HashMap<Technology.Type, Integer> getTypeCredits() {
-		return this.typeCredits;
+	public int getTypeCredit(Technology.Type type) {
+		int credit = this.extraTypeCredits.get(type);
+		for (Technology tech : this.techs) {
+			credit = credit + tech.getTypeCredit(type);
+		}
+		return credit;
+	}
+
+	public HashMap<Technology.Type, Integer> getExtraTypeCredits() {
+		return this.extraTypeCredits;
 	}
 
 	public void addTypeCredits(HashMap<Technology.Type, Integer> newCredits) {
 		for (Technology.Type type : newCredits.keySet()) {
-			this.typeCredits.put(type, this.typeCredits.get(type) + newCredits.get(type));
+			this.extraTypeCredits.put(type, this.extraTypeCredits.get(type) + newCredits.get(type));
 		}
 	}
 

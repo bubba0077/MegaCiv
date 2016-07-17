@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -72,7 +74,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
-		for (Technology tech : Technology.values()) {
+		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
 			checkbox.addChangeListener(this);
 
@@ -117,16 +119,24 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		this.updateTotalCost();
 
+		this.loadProperties();
+
 		this.frame.add(this);
 		this.frame.pack();
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
 	}
 
+	public void loadProperties() {
+		Properties props = this.controller.getProperties();
+
+
+	}
+
 	private void resetCheckboxes() {
 		Civilization civ = this.client.getGame().getCivilization((Name) this.civComboBox.getSelectedItem());
 		ArrayList<Technology> ownedTechs = civ.getTechs();
-		for (Technology tech : Technology.values()) {
+		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = this.techCheckboxes.get(tech);
 			boolean isOwned = ownedTechs.contains(tech);
 			checkbox.setSelected(isOwned);
@@ -138,8 +148,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				} else {
 					techString = techString + " (" + tech.getCost(civ) + ") ";
 				}
-				for (String color : tech.getColors()) {
-					techString = techString + "<span color=\"" + color + "\">•</span>";
+				for (Type type : tech.getTypes()) {
+					techString = techString + "<span color=\"" + type.getHtmlColor() + "\">•</span>";
 				}
 			}
 			techString = techString + "</html>";
@@ -151,7 +161,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		Civilization civ = this.client.getGame().getCivilization((Name) this.civComboBox.getSelectedItem());
 
 		HashMap<Technology, Integer> costs = new HashMap<Technology, Integer>();
-		for (Technology tech : Technology.values()) {
+		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = this.techCheckboxes.get(tech);
 			if (checkbox.isSelected() && checkbox.isEnabled()) {
 				costs.put(tech, tech.getCost(civ));
@@ -216,7 +226,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			case "Buy":
 				Civilization.Name civName = (Name) this.civComboBox.getSelectedItem();
 				ArrayList<Technology> newTechs = new ArrayList<Technology>();
-				for (Technology tech : Technology.values()) {
+				for (Technology tech : EnumSet.allOf(Technology.class)) {
 					JCheckBox checkbox = this.techCheckboxes.get(tech);
 					if (checkbox.isSelected() && checkbox.isEnabled()) {
 						newTechs.add(tech);
@@ -281,7 +291,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		public void windowClosed(WindowEvent event) {
 			HashMap<Type, Integer> credits = new HashMap<Type, Integer>();
-			for (Type type : Type.values()) {
+			for (Type type : EnumSet.allOf(Type.class)) {
 				credits.put(type, 0);
 			}
 			for (CreditRow row : this.creditRows) {
@@ -310,7 +320,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 				ButtonGroup group = new ButtonGroup();
 				this.buttons = new HashMap<JRadioButton, Type>();
-				for (Type type : Type.values()) {
+				for (Type type : EnumSet.allOf(Type.class)) {
 					constraints.gridx = type.ordinal();
 					JRadioButton button = new JRadioButton(Game.capitalizeFirst(type.toString()));
 					group.add(button);

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
+import java.util.EnumSet;
 import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
@@ -55,7 +56,7 @@ public class GuiController extends BubbaGuiController {
 			});
 		}
 
-		new NewGameDialog(this.client, this);
+		// new NewGameDialog(this.client, this);
 
 		// Create startup frames
 		new MegaCivFrame(this.client, this);
@@ -74,14 +75,6 @@ public class GuiController extends BubbaGuiController {
 
 	}
 
-	public Color getCivForegroundColor(Civilization.Name name) {
-		return this.civForegroundColors.get(name);
-	}
-
-	public Color getCivBackgroundColor(Civilization.Name name) {
-		return this.civBackgroundColors.get(name);
-	}
-
 	public Color getAstForegroundColor(Civilization.Age age) {
 		return this.astForegroundColors.get(age);
 	}
@@ -92,24 +85,9 @@ public class GuiController extends BubbaGuiController {
 
 	public void loadProperties(File file) {
 		super.loadProperties(file);
-		this.civForegroundColors = new HashMap<Civilization.Name, Color>();
-		this.civBackgroundColors = new HashMap<Civilization.Name, Color>();
-		for (Civilization.Name name : Civilization.Name.values()) {
-			// System.out.println(this.getClass().getSimpleName() + "Civilization." + name + ".ForegroundColor");
-			this.civForegroundColors.put(name,
-					new Color(new BigInteger(
-							this.getProperties().getProperty("Civilization." + name + ".ForegroundColor"), 16)
-									.intValue()));
-			this.civBackgroundColors.put(name,
-					new Color(new BigInteger(
-							this.getProperties().getProperty("Civilization." + name + ".BackgroundColor"), 16)
-									.intValue()));
-		}
 		this.astForegroundColors = new HashMap<Civilization.Age, Color>();
 		this.astBackgroundColors = new HashMap<Civilization.Age, Color>();
-		for (Civilization.Age age : Civilization.Age.values()) {
-			// System.out.println(this.getClass().getSimpleName() + " " + age + " "
-			// + this.getProperties().getProperty("AstTable." + age + ".BackgroundColor"));
+		for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
 			this.astForegroundColors
 					.put(age,
 							new Color(new BigInteger(
