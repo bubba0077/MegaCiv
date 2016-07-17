@@ -12,7 +12,7 @@ import java.util.Properties;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.bubbaland.gui.BubbaFrame;
+import net.bubbaland.gui.BubbaDnDTabbedPane;
 import net.bubbaland.gui.BubbaMainPanel;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
@@ -26,15 +26,17 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 	private final GuiClient			client;
 	private final Civilization.Name	name;
+	private final MegaCivFrame		frame;
 
 	private final HeaderPanel		headerPanel;
 	private final StatPanel			agePanel;
 	private final TechPanel			techPanel;
 
-	public CivInfoPanel(GuiClient client, GuiController controller, BubbaFrame frame, Civilization.Name name) {
+	public CivInfoPanel(GuiClient client, GuiController controller, MegaCivFrame frame, Civilization.Name name) {
 		super(controller, frame);
 		this.client = client;
 		this.name = name;
+		this.frame = frame;
 
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -327,11 +329,16 @@ public class CivInfoPanel extends BubbaMainPanel {
 		this.headerPanel.updateGui(forceUpdate);
 		this.agePanel.updateGui(forceUpdate);
 		this.techPanel.updateGui(forceUpdate);
+
+		BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
+		int index = tabbedPane.indexOfComponent(this);
+
+		this.frame.getTabbedPane().setForegroundAt(index, Civilization.FOREGROUND_COLORS.get(this.name));
+		this.frame.getTabbedPane().setBackgroundAt(index, Civilization.BACKGROUND_COLORS.get(this.name));
 	}
 
 	@Override
 	protected void loadProperties() {
-		// TODO Auto-generated method stub
 		this.headerPanel.loadProperties();
 		this.agePanel.loadProperties();
 		this.techPanel.loadProperties();

@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import net.bubbaland.gui.BubbaFrame;
 import net.bubbaland.gui.BubbaMainPanel;
 
 public class AstTabPanel extends BubbaMainPanel {
@@ -18,7 +17,7 @@ public class AstTabPanel extends BubbaMainPanel {
 
 	private final GuiClient			client;
 
-	public AstTabPanel(GuiClient client, GuiController controller, BubbaFrame frame) {
+	public AstTabPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
 		super(controller, frame);
 		if (client == null) {
 			System.out.println(this.getClass().getSimpleName() + "Creating " + this.getClass().getSimpleName()

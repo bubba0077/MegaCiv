@@ -13,7 +13,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import net.bubbaland.gui.BubbaDragDropTabFrame;
-import net.bubbaland.gui.BubbaFrame;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 
@@ -64,12 +63,12 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		super.initTabInfoHash();
 		this.tabInformationHash.put("AST",
 				new TabInformation("Panel showing AST", AstTabPanel.class,
-						new Class<?>[] { GuiClient.class, GuiController.class, BubbaFrame.class },
+						new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class },
 						new Object[] { this.client, this.controller, this }));
 		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			this.tabInformationHash.put(Game.capitalizeFirst(name.toString()),
 					new TabInformation(name.toString() + " Information", CivInfoPanel.class,
-							new Class<?>[] { GuiClient.class, GuiController.class, BubbaFrame.class,
+							new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class,
 									Civilization.Name.class },
 							new Object[] { this.client, this.controller, this, name }));
 		}
@@ -89,8 +88,6 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 			default:
 				this.log("Unknown action command " + command + "received by " + this.getClass().getSimpleName());
 		}
-
-
 	}
 
 }
