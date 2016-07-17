@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -47,18 +48,21 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.weightx = 1.0;
+		constraints.weightx = 3.0;
 		constraints.weighty = 0.0;
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridheight = 2;
-		this.add(new JLabel("Number of civilizations:"), constraints);
+		JLabel label = new JLabel("Number of civilizations:");
+		label.setFont(label.getFont().deriveFont(18.0f));
+		this.add(label, constraints);
 
 		constraints.weightx = 0.0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		this.nCivSpinner = new JSpinner(new SpinnerNumberModel(5, 5, 18, 1));
+		this.nCivSpinner.setFont(this.nCivSpinner.getFont().deriveFont(24.0f));
 		this.nCivSpinner.addChangeListener(this);
 		this.add(this.nCivSpinner, constraints);
 		constraints.gridheight = 1;
@@ -85,6 +89,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		ButtonGroup difficultyGroup = new ButtonGroup();
 
+		constraints.weightx = 1.0;
 		constraints.gridx = 3;
 		constraints.gridy = 0;
 		this.basicRadioButton = new JRadioButton("Basic");
@@ -103,12 +108,6 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		difficultyGroup.add(this.basicRadioButton);
 		difficultyGroup.add(this.expertRadioButton);
 
-		// constraints.weightx = 1.0;
-		// constraints.gridx = 2;
-		// constraints.gridy = 1;
-		// this.add(new JPanel(), constraints);
-
-		constraints.weightx = 1.0;
 		constraints.gridx = 5;
 		constraints.gridy = 1;
 		this.customButton = new JToggleButton("Custom Setup");
@@ -116,13 +115,21 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.customButton.addActionListener(this);
 		this.add(this.customButton, constraints);
 
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 6;
+		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+		separator.setPreferredSize(new Dimension(10, 10));
+		this.add(separator, constraints);
+		constraints.gridwidth = 1;
+
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.5;
 		constraints.weighty = 1.0;
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		for (Civilization.Name name : Civilization.Name.values()) {
 			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
-			constraints.gridy = 3 + name.ordinal() / 2;
+			constraints.gridy = 4 + name.ordinal() / 2;
 			CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.put(name, panel);
 			this.add(panel, constraints);

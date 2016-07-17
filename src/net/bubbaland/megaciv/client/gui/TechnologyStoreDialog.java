@@ -5,22 +5,30 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.bubbaland.gui.BubbaDialog;
+import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.messages.AdditionalCreditMessage;
 import net.bubbaland.megaciv.client.messages.TechPurchaseMessage;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Name;
+import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
 
@@ -125,7 +133,11 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			checkbox.setEnabled(!isOwned);
 			String techString = "<html>" + Game.capitalizeFirst(tech.toString());
 			if (!isOwned) {
-				techString = techString + " (" + tech.getCost(civ) + ") ";
+				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
+					techString = techString + " (" + tech.getCost(civ) + "*) ";
+				} else {
+					techString = techString + " (" + tech.getCost(civ) + ") ";
+				}
 				for (String color : tech.getColors()) {
 					techString = techString + "<span color=\"" + color + "\">•</span>";
 				}
@@ -137,12 +149,52 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private void updateTotalCost() {
 		Civilization civ = this.client.getGame().getCivilization((Name) this.civComboBox.getSelectedItem());
-		int cost = 0;
+
+		HashMap<Technology, Integer> costs = new HashMap<Technology, Integer>();
 		for (Technology tech : Technology.values()) {
 			JCheckBox checkbox = this.techCheckboxes.get(tech);
 			if (checkbox.isSelected() && checkbox.isEnabled()) {
-				cost = cost + tech.getCost(civ);
+				costs.put(tech, tech.getCost(civ));
 			}
+		}
+
+		if (costs.containsKey(Technology.ANATOMY)) {
+			costs.remove(Technology.ANATOMY);
+			Technology freeTech = null;
+			for (Technology tech : costs.keySet()) {
+				if (tech.getTypes().contains(Type.SCIENCE) && tech.getBaseCost() < 100
+						&& ( freeTech == null || tech.getBaseCost() > freeTech.getBaseCost() )) {
+					freeTech = tech;
+				}
+			}
+			if (freeTech != null) {
+				costs.remove(freeTech);
+			}
+			costs.put(Technology.ANATOMY, Technology.ANATOMY.getCost(civ));
+		}
+
+		if (costs.containsKey(Technology.LIBRARY)) {
+			costs.remove(Technology.LIBRARY);
+			Technology discountedTech = null;
+			int discount = 0;
+			for (Technology tech : costs.keySet()) {
+				if (discountedTech == null || tech.getCost(civ) > discount) {
+					discountedTech = tech;
+					discount = Math.min(discountedTech.getCost(civ), 40);
+				}
+				if (discount == 40) {
+					break;
+				}
+			}
+			if (discountedTech != null) {
+				costs.put(discountedTech, discountedTech.getCost(civ) - discount);
+			}
+			costs.put(Technology.LIBRARY, Technology.LIBRARY.getCost(civ));
+		}
+
+		int cost = 0;
+		for (int c : costs.values()) {
+			cost = cost + c;
 		}
 		this.buyNextButton.setText("Buy   ( " + String.format("%04d", cost) + " )");
 		if (cost > 0) {
@@ -170,6 +222,12 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 						newTechs.add(tech);
 					}
 				}
+				if (newTechs.contains(Technology.WRITTEN_RECORD)) {
+					new AdditionalCreditDialog(controller, civName, Technology.WRITTEN_RECORD.toString(), 2);
+				}
+				if (newTechs.contains(Technology.MONUMENT)) {
+					new AdditionalCreditDialog(controller, civName, Technology.MONUMENT.toString(), 4);
+				}
 				this.client.sendMessage(new TechPurchaseMessage(civName, newTechs));
 			case "Next":
 				int nextIndex = this.civComboBox.getSelectedIndex() + 1;
@@ -182,6 +240,96 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			case "Reset":
 				this.resetCheckboxes();
 		}
+	}
+
+	private class AdditionalCreditDialog extends BubbaDialogPanel {
+
+		private static final long			serialVersionUID	= 1L;
+
+		private final String				techName;
+		private final Civilization.Name		civName;
+		private final ArrayList<CreditRow>	creditRows;
+
+		public AdditionalCreditDialog(BubbaGuiController controller, Civilization.Name civName, String techName,
+				int nCreditsIn5s) {
+			super(controller);
+
+			this.civName = civName;
+			this.techName = techName;
+
+			final GridBagConstraints constraints = new GridBagConstraints();
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.anchor = GridBagConstraints.CENTER;
+
+			constraints.weightx = 1.0;
+			constraints.weighty = 1.0;
+			constraints.gridx = 0;
+
+			this.creditRows = new ArrayList<CreditRow>();
+			for (int y = 0; y < nCreditsIn5s; y++) {
+				constraints.gridy = y;
+				CreditRow row = new CreditRow(controller);
+				this.creditRows.add(row);
+				this.add(row, constraints);
+			}
+
+			this.dialog = new BubbaDialog(this.controller,
+					"Select Additional Credits for " + Game.capitalizeFirst(techName), this, JOptionPane.PLAIN_MESSAGE);
+			this.dialog.setModal(true);
+			this.dialog.setVisible(true);
+		}
+
+		public void windowClosed(WindowEvent event) {
+			HashMap<Type, Integer> credits = new HashMap<Type, Integer>();
+			for (Type type : Type.values()) {
+				credits.put(type, 0);
+			}
+			for (CreditRow row : this.creditRows) {
+				Type type = row.getSelectedType();
+				credits.put(type, credits.get(type) + 5);
+			}
+			TechnologyStoreDialog.this.client.sendMessage(new AdditionalCreditMessage(this.civName, credits));
+			TechnologyStoreDialog.this.client.log("Selected additional credits for " + this.techName + ": " + credits);
+		}
+
+		private class CreditRow extends BubbaPanel {
+
+			private static final long					serialVersionUID	= 1L;
+
+			private final HashMap<JRadioButton, Type>	buttons;
+
+			public CreditRow(BubbaGuiController controller) {
+				super(controller, new GridBagLayout());
+				final GridBagConstraints constraints = new GridBagConstraints();
+				constraints.fill = GridBagConstraints.BOTH;
+				constraints.anchor = GridBagConstraints.CENTER;
+
+				constraints.weightx = 1.0;
+				constraints.weighty = 1.0;
+				constraints.gridy = 0;
+
+				ButtonGroup group = new ButtonGroup();
+				this.buttons = new HashMap<JRadioButton, Type>();
+				for (Type type : Type.values()) {
+					constraints.gridx = type.ordinal();
+					JRadioButton button = new JRadioButton(Game.capitalizeFirst(type.toString()));
+					group.add(button);
+					this.buttons.put(button, type);
+					this.add(button, constraints);
+				}
+			}
+
+			public Type getSelectedType() {
+				for (JRadioButton button : this.buttons.keySet()) {
+					if (button.isSelected()) {
+						return this.buttons.get(button);
+					}
+				}
+				return null;
+			}
+
+		}
+
 
 	}
 }

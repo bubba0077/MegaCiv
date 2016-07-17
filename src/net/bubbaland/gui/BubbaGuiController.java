@@ -16,8 +16,6 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
-import net.bubbaland.megaciv.client.GameClient;
-
 public abstract class BubbaGuiController {
 
 	protected Properties					properties;
@@ -72,7 +70,7 @@ public abstract class BubbaGuiController {
 	 */
 	public void loadDefaults() {
 		properties.clear();
-		final InputStream defaults = GameClient.class.getResourceAsStream(defaultsFilename);
+		final InputStream defaults = this.getClass().getResourceAsStream(defaultsFilename);
 		try {
 			properties.load(defaults);
 		} catch (final IOException e) {
