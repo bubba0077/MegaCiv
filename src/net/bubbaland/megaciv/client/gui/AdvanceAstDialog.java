@@ -1,13 +1,17 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -44,11 +48,9 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		constraints.weighty = 0.0;
 
 		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
-		for (int n = 0; n < civNames.size(); n++) {
-			Civilization.Name name = civNames.get(n);
-			constraints.gridx = n % N_COLUMNS;
-			constraints.gridy = n / N_COLUMNS;
-
+		for (Civilization.Name name : civNames) {
+			constraints.gridx = name.ordinal() % N_COLUMNS;
+			constraints.gridy = name.ordinal() / N_COLUMNS;
 			CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.add(panel);
 			this.add(panel, constraints);
@@ -90,23 +92,33 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		private static final long		serialVersionUID	= -487711727769927447L;
 
 		private final JCheckBox			checkbox;
-		private final JTextArea			textArea;
+		private final JTextPane			textArea;
 
 		private final Civilization.Name	name;
 
 		public CivPanel(BubbaGuiController controller, Civilization.Name name) {
-			super(controller);
+			super(controller, new GridBagLayout());
 			this.name = name;
+
+			Properties props = controller.getProperties();
+			int civHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Height"));
+			int civWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Width"));
+			float civFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Civ.FontSize"));
+
+			int reqHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Height"));
+			int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
+			float reqFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Req.FontSize"));
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
-			constraints.anchor = GridBagConstraints.CENTER;
-			constraints.weightx = 1.0;
-			constraints.weighty = 1.0;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			constraints.weightx = 0.0;
+			constraints.weighty = 0.0;
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
+			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, null, civFontSize);
 			this.add(this.checkbox, constraints);
 
 			Game game = AdvanceAstDialog.this.client.getGame();
@@ -115,11 +127,15 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 
 			String astReqText = Civilization.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
 
+			constraints.weightx = 1.0;
+			constraints.weighty = 1.0;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			this.textArea = new JTextArea(astReqText);
+			constraints.gridheight = 2;
+			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, null, null, constraints,
+					reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
-			this.add(this.textArea, constraints);
 		}
 
 		public Civilization.Name getCivName() {

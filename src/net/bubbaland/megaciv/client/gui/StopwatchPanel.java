@@ -133,7 +133,6 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 						BEEP.play();
 						break;
 					case 0:
-						// this.timer.stop();
 						ALARM.play();
 						break;
 					case -150:

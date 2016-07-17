@@ -43,11 +43,10 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
-		for (int n = 0; n < civNames.size(); n++) {
-			Civilization.Name name = civNames.get(n);
+		for (Civilization.Name name : civNames) {
 			CivPanel panel = new CivPanel(controller, name);
-			constraints.gridx = n % N_COLUMNS;
-			constraints.gridy = n / N_COLUMNS;
+			constraints.gridx = name.ordinal() % N_COLUMNS;
+			constraints.gridy = name.ordinal() / N_COLUMNS;
 			this.add(panel, constraints);
 			this.civPanels.put(name, panel);
 		}

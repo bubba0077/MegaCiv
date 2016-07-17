@@ -129,57 +129,6 @@ public abstract class BubbaPanel extends JPanel {
 	 *
 	 * @return The text pane inside the scroll pane
 	 */
-	public JTextPane hyperlinkedTextPaneFactory(int rNumber, String string, GridBagConstraints constraints,
-			int horizontalScroll, int verticalScroll) {
-
-		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
-		pane.setBorder(BorderFactory.createEmptyBorder());
-		pane.setEnabled(false);
-		this.add(pane, constraints);
-		final JTextPane textPane = new JTextPane(new DefaultStyledDocument());
-		textPane.setContentType("text/html");
-		textPane.addHyperlinkListener(new HyperlinkListener() {
-			@Override
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-					try {
-						Desktop.getDesktop().browse(e.getURL().toURI());
-					} catch (IOException | URISyntaxException exception) {
-					}
-				} else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-					BubbaPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				} else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-					BubbaPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-
-			}
-		});
-		textPane.setText(string);
-		textPane.setBorder(BorderFactory.createEmptyBorder());
-		final DefaultCaret caret = (DefaultCaret) textPane.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-		pane.setViewportView(textPane);
-
-		return textPane;
-	}
-
-	/**
-	 * Adds a word-wrapping text pane inside of a scrollable pane to the panel that can process hyperlink clicks. A
-	 * reference to the text pane is returned so the text can be read/changed later.
-	 *
-	 * @param client
-	 *            TODO
-	 * @param string
-	 *            The initial string for the text pane
-	 * @param constraints
-	 *            The GridBag constraints
-	 * @param horizontalScroll
-	 *            The horizontal scroll bar policy (JScrollPane constants)
-	 * @param verticalScroll
-	 *            The vertical scroll bar policy (JScrollPane constants)
-	 *
-	 * @return The text pane inside the scroll pane
-	 */
 	public JTextPane scrollableTextPaneFactory(String string, GridBagConstraints constraints, int horizontalScroll,
 			int verticalScroll) {
 

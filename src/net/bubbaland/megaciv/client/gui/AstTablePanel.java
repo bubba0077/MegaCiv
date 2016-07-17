@@ -20,7 +20,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import net.bubbaland.gui.BubbaGuiController;
