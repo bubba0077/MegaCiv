@@ -42,7 +42,7 @@ public class AstTablePanel extends BubbaPanel {
 																						put(Column.CIV,
 																								Civilization.SortOption.AST);
 																						put(Column.POPULATION,
-																								Civilization.SortOption.POPULATION);
+																								Civilization.SortOption.MOVEMENT);
 																						put(Column.CITIES,
 																								Civilization.SortOption.CITIES);
 																						// put(null,
@@ -50,6 +50,8 @@ public class AstTablePanel extends BubbaPanel {
 																						// );
 																						put(Column.VP,
 																								Civilization.SortOption.VP);
+																						put(Column.AST01,
+																								Civilization.SortOption.AST_POSITION);
 																					}
 																				};
 

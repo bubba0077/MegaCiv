@@ -13,6 +13,7 @@ import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.ClientMessage;
 import net.bubbaland.megaciv.messages.ServerMessage;
 
+@SuppressWarnings("unused")
 @ServerEndpoint(decoders = { ClientMessage.MessageDecoder.class }, encoders = {
 		ServerMessage.MessageEncoder.class }, value = "/")
 public class ClientMessageReceiver {

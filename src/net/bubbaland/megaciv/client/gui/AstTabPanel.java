@@ -15,16 +15,12 @@ public class AstTabPanel extends BubbaMainPanel {
 	private final AstTablePanel		astTablePanel;
 	private final StopwatchPanel	countdownPanel;
 
-	private final GuiClient			client;
-
 	public AstTabPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
 		super(controller, frame);
 		if (client == null) {
 			System.out.println(this.getClass().getSimpleName() + "Creating " + this.getClass().getSimpleName()
 					+ " with null client!");
 		}
-		this.client = client;
-
 		this.countdownPanel = new StopwatchPanel(client, controller);
 		this.controlPanel = new ControlsPanel(client, controller);
 		this.astTablePanel = new AstTablePanel(client, controller);

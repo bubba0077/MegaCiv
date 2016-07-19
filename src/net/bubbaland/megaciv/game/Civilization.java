@@ -72,7 +72,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public static enum SortOption {
-		AST, POPULATION, CITIES, AST_POSITION, VP;
+		AST, POPULATION, CITIES, AST_POSITION, VP, MOVEMENT;
 	}
 
 	public static enum SortDirection {
@@ -360,6 +360,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return this.techs;
 	}
 
+	public boolean hasTech(Technology tech) {
+		return this.techs.contains(tech);
+	}
+
 	public String getPlayer() {
 		return this.player;
 	}
@@ -407,6 +411,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				return sortByAstPosition(civs, direction);
 			case VP:
 				return sortByVP(civs, direction);
+			case MOVEMENT:
+				return sortByMovement(civs, direction);
 		}
 		return null;
 	}
@@ -421,6 +427,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public static ArrayList<Civilization> sortByCities(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CityComparator());
+		if (direction == SortDirection.DESCENDING) {
+			Collections.reverse(civs);
+		}
+		return civs;
+	}
+
+	public static ArrayList<Civilization> sortByMovement(ArrayList<Civilization> civs, SortDirection direction) {
+		Collections.sort(civs, new MovementComparator());
 		if (direction == SortDirection.DESCENDING) {
 			Collections.reverse(civs);
 		}
@@ -518,6 +532,20 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
 			return Integer.compare(civ1.astPosition, civ2.astPosition);
 		}
+	}
+
+	private final static class MovementComparator implements Comparator<Civilization> {
+		public int compare(Civilization civ1, Civilization civ2) {
+			boolean civ1Military = civ1.hasTech(Technology.MILITARY);
+			boolean civ2Military = civ2.hasTech(Technology.MILITARY);
+
+			if (civ1Military ^ civ2Military) {
+				return civ1Military ? -1 : 1;
+			} else {
+				return new CensusComparator().compare(civ1, civ2);
+			}
+		}
+
 	}
 
 	@Override
