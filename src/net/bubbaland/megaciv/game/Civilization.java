@@ -500,7 +500,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	private final static class CensusComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
-			int result = Integer.compare(civ1.getPopulation(), civ2.getPopulation());
+			int result = -Integer.compare(civ1.getPopulation(), civ2.getPopulation());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
 			}
@@ -510,7 +510,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	private final static class VpComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
-			int result = Integer.compare(civ1.getVP(), civ2.getVP());
+			int result = -Integer.compare(civ1.getVP(), civ2.getVP());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
 			}
@@ -520,7 +520,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	private final static class CityComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
-			int result = Integer.compare(civ1.getCityCount(), civ2.getCityCount());
+			int result = -Integer.compare(civ1.getCityCount(), civ2.getCityCount());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
 			}
@@ -530,7 +530,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	private final static class AstPositionComparator implements Comparator<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
-			return Integer.compare(civ1.astPosition, civ2.astPosition);
+			int result = -Integer.compare(civ1.astPosition, civ2.astPosition);
+			if (result == 0) {
+				result = civ1.compareTo(civ2);
+			}
+			return result;
 		}
 	}
 
@@ -540,12 +544,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			boolean civ2Military = civ2.hasTech(Technology.MILITARY);
 
 			if (civ1Military ^ civ2Military) {
-				return civ1Military ? -1 : 1;
+				return civ1Military ? 1 : -1;
 			} else {
 				return new CensusComparator().compare(civ1, civ2);
 			}
 		}
-
 	}
 
 	@Override

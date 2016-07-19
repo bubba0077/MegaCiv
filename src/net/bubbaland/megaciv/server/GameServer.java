@@ -78,7 +78,6 @@ public class GameServer extends Server {
 			case "AssignPlayerMessage": {
 				Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
 				String player = ( (AssignPlayerMessage) message ).getPlayer();
-				System.out.println(civ == null);
 				civ.setPlayer(player);
 				this.log(user + "assigned " + civ.getName() + " to " + player);
 				this.broadcastMessage(new GameDataMessage(this.game));
@@ -87,7 +86,7 @@ public class GameServer extends Server {
 			case "CensusMessage":
 				HashMap<Civilization.Name, Integer> census = ( (CensusMessage) message ).getCensus();
 				for (Civilization.Name name : census.keySet()) {
-					System.out.println(name + " " + census.get(name) + " " + this.game.getCivilization(name));
+					this.log(name + " " + census.get(name) + " " + this.game.getCivilization(name));
 					this.game.getCivilization(name).setPopulation(census.get(name));
 				}
 				this.broadcastMessage(new GameDataMessage(this.game));
@@ -115,7 +114,6 @@ public class GameServer extends Server {
 			case "AdvanceAstMessage":
 				final HashMap<Civilization.Name, Boolean> advanceAst = ( (AdvanceAstMessage) message ).getAdvanceAst();
 				for (Civilization.Name name : advanceAst.keySet()) {
-					System.out.println(advanceAst.get(name).booleanValue());
 					if (advanceAst.get(name).booleanValue()) {
 						this.game.getCivilization(name).incrementAST();
 					}
