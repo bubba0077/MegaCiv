@@ -1,7 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -18,12 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.ListCellRenderer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -382,34 +378,5 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			}
 
 		}
-	}
-
-	private class CivilizationCellRenderer implements ListCellRenderer<Civilization.Name> {
-		private final ListCellRenderer<? super Name> internal;
-
-		public CivilizationCellRenderer(ListCellRenderer<? super Name> listCellRenderer) {
-			this.internal = listCellRenderer;
-		}
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends Name> list, Name value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			final Component renderer = this.internal.getListCellRendererComponent(list, value, index, isSelected,
-					cellHasFocus);
-			if (renderer instanceof JLabel) {
-				Color foreground = Civilization.FOREGROUND_COLORS.get(value);
-				Color background = Civilization.BACKGROUND_COLORS.get(value);
-				if (isSelected) {
-					( (JLabel) renderer ).setForeground(background);
-					( (JLabel) renderer ).setBackground(foreground);
-				} else {
-					( (JLabel) renderer ).setForeground(foreground);
-					( (JLabel) renderer ).setBackground(background);
-				}
-
-			}
-			return renderer;
-		}
-
 	}
 }

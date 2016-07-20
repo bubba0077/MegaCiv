@@ -56,6 +56,10 @@ public class Game implements Serializable {
 		this.civs.put(name, civ);
 	}
 
+	public void retireCivilization(Civilization.Name name) {
+		this.civs.remove(name);
+	}
+
 	public void addCivilization(ArrayList<Civilization.Name> names) {
 		for (Civilization.Name name : names) {
 			this.addCivilization(name);

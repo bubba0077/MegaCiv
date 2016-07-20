@@ -121,7 +121,7 @@ public class GameServer extends Server {
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
-			case "AdditionalCreditMessage":
+			case "AdditionalCreditMessage": {
 				HashMap<Type, Integer> credits = ( (AdditionalCreditMessage) message ).getCredits();
 				Civilization.Name name = ( (AdditionalCreditMessage) message ).getCivName();
 				Civilization civ = this.game.getCivilization(name);
@@ -129,11 +129,16 @@ public class GameServer extends Server {
 				this.log("Additional credits add to " + name.toString() + " by " + user + ": " + credits);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
+			}
 			case "LoadGameMessage":
 				this.game = ( (LoadGameMessage) message ).getGame();
 				this.log("Game loaded from save by " + user);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
+			case "RetireMessage":
+				Civilization.Name name = ( (RetireMessage) message ).getCivName();
+				this.game.retireCivilization(name);
+				this.log(name.toString() + " has retired!");
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
 		}

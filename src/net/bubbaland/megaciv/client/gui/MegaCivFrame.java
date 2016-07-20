@@ -132,7 +132,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				break;
 			}
 			case "Retire":
-				// TODO
+				new RetireDialog(this.client, this.controller);
 				break;
 			case "Load Defaults":
 				this.controller.loadDefaults();
