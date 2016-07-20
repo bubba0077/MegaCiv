@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -20,6 +23,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.border.BevelBorder;
 
 import net.bubbaland.gui.BubbaGuiController;
@@ -167,6 +172,7 @@ public class AstTablePanel extends BubbaPanel {
 		for (Civilization civ : sortedCivs) {
 			Civilization.Name name = civ.getName();
 			RowPanel panel = this.civRows.get(sortedCivs.indexOf(civ));
+			panel.setName(name);
 			for (Column col : EnumSet.allOf(Column.class)) {
 				JLabel label = panel.getLabel(col);
 				String text = "";
@@ -404,16 +410,26 @@ public class AstTablePanel extends BubbaPanel {
 
 	}
 
-	private class RowPanel extends BubbaPanel {
+	private class RowPanel extends BubbaPanel implements ActionListener {
 
 		private static final long				serialVersionUID	= 1L;
 
 		private final HashMap<Column, JLabel>	labels;
+		private final JPopupMenu				contextMenu;
+
+		private Civilization.Name				name;
 
 		public RowPanel(BubbaGuiController controller) {
 			super(controller, new GridBagLayout());
 
 			this.setBackground(Color.RED);
+
+			this.contextMenu = new JPopupMenu();
+			JMenuItem editItem = new JMenuItem("Edit");
+			editItem.setActionCommand("Edit");
+			editItem.addActionListener(this);
+			this.contextMenu.add(editItem);
+			this.add(this.contextMenu);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -446,6 +462,7 @@ public class AstTablePanel extends BubbaPanel {
 				setLabelProperties(label, 100, 20, Color.BLACK, Color.WHITE, (float) 14.0);
 				switch (col) {
 					case CIV:
+						label.add(this.contextMenu);
 					case POPULATION:
 					case CITIES:
 						// case AST:
@@ -455,6 +472,7 @@ public class AstTablePanel extends BubbaPanel {
 					default:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				}
+				label.addMouseListener(new PopupListener(this.contextMenu));
 				this.labels.put(col, label);
 			}
 
@@ -471,6 +489,56 @@ public class AstTablePanel extends BubbaPanel {
 
 		public JLabel getLabel(Column col) {
 			return labels.get(col);
+		}
+
+		public void setName(Civilization.Name name) {
+			this.name = name;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			String command = event.getActionCommand();
+			switch (command) {
+				case "Edit":
+					new CivEditPanel(AstTablePanel.this.client, this.controller, this.name);
+					break;
+				default:
+					AstTablePanel.this.client.log("ActionCommand " + command + " not implemented in "
+							+ this.getClass().getSimpleName() + " yet!");
+			}
+
+		}
+
+		private class PopupListener extends MouseAdapter {
+
+			private final JPopupMenu menu;
+
+			public PopupListener(JPopupMenu menu) {
+				this.menu = menu;
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				this.checkForPopup(e);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				this.checkForPopup(e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				this.checkForPopup(e);
+			}
+
+			private void checkForPopup(MouseEvent event) {
+				final JComponent source = (JComponent) event.getSource();
+				if (event.isPopupTrigger()) {
+					this.menu.show(source, event.getX(), event.getY());
+				}
+			}
+
 		}
 	}
 

@@ -92,6 +92,10 @@ public class Game implements Serializable {
 		return this.civs.get(name);
 	}
 
+	public void setCivilization(Civilization civ) {
+		this.civs.put(civ.getName(), civ);
+	}
+
 	public static String capitalizeFirst(String str) {
 		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}

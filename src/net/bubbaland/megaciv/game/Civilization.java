@@ -356,6 +356,28 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.techs.add(newTech);
 	}
 
+	public Civilization clone() {
+		ArrayList<Technology> techs = new ArrayList<Technology>() {
+			private static final long serialVersionUID = 577732084086917712L;
+
+			{
+				for (Technology tech : Civilization.this.techs) {
+					add(tech);
+				}
+			}
+		};
+		HashMap<Technology.Type, Integer> extraTypeCredits = new HashMap<Technology.Type, Integer>() {
+			private static final long serialVersionUID = 1L;
+			{
+				for (Technology.Type type : Technology.Type.values()) {
+					put(type, Civilization.this.extraTypeCredits.get(type));
+				}
+			}
+		};
+		return new Civilization(this.name, this.player, this.population, this.nCities, techs, extraTypeCredits,
+				this.astPosition, this.difficulty);
+	}
+
 	public ArrayList<Technology> getTechs() {
 		return this.techs;
 	}
@@ -392,6 +414,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public int getAstPosition() {
 		return this.astPosition;
+	}
+
+	public void setAstPosition(int newAstPosition) {
+		this.astPosition = newAstPosition;
 	}
 
 	public int getAst() {
@@ -494,7 +520,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		s = s + "Current AST Step: " + this.astPosition + "(" + this.getCurrentAge() + ")\n";
 		s = s + "Next Step Age: " + this.getNextStepAge() + "\n";
 		s = s + "Cities: " + this.nCities + " Population: " + this.population + "\n";
-		s = s + "Technologies:" + String.join(this.techs.toString());
+		s = s + "Technologies:" + this.techs;
 		return s;
 	}
 
@@ -678,6 +704,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			}
 		}
 		return true;
+	}
+
+	public void removeTech(Technology tech) {
+		this.techs.remove(tech);
 	}
 
 

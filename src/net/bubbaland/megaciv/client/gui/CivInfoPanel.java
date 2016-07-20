@@ -30,7 +30,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 	private final MegaCivFrame		frame;
 
 	private final HeaderPanel		headerPanel;
-	private final StatPanel			agePanel;
+	private final StatPanel			statPanel;
 	private final TechPanel			techPanel;
 
 	public CivInfoPanel(GuiClient client, GuiController controller, MegaCivFrame frame, Civilization.Name name) {
@@ -51,8 +51,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 		this.add(this.headerPanel, constraints);
 
 		constraints.gridy = 1;
-		this.agePanel = new StatPanel();
-		this.add(this.agePanel, constraints);
+		this.statPanel = new StatPanel();
+		this.add(this.statPanel, constraints);
 
 		constraints.weighty = 1.0;
 		constraints.gridy = 2;
@@ -333,7 +333,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 	@Override
 	public void updateGui(boolean forceUpdate) {
 		this.headerPanel.updateGui(forceUpdate);
-		this.agePanel.updateGui(forceUpdate);
+		this.statPanel.updateGui(forceUpdate);
 		this.techPanel.updateGui(forceUpdate);
 
 		BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
@@ -346,7 +346,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 	@Override
 	protected void loadProperties() {
 		this.headerPanel.loadProperties();
-		this.agePanel.loadProperties();
+		this.statPanel.loadProperties();
 		this.techPanel.loadProperties();
 	}
 

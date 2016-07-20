@@ -139,6 +139,14 @@ public class GameServer extends Server {
 				Civilization.Name name = ( (RetireMessage) message ).getCivName();
 				this.game.retireCivilization(name);
 				this.log(name.toString() + " has retired!");
+				this.broadcastMessage(new GameDataMessage(this.game));
+			case "CivEditMessage":
+				Civilization civ = ( (CivEditMessage) message ).getCivilization();
+				Civilization oldCiv = this.game.getCivilization(civ.getName());
+				this.game.setCivilization(civ);
+				this.log("Civilization edited by " + user + ":\n" + "Before Edit: " + oldCiv.toFullString() + "\n"
+						+ "After Edit: " + civ.toFullString());
+				this.broadcastMessage(new GameDataMessage(this.game));
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
 		}
