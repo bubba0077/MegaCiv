@@ -25,6 +25,7 @@ import javax.swing.border.BevelBorder;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
 
 public class AstTablePanel extends BubbaPanel {
@@ -185,7 +186,11 @@ public class AstTablePanel extends BubbaPanel {
 						text = Game.capitalizeFirst(name.toString()) + " (" + civ.getPlayer() + ")";
 						break;
 					case VP:
-						text = civ.getVP() + "";
+						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(sortedCivs)) {
+							text = "*" + +civ.getVP();
+						} else {
+							text = civ.getVP() + " ";
+						}
 						break;
 					default:
 						text = "";

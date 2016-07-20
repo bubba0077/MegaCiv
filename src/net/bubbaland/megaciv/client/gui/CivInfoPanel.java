@@ -18,6 +18,7 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
+import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Technology.Type;
 
 public class CivInfoPanel extends BubbaMainPanel {
@@ -187,7 +188,12 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 			this.populationLabel.setText(String.format("%02d", civ.getPopulation()));
 			this.cityLabel.setText(civ.getCityCount() + "");
-			this.vpLabel.setText(String.format("%03d", civ.getVP()));
+			String text = String.format("%03d", civ.getVP());
+			if (civ.getCurrentAge() == Age.LATE_IRON
+					&& civ.onlyLateIron(CivInfoPanel.this.client.getGame().getCivilizations())) {
+				text = "*" + text;
+			}
+			this.vpLabel.setText(text);
 
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				this.creditLabels.get(type).setText(civ.getTypeCredit(type) + "");
@@ -217,9 +223,9 @@ public class CivInfoPanel extends BubbaMainPanel {
 					Integer.parseInt(props.getProperty("CivInfoPanel.Population.Width")), heightBottom, foreground,
 					background, Float.parseFloat(props.getProperty("CivInfoPanel.Population.FontSize")));
 
-			BubbaPanel.setLabelProperties(this.cityLabel, Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")),
-					heightBottom, foreground, background,
-					Float.parseFloat(props.getProperty("CivInfoPanel.City.FontSize")));
+			BubbaPanel.setLabelProperties(this.cityLabel,
+					Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")), heightBottom, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.City.FontSize")));
 
 			BubbaPanel.setLabelProperties(this.vpLabel, Integer.parseInt(props.getProperty("CivInfoPanel.VP.Width")),
 					heightBottom, foreground, background,

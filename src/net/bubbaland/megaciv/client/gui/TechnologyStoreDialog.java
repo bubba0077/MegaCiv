@@ -43,7 +43,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private static final long						serialVersionUID	= 6388871064256668085L;
 
-	private static final int						N_ROWS				= 13;
+	private static final int						N_ROWS				= 17;
 
 	private final JComboBox<Civilization.Name>		civComboBox;
 	private final HashMap<Technology, JCheckBox>	techCheckboxes;
@@ -101,7 +101,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			this.add(checkbox, constraints);
 		}
 
-		constraints.gridx = 3;
+		constraints.gridx = 2;
 		constraints.gridy = 1 + N_ROWS;
 		constraints.weighty = 1.0;
 		constraints.gridheight = 2;
@@ -117,7 +117,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.nextButton = new JButton("Next Civ");
 		this.nextButton.setActionCommand("Next");
 		this.nextButton.addActionListener(this);
-		this.add(this.nextButton, constraints);
+		// this.add(this.nextButton, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 2 + N_ROWS;
@@ -126,7 +126,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.resetButton.addActionListener(this);
 		this.add(this.resetButton, constraints);
 
-		resetCheckboxes();
+		this.resetCheckboxes();
 
 		this.updateTotalCost();
 
@@ -142,6 +142,14 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	public void loadProperties() {
 		Properties props = this.controller.getProperties();
 
+		int colWidth = Integer.parseInt(props.getProperty("TechStoreDialog.Tech.Width"));
+		int rowHeight = Integer.parseInt(props.getProperty("TechStoreDialog.Tech.Height"));
+		float fontSize = Float.parseFloat(props.getProperty("TechStoreDialog.Tech.FontSize"));
+
+		for (JCheckBox checkbox : this.techCheckboxes.values()) {
+			BubbaPanel.setButtonProperties(checkbox, colWidth, rowHeight, null, null, fontSize);
+		}
+
 		BubbaPanel.setButtonProperties(this.buyNextButton,
 				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Width")),
 				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Height")), null, null,
@@ -156,6 +164,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Width")),
 				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Height")), null, null,
 				Float.parseFloat(props.getProperty("TechStoreDialog.NextButton.FontSize")));
+
 	}
 
 	private void resetCheckboxes() {
@@ -180,6 +189,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			techString = techString + "</html>";
 			checkbox.setText(techString);
 		}
+		this.updateTotalCost();
+		// this.frame.pack();
 	}
 
 	private void updateTotalCost() {

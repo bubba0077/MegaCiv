@@ -478,7 +478,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public int getVPfromTech() {
 		int vp = 0;
 		for (Technology tech : this.techs) {
-			vp = +tech.getVP();
+			vp = vp + tech.getVP();
 		}
 		return vp;
 	}
@@ -666,6 +666,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		public int getAgeStart(Age age, Difficulty difficulty) {
 			return this.subTable.get(difficulty).get(age).intValue();
 		}
+	}
+
+	public boolean onlyLateIron(ArrayList<Civilization> civs) {
+		if (this.getCurrentAge() != Age.LATE_IRON) {
+			return false;
+		}
+		for (Civilization civ : civs) {
+			if (!civ.equals(this) && civ.getCurrentAge() == Age.LATE_IRON) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 

@@ -45,7 +45,7 @@ AstTable.AST.Width=44
 AstTable.AST.FontSize=20.0
 AstTable.CIV.Width=300
 AstTable.CIV.FontSize=18.0
-AstTable.VP.Width=40
+AstTable.VP.Width=60
 AstTable.VP.FontSize=20.0
 AstTable.POPULATION.Width=30
 AstTable.POPULATION.FontSize=20.0
@@ -59,7 +59,7 @@ AstTable.AstStep.FontSize=16.0
 CivInfoPanel.Header.Height=50
 CivInfoPanel.CivName.Width=400
 CivInfoPanel.CivName.FontSize=36.0
-CivInfoPanel.Age.Width=200
+CivInfoPanel.Age.Width=300
 CivInfoPanel.Age.FontSize=24.0
 
 CivInfoPanel.Stat.Top.Height=18
@@ -108,7 +108,11 @@ NewGameDialog.Civ.Height=20
 NewGameDialog.Civ.Width=100
 NewGameDialog.FontSize=16.0
 
-TechStoreDialog.BuyButton.Height=24
+TechStoreDialog.Tech.Height=18
+TechStoreDialog.Tech.Width=250
+TechStoreDialog.Tech.FontSize=14.0
+
+TechStoreDialog.BuyButton.Height=30
 TechStoreDialog.BuyButton.Width=100
 TechStoreDialog.BuyButton.FontSize=24.0
 
@@ -116,6 +120,6 @@ TechStoreDialog.ResetButton.Height=24
 TechStoreDialog.ResetButton.Width=100
 TechStoreDialog.ResetButton.FontSize=16.0
 
-TechStoreDialog.NextButton.Height=24
+TechStoreDialog.NextButton.Height=30
 TechStoreDialog.NextButton.Width=100
 TechStoreDialog.NextButton.FontSize=16.0
