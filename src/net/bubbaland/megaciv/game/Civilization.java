@@ -248,8 +248,31 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	private Difficulty												difficulty;
 
 	public Civilization(Name name, Difficulty difficulty) {
-		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology, ArrayList<Technology.Type>>(), 0,
-				difficulty);
+
+		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology, ArrayList<Technology.Type>>() {
+			private static final long serialVersionUID = 6611228131955386821L;
+
+			{
+				put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
+					private static final long serialVersionUID = 3890391732659207236L;
+
+					{
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+					}
+				});
+				put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
+					private static final long serialVersionUID = 3890391732659207236L;
+
+					{
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+					}
+				});
+			}
+		}, 0, difficulty);
 	}
 
 	@JsonCreator
@@ -265,6 +288,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.techs = techs;
 		this.astPosition = astPosition;
 		this.extraTypeCredits = typeCredits;
+
 		this.difficulty = difficulty;
 	}
 
@@ -400,8 +424,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return credit;
 	}
 
-	public HashMap<Technology, ArrayList<Technology.Type>> getExtraTypeCredits() {
-		return this.extraTypeCredits;
+	public ArrayList<Technology.Type> getExtraTypeCredits(Technology tech) {
+		return this.extraTypeCredits.get(tech);
 	}
 
 	public void addTypeCredits(Technology tech, ArrayList<Technology.Type> newCredits) {

@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -97,11 +96,6 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		okButton.setActionCommand("Set");
 		okButton.addActionListener(this);
 		this.add(okButton, constraints);
-
-		constraints.gridy = 4;
-		constraints.gridx = 0;
-		constraints.gridwidth = 3;
-		this.add(new JPanel(), constraints);
 
 		this.frame.add(this);
 		this.frame.setTitle("Editing " + Game.capitalizeFirst(this.name.toString()));
@@ -346,6 +340,9 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		private final HashMap<Technology, JCheckBox>	techCheckboxes;
 		private Color									ownedColor, unownedColor;
 
+		private final JLabel							writtenRecordLabel, monumentLabel;
+		private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
+
 		private final int								N_ROWS				= 17;
 
 		public TechPanel() {
@@ -362,13 +359,15 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
+			constraints.anchor = GridBagConstraints.CENTER;
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;
+			constraints.gridwidth = 2;
 
 			this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
 			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				constraints.gridx = 0 + tech.ordinal() / N_ROWS;
+				constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
 				constraints.gridy = 0 + tech.ordinal() % N_ROWS;
 
 				String techString = "<html>" + Game.capitalizeFirst(tech.toString());
@@ -386,14 +385,62 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				this.techCheckboxes.put(tech, checkbox);
 			}
 
+			this.writtenRecordComboboxes = new ArrayList<TechnologyTypeComboBox>();
+			constraints.gridx = 4;
+			constraints.gridwidth = 2;
+			constraints.gridy = N_ROWS;
+			this.writtenRecordLabel = this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER,
+					JLabel.CENTER);
+			constraints.gridwidth = 1;
+
+			constraints.gridy = N_ROWS + 1;
+			for (int i = 0; i < 2; i++) {
+				constraints.gridx = 4 + i;
+				TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+				combobox.setActionCommand("Written Record Credit");
+				combobox.addActionListener(this);
+				this.add(combobox, constraints);
+				this.writtenRecordComboboxes.add(combobox);
+			}
+
+			this.monumentComboboxes = new ArrayList<TechnologyTypeComboBox>();
+
+			constraints.gridx = 2;
+			constraints.gridy = N_ROWS;
+			constraints.gridwidth = 2;
+			this.monumentLabel = this.enclosedLabelFactory("Monument Credits", constraints, JLabel.CENTER,
+					JLabel.CENTER);
+			constraints.gridwidth = 1;
+
+			for (int i = 0; i < 4; i++) {
+				constraints.gridx = 2 + i / 2;
+				constraints.gridy = N_ROWS + 1 + i % 2;
+				TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+				combobox.setActionCommand("Monument Credit");
+				combobox.addActionListener(this);
+				this.add(combobox, constraints);
+				this.monumentComboboxes.add(combobox);
+			}
+
 			this.reset();
 		}
 
 		public void reset() {
-			System.out.println(civ.toFullString());
 			for (Technology tech : EnumSet.allOf(Technology.class)) {
 				JCheckBox checkbox = this.techCheckboxes.get(tech);
 				checkbox.setSelected(CivEditPanel.this.civ.hasTech(tech));
+			}
+			ArrayList<Technology.Type> credits = CivEditPanel.this.civ.getExtraTypeCredits(Technology.WRITTEN_RECORD);
+			for (int i = 0; i < 2; i++) {
+				this.writtenRecordComboboxes.get(i).removeActionListener(this);
+				this.writtenRecordComboboxes.get(i).setSelectedItem(credits.get(i));
+				this.writtenRecordComboboxes.get(i).addActionListener(this);
+			}
+			credits = CivEditPanel.this.civ.getExtraTypeCredits(Technology.MONUMENT);
+			for (int i = 0; i < 4; i++) {
+				this.monumentComboboxes.get(i).removeActionListener(this);
+				this.monumentComboboxes.get(i).setSelectedItem(credits.get(i));
+				this.monumentComboboxes.get(i).addActionListener(this);
 			}
 			this.updateGui(true);
 		}
@@ -418,19 +465,60 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
 				BubbaPanel.setButtonProperties(checkbox, width, height, color, background, fontSize);
 			}
+
+			this.writtenRecordLabel.getParent().setEnabled(CivEditPanel.this.civ.hasTech(Technology.WRITTEN_RECORD));
+			for (TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
+				combobox.setEnabled(CivEditPanel.this.civ.hasTech(Technology.WRITTEN_RECORD));
+			}
+			this.monumentLabel.getParent().setEnabled(CivEditPanel.this.civ.hasTech(Technology.MONUMENT));
+			for (TechnologyTypeComboBox combobox : this.monumentComboboxes) {
+				combobox.setEnabled(CivEditPanel.this.civ.hasTech(Technology.MONUMENT));
+			}
 		}
 
 		public void actionPerformed(ActionEvent event) {
-			JCheckBox source = ( (JCheckBox) event.getSource() );
-			String techName = source.getName();
-			Technology tech = Technology.valueOf(techName);
-			if (source.isSelected()) {
-				CivEditPanel.this.civ.addTech(tech);
-			} else {
-				CivEditPanel.this.civ.removeTech(tech);
+			String command = event.getActionCommand();
+			switch (command) {
+				case "Tech":
+					JCheckBox source = ( (JCheckBox) event.getSource() );
+					String techName = source.getName();
+					Technology tech = Technology.valueOf(techName);
+					if (source.isSelected()) {
+						CivEditPanel.this.civ.addTech(tech);
+					} else {
+						CivEditPanel.this.civ.removeTech(tech);
+					}
+					break;
+				case "Written Record Credit": {
+					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+						private static final long serialVersionUID = -3048516348338206499L;
+
+						{
+							for (TechnologyTypeComboBox combobox : TechPanel.this.writtenRecordComboboxes) {
+								add((Type) combobox.getSelectedItem());
+							}
+						}
+					};
+					CivEditPanel.this.civ.addTypeCredits(Technology.WRITTEN_RECORD, credits);
+					break;
+				}
+				case "Monument Credit":
+					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+						private static final long serialVersionUID = 4142653378901436651L;
+
+						{
+							for (TechnologyTypeComboBox combobox : TechPanel.this.monumentComboboxes) {
+								add((Type) combobox.getSelectedItem());
+							}
+						}
+					};
+					CivEditPanel.this.civ.addTypeCredits(Technology.MONUMENT, credits);
+					break;
 			}
 			CivEditPanel.this.updateGui(true);
+
 		}
+
 	}
 
 	@Override
@@ -440,12 +528,13 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			case "Reset":
 				this.reset();
 				break;
+			case "Set":
+				this.client.sendMessage(new CivEditMessage(this.civ));
+				// Intentional fall-through
 			case "Cancel":
 				this.frame.dispose();
 				break;
-			case "Set":
-				this.client.sendMessage(new CivEditMessage(this.civ));
-				break;
+
 		}
 	}
 

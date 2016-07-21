@@ -15,7 +15,6 @@ import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.game.User;
-import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.messages.*;
 
 public class GameServer extends Server {
@@ -142,6 +141,7 @@ public class GameServer extends Server {
 				this.game.retireCivilization(name);
 				this.log(name.toString() + " has retired!");
 				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
 			case "CivEditMessage":
 				Civilization civ = ( (CivEditMessage) message ).getCivilization();
 				Civilization oldCiv = this.game.getCivilization(civ.getName());
@@ -149,6 +149,7 @@ public class GameServer extends Server {
 				this.log("Civilization edited by " + user + ":\n" + "Before Edit: " + oldCiv.toFullString() + "\n"
 						+ "After Edit: " + civ.toFullString());
 				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
 		}

@@ -14,7 +14,6 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +38,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private static final int						N_ROWS				= 17;
 
-	private final JComboBox<Civilization.Name>		civComboBox;
+	private final CivilizationComboBox				civComboBox;
 	private final HashMap<Technology, JCheckBox>	techCheckboxes;
 	private final GuiClient							client;
 	private final JFrame							frame;
@@ -66,12 +65,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		this.civComboBox = new JComboBox<Civilization.Name>(civNameArray);
-		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer(), this.civComboBox));
+		this.civComboBox = new CivilizationComboBox(civNameArray);
 		this.civComboBox.setActionCommand("Civ Changed");
 		this.civComboBox.addActionListener(this);
-		this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-		this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.add(this.civComboBox, constraints);
 
 		constraints.gridx = 1;
@@ -340,9 +336,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		private class CreditRow extends BubbaPanel {
 
-			private static final long					serialVersionUID	= 1L;
+			private static final long				serialVersionUID	= 1L;
 
-			private final JComboBox<Technology.Type>	combobox;
+			private final TechnologyTypeComboBox	combobox;
 
 			public CreditRow(BubbaGuiController controller) {
 				super(controller, new GridBagLayout());
@@ -354,8 +350,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				constraints.weighty = 1.0;
 				constraints.gridy = 0;
 
-				this.combobox = new JComboBox<Technology.Type>(Technology.Type.values());
-				this.combobox.setRenderer(new TechnologyTypeCellRenderer(this.combobox.getRenderer(), this.combobox));
+				this.combobox = new TechnologyTypeComboBox(Technology.Type.values());
 				this.add(this.combobox, constraints);
 			}
 

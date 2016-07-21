@@ -3,7 +3,6 @@ package net.bubbaland.megaciv.client.gui;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -17,10 +16,10 @@ import net.bubbaland.megaciv.messages.RetireMessage;
 
 public class RetireDialog extends BubbaDialogPanel {
 
-	private static final long					serialVersionUID	= 2699726022812408819L;
+	private static final long			serialVersionUID	= 2699726022812408819L;
 
-	private final GuiClient						client;
-	private final JComboBox<Civilization.Name>	civComboBox;
+	private final GuiClient				client;
+	private final CivilizationComboBox	civComboBox;
 
 
 	RetireDialog(GuiClient client, GuiController contoller) {
@@ -45,10 +44,7 @@ public class RetireDialog extends BubbaDialogPanel {
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.civComboBox = new JComboBox<Civilization.Name>(civNameArray);
-		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer(), this.civComboBox));
-		this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-		this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+		this.civComboBox = new CivilizationComboBox(civNameArray);
 		this.add(this.civComboBox, constraints);
 
 		this.dialog = new BubbaDialog(this.controller, "Retire", this, JOptionPane.PLAIN_MESSAGE,
