@@ -58,6 +58,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		EAST, WEST, BOTH
 	};
 
+	public static enum AstChange {
+		REGRESS, NONE, ADVANCE
+	}
+
 	public static enum Age {
 		STONE, EARLY_BRONZE, MIDDLE_BRONZE, LATE_BRONZE, EARLY_IRON, LATE_IRON {
 			@Override
@@ -300,12 +304,25 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return Game.capitalizeFirst(this.name.name());
 	}
 
-	public void incrementAST() {
-		this.astPosition++;
-	}
+	// public void incrementAST() {
+	// this.astPosition++;
+	// }
+	//
+	// public void decrementAST() {
+	// this.astPosition--;
+	// }
 
-	public void decrementAST() {
-		this.astPosition--;
+	public void changeAst(AstChange change) {
+		switch (change) {
+			case REGRESS:
+				this.astPosition--;
+				break;
+			case ADVANCE:
+				this.astPosition++;
+				break;
+			case NONE:
+				break;
+		}
 	}
 
 	public Age getAge(int astStep) {

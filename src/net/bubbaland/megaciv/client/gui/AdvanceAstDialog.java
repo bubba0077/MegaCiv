@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -18,6 +21,7 @@ import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 
@@ -43,28 +47,18 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		this.civPanels = new ArrayList<CivPanel>();
 
 
-		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
-		for (Civilization.Name name : civNames) {
-			constraints.gridx = name.ordinal() % N_COLUMNS;
-			constraints.gridy = name.ordinal() / N_COLUMNS;
-			CivPanel panel = new CivPanel(controller, name);
+		ArrayList<Civilization> civs = this.client.getGame().getCivilizations();
+		for (Civilization civ : civs) {
+			constraints.gridx = civ.getName().ordinal() % N_COLUMNS;
+			constraints.gridy = civ.getName().ordinal() / N_COLUMNS;
+			CivPanel panel = new CivPanel(controller, civ);
 			this.civPanels.add(panel);
 			this.add(panel, constraints);
 		}
-		this.setAutoAdvance();
-
 		this.dialog = new BubbaDialog(this.controller, "Advance AST", this, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		this.dialog.setVisible(true);
 
-	}
-
-	private void setAutoAdvance() {
-		for (CivPanel panel : this.civPanels) {
-			Civilization.Name name = panel.getCivName();
-			Civilization civ = this.client.getGame().getCivilization(name);
-			panel.checkbox.setSelected(civ.passAstReqirements());
-		}
 	}
 
 	public void windowClosed(WindowEvent event) {
@@ -74,9 +68,9 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 		final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 		if (option == JOptionPane.OK_OPTION) {
-			HashMap<Civilization.Name, Boolean> advanceAst = new HashMap<Civilization.Name, Boolean>();
+			HashMap<Civilization.Name, Civilization.AstChange> advanceAst = new HashMap<Civilization.Name, Civilization.AstChange>();
 			for (CivPanel panel : this.civPanels) {
-				advanceAst.put(panel.getCivName(), panel.checkbox.isSelected());
+				advanceAst.put(panel.getCivName(), panel.getAstChange());
 			}
 			this.client.log("Sending AST advances to server " + advanceAst);
 			this.client.sendMessage(new AdvanceAstMessage(advanceAst));
@@ -87,19 +81,22 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 
 		private static final long		serialVersionUID	= -487711727769927447L;
 
-		private final JCheckBox			checkbox;
+		private final JCheckBox			checkbox, regressCheckbox;
 		private final JTextPane			textArea;
 
 		private final Civilization.Name	name;
 
-		public CivPanel(BubbaGuiController controller, Civilization.Name name) {
+		public CivPanel(BubbaGuiController controller, Civilization civ) {
 			super(controller, new GridBagLayout());
-			this.name = name;
+			this.name = civ.getName();
 
 			Properties props = controller.getProperties();
 			int civHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Height"));
 			int civWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Width"));
 			float civFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Civ.FontSize"));
+
+			int regressHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Regress.Height"));
+			float regressFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Regress.FontSize"));
 
 			int reqHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Height"));
 			int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
@@ -114,15 +111,40 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			constraints.weightx = 0.0;
 			constraints.weighty = 0.0;
 
+			ButtonGroup group = new ButtonGroup() {
+				private static final long serialVersionUID = 8206407025138465937L;
+
+				@Override
+				public void setSelected(ButtonModel model, boolean selected) {
+					if (selected) {
+						super.setSelected(model, selected);
+					} else {
+						if (this.getSelection() == model) {
+							clearSelection();
+						}
+					}
+				}
+			};
+
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
-			this.checkbox.setFont(this.checkbox.getFont().deriveFont(fontSize));
+			group.add(this.checkbox);
 			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, foreground, background, civFontSize);
 			this.add(this.checkbox, constraints);
 
-			Game game = AdvanceAstDialog.this.client.getGame();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			this.regressCheckbox = new JCheckBox("Regress");
+			group.add(this.regressCheckbox);
+			BubbaPanel.setButtonProperties(this.regressCheckbox, civWidth, regressHeight, foreground, background,
+					regressFontSize);
+			this.add(this.regressCheckbox, constraints);
 
+			this.checkbox.setSelected(civ.passAstReqirements());
+			this.regressCheckbox.setSelected(civ.getCurrentAge() != Age.STONE && civ.getCityCount() == 0);
+
+			Game game = AdvanceAstDialog.this.client.getGame();
 			Civilization.Age nextAge = game.getCivilization(name).getNextStepAge();
 
 			String astReqText = Civilization.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
@@ -131,17 +153,30 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			constraints.weighty = 1.0;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			constraints.gridheight = 2;
+			constraints.gridheight = 3;
 			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, foreground, background,
 					constraints, reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
 					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
+
+
 		}
 
 		public Civilization.Name getCivName() {
 			return this.name;
 		}
+
+		public Civilization.AstChange getAstChange() {
+			Civilization.AstChange change = Civilization.AstChange.NONE;
+			if (this.checkbox.isSelected()) {
+				change = Civilization.AstChange.ADVANCE;
+			} else if (this.regressCheckbox.isSelected()) {
+				change = Civilization.AstChange.REGRESS;
+			}
+			return change;
+		}
+
 	}
 
 }

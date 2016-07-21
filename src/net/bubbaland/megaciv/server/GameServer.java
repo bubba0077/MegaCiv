@@ -15,6 +15,8 @@ import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.game.User;
+import net.bubbaland.megaciv.game.Civilization.AstChange;
+import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.messages.*;
 
 public class GameServer extends Server {
@@ -111,11 +113,9 @@ public class GameServer extends Server {
 				break;
 			}
 			case "AdvanceAstMessage":
-				final HashMap<Civilization.Name, Boolean> advanceAst = ( (AdvanceAstMessage) message ).getAdvanceAst();
+				final HashMap<Name, AstChange> advanceAst = ( (AdvanceAstMessage) message ).getAdvanceAst();
 				for (Civilization.Name name : advanceAst.keySet()) {
-					if (advanceAst.get(name).booleanValue()) {
-						this.game.getCivilization(name).incrementAST();
-					}
+					this.game.getCivilization(name).changeAst(advanceAst.get(name));
 				}
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
 				this.broadcastMessage(new GameDataMessage(this.game));
