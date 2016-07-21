@@ -14,7 +14,6 @@ import javax.swing.ListCellRenderer;
 
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Name;
-import net.bubbaland.megaciv.game.Technology.Type;
 
 public class CivilizationComboBox extends JComboBox<Civilization.Name> implements ActionListener {
 
@@ -55,9 +54,9 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Type selected = ( (Type) this.getSelectedItem() );
-		Color foreground = selected.getTextColor();
-		Color background = selected.getColor();
+		Name selected = ( (Name) this.getSelectedItem() );
+		Color foreground = Civilization.FOREGROUND_COLORS.get(selected);
+		Color background = Civilization.BACKGROUND_COLORS.get(selected);
 
 		this.setForeground(foreground);
 		this.setBackground(background);
