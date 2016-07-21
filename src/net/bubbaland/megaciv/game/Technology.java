@@ -1119,11 +1119,16 @@ public enum Technology {
 	}, "(*) Acquire 10 additional points of credit tokens in any combination of colors.");
 
 	public enum Type {
-		SCIENCE("green", Color.GREEN), ARTS("blue", Color.BLUE), CRAFTS("orange", Color.ORANGE), CIVICS("red",
-				Color.RED), RELIGION("yellow", Color.YELLOW);
+		SCIENCE("green", Color.GREEN, Color.BLACK), ARTS("blue", Color.BLUE, Color.WHITE), CRAFTS("orange",
+				Color.ORANGE,
+				Color.BLACK), CIVICS("red", Color.RED, Color.WHITE), RELIGION("yellow", Color.YELLOW, Color.BLACK);
 
 		public String getHtmlColor() {
 			return this.htmlColor;
+		}
+
+		public Color getTextColor() {
+			return this.textColor;
 		}
 
 		public Color getColor() {
@@ -1131,11 +1136,12 @@ public enum Technology {
 		}
 
 		private final String	htmlColor;
-		private final Color		color;
+		private final Color		color, textColor;
 
-		private Type(String htmlColor, Color color) {
+		private Type(String htmlColor, Color color, Color textColor) {
 			this.htmlColor = htmlColor;
 			this.color = color;
+			this.textColor = textColor;
 		}
 
 

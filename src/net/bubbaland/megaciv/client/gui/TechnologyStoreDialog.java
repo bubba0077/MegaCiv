@@ -12,14 +12,12 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Properties;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -69,7 +67,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		this.civComboBox = new JComboBox<Civilization.Name>(civNameArray);
-		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer()));
+		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer(), this.civComboBox));
 		this.civComboBox.setActionCommand("Civ Changed");
 		this.civComboBox.addActionListener(this);
 		this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
@@ -281,8 +279,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				this.civComboBox.setSelectedIndex(nextIndex);
 				// Intentional fall through
 			case "Civ Changed":
-				this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-				this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+				// this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
+				// this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 				this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 				// Intentional fall through
 			case "Reset":
@@ -345,7 +343,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 			private static final long					serialVersionUID	= 1L;
 
-			private final HashMap<JRadioButton, Type>	buttons;
+			private final JComboBox<Technology.Type>	combobox;
 
 			public CreditRow(BubbaGuiController controller) {
 				super(controller, new GridBagLayout());
@@ -357,24 +355,13 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				constraints.weighty = 1.0;
 				constraints.gridy = 0;
 
-				ButtonGroup group = new ButtonGroup();
-				this.buttons = new HashMap<JRadioButton, Type>();
-				for (Type type : EnumSet.allOf(Type.class)) {
-					constraints.gridx = type.ordinal();
-					JRadioButton button = new JRadioButton(Game.capitalizeFirst(type.toString()));
-					group.add(button);
-					this.buttons.put(button, type);
-					this.add(button, constraints);
-				}
+				this.combobox = new JComboBox<Technology.Type>(Technology.Type.values());
+				this.combobox.setRenderer(new TechnologyTypeCellRenderer(this.combobox.getRenderer(), this.combobox));
+				this.add(this.combobox, constraints);
 			}
 
 			public Type getSelectedType() {
-				for (JRadioButton button : this.buttons.keySet()) {
-					if (button.isSelected()) {
-						return this.buttons.get(button);
-					}
-				}
-				return null;
+				return (Type) this.combobox.getSelectedItem();
 			}
 
 		}

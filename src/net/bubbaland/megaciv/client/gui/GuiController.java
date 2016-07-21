@@ -1,21 +1,26 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import net.bubbaland.gui.*;
 import net.bubbaland.megaciv.game.Civilization;
 
 public class GuiController extends BubbaGuiController {
-
-	// File name of font
-	// final static private String FONT_FILENAME = "fonts/tahoma.ttf";
 
 	// File name to store window positions
 	private final static String					DEFAULTS_FILENAME	= ".net.bubbaland.megaciv.client.gui.defaults";
@@ -24,10 +29,47 @@ public class GuiController extends BubbaGuiController {
 	// Settings version to force reloading defaults
 	private final static String					SETTINGS_VERSION	= "3";
 
+	private final static String					FONT_FILENAME		= "fonts/tahoma.ttf";
+
 	private final GuiClient						client;
 	private WaitDialog							waitDialog;
 
 	private HashMap<Civilization.Age, Color>	astForegroundColors, astBackgroundColors;
+
+	// static {
+	// /**
+	// * Load Nimbus
+	// */
+	// for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	// if ("Nimbus".equals(info.getName())) {
+	// try {
+	// UIManager.setLookAndFeel(new NimbusLookAndFeel() {
+	// private static final long serialVersionUID = -4162111942682867066L;
+	//
+	// @Override
+	// public UIDefaults getDefaults() {
+	// final UIDefaults ret = super.getDefaults();
+	// Font font;
+	// try {
+	// font = Font.createFont(Font.TRUETYPE_FONT,
+	// getClass().getResourceAsStream(FONT_FILENAME));
+	// ret.put("defaultFont", font.deriveFont(12f));
+	// } catch (FontFormatException | IOException exception) {
+	// exception.printStackTrace();
+	// }
+	// return ret;
+	// }
+	//
+	// });
+	// } catch (final UnsupportedLookAndFeelException exception) {
+	// exception.printStackTrace();
+	// }
+	// }
+	//
+	//
+	// }
+	// }
+
 
 	public GuiController(String serverUrl) {
 		super(DEFAULTS_FILENAME, SETTINGS_FILENAME, SETTINGS_VERSION);

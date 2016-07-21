@@ -46,7 +46,7 @@ public class RetireDialog extends BubbaDialogPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.civComboBox = new JComboBox<Civilization.Name>(civNameArray);
-		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer()));
+		this.civComboBox.setRenderer(new CivilizationCellRenderer(this.civComboBox.getRenderer(), this.civComboBox));
 		this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.add(this.civComboBox, constraints);
