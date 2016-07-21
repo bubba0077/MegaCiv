@@ -1,8 +1,6 @@
 package net.bubbaland.megaciv.messages;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

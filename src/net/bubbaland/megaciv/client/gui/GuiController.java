@@ -1,22 +1,13 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-
 import net.bubbaland.gui.*;
 import net.bubbaland.megaciv.game.Civilization;
 
@@ -29,7 +20,7 @@ public class GuiController extends BubbaGuiController {
 	// Settings version to force reloading defaults
 	private final static String					SETTINGS_VERSION	= "3";
 
-	private final static String					FONT_FILENAME		= "fonts/tahoma.ttf";
+	// private final static String FONT_FILENAME = "fonts/tahoma.ttf";
 
 	private final GuiClient						client;
 	private WaitDialog							waitDialog;

@@ -1,7 +1,6 @@
 package net.bubbaland.megaciv.game;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
