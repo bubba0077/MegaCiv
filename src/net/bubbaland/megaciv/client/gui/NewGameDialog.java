@@ -8,11 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,6 +42,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 	private final JToggleButton							customButton;
 	private final JSpinner								nCivSpinner;
+	private final JButton								randomizeButton;
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
@@ -110,6 +114,13 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		difficultyGroup.add(this.basicRadioButton);
 		difficultyGroup.add(this.expertRadioButton);
+
+		constraints.gridx = 5;
+		constraints.gridy = 0;
+		this.randomizeButton = new JButton("Randomize Players");
+		this.randomizeButton.setActionCommand("Randomize");
+		this.randomizeButton.addActionListener(this);
+		this.add(this.randomizeButton, constraints);
 
 		constraints.gridx = 5;
 		constraints.gridy = 1;
@@ -200,6 +211,21 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 					this.setDefaultCivs();
 				}
 				break;
+			case "Randomize":
+				ArrayList<String> players = new ArrayList<String>();
+				for (CivPanel panel : this.civPanels.values()) {
+					if (panel.isSelected()) {
+						players.add(panel.getPlayerName());
+					}
+				}
+				Collections.shuffle(players);
+				Iterator<String> iterator = players.iterator();
+				for (CivPanel panel : this.civPanels.values()) {
+					if (panel.isSelected()) {
+						panel.setPlayerName(iterator.next());
+					}
+				}
+
 		}
 	}
 
@@ -248,10 +274,6 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
 			Color background = Civilization.BACKGROUND_COLORS.get(name);
-			foreground = null;
-			background = null;
-
-			this.setBackground(background);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -270,8 +292,6 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			this.textField = new JTextField(Game.capitalizeFirst(name.toString()) + " player", 20);
-			this.textField.setForeground(foreground);
-			this.textField.setBackground(background);
 			this.add(this.textField, constraints);
 
 			this.setEnabled(false);
@@ -283,6 +303,10 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		public String getPlayerName() {
 			return this.textField.getText();
+		}
+
+		public void setPlayerName(String player) {
+			this.textField.setText(player);
 		}
 
 		public void setSelected(boolean selected) {
