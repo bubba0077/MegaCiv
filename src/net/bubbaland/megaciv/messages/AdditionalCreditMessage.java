@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.messages;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -11,14 +12,17 @@ import net.bubbaland.megaciv.game.Technology;
 public class AdditionalCreditMessage extends ClientMessage {
 
 	@JsonProperty("civName")
-	private final Civilization.Name					civName;
+	private final Civilization.Name				civName;
+	@JsonProperty("tech")
+	private final Technology					tech;
 	@JsonProperty("credits")
-	private final HashMap<Technology.Type, Integer>	credits;
+	private final ArrayList<Technology.Type>	credits;
 
 	@JsonCreator
 	public AdditionalCreditMessage(@JsonProperty("civName") Civilization.Name civName,
-			@JsonProperty("credits") HashMap<Technology.Type, Integer> credits) {
+			@JsonProperty("tech") Technology tech, @JsonProperty("credits") ArrayList<Technology.Type> credits) {
 		this.civName = civName;
+		this.tech = tech;
 		this.credits = credits;
 	}
 
@@ -29,10 +33,14 @@ public class AdditionalCreditMessage extends ClientMessage {
 		return this.civName;
 	}
 
+	public Technology getTech() {
+		return this.tech;
+	}
+
 	/**
 	 * @return the credits
 	 */
-	public HashMap<Technology.Type, Integer> getCredits() {
+	public ArrayList<Technology.Type> getCredits() {
 		return this.credits;
 	}
 

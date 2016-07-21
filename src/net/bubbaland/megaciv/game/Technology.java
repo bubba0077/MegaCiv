@@ -1207,11 +1207,6 @@ public enum Technology {
 			}
 			cost = cost - tech.getTechCredit(this);
 		}
-		for (Technology.Type type : civ.getExtraTypeCredits().keySet()) {
-			if (this.types.contains(type)) {
-				cost = cost - civ.getExtraTypeCredits().get(type);
-			}
-		}
 		return Math.max(cost, 0);
 	}
 

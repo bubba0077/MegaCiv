@@ -263,10 +263,10 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 					}
 				}
 				if (newTechs.contains(Technology.WRITTEN_RECORD)) {
-					new AdditionalCreditDialog(controller, civName, Technology.WRITTEN_RECORD.toString(), 2);
+					new AdditionalCreditDialog(controller, civName, Technology.WRITTEN_RECORD, 2);
 				}
 				if (newTechs.contains(Technology.MONUMENT)) {
-					new AdditionalCreditDialog(controller, civName, Technology.MONUMENT.toString(), 4);
+					new AdditionalCreditDialog(controller, civName, Technology.MONUMENT, 4);
 				}
 				this.client.sendMessage(new TechPurchaseMessage(civName, newTechs));
 				// Intentional fall through
@@ -292,16 +292,16 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		private static final long			serialVersionUID	= 1L;
 
-		private final String				techName;
+		private final Technology			tech;
 		private final Civilization.Name		civName;
 		private final ArrayList<CreditRow>	creditRows;
 
-		public AdditionalCreditDialog(BubbaGuiController controller, Civilization.Name civName, String techName,
+		public AdditionalCreditDialog(BubbaGuiController controller, Civilization.Name civName, Technology tech,
 				int nCreditsIn5s) {
 			super(controller);
 
 			this.civName = civName;
-			this.techName = techName;
+			this.tech = tech;
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -320,23 +320,22 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			}
 
 			this.dialog = new BubbaDialog(this.controller,
-					"Select Additional Credits for " + Game.capitalizeFirst(techName) + " (5 each)", this,
+					"Select Additional Credits for " + Game.capitalizeFirst(this.tech.toString()) + " (5 each)", this,
 					JOptionPane.PLAIN_MESSAGE);
 			this.dialog.setModal(true);
 			this.dialog.setVisible(true);
 		}
 
 		public void windowClosed(WindowEvent event) {
-			HashMap<Type, Integer> credits = new HashMap<Type, Integer>();
-			for (Type type : EnumSet.allOf(Type.class)) {
-				credits.put(type, 0);
-			}
+			ArrayList<Type> credits = new ArrayList<Type>();
+
 			for (CreditRow row : this.creditRows) {
 				Type type = row.getSelectedType();
-				credits.put(type, credits.get(type) + 5);
+				credits.add(type);
 			}
-			TechnologyStoreDialog.this.client.sendMessage(new AdditionalCreditMessage(this.civName, credits));
-			TechnologyStoreDialog.this.client.log("Selected additional credits for " + this.techName + ": " + credits);
+			TechnologyStoreDialog.this.client
+					.sendMessage(new AdditionalCreditMessage(this.civName, this.tech, credits));
+			TechnologyStoreDialog.this.client.log("Selected additional credits for " + this.tech + ": " + credits);
 		}
 
 		private class CreditRow extends BubbaPanel {

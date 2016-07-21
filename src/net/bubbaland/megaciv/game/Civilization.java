@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv.game;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -228,39 +229,34 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	@JsonProperty("name")
-	private Name									name;
+	private Name													name;
 	@JsonProperty("player")
-	private String									player;
+	private String													player;
 	@JsonProperty("population")
-	private int										population;
+	private int														population;
 	@JsonProperty("astPosition")
-	private int										astPosition;
+	private int														astPosition;
 	@JsonProperty("nCities")
-	private int										nCities;
+	private int														nCities;
 	@JsonProperty("techs")
-	private ArrayList<Technology>					techs;
+	private ArrayList<Technology>									techs;
+
 	@JsonProperty("typeCredits")
-	private final HashMap<Technology.Type, Integer>	extraTypeCredits;
+	private final HashMap<Technology, ArrayList<Technology.Type>>	extraTypeCredits;	// Each listed type worth 5
+																						// credits each
 	@JsonProperty("difficulty")
-	private Difficulty								difficulty;
+	private Difficulty												difficulty;
 
 	public Civilization(Name name, Difficulty difficulty) {
-		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology.Type, Integer>() {
-			private static final long serialVersionUID = 6611228131955386821L;
-
-			{
-				for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
-					put(type, 0);
-				}
-			}
-		}, 0, difficulty);
+		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology, ArrayList<Technology.Type>>(), 0,
+				difficulty);
 	}
 
 	@JsonCreator
 	private Civilization(@JsonProperty("name") Name name, @JsonProperty("player") String player,
 			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
 			@JsonProperty("techs") ArrayList<Technology> techs,
-			@JsonProperty("typeCredits") HashMap<Technology.Type, Integer> typeCredits,
+			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
 			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty) {
 		this.name = name;
 		this.player = player;
@@ -270,7 +266,6 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.astPosition = astPosition;
 		this.extraTypeCredits = typeCredits;
 		this.difficulty = difficulty;
-
 	}
 
 	public Name getName() {
@@ -366,11 +361,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				}
 			}
 		};
-		HashMap<Technology.Type, Integer> extraTypeCredits = new HashMap<Technology.Type, Integer>() {
+		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits = new HashMap<Technology, ArrayList<Technology.Type>>() {
 			private static final long serialVersionUID = 1L;
 			{
-				for (Technology.Type type : Technology.Type.values()) {
-					put(type, Civilization.this.extraTypeCredits.get(type));
+				for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
+					put(tech, Civilization.this.extraTypeCredits.get(tech));
 				}
 			}
 		};
@@ -395,21 +390,22 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public int getTypeCredit(Technology.Type type) {
-		int credit = this.extraTypeCredits.get(type);
+		int credit = 0;
+		for (Technology tech : this.extraTypeCredits.keySet()) {
+			credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * 5;
+		}
 		for (Technology tech : this.techs) {
 			credit = credit + tech.getTypeCredit(type);
 		}
 		return credit;
 	}
 
-	public HashMap<Technology.Type, Integer> getExtraTypeCredits() {
+	public HashMap<Technology, ArrayList<Technology.Type>> getExtraTypeCredits() {
 		return this.extraTypeCredits;
 	}
 
-	public void addTypeCredits(HashMap<Technology.Type, Integer> newCredits) {
-		for (Technology.Type type : newCredits.keySet()) {
-			this.extraTypeCredits.put(type, this.extraTypeCredits.get(type) + newCredits.get(type));
-		}
+	public void addTypeCredits(Technology tech, ArrayList<Technology.Type> newCredits) {
+		this.extraTypeCredits.put(tech, newCredits);
 	}
 
 	public int getAstPosition() {

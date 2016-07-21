@@ -122,11 +122,13 @@ public class GameServer extends Server {
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "AdditionalCreditMessage": {
-				HashMap<Type, Integer> credits = ( (AdditionalCreditMessage) message ).getCredits();
+				ArrayList<Technology.Type> credits = ( (AdditionalCreditMessage) message ).getCredits();
+				Technology tech = ( (AdditionalCreditMessage) message ).getTech();
 				Civilization.Name name = ( (AdditionalCreditMessage) message ).getCivName();
 				Civilization civ = this.game.getCivilization(name);
-				civ.addTypeCredits(credits);
-				this.log("Additional credits add to " + name.toString() + " by " + user + ": " + credits);
+				civ.addTypeCredits(tech, credits);
+				this.log("Additional credits add to " + name.toString() + " by " + user + " for tech " + tech + ": "
+						+ credits);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			}
