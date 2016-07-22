@@ -67,7 +67,7 @@ public class GuiController extends BubbaGuiController {
 			}
 		});
 
-		if (this.client.getUser().getUserName().equals(this.client.getSession().getId().substring(0, 7))) {
+		if (this.properties.getProperty("UserName") == null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -122,14 +122,17 @@ public class GuiController extends BubbaGuiController {
 	 */
 	public void endProgram() {
 		// Remove previously saved windows
-		// for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
-		// properties.remove("Window" + f);
-		// }
-		// for (BubbaFrame window : this.windowList) {
-		// window.saveProperties();
-		// this.savePosition(window);
-		// }
-		// this.savePropertyFile();
+		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
+			properties.remove("Window" + f);
+		}
+		for (BubbaFrame window : this.windowList) {
+			window.saveProperties();
+			this.savePosition(window);
+		}
+		if (this.client.getUser().getUserName() != null) {
+			this.properties.setProperty("UserName", this.client.getUser().getUserName());
+		}
+		this.savePropertyFile();
 		System.exit(0);
 	}
 
