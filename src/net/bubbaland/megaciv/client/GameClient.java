@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.SwingWorker;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
@@ -32,20 +34,47 @@ public class GameClient implements Runnable {
 
 	private final String		serverUrl;
 	private Session				session;
-	private boolean				isConnected;
 
-	private volatile Game		game;
+	/**
+	 * @return the session
+	 */
+	public Session getSession() {
+		return this.session;
+	}
+
+	private boolean			isConnected;
+
+	private volatile Game	game;
+
+	private ArrayList<User>	userList;
+
+	private User			user;
 
 	public GameClient(final String serverUrl) {
 		this.serverUrl = serverUrl;
 		this.session = null;
 		this.game = null;
+		this.user = new User();
+		this.userList = new ArrayList<User>();
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 	}
 
 	public Game getGame() {
 		return this.game;
+	}
+
+	public ArrayList<User> getUserList() {
+		return this.userList;
+	}
+
+	public boolean userNameExists(String userName) {
+		for (User user : this.userList) {
+			if (userName.equals(user.getUserName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setTimestampFormat(SimpleDateFormat timestampFormat) {
@@ -68,17 +97,21 @@ public class GameClient implements Runnable {
 		}
 	}
 
-	// /**
-	// * Initial hook when a client first connects (TriviaServerEndpoint() is automatically called as well)
-	// *
-	// * @param session
-	// * @param config
-	// */
+	/**
+	 * Initial hook when a client first connects (TriviaServerEndpoint() is automatically called as well)
+	 *
+	 * @param session
+	 * @param config
+	 */
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 		this.session = session;
 		this.log("Now connected to " + session.getRequestURI());
 		this.isConnected = true;
+		if (this.user.getUserName().equals("")) {
+			this.user.setUserName(session.getId().substring(0, 7));
+		}
+		this.sendMessage(new SetUserMessage(this.user));
 	}
 
 	/**
@@ -94,6 +127,8 @@ public class GameClient implements Runnable {
 			case "GameDataMessage":
 				this.game = ( (GameDataMessage) message ).getGame();
 				// this.log(this.game.toString());
+			case "UserListMessage":
+				this.userList = ( (UserListMessage) message ).getUserList();
 			default:
 		}
 	}
@@ -175,6 +210,14 @@ public class GameClient implements Runnable {
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public User getUser() {
+		return this.user;
 	}
 
 }

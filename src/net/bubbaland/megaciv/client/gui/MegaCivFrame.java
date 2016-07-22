@@ -58,6 +58,11 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 
 		gameMenu.addSeparator();
 
+		menuItem = new JMenuItem("Change User Name");
+		menuItem.setActionCommand("Change Name");
+		menuItem.addActionListener(this);
+		gameMenu.add(menuItem);
+
 		menuItem = new JMenuItem("Load Defaults");
 		menuItem.setActionCommand("Load Defaults");
 		menuItem.addActionListener(this);
@@ -139,6 +144,9 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				break;
 			case "Quit":
 				this.controller.endProgram();
+				break;
+			case "Change Name":
+				new UserDialog(this.controller, this.client);
 				break;
 			default:
 				this.log("Unknown action command " + command + "received by " + this.getClass().getSimpleName());

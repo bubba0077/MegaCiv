@@ -4,7 +4,6 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -167,8 +166,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 			BubbaMainPanel newTab = null;
 			try {
 				newTab = this.parent.tabFactory(this.parent, tabName);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException exception) {
+			} catch (IllegalArgumentException | SecurityException exception) {
 				// TODO Auto-generated catch block
 				exception.printStackTrace();
 			}

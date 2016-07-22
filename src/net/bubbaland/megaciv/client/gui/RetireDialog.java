@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.Game;
@@ -18,11 +19,11 @@ public class RetireDialog extends BubbaDialogPanel {
 
 	private static final long			serialVersionUID	= 2699726022812408819L;
 
-	private final GuiClient				client;
+	private final GameClient				client;
 	private final CivilizationComboBox	civComboBox;
 
 
-	RetireDialog(GuiClient client, GuiController contoller) {
+	RetireDialog(GameClient client, GuiController contoller) {
 		super(contoller);
 		this.client = client;
 
@@ -68,10 +69,10 @@ public class RetireDialog extends BubbaDialogPanel {
 
 		private static final long		serialVersionUID	= 4075309902192150187L;
 
-		private final GuiClient			client;
+		private final GameClient			client;
 		private final Civilization.Name	name;
 
-		public ConfirmRetireDialog(GuiClient client, BubbaGuiController controller, Civilization.Name name) {
+		public ConfirmRetireDialog(GameClient client, BubbaGuiController controller, Civilization.Name name) {
 			super(controller);
 			this.client = client;
 			this.name = name;

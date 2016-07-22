@@ -95,8 +95,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 			this.tabbedPane.addTab(tabName, newTab);
 			this.tabbedPane.setSelectedComponent(newTab);
 			newTab.updateGui(true);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException exception) {
+		} catch (IllegalArgumentException | SecurityException exception) {
 			// TODO Auto-generated catch block
 			exception.printStackTrace();
 		}
@@ -135,11 +134,18 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		return tabInformationHash.get(tabName).getTabDescription();
 	}
 
-	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType)
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException {
+	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType) {
 		TabInformation tabInfo = this.tabInformationHash.get(tabType);
-		return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses()).newInstance(tabInfo.getArguments());
+		try {
+			return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses())
+					.newInstance(tabInfo.getArguments());
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException exception) {
+			exception.printStackTrace();
+			System.out.println("Argument classes: " + tabInfo.getArgumentClasses());
+			System.out.println("Arguments: " + tabInfo.getArguments());
+		}
+		return null;
 	}
 
 	/**

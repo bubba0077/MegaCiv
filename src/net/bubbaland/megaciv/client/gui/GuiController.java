@@ -9,8 +9,10 @@ import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 import net.bubbaland.gui.*;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 
+@SuppressWarnings("unused")
 public class GuiController extends BubbaGuiController {
 
 	// File name to store window positions
@@ -26,41 +28,6 @@ public class GuiController extends BubbaGuiController {
 	private WaitDialog							waitDialog;
 
 	private HashMap<Civilization.Age, Color>	astForegroundColors, astBackgroundColors;
-
-	// static {
-	// /**
-	// * Load Nimbus
-	// */
-	// for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	// if ("Nimbus".equals(info.getName())) {
-	// try {
-	// UIManager.setLookAndFeel(new NimbusLookAndFeel() {
-	// private static final long serialVersionUID = -4162111942682867066L;
-	//
-	// @Override
-	// public UIDefaults getDefaults() {
-	// final UIDefaults ret = super.getDefaults();
-	// Font font;
-	// try {
-	// font = Font.createFont(Font.TRUETYPE_FONT,
-	// getClass().getResourceAsStream(FONT_FILENAME));
-	// ret.put("defaultFont", font.deriveFont(12f));
-	// } catch (FontFormatException | IOException exception) {
-	// exception.printStackTrace();
-	// }
-	// return ret;
-	// }
-	//
-	// });
-	// } catch (final UnsupportedLookAndFeelException exception) {
-	// exception.printStackTrace();
-	// }
-	// }
-	//
-	//
-	// }
-	// }
-
 
 	public GuiController(String serverUrl) {
 		super(DEFAULTS_FILENAME, SETTINGS_FILENAME, SETTINGS_VERSION);
@@ -88,10 +55,25 @@ public class GuiController extends BubbaGuiController {
 			});
 		}
 
-		// Create startup frames
-		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
-			new MegaCivFrame(this.client, this)
-					.addTabs(this.properties.getProperty("Window" + f).replaceAll("[\\[\\]]", "").split(", "));
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Create startup frames
+				for (int f = 0; GuiController.this.properties.getProperty("Window" + f) != null; f++) {
+					new MegaCivFrame(GuiController.this.client, GuiController.this)
+							.addTabs(GuiController.this.properties.getProperty("Window" + f).replaceAll("[\\[\\]]", "")
+									.split(", "));
+				}
+			}
+		});
+
+		if (this.client.getUser().getUserName().equals(this.client.getSession().getId().substring(0, 7))) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					new UserDialog(GuiController.this, GuiController.this.client);
+				}
+			});
 		}
 
 		try {

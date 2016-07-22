@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Civilization.Region;
@@ -46,9 +47,9 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
-	private final GuiClient								client;
+	private final GameClient								client;
 
-	public NewGameDialog(GuiClient client, GuiController controller) {
+	public NewGameDialog(GameClient client, GuiController controller) {
 		super(controller);
 		this.client = client;
 

@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.Technology.Type;
@@ -37,14 +38,14 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private final CivilizationComboBox				civComboBox;
 	private final HashMap<Technology, JCheckBox>	techCheckboxes;
-	private final GuiClient							client;
+	private final GameClient							client;
 	private final JFrame							frame;
 	private final JButton							buyNextButton, nextButton, resetButton;
 	private final JPanel							spacerPanel;
 	private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
 	private final JLabel							writtenRecordLabel, monumentLabel;
 
-	public TechnologyStoreDialog(GuiClient client, BubbaGuiController controller) {
+	public TechnologyStoreDialog(GameClient client, BubbaGuiController controller) {
 		super(controller, new GridBagLayout());
 		this.frame = new JFrame();
 		this.client = client;

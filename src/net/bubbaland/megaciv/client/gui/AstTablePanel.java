@@ -31,6 +31,7 @@ import javax.swing.border.BevelBorder;
 
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
@@ -84,7 +85,7 @@ public class AstTablePanel extends BubbaPanel {
 	private HeaderPanel					headerPanel;
 	private FillerPanel					fillerPanel;
 
-	private final GuiClient				client;
+	private final GameClient				client;
 
 	private HashMap<Column, Integer>	width;
 	private HashMap<Column, Float>		fontSize;
@@ -95,7 +96,7 @@ public class AstTablePanel extends BubbaPanel {
 	private Civilization.SortOption		sortOption;
 	private Civilization.SortDirection	sortDirection;
 
-	public AstTablePanel(GuiClient client, GuiController controller) {
+	public AstTablePanel(GameClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 		this.client = client;
 		this.controller = controller;

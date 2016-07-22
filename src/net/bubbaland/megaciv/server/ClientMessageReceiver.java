@@ -33,6 +33,10 @@ public class ClientMessageReceiver {
 		return this.user;
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	/**
 	 * Initial hook when a client first connects (TriviaServerEndpoint() is automatically called as well)
 	 *
@@ -43,7 +47,7 @@ public class ClientMessageReceiver {
 	public void onOpen(Session session, EndpointConfig config) {
 		ClientMessageReceiver.server.log("User " + session.getId() + " connected");
 		this.user.setUserName("User " + session.getId());
-		ClientMessageReceiver.server.addUser(session, this);
+		ClientMessageReceiver.server.addSession(session, this);
 		ClientMessageReceiver.server.sendGame(session);
 	}
 
@@ -78,7 +82,7 @@ public class ClientMessageReceiver {
 	 */
 	@OnClose
 	public void onClose(Session session) {
-		server.removeUser(session);
+		server.removeSession(session);
 	}
 
 }

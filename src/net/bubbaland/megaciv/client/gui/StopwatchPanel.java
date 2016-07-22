@@ -23,6 +23,7 @@ import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 
 public class StopwatchPanel extends BubbaPanel implements ActionListener {
 
@@ -44,7 +45,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 	private final JButton			setButton, resetButton;
 	private final JLabel			clockLabel;
 
-	public StopwatchPanel(GuiClient client, GuiController controller) {
+	public StopwatchPanel(GameClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 
 		this.timerLength = STARTING_TIMER_LENGTH_SEC * 10;

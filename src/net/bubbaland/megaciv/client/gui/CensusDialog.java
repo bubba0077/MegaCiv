@@ -16,6 +16,7 @@ import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.CensusMessage;
@@ -24,12 +25,12 @@ public class CensusDialog extends BubbaDialogPanel {
 
 	private static final long							serialVersionUID	= 6704150091226095594L;
 
-	private final GuiClient								client;
+	private final GameClient								client;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 
 	private final static int							N_COLUMNS			= 2;
 
-	public CensusDialog(GuiClient client, BubbaGuiController controller) {
+	public CensusDialog(GameClient client, BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
 

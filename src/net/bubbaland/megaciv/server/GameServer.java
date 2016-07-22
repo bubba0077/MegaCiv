@@ -49,19 +49,35 @@ public class GameServer extends Server {
 		this.isRunning = false;
 	}
 
-	public void addUser(Session session, ClientMessageReceiver endpoint) {
+	public void addSession(Session session, ClientMessageReceiver endpoint) {
 		this.log("New client connecting...");
 		this.sessionList.put(session, endpoint);
+		this.broadcastMessage(new UserListMessage(this.getUserList()));
 	}
 
-	public void removeUser(Session session) {
+	private ArrayList<User> getUserList() {
+		ArrayList<User> userList = new ArrayList<User>() {
+			private static final long serialVersionUID = 5052692806073959873L;
+
+			{
+				for (ClientMessageReceiver endpoint : GameServer.this.sessionList.values()) {
+					add(endpoint.getUser());
+				}
+			}
+		};
+		return userList;
+	}
+
+	public void removeSession(Session session) {
 		this.log(this.sessionList.get(session).getUser() + " disconnected");
 		this.sessionList.remove(session);
+		this.broadcastMessage(new UserListMessage(this.getUserList()));
 	}
 
 	public void processIncomingMessage(ClientMessage message, Session session) {
 		String messageType = message.getClass().getSimpleName();
 		User user = this.sessionList.get(session).getUser();
+		user.updateActivity();
 		switch (messageType) {
 			case "NewGameMessage":
 				this.game = new Game();
@@ -150,9 +166,15 @@ public class GameServer extends Server {
 						+ "After Edit: " + civ.toFullString());
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
+			case "SetUserMessage":
+				User newUser = ( (SetUserMessage) message ).getUser();
+				this.sessionList.get(session).setUser(newUser);
+				this.log(user.getUserName() + " changed name to " + newUser.getUserName());
+				break;
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
 		}
+		this.broadcastMessage(new UserListMessage(this.getUserList()));
 	}
 
 	public void communicationsError(Session session, Throwable throwable) {

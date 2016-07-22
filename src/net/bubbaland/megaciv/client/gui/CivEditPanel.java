@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
@@ -38,14 +39,14 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 	private static final long		serialVersionUID	= 148480222037355491L;
 
 	private final JFrame			frame;
-	private final GuiClient			client;
+	private final GameClient			client;
 	private final Civilization.Name	name;
 	private Civilization			civ;
 	private final HeaderPanel		headerPanel;
 	private final StatPanel			statPanel;
 	private final TechPanel			techPanel;
 
-	public CivEditPanel(GuiClient client, BubbaGuiController controller, Civilization.Name name) {
+	public CivEditPanel(GameClient client, BubbaGuiController controller, Civilization.Name name) {
 		super(controller, new GridBagLayout());
 		this.frame = new JFrame();
 		this.client = client;
