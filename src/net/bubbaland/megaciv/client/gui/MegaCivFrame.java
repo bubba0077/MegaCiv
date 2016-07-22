@@ -153,7 +153,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				new UserDialog(this.controller, this.client);
 				break;
 			default:
-				this.log("Unknown action command " + command + "received by " + this.getClass().getSimpleName());
+				this.setStatusBarMessage("Unknown action command " + command + "received by " + this.getClass().getSimpleName());
 		}
 	}
 }

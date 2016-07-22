@@ -1233,7 +1233,7 @@ public enum Technology {
 		s = s + "<BR/>";
 		String text = this.text.replace("\n", "<BR/>");
 		for (String t : text.split("<BR/>")) {
-			Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s))", Pattern.DOTALL);
+			Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
 			Matcher matcher = regex.matcher(t);
 			while (matcher.find()) {
 				s = s + matcher.group() + "<BR/>";

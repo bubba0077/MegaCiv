@@ -1,6 +1,6 @@
 #MegaCiv
 TimestampFormat=[yyyy MMM dd HH:mm:ss]
-StatusBar.Height=0
+StatusBar.Height=10
 StatusBar.FontSize=10.0
 
 OpenWindows=MegaCiv

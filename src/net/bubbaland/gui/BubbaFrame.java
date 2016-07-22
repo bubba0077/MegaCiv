@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -39,6 +42,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	private boolean						initComplete;
 
 	protected BubbaMainPanel			mainPanel;
+
+	private final int					MAX_HTML_WIDTH		= 50;
 
 	/**
 	 * Internal constructor containing code common to the public constructors.
@@ -135,9 +140,19 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 * @param message
 	 *            Message to log
 	 */
-	public void log(String message) {
+	public void setStatusBarMessage(String message) {
 		// Display message in status bar
 		this.statusBar.setText(message);
+		this.statusBar.setToolTipText(message);
+
+		String maxWidthText = "<html>";
+		Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
+		Matcher matcher = regex.matcher(message);
+		while (matcher.find()) {
+			maxWidthText = maxWidthText + matcher.group() + "<BR/>";
+		}
+		maxWidthText = maxWidthText + "</html>";
+		this.statusBar.setToolTipText(maxWidthText);
 	}
 
 	public void updateGui(boolean forceUpdate) {

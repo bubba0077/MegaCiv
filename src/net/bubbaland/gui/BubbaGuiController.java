@@ -214,9 +214,8 @@ public abstract class BubbaGuiController {
 		final String timestamp = timestampFormat.format(new Date());
 		for (final BubbaFrame frame : this.windowList) {
 			// Display message in status bar
-			frame.log(timestamp + " " + message);
+			frame.setStatusBarMessage(timestamp + " " + message);
 		}
-		// System.out.println(timestamp + " " + message);
 	}
 
 	public int getNWindows() {
