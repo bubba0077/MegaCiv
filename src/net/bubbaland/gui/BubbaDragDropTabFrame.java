@@ -142,8 +142,6 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException exception) {
 			exception.printStackTrace();
-			System.out.println("Argument classes: " + tabInfo.getArgumentClasses());
-			System.out.println("Arguments: " + tabInfo.getArguments());
 		}
 		return null;
 	}

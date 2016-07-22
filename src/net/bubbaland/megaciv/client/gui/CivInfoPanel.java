@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import net.bubbaland.gui.BubbaDnDTabbedPane;
 import net.bubbaland.gui.BubbaMainPanel;
 import net.bubbaland.gui.BubbaPanel;
-import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
@@ -26,7 +25,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 	private static final long		serialVersionUID	= -7597920983496498119L;
 
-	private final GameClient			client;
+	private final GuiClient			client;
 	private final Civilization.Name	name;
 	private final MegaCivFrame		frame;
 
@@ -34,7 +33,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 	private final StatPanel			statPanel;
 	private final TechPanel			techPanel;
 
-	public CivInfoPanel(GameClient client, GuiController controller, MegaCivFrame frame, Civilization.Name name) {
+	public CivInfoPanel(GuiClient client, GuiController controller, MegaCivFrame frame, Civilization.Name name) {
 		super(controller, frame);
 		this.client = client;
 		this.name = name;

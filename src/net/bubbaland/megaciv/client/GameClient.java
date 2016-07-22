@@ -127,8 +127,10 @@ public class GameClient implements Runnable {
 			case "GameDataMessage":
 				this.game = ( (GameDataMessage) message ).getGame();
 				// this.log(this.game.toString());
+				break;
 			case "UserListMessage":
 				this.userList = ( (UserListMessage) message ).getUserList();
+				break;
 			default:
 		}
 	}
