@@ -18,12 +18,15 @@ import javax.swing.MenuSelectionManager;
 import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 
+import net.bubbaland.megaciv.client.gui.MegaCivFrame;
+
 /**
  * Creates a top-level window for displaying the GUI.
  *
  * @author Walter Kolczynski
  *
  */
+@SuppressWarnings("unused")
 public class BubbaFrame extends JFrame implements WindowListener {
 
 	private static final long			serialVersionUID	= -3639363131235278472L;
@@ -60,12 +63,10 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			private static final long serialVersionUID = -3431542881790392652L;
 
 			@Override
-			public void updateGui(boolean forceUpdate) {
-			}
+			public void updateGui(boolean forceUpdate) {}
 
 			@Override
-			protected void loadProperties() {
-			}
+			protected void loadProperties() {}
 		};
 
 		/**
@@ -143,8 +144,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		while (!this.initComplete) {
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException exception) {
-			}
+			} catch (InterruptedException exception) {}
 		}
 		this.mainPanel.updateGui(forceUpdate);
 	}
@@ -197,12 +197,10 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-	}
+	public void windowActivated(WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent e) {
-	}
+	public void windowClosed(WindowEvent e) {}
 
 	/**
 	 * When one of the windows tries to close, save the properties and position of the window first. Then exit the
@@ -220,20 +218,16 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) {
-	}
+	public void windowIconified(WindowEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent e) {
-	}
+	public void windowOpened(WindowEvent e) {}
 
 	// Inner class that defines our special slider menu item
 	protected class SpinnerMenuItem extends JSpinner implements MenuElement {
@@ -259,15 +253,12 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		}
 
 		@Override
-		public void menuSelectionChanged(boolean isIncluded) {
-		}
+		public void menuSelectionChanged(boolean isIncluded) {}
 
 		@Override
-		public void processKeyEvent(KeyEvent e, MenuElement path[], MenuSelectionManager manager) {
-		}
+		public void processKeyEvent(KeyEvent e, MenuElement path[], MenuSelectionManager manager) {}
 
 		@Override
-		public void processMouseEvent(MouseEvent e, MenuElement path[], MenuSelectionManager manager) {
-		}
+		public void processMouseEvent(MouseEvent e, MenuElement path[], MenuSelectionManager manager) {}
 	}
 }

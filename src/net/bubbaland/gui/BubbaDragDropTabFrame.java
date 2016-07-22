@@ -8,10 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Set;
-
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -116,8 +114,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 *
 	 * @return The available tab names
 	 */
-	public Set<String> getTabNames() {
-		return tabInformationHash.keySet();
+	public ArrayList<String> getTabNames() {
+		return new ArrayList<String>(this.tabInformationHash.keySet());
 	}
 
 	/**
@@ -200,8 +198,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 			System.out.println(this.getClass().getSimpleName() + "Can't update null tabbedPane!");
 			try {
 				Thread.sleep(50);
-			} catch (final InterruptedException exception) {
-			}
+			} catch (final InterruptedException exception) {}
 		}
 		for (final String tabName : this.tabbedPane.getTabNames()) {
 			final int index = this.tabbedPane.indexOfTab(tabName);
@@ -238,9 +235,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	public void saveProperties() {
 		super.saveProperties();
 		final String id = this.getTitle();
-		final String[] tabNames = this.tabbedPane.getTabNames();
-		this.controller.getProperties().setProperty(id + "." + "OpenTabs", this.tabbedPane.getTabNames().toString());
-		this.controller.getProperties().setProperty("Window" + id, Arrays.toString(tabNames));
+		this.controller.getProperties().setProperty("Window." + id + ".OpenTabs",
+				String.join(", ", ( (BubbaDragDropTabFrame) this ).tabbedPane.getTabNames()));
 	}
 
 	@Override
@@ -270,7 +266,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 				}
 				break;
 			default:
-				this.controller.log("Unknown state change registered in TriviaFrame");
+				this.controller.setStatusBarText("Unknown state change registered in TriviaFrame");
 		}
 	}
 

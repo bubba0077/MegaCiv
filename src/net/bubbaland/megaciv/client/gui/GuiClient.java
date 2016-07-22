@@ -54,7 +54,7 @@ public class GuiClient extends GameClient {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				GuiClient.this.gui.log(message);
+				GuiClient.this.gui.setStatusBarText(message);
 			}
 		});
 	}

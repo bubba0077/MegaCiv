@@ -3,7 +3,8 @@ TimestampFormat=[yyyy MMM dd HH:mm:ss]
 StatusBar.Height=0
 StatusBar.FontSize=10.0
 
-Window0=[AST]
+OpenWindows=MegaCiv
+Window.MegaCiv.OpenTabs=AST
 
 Dialog.FontSize=20.0
 Dialog.TextArea.FontSize=16.0

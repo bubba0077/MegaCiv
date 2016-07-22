@@ -34,6 +34,10 @@ public class UserDialog extends BubbaDialogPanel {
 	 * @param role
 	 */
 	public UserDialog(BubbaGuiController controller, GuiClient client) {
+		this(controller, client, false);
+	}
+
+	public UserDialog(BubbaGuiController controller, GuiClient client, boolean modal) {
 		super(controller);
 
 		this.client = client;
@@ -62,7 +66,7 @@ public class UserDialog extends BubbaDialogPanel {
 
 		final String userName = client.getUser().getUserName();
 		int options;
-		if (userName == null) {
+		if (userName == null || userName.equals(this.client.getSession().getId().substring(0, 7))) {
 			options = JOptionPane.DEFAULT_OPTION;
 		} else {
 			this.userTextField.setText(userName);
@@ -72,6 +76,8 @@ public class UserDialog extends BubbaDialogPanel {
 		// Display the dialog box
 		this.dialog = new BubbaDialog(this.controller, "User Login", this, JOptionPane.PLAIN_MESSAGE, options);
 		this.dialog.setVisible(true);
+		this.dialog.setModal(modal);
+		this.dialog.setAlwaysOnTop(modal);
 	}
 
 	@Override

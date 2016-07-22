@@ -4,13 +4,17 @@ import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import net.bubbaland.gui.*;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.User;
 
 @SuppressWarnings("unused")
 public class GuiController extends BubbaGuiController {
@@ -20,7 +24,7 @@ public class GuiController extends BubbaGuiController {
 	// File name to store window positions
 	protected final static String				SETTINGS_FILENAME	= ".net.bubbaland.megaciv.client.gui.settings";
 	// Settings version to force reloading defaults
-	private final static String					SETTINGS_VERSION	= "3";
+	private final static String					SETTINGS_VERSION	= "5";
 
 	// private final static String FONT_FILENAME = "fonts/tahoma.ttf";
 
@@ -37,7 +41,7 @@ public class GuiController extends BubbaGuiController {
 		this.waitDialog = new WaitDialog(this);
 
 		while (!this.client.isConnected()) {
-			log("Awaiting data...");
+			setStatusBarText("Awaiting data...");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {
@@ -55,25 +59,18 @@ public class GuiController extends BubbaGuiController {
 			});
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Create startup frames
-				for (int f = 0; GuiController.this.properties.getProperty("Window" + f) != null; f++) {
-					new MegaCivFrame(GuiController.this.client, GuiController.this)
-							.addTabs(GuiController.this.properties.getProperty("Window" + f).replaceAll("[\\[\\]]", "")
-									.split(", "));
-				}
-			}
-		});
-
-		if (this.properties.getProperty("UserName") == null) {
+		String userName = this.properties.getProperty("UserName");
+		if (userName == null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					new UserDialog(GuiController.this, GuiController.this.client);
+					new UserDialog(GuiController.this, GuiController.this.client, true);
 				}
 			});
+		} else {
+			User user = this.client.getUser();
+			user.setUserName(userName);
+			this.client.setUser(user);
 		}
 
 		try {
@@ -88,6 +85,37 @@ public class GuiController extends BubbaGuiController {
 		}
 		// this.log("Welcome " + this.client.getUser().getUserName());
 
+	}
+
+	public void createFrame(String frameName) {
+		new SwingWorker<Void, Void>() {
+			public Void doInBackground() {
+				while (GuiController.this.client == null) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException exception) {}
+				}
+				return null;
+			}
+
+			public void done() {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						// String[] tabs = GuiController.this.properties
+						// .getProperty("Window" + frameName + ".OpenTabs",
+						// GuiController.this.properties.getProperty("MegaCiv.OpenTabs"))
+						// .replaceAll("[\\[\\]]", "").split(", ");
+
+						// client.log(GuiController.this.properties.getProperty("Window.MegaCiv.OpenTabs"));
+
+						String[] tabs =
+								GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
+										.replaceAll("[\\[\\]]", "").split(", ");
+						new MegaCivFrame(GuiController.this.client, GuiController.this).addTabs(tabs);
+					}
+				});
+			}
+		}.execute();
 	}
 
 	public Color getAstForegroundColor(Civilization.Age age) {
@@ -121,19 +149,17 @@ public class GuiController extends BubbaGuiController {
 	 * Add the current window contents to properties, then save the properties to the settings file and exit.
 	 */
 	public void endProgram() {
-		// Remove previously saved windows
-		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
-			properties.remove("Window" + f);
-		}
-		for (BubbaFrame window : this.windowList) {
-			window.saveProperties();
-			this.savePosition(window);
-		}
-		if (this.client.getUser().getUserName() != null) {
+		this.saveProperties();
+		System.exit(0);
+	}
+
+	public void saveProperties() {
+		super.saveProperties();
+		String userName = this.client.getUser().getUserName();
+		if (userName != null && !userName.equals(this.client.getSession().getId().substring(0, 7))) {
 			this.properties.setProperty("UserName", this.client.getUser().getUserName());
 		}
 		this.savePropertyFile();
-		System.exit(0);
 	}
 
 	public static void main(String[] args) {

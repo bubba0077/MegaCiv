@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Hashtable;
-import java.util.Set;
-
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -39,7 +37,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 	private final BubbaDragDropTabFrame	parent;
 
 	// Get the list of tab names and sort them
-	private final Set<String>			tabNameSet;
+	private final ArrayList<String>		tabNameSet;
 	private final String[]				tabNames;
 
 	public NewTabDialog(BubbaGuiController controller, BubbaDragDropTabFrame frame) {

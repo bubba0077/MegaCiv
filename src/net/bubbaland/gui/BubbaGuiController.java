@@ -32,7 +32,6 @@ public abstract class BubbaGuiController {
 	protected final String					settingsFilename;
 
 	protected BubbaGuiController(String defaultsFilename, String settingsFilename, String settingsVersion) {
-		// this.tabInformationHash = tabInformationHash;
 		this.defaultsFilename = defaultsFilename;
 		this.settingsFilename = settingsFilename;
 
@@ -64,14 +63,25 @@ public abstract class BubbaGuiController {
 
 		// Set timestamp format
 		timestampFormat = new SimpleDateFormat(properties.getProperty("TimestampFormat"));
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				for (String frameName : BubbaGuiController.this.properties.getProperty("OpenWindows").split(",")) {
+					BubbaGuiController.this.createFrame(frameName);
+				}
+			}
+		});
 	}
+
+	public abstract void createFrame(String frameName);
 
 	/**
 	 * Clear all saved data from file.
 	 *
 	 */
 	public void loadDefaults() {
-		this.log("Loading defaults");
+		this.setStatusBarText("Loading defaults");
 		properties.clear();
 		final InputStream defaults = this.getClass().getResourceAsStream(defaultsFilename);
 		try {
@@ -200,12 +210,13 @@ public abstract class BubbaGuiController {
 	 * @param message
 	 *            Message to log
 	 */
-	public void log(String message) {
+	public void setStatusBarText(String message) {
 		final String timestamp = timestampFormat.format(new Date());
 		for (final BubbaFrame frame : this.windowList) {
 			// Display message in status bar
 			frame.log(timestamp + " " + message);
 		}
+		// System.out.println(timestamp + " " + message);
 	}
 
 	public int getNWindows() {
@@ -220,16 +231,29 @@ public abstract class BubbaGuiController {
 	 * Add the current window contents to properties, then save the properties to the settings file and exit.
 	 */
 	public void endProgram() {
-		// Remove previously saved windows
-		for (int f = 0; this.properties.getProperty("Window" + f) != null; f++) {
-			properties.remove("Window" + f);
-		}
+		this.saveProperties();
+		System.exit(0);
+	}
+
+	public void saveProperties() {
+		ArrayList<String> windowNames = new ArrayList<String>() {
+			private static final long serialVersionUID = 6362800947141566082L;
+
+			{
+				for (BubbaFrame window : BubbaGuiController.this.windowList) {
+					add(window.getTitle());
+					BubbaGuiController.this.setStatusBarText(window.getTitle());
+				}
+			}
+		};
+		this.properties.setProperty("OpenWindows", String.join(", ", windowNames));
+
 		for (BubbaFrame window : this.windowList) {
 			window.saveProperties();
 			this.savePositionAndSize(window);
 		}
 		this.savePropertyFile();
-		System.exit(0);
+
 	}
 
 	public void updateGui(boolean forceUpdate) {

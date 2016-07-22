@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,6 +18,7 @@ import net.bubbaland.gui.BubbaDragDropTabFrame;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 
+@SuppressWarnings("unused")
 public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListener {
 
 	private static final long	serialVersionUID	= -8995125745966985308L;
@@ -80,9 +82,11 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 	}
 
 	@Override
-	public Set<String> getTabNames() {
-		Set<String> tabNames = super.getTabNames();
-		ArrayList<Civilization.Name> civNames = this.client.getGame().getCivilizationNames();
+	public ArrayList<String> getTabNames() {
+		ArrayList<String> tabNames = super.getTabNames();
+		ArrayList<Civilization.Name> civNames =
+				( this.client.getGame() == null ) ? new ArrayList<Civilization.Name>() : this.client.getGame()
+						.getCivilizationNames();
 		for (Iterator<String> iterator = tabNames.iterator(); iterator.hasNext();) {
 			String tabName = iterator.next();
 			if (Civilization.Name.contains(tabName)
