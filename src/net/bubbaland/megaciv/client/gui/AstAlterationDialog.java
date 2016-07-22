@@ -11,6 +11,7 @@ import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -24,7 +25,7 @@ import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 
-public class AdvanceAstDialog extends BubbaDialogPanel {
+public class AstAlterationDialog extends BubbaDialogPanel {
 
 	private static final long			serialVersionUID	= -3521456258596945263L;
 
@@ -33,7 +34,7 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 
 	private final static int			N_COLUMNS			= 2;
 
-	public AdvanceAstDialog(GuiClient client, BubbaGuiController controller) {
+	public AstAlterationDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
 
@@ -138,12 +139,19 @@ public class AdvanceAstDialog extends BubbaDialogPanel {
 			group.add(this.regressCheckbox);
 			BubbaPanel.setButtonProperties(this.regressCheckbox, civWidth, regressHeight, foreground, background,
 					regressFontSize);
-			this.add(this.regressCheckbox, constraints);
+			if (AstAlterationDialog.this.client.getGame().getDifficulty() == Game.Difficulty.EXPERT) {
+				this.regressCheckbox.setSelected(civ.getCurrentAge() != Age.STONE && civ.getCityCount() == 0);
+				this.add(this.regressCheckbox, constraints);
+			} else {
+				this.regressCheckbox.setSelected(false);
+				this.regressCheckbox.setEnabled(false);
+				this.enclosedLabelFactory("", civWidth, regressHeight, foreground, background, constraints, reqFontSize,
+						JLabel.CENTER, JLabel.CENTER);
+			}
 
 			this.checkbox.setSelected(civ.passAstReqirements());
-			this.regressCheckbox.setSelected(civ.getCurrentAge() != Age.STONE && civ.getCityCount() == 0);
 
-			Game game = AdvanceAstDialog.this.client.getGame();
+			Game game = AstAlterationDialog.this.client.getGame();
 			Civilization.Age nextAge = game.getCivilization(name).getNextStepAge();
 
 			String astReqText = Civilization.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
