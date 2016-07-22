@@ -70,7 +70,8 @@ public class GameClient implements Runnable {
 
 	public boolean userNameExists(String userName) {
 		for (User user : this.userList) {
-			if (userName.equals(user.getUserName())) {
+			user.compareTo(this.user);
+			if (user.compareTo(this.user) != 0 && userName.equals(user.getUserName())) {
 				return true;
 			}
 		}
