@@ -432,7 +432,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public int getTypeCredit(Technology.Type type) {
 		int credit = 0;
 		for (Technology tech : this.extraTypeCredits.keySet()) {
-			credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * 5;
+			if (this.hasTech(tech)) {
+				credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * 5;
+			}
 		}
 		for (Technology tech : this.techs) {
 			credit = credit + tech.getTypeCredit(type);

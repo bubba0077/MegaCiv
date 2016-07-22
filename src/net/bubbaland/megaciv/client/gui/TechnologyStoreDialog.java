@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -15,13 +14,11 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.bubbaland.gui.BubbaDialog;
-import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
@@ -44,6 +41,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	private final JFrame							frame;
 	private final JButton							buyNextButton, nextButton, resetButton;
 	private final JPanel							spacerPanel;
+	private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
+	private final JLabel							writtenRecordLabel, monumentLabel;
 
 	public TechnologyStoreDialog(GuiClient client, BubbaGuiController controller) {
 		super(controller, new GridBagLayout());
@@ -64,7 +63,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		this.civComboBox = new CivilizationComboBox(civNameArray);
 		this.civComboBox.setActionCommand("Civ Changed");
 		this.civComboBox.addActionListener(this);
@@ -72,11 +71,11 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.gridwidth = 3;
+		constraints.gridwidth = 6;
 		this.spacerPanel = new JPanel();
 		this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
 		this.add(this.spacerPanel, constraints);
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
@@ -84,17 +83,53 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
 			checkbox.addChangeListener(this);
 
-			constraints.gridx = 0 + tech.ordinal() / N_ROWS;
+			constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
 			constraints.gridy = 1 + tech.ordinal() % N_ROWS;
 
 			this.techCheckboxes.put(tech, checkbox);
 			this.add(checkbox, constraints);
 		}
 
+		this.writtenRecordComboboxes = new ArrayList<TechnologyTypeComboBox>();
+		constraints.gridx = 4;
+		constraints.gridwidth = 2;
+		constraints.gridy = N_ROWS + 2;
+		this.writtenRecordLabel = this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER,
+				JLabel.CENTER);
+		this.writtenRecordLabel.setEnabled(false);
+		constraints.gridwidth = 1;
+
+		constraints.gridy = N_ROWS + 3;
+		for (int i = 0; i < 2; i++) {
+			constraints.gridx = 4 + i;
+			TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+			combobox.setEnabled(false);
+			this.add(combobox, constraints);
+			this.writtenRecordComboboxes.add(combobox);
+		}
+
+		this.monumentComboboxes = new ArrayList<TechnologyTypeComboBox>();
+
 		constraints.gridx = 2;
-		constraints.gridy = 1 + N_ROWS;
+		constraints.gridy = N_ROWS + 2;
+		constraints.gridwidth = 2;
+		this.monumentLabel = this.enclosedLabelFactory("Monument Credits", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.monumentLabel.setEnabled(false);
+		constraints.gridwidth = 1;
+
+		for (int i = 0; i < 4; i++) {
+			constraints.gridx = 2 + i / 2;
+			constraints.gridy = N_ROWS + 3 + i % 2;
+			TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+			combobox.setEnabled(false);
+			this.add(combobox, constraints);
+			this.monumentComboboxes.add(combobox);
+		}
+
+		constraints.gridx = 4;
+		constraints.gridy = 5 + N_ROWS;
 		constraints.weighty = 1.0;
-		constraints.gridheight = 2;
+		constraints.gridwidth = 2;
 		this.buyNextButton = new JButton("Buy");
 		this.buyNextButton.setActionCommand("Buy");
 		this.buyNextButton.addActionListener(this);
@@ -102,7 +137,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridheight = 1;
 
 		constraints.gridx = 1;
-		constraints.gridy = 2 + N_ROWS;
+		constraints.gridy = 5 + N_ROWS;
 
 		this.nextButton = new JButton("Next Civ");
 		this.nextButton.setActionCommand("Next");
@@ -110,7 +145,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		// this.add(this.nextButton, constraints);
 
 		constraints.gridx = 0;
-		constraints.gridy = 2 + N_ROWS;
+		constraints.gridy = 5 + N_ROWS;
 		this.resetButton = new JButton("Reset");
 		this.resetButton.setActionCommand("Reset");
 		this.resetButton.addActionListener(this);
@@ -179,8 +214,18 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			techString = techString + "</html>";
 			checkbox.setText(techString);
 		}
+
+		ArrayList<Technology.Type> credits = civ.getExtraTypeCredits(Technology.WRITTEN_RECORD);
+		for (int i = 0; i < 2; i++) {
+			this.writtenRecordComboboxes.get(i).setSelectedItem(credits.get(i));
+		}
+		credits = civ.getExtraTypeCredits(Technology.MONUMENT);
+		for (int i = 0; i < 4; i++) {
+			this.monumentComboboxes.get(i).setSelectedItem(credits.get(i));
+		}
+
 		this.updateTotalCost();
-		// this.frame.pack();
+
 	}
 
 	private void updateTotalCost() {
@@ -228,6 +273,15 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			costs.put(Technology.LIBRARY, Technology.LIBRARY.getCost(civ));
 		}
 
+
+		for (TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
+			combobox.setEnabled(costs.containsKey(Technology.WRITTEN_RECORD));
+		}
+
+		for (TechnologyTypeComboBox combobox : this.monumentComboboxes) {
+			combobox.setEnabled(costs.containsKey(Technology.MONUMENT));
+		}
+
 		int cost = 0;
 		for (int c : costs.values()) {
 			cost = cost + c;
@@ -258,13 +312,31 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 						newTechs.add(tech);
 					}
 				}
+				this.client.sendMessage(new TechPurchaseMessage(civName, newTechs));
 				if (newTechs.contains(Technology.WRITTEN_RECORD)) {
-					new AdditionalCreditDialog(controller, civName, Technology.WRITTEN_RECORD, 2);
+					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+						private static final long serialVersionUID = -3048516348338206499L;
+
+						{
+							for (TechnologyTypeComboBox combobox : TechnologyStoreDialog.this.writtenRecordComboboxes) {
+								add((Type) combobox.getSelectedItem());
+							}
+						}
+					};
+					this.client.sendMessage(new AdditionalCreditMessage(civName, Technology.WRITTEN_RECORD, credits));
 				}
 				if (newTechs.contains(Technology.MONUMENT)) {
-					new AdditionalCreditDialog(controller, civName, Technology.MONUMENT, 4);
+					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+						private static final long serialVersionUID = -3048516348338206499L;
+
+						{
+							for (TechnologyTypeComboBox combobox : TechnologyStoreDialog.this.monumentComboboxes) {
+								add((Type) combobox.getSelectedItem());
+							}
+						}
+					};
+					this.client.sendMessage(new AdditionalCreditMessage(civName, Technology.MONUMENT, credits));
 				}
-				this.client.sendMessage(new TechPurchaseMessage(civName, newTechs));
 				// Intentional fall through
 			case "Next":
 				int nextIndex = this.civComboBox.getSelectedIndex() + 1;
@@ -281,83 +353,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				// Intentional fall through
 			case "Reset":
 				this.resetCheckboxes();
-		}
-	}
-
-	private class AdditionalCreditDialog extends BubbaDialogPanel {
-
-		private static final long			serialVersionUID	= 1L;
-
-		private final Technology			tech;
-		private final Civilization.Name		civName;
-		private final ArrayList<CreditRow>	creditRows;
-
-		public AdditionalCreditDialog(BubbaGuiController controller, Civilization.Name civName, Technology tech,
-				int nCreditsIn5s) {
-			super(controller);
-
-			this.civName = civName;
-			this.tech = tech;
-
-			final GridBagConstraints constraints = new GridBagConstraints();
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.anchor = GridBagConstraints.CENTER;
-
-			constraints.weightx = 1.0;
-			constraints.weighty = 1.0;
-			constraints.gridx = 0;
-
-			this.creditRows = new ArrayList<CreditRow>();
-			for (int y = 0; y < nCreditsIn5s; y++) {
-				constraints.gridy = y;
-				CreditRow row = new CreditRow(controller);
-				this.creditRows.add(row);
-				this.add(row, constraints);
-			}
-
-			this.dialog = new BubbaDialog(this.controller,
-					"Select Additional Credits for " + Game.capitalizeFirst(this.tech.toString()) + " (5 each)", this,
-					JOptionPane.PLAIN_MESSAGE);
-			this.dialog.setModal(true);
-			this.dialog.setVisible(true);
-		}
-
-		public void windowClosed(WindowEvent event) {
-			ArrayList<Type> credits = new ArrayList<Type>();
-
-			for (CreditRow row : this.creditRows) {
-				Type type = row.getSelectedType();
-				credits.add(type);
-			}
-			TechnologyStoreDialog.this.client
-					.sendMessage(new AdditionalCreditMessage(this.civName, this.tech, credits));
-			TechnologyStoreDialog.this.client.log("Selected additional credits for " + this.tech + ": " + credits);
-		}
-
-		private class CreditRow extends BubbaPanel {
-
-			private static final long				serialVersionUID	= 1L;
-
-			private final TechnologyTypeComboBox	combobox;
-
-			public CreditRow(BubbaGuiController controller) {
-				super(controller, new GridBagLayout());
-				final GridBagConstraints constraints = new GridBagConstraints();
-				constraints.fill = GridBagConstraints.BOTH;
-				constraints.anchor = GridBagConstraints.CENTER;
-
-				constraints.weightx = 1.0;
-				constraints.weighty = 1.0;
-				constraints.gridy = 0;
-
-				this.combobox = new TechnologyTypeComboBox(Technology.Type.values());
-				this.add(this.combobox, constraints);
-			}
-
-			public Type getSelectedType() {
-				return (Type) this.combobox.getSelectedItem();
-			}
-
+				break;
 		}
 	}
 }
