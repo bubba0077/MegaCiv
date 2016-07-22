@@ -1267,7 +1267,7 @@ public enum Technology {
 																									};
 
 
-	private final int														MAX_HTML_WIDTH	= 100;
+	private final int														MAX_HTML_WIDTH	= 50;
 
 	@JsonProperty("name")
 	private final String													name;
@@ -1334,18 +1334,19 @@ public enum Technology {
 	}
 
 	public String toHtmlString() {
-		String s = "<html><strong>" + this.name + "</strong><BR/>";
-		s = s + "Base Cost: " + this.baseCost + "   VP: " + this.vp + "<BR/>";
+		String s = "<html><strong>" + this.name + "<br/>";
 		for (Technology.Type t : this.types) {
-			s += "<span color=\"" + t.getHtmlColor() + "\">" + t.toString() + "</span>&nbsp;<BR/>";
+			s += "<span color=\"" + t.getHtmlColor() + "\">" + t.toString() + "</span>&nbsp;";
 		}
-		s = s + "Credits: ";
+		s = s + "</strong><br/>";
+		s = s + "<strong>Base Cost</strong> " + this.baseCost + " (" + this.vp + " VP)<BR/>";
+		s = s + "<strong>Credits</strong> ";
 		for (Technology.Type t : this.typeCredits.keySet()) {
 			s = s + "<span color=\"" + t.getHtmlColor() + "\">" + this.typeCredits.get(t) + " " + t.toString()
 					+ "</span>&nbsp;";
 		}
 		for (Technology t : TECH_CREDITS.get(this).keySet()) {
-			s = s + "<B><I>" + TECH_CREDITS.get(this).get(t) + " " + t.getName() + "</I></B>";
+			s = s + "<I>" + TECH_CREDITS.get(this).get(t) + " " + t.getName() + "</I>";
 		}
 		s = s + "<BR/>";
 		String text = this.text.replace("\n", "<BR/>");
