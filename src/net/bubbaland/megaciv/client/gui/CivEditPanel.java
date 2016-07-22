@@ -381,7 +381,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				checkbox.setActionCommand("Tech");
 				checkbox.setName(tech.toString());
 				checkbox.addActionListener(this);
-				checkbox.setToolTipText(tech.toHtmlString());
+				checkbox.setToolTipText("<html><img src=\""
+						+ CivInfoPanel.class.getResource("images/" + tech.toString() + ".png") + "\"></html>");
 
 				this.add(checkbox, constraints);
 				this.techCheckboxes.put(tech, checkbox);

@@ -864,422 +864,304 @@ public enum Technology {
 
 	};
 
-	private final static HashMap<Technology, HashMap<Technology, Integer>>	TECH_CREDITS	=
-			new HashMap<Technology, HashMap<Technology, Integer>>() {
-																										private static final long serialVersionUID =
-																												-3028972728419108243L;
+	private final static HashMap<Technology, HashMap<Technology, Integer>> TECH_CREDITS;
+	static {
+		TECH_CREDITS = new HashMap<Technology, HashMap<Technology, Integer>>() {
+			private static final long serialVersionUID = -3028972728419108243L;
 
-																										{
-																											put(ADVANCED_MILITARY,
-																													new HashMap<Technology, Integer>());
-																											put(AGRICULTURE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						1L;
+			{
+				put(ADVANCED_MILITARY, new HashMap<Technology, Integer>());
+				put(AGRICULTURE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 1L;
 
-																																																				{
-																																																					put(DEMOCRACY,
-																																																							20);
-																																																				}
-																																																			});
-																											put(ANATOMY,
-																													new HashMap<Technology, Integer>());
-																											put(ARCHITECHTURE,
-																													new HashMap<Technology, Integer>() {
-																																																				/**
-																																																				* 
-																																																				*/
-																																																				private static final long serialVersionUID =
-																																																						-5691575576141773051L;
+					{
+						put(DEMOCRACY, 20);
+					}
+				});
+				put(ANATOMY, new HashMap<Technology, Integer>());
+				put(ARCHITECHTURE, new HashMap<Technology, Integer>() {
+					/**
+					* 
+					*/
+					private static final long serialVersionUID = -5691575576141773051L;
 
-																																																				{
-																																																					put(MINING,
-																																																							20);
-																																																				}
-																																																			});
-																											put(ASTRONAVIGATION,
-																													new HashMap<Technology, Integer>() {
-																																																				/**
-																																																				* 
-																																																				*/
-																																																				private static final long serialVersionUID =
-																																																						-3926050370819280779L;
+					{
+						put(MINING, 20);
+					}
+				});
+				put(ASTRONAVIGATION, new HashMap<Technology, Integer>() {
+					/**
+					* 
+					*/
+					private static final long serialVersionUID = -3926050370819280779L;
 
-																																																				{
-																																																					put(CALENDAR,
-																																																							10);
-																																																				}
-																																																			});
-																											put(CALENDAR,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-7358949462706803239L;
+					{
+						put(CALENDAR, 10);
+					}
+				});
+				put(CALENDAR, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -7358949462706803239L;
 
-																																																				{
-																																																					put(PUBLIC_WORKS,
-																																																							20);
-																																																				}
-																																																			});
-																											put(CARTOGRAPHY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-2182972486670609991L;
+					{
+						put(PUBLIC_WORKS, 20);
+					}
+				});
+				put(CARTOGRAPHY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -2182972486670609991L;
 
-																																																				{
-																																																					put(LIBRARY,
-																																																							20);
-																																																				}
-																																																			});
-																											put(CLOTH_MAKING,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						608388059952309350L;
+					{
+						put(LIBRARY, 20);
+					}
+				});
+				put(CLOTH_MAKING, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 608388059952309350L;
 
-																																																				{
-																																																					put(NAVAL_WARFARE,
-																																																							10);
-																																																				}
-																																																			});
-																											put(COINAGE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						2414946767475902483L;
+					{
+						put(NAVAL_WARFARE, 10);
+					}
+				});
+				put(COINAGE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 2414946767475902483L;
 
-																																																				{
-																																																					put(TRADE_ROUTES,
-																																																							10);
-																																																				}
-																																																			});
-																											put(CULTURAL_ASCENDANCY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						1L;
+					{
+						put(TRADE_ROUTES, 10);
+					}
+				});
+				put(CULTURAL_ASCENDANCY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 1L;
 
-																																																				{
-																																																					put(FUNDAMENTALISM,
-																																																							10);
-																																																				}
-																																																			});
-																											put(DEISM,
-																													new HashMap<Technology, Integer>());
-																											put(DEMOCRACY,
-																													new HashMap<Technology, Integer>());
-																											put(DIASPORA,
-																													new HashMap<Technology, Integer>());
-																											put(DIPLOMACY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						1917499061422154540L;
+					{
+						put(FUNDAMENTALISM, 10);
+					}
+				});
+				put(DEISM, new HashMap<Technology, Integer>());
+				put(DEMOCRACY, new HashMap<Technology, Integer>());
+				put(DIASPORA, new HashMap<Technology, Integer>());
+				put(DIPLOMACY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 1917499061422154540L;
 
-																																																				{
-																																																					put(PROVINCIAL_EMPIRE,
-																																																							20);
-																																																				}
-																																																			});
-																											put(DRAMA_AND_POETRY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-1924242606591739472L;
+					{
+						put(PROVINCIAL_EMPIRE, 20);
+					}
+				});
+				put(DRAMA_AND_POETRY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -1924242606591739472L;
 
-																																																				{
-																																																					put(RHETORIC,
-																																																							10);
-																																																				}
-																																																			});
-																											put(EMPIRICISM,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						2800580277858469998L;
+					{
+						put(RHETORIC, 10);
+					}
+				});
+				put(EMPIRICISM, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 2800580277858469998L;
 
-																																																				{
-																																																					put(MEDICINE,
-																																																							10);
-																																																				}
-																																																			});
-																											put(ENGINEERING,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-8961620213522975422L;
+					{
+						put(MEDICINE, 10);
+					}
+				});
+				put(ENGINEERING, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -8961620213522975422L;
 
-																																																				{
-																																																					put(ROADBUILDING,
-																																																							20);
-																																																				}
-																																																			});
-																											put(ENLIGHTENMENT,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						7755598784455616612L;
+					{
+						put(ROADBUILDING, 20);
+					}
+				});
+				put(ENLIGHTENMENT, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 7755598784455616612L;
 
-																																																				{
-																																																					put(PHILOSOPHY,
-																																																							20);
-																																																				}
-																																																			});
-																											put(FUNDAMENTALISM,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						7614342863146910011L;
+					{
+						put(PHILOSOPHY, 20);
+					}
+				});
+				put(FUNDAMENTALISM, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 7614342863146910011L;
 
-																																																				{
-																																																					put(MONOTHEISM,
-																																																							20);
-																																																				}
-																																																			});
-																											put(LAW, new HashMap<Technology, Integer>() {
-																																																		private static final long serialVersionUID =
-																																																				9190460740872090026L;
+					{
+						put(MONOTHEISM, 20);
+					}
+				});
+				put(LAW, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 9190460740872090026L;
 
-																																																		{
-																																																			put(CULTURAL_ASCENDANCY,
-																																																					20);
-																																																		}
-																																																	});
-																											put(LIBRARY,
-																													new HashMap<Technology, Integer>());
-																											put(LITERACY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-8801555888662344887L;
+					{
+						put(CULTURAL_ASCENDANCY, 20);
+					}
+				});
+				put(LIBRARY, new HashMap<Technology, Integer>());
+				put(LITERACY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -8801555888662344887L;
 
-																																																				{
-																																																					put(MATHEMATICS,
-																																																							20);
-																																																				}
-																																																			});
-																											put(MASONRY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						1791410751966280831L;
+					{
+						put(MATHEMATICS, 20);
+					}
+				});
+				put(MASONRY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 1791410751966280831L;
 
-																																																				{
-																																																					put(ENGINEERING,
-																																																							10);
-																																																				}
-																																																			});
+					{
+						put(ENGINEERING, 10);
+					}
+				});
 
-																											put(MATHEMATICS,
-																													new HashMap<Technology, Integer>());
-																											put(MEDICINE,
-																													new HashMap<Technology, Integer>());
+				put(MATHEMATICS, new HashMap<Technology, Integer>());
+				put(MEDICINE, new HashMap<Technology, Integer>());
 
-																											put(METALWORKING,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						6341639742157385191L;
+				put(METALWORKING, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 6341639742157385191L;
 
-																																																				{
-																																																					put(MILITARY,
-																																																							10);
-																																																				}
-																																																			});
+					{
+						put(MILITARY, 10);
+					}
+				});
 
-																											put(MILITARY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-4052425467290599144L;
+				put(MILITARY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -4052425467290599144L;
 
-																																																				{
-																																																					put(ADVANCED_MILITARY,
-																																																							20);
-																																																				}
-																																																			});
-																											put(MINING,
-																													new HashMap<Technology, Integer>());
-																											put(MONARCHY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-5918056052373259084L;
+					{
+						put(ADVANCED_MILITARY, 20);
+					}
+				});
+				put(MINING, new HashMap<Technology, Integer>());
+				put(MONARCHY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -5918056052373259084L;
 
-																																																				{
-																																																					put(LAW, 10);
-																																																				}
-																																																			});
-																											put(MONOTHEISM,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-8201900549805050830L;
+					{
+						put(LAW, 10);
+					}
+				});
+				put(MONOTHEISM, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -8201900549805050830L;
 
-																																																				{}
-																																																			});
-																											put(MONUMENT,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-5750080934165932155L;
+					{}
+				});
+				put(MONUMENT, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -5750080934165932155L;
 
-																																																				{
-																																																					put(WONDER_OF_THE_WORLD,
-																																																							20);
-																																																				}
-																																																			});
-																											put(MUSIC,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						5169135957860699045L;
+					{
+						put(WONDER_OF_THE_WORLD, 20);
+					}
+				});
+				put(MUSIC, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 5169135957860699045L;
 
-																																																				{
-																																																					put(ENLIGHTENMENT,
-																																																							10);
-																																																				}
-																																																			});
-																											put(MYSTICISM,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-1852470882734529318L;
+					{
+						put(ENLIGHTENMENT, 10);
+					}
+				});
+				put(MYSTICISM, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -1852470882734529318L;
 
-																																																				{
-																																																					put(MONUMENT,
-																																																							10);
-																																																				}
-																																																			});
-																											put(MYTHOLOGY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						1134509524946474103L;
+					{
+						put(MONUMENT, 10);
+					}
+				});
+				put(MYTHOLOGY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 1134509524946474103L;
 
-																																																				{
-																																																					put(LITERACY,
-																																																							10);
-																																																				}
-																																																			});
-																											put(NAVAL_WARFARE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-3009806632786713328L;
+					{
+						put(LITERACY, 10);
+					}
+				});
+				put(NAVAL_WARFARE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -3009806632786713328L;
 
-																																																				{
-																																																					put(DIASPORA,
-																																																							10);
-																																																				}
-																																																			});
-																											put(PHILOSOPHY,
-																													new HashMap<Technology, Integer>());
-																											put(POLITICS,
-																													new HashMap<Technology, Integer>());
-																											put(POTTERY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						5911386512837685867L;
+					{
+						put(DIASPORA, 10);
+					}
+				});
+				put(PHILOSOPHY, new HashMap<Technology, Integer>());
+				put(POLITICS, new HashMap<Technology, Integer>());
+				put(POTTERY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 5911386512837685867L;
 
-																																																				{
-																																																					put(AGRICULTURE,
-																																																							10);
-																																																				}
-																																																			});
-																											put(PROVINCIAL_EMPIRE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						5253442009242988444L;
+					{
+						put(AGRICULTURE, 10);
+					}
+				});
+				put(PROVINCIAL_EMPIRE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 5253442009242988444L;
 
-																																																				{
-																																																					put(POLITICS,
-																																																							20);
-																																																				}
-																																																			});
-																											put(PUBLIC_WORKS,
-																													new HashMap<Technology, Integer>());
-																											put(RHETORIC,
-																													new HashMap<Technology, Integer>());
-																											put(ROADBUILDING,
-																													new HashMap<Technology, Integer>());
-																											put(SCULPTURE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-7321891526501761400L;
+					{
+						put(POLITICS, 20);
+					}
+				});
+				put(PUBLIC_WORKS, new HashMap<Technology, Integer>());
+				put(RHETORIC, new HashMap<Technology, Integer>());
+				put(ROADBUILDING, new HashMap<Technology, Integer>());
+				put(SCULPTURE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -7321891526501761400L;
 
-																																																				{
-																																																					put(ARCHITECHTURE,
-																																																							10);
-																																																				}
-																																																			});
-																											put(THEOCRACY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						4934854144715439723L;
+					{
+						put(ARCHITECHTURE, 10);
+					}
+				});
+				put(THEOCRACY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 4934854144715439723L;
 
-																																																				{
-																																																					put(UNIVERSAL_DOCTRINE,
-																																																							10);
-																																																				}
-																																																			});
-																											put(THEOLOGY,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						6927101003978070906L;
+					{
+						put(UNIVERSAL_DOCTRINE, 10);
+					}
+				});
+				put(THEOLOGY, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 6927101003978070906L;
 
-																																																				{}
-																																																			});
-																											put(TRADE_EMPIRE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						3839429846268643402L;
+					{}
+				});
+				put(TRADE_EMPIRE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 3839429846268643402L;
 
-																																																				{}
-																																																			});
-																											put(TRADE_ROUTES,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-7075830267764064545L;
+					{}
+				});
+				put(TRADE_ROUTES, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -7075830267764064545L;
 
-																																																				{
-																																																					put(TRADE_EMPIRE,
-																																																							20);
-																																																				}
-																																																			});
-																											put(UNIVERSAL_DOCTRINE,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-1875215478631324386L;
+					{
+						put(TRADE_EMPIRE, 20);
+					}
+				});
+				put(UNIVERSAL_DOCTRINE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -1875215478631324386L;
 
-																																																				{
-																																																					put(THEOLOGY,
-																																																							20);
-																																																				}
-																																																			});
-																											put(URBANISM,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						7154407411116544629L;
+					{
+						put(THEOLOGY, 20);
+					}
+				});
+				put(URBANISM, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 7154407411116544629L;
 
-																																																				{
-																																																					put(DIPLOMACY,
-																																																							10);
-																																																				}
-																																																			});
-																											put(WONDER_OF_THE_WORLD,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						3776335466840823949L;
+					{
+						put(DIPLOMACY, 10);
+					}
+				});
+				put(WONDER_OF_THE_WORLD, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = 3776335466840823949L;
 
-																																																				{}
-																																																			});
-																											put(WRITTEN_RECORD,
-																													new HashMap<Technology, Integer>() {
-																																																				private static final long serialVersionUID =
-																																																						-4990883935554849497L;
+					{}
+				});
+				put(WRITTEN_RECORD, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -4990883935554849497L;
 
-																																																				{
-																																																					put(CARTOGRAPHY,
-																																																							10);
-																																																				}
-																																																			});
-																										}
-																									};
+					{
+						put(CARTOGRAPHY, 10);
+					}
+				});
+			}
+		};
+	}
 
 
-	private final int														MAX_HTML_WIDTH	= 50;
+	private final int								MAX_HTML_WIDTH	= 50;
 
 	@JsonProperty("name")
-	private final String													name;
+	private final String							name;
 	@JsonProperty("text")
-	private final String													text;
+	private final String							text;
 	@JsonProperty("baseCost")
-	private final int														baseCost;
-	private final int														vp;
+	private final int								baseCost;
+	private final int								vp;
 	@JsonProperty("types")
-	private final ArrayList<Technology.Type>								types;
+	private final ArrayList<Technology.Type>		types;
 	@JsonProperty("typeCredits")
-	private final HashMap<Technology.Type, Integer>							typeCredits;
+	private final HashMap<Technology.Type, Integer>	typeCredits;
 
 	Technology(String name, ArrayList<Technology.Type> types, int baseCost,
 			HashMap<Technology.Type, Integer> typeCredits, String text) {

@@ -83,7 +83,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
 			checkbox.addChangeListener(this);
-			checkbox.setToolTipText(tech.toHtmlString());
+			checkbox.setToolTipText("<html><img src=\""
+					+ CivInfoPanel.class.getResource("images/" + tech.toString() + ".png") + "\"></html>");
 
 			constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
 			constraints.gridy = 1 + tech.ordinal() % N_ROWS;

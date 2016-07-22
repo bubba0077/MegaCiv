@@ -42,39 +42,42 @@ public class AstTablePanel extends BubbaPanel {
 	private static final long serialVersionUID = -1197287409680075891L;
 
 	private enum Column {
-		CIV, POPULATION, CITIES, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11, AST12, AST13, AST14, AST15, AST16
+		CIV, POPULATION, CITIES, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11, AST12,
+		AST13, AST14, AST15, AST16
 	}
 
-	private static final HashMap<Column, Civilization.SortOption>	sortHash	= new HashMap<Column, Civilization.SortOption>() {
-																					private static final long serialVersionUID = -3473350095491262976L;
+	private static final HashMap<Column, Civilization.SortOption>	sortHash	=
+			new HashMap<Column, Civilization.SortOption>() {
+																							private static final long serialVersionUID =
+																									-3473350095491262976L;
 
-																					{
-																						put(Column.CIV,
-																								Civilization.SortOption.AST);
-																						put(Column.POPULATION,
-																								Civilization.SortOption.MOVEMENT);
-																						put(Column.CITIES,
-																								Civilization.SortOption.CITIES);
-																						// put(null,
-																						// Civilization.SortOption.AST_POSITION
-																						// );
-																						put(Column.VP,
-																								Civilization.SortOption.VP);
-																						put(Column.AST01,
-																								Civilization.SortOption.AST_POSITION);
-																					}
-																				};
+																							{
+																								put(Column.CIV,
+																										Civilization.SortOption.AST);
+																								put(Column.POPULATION,
+																										Civilization.SortOption.MOVEMENT);
+																								put(Column.CITIES,
+																										Civilization.SortOption.CITIES);
+																								// put(null,
+																								// Civilization.SortOption.AST_POSITION
+																								// );
+																								put(Column.VP,
+																										Civilization.SortOption.VP);
+																								put(Column.AST01,
+																										Civilization.SortOption.AST_POSITION);
+																							}
+																						};
 
 	/** Sort icons */
-	private static final ImageIcon									UP_ARROW	= new ImageIcon(
-			BubbaPanel.class.getResource("images/upArrow.png"));
-	private static final ImageIcon									DOWN_ARROW	= new ImageIcon(
-			BubbaPanel.class.getResource("images/downArrow.png"));
+	private static final ImageIcon									UP_ARROW	=
+			new ImageIcon(BubbaPanel.class.getResource("images/upArrow.png"));
+	private static final ImageIcon									DOWN_ARROW	=
+			new ImageIcon(BubbaPanel.class.getResource("images/downArrow.png"));
 
 	private static BufferedImage									FILLER_IMAGE;
 	static {
 		try {
-			FILLER_IMAGE = ImageIO.read(BubbaPanel.class.getResource("images/filler.png"));
+			FILLER_IMAGE = ImageIO.read(AstTablePanel.class.getResource("images/filler.png"));
 		} catch (IOException exception) {
 			// TODO Auto-generated catch block
 			exception.printStackTrace();
@@ -85,7 +88,7 @@ public class AstTablePanel extends BubbaPanel {
 	private HeaderPanel					headerPanel;
 	private FillerPanel					fillerPanel;
 
-	private final GameClient				client;
+	private final GameClient			client;
 
 	private HashMap<Column, Integer>	width;
 	private HashMap<Column, Float>		fontSize;
@@ -166,8 +169,8 @@ public class AstTablePanel extends BubbaPanel {
 			this.redoRows(game.getCivilizationNames());
 		}
 
-		ArrayList<Civilization> sortedCivs = Civilization.sortBy(this.client.getGame().getCivilizations(),
-				this.sortOption, this.sortDirection);
+		ArrayList<Civilization> sortedCivs =
+				Civilization.sortBy(this.client.getGame().getCivilizations(), this.sortOption, this.sortDirection);
 
 		if (sortedCivs.size() == 0 || this.headerPanel == null) {
 			return;
@@ -326,10 +329,10 @@ public class AstTablePanel extends BubbaPanel {
 			Properties props = this.controller.getProperties();
 			int height = Integer.parseInt(props.getProperty("AstTable.Header.Height"));
 
-			Color foreground = new Color(
-					new BigInteger(props.getProperty("AstTable.Header.ForegroundColor"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(props.getProperty("AstTable.Header.BackgroundColor"), 16).intValue());
+			Color foreground =
+					new Color(new BigInteger(props.getProperty("AstTable.Header.ForegroundColor"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(props.getProperty("AstTable.Header.BackgroundColor"), 16).intValue());
 
 			float fontSize = Float.parseFloat(props.getProperty("AstTable.Header.FontSize"));
 
@@ -397,20 +400,16 @@ public class AstTablePanel extends BubbaPanel {
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
+		public void mouseEntered(MouseEvent e) {}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
-		}
+		public void mouseExited(MouseEvent e) {}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
-		}
+		public void mousePressed(MouseEvent e) {}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 	}
 

@@ -287,7 +287,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 				techString = techString + "</html>";
 
 				JLabel label = this.enclosedLabelFactory(techString, constraints, JLabel.LEFT, JLabel.CENTER);
-				label.setToolTipText(tech.toHtmlString());
+				label.setToolTipText("<html><img src=\""
+						+ CivInfoPanel.class.getResource("images/" + tech.toString() + ".png") + "\"></html>");
 				this.techLabels.put(tech, label);
 			}
 
