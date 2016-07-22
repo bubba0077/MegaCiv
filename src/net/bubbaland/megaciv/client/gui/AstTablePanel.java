@@ -24,7 +24,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 import net.bubbaland.gui.BubbaGuiController;
@@ -32,6 +34,7 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 
 public class AstTablePanel extends BubbaPanel {
 
@@ -425,11 +428,23 @@ public class AstTablePanel extends BubbaPanel {
 			this.setBackground(Color.RED);
 
 			this.contextMenu = new JPopupMenu();
+			this.add(this.contextMenu);
+
+			JMenuItem viewItem = new JMenuItem("View");
+			viewItem.setActionCommand("View");
+			viewItem.addActionListener(this);
+			this.contextMenu.add(viewItem);
+
+
 			JMenuItem editItem = new JMenuItem("Edit");
 			editItem.setActionCommand("Edit");
 			editItem.addActionListener(this);
 			this.contextMenu.add(editItem);
-			this.add(this.contextMenu);
+
+			JMenuItem regressItem = new JMenuItem("Regress");
+			regressItem.setActionCommand("Regress");
+			regressItem.addActionListener(this);
+			this.contextMenu.add(regressItem);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -499,8 +514,27 @@ public class AstTablePanel extends BubbaPanel {
 		public void actionPerformed(ActionEvent event) {
 			String command = event.getActionCommand();
 			switch (command) {
+				case "View":
+					( (MegaCivFrame) SwingUtilities.getWindowAncestor(this) )
+							.addTab(Game.capitalizeFirst(this.name.toString()));
+					break;
 				case "Edit":
 					new CivEditPanel(AstTablePanel.this.client, this.controller, this.name);
+					break;
+				case "Regress":
+					if (JOptionPane.showConfirmDialog(null,
+							"Confirm regression of " + Game.capitalizeFirst(name.toString()),
+							"Confirm regression of " + Game.capitalizeFirst(name.toString()),
+							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+						AstTablePanel.this.client.sendMessage(
+								new AdvanceAstMessage(new HashMap<Civilization.Name, Civilization.AstChange>() {
+									private static final long serialVersionUID = -5493408662716651786L;
+
+									{
+										put(RowPanel.this.name, Civilization.AstChange.REGRESS);
+									}
+								}));
+					}
 					break;
 				default:
 					AstTablePanel.this.client.log("ActionCommand " + command + " not implemented in "
