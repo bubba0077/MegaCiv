@@ -83,6 +83,9 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (this.client.getGame() == null) {
+			return;
+		}
 		String command = e.getActionCommand();
 		switch (command) {
 			case "Take Census":

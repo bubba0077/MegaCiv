@@ -204,10 +204,10 @@ public class CivInfoPanel extends BubbaMainPanel {
 		public void loadProperties() {
 			Properties props = CivInfoPanel.this.controller.getProperties();
 
-			Color foreground = new Color(
-					new BigInteger(props.getProperty("CivInfoPanel.Stat.Foreground"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(props.getProperty("CivInfoPanel.Stat.Background"), 16).intValue());
+			Color foreground =
+					new Color(new BigInteger(props.getProperty("CivInfoPanel.Stat.Foreground"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(props.getProperty("CivInfoPanel.Stat.Background"), 16).intValue());
 
 			int heightTop = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Top.Height"));
 			int heightBottom = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Bottom.Height"));
@@ -286,8 +286,9 @@ public class CivInfoPanel extends BubbaMainPanel {
 				}
 				techString = techString + "</html>";
 
-				this.techLabels.put(tech,
-						this.enclosedLabelFactory(techString, constraints, JLabel.LEFT, JLabel.CENTER));
+				JLabel label = this.enclosedLabelFactory(techString, constraints, JLabel.LEFT, JLabel.CENTER);
+				label.setToolTipText(tech.toHtmlString());
+				this.techLabels.put(tech, label);
 			}
 
 		}
@@ -312,8 +313,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Unowned"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(prop.getProperty("CivInfoPanel.Tech.Background"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Background"), 16).intValue());
 
 			int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Height"));
 			int width = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Width"));

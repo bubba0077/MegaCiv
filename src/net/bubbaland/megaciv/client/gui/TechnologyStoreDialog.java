@@ -38,7 +38,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private final CivilizationComboBox				civComboBox;
 	private final HashMap<Technology, JCheckBox>	techCheckboxes;
-	private final GameClient							client;
+	private final GameClient						client;
 	private final JFrame							frame;
 	private final JButton							buyNextButton, nextButton, resetButton;
 	private final JPanel							spacerPanel;
@@ -83,6 +83,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
 			checkbox.addChangeListener(this);
+			checkbox.setToolTipText(tech.toHtmlString());
 
 			constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
 			constraints.gridy = 1 + tech.ordinal() % N_ROWS;
@@ -95,8 +96,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridx = 4;
 		constraints.gridwidth = 2;
 		constraints.gridy = N_ROWS + 2;
-		this.writtenRecordLabel = this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER,
-				JLabel.CENTER);
+		this.writtenRecordLabel =
+				this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER, JLabel.CENTER);
 		this.writtenRecordLabel.setEnabled(false);
 		constraints.gridwidth = 1;
 

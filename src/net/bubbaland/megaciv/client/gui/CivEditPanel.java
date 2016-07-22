@@ -39,7 +39,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 	private static final long		serialVersionUID	= 148480222037355491L;
 
 	private final JFrame			frame;
-	private final GameClient			client;
+	private final GameClient		client;
 	private final Civilization.Name	name;
 	private Civilization			civ;
 	private final HeaderPanel		headerPanel;
@@ -167,8 +167,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					background, constraints, astFontSize, JLabel.RIGHT, JLabel.CENTER);
 
 			constraints.gridx = 3;
-			this.astPositionSpinner = new JSpinner(
-					new SpinnerNumberModel(civ.getAstPosition(), 0, game.lastAstStep(), 1));
+			this.astPositionSpinner =
+					new JSpinner(new SpinnerNumberModel(civ.getAstPosition(), 0, game.lastAstStep(), 1));
 			this.astPositionSpinner.setFont(this.astPositionSpinner.getFont().deriveFont(astFontSize));
 			this.astPositionSpinner.addChangeListener(this);
 			this.add(this.astPositionSpinner, constraints);
@@ -215,10 +215,10 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			Properties props = CivEditPanel.this.controller.getProperties();
 
-			Color foreground = new Color(
-					new BigInteger(props.getProperty("CivEditPanel.Stat.Foreground"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(props.getProperty("CivEditPanel.Stat.Background"), 16).intValue());
+			Color foreground =
+					new Color(new BigInteger(props.getProperty("CivEditPanel.Stat.Foreground"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(props.getProperty("CivEditPanel.Stat.Background"), 16).intValue());
 
 			int heightTop = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Top.Height"));
 			int heightBottom = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Bottom.Height"));
@@ -353,8 +353,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Unowned"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
 
 			this.setBackground(background);
 
@@ -381,6 +381,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				checkbox.setActionCommand("Tech");
 				checkbox.setName(tech.toString());
 				checkbox.addActionListener(this);
+				checkbox.setToolTipText(tech.toHtmlString());
 
 				this.add(checkbox, constraints);
 				this.techCheckboxes.put(tech, checkbox);
@@ -390,8 +391,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridx = 4;
 			constraints.gridwidth = 2;
 			constraints.gridy = N_ROWS;
-			this.writtenRecordLabel = this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER,
-					JLabel.CENTER);
+			this.writtenRecordLabel =
+					this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER, JLabel.CENTER);
 			constraints.gridwidth = 1;
 
 			constraints.gridy = N_ROWS + 1;
@@ -409,8 +410,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridx = 2;
 			constraints.gridy = N_ROWS;
 			constraints.gridwidth = 2;
-			this.monumentLabel = this.enclosedLabelFactory("Monument Credits", constraints, JLabel.CENTER,
-					JLabel.CENTER);
+			this.monumentLabel =
+					this.enclosedLabelFactory("Monument Credits", constraints, JLabel.CENTER, JLabel.CENTER);
 			constraints.gridwidth = 1;
 
 			for (int i = 0; i < 4; i++) {
@@ -451,8 +452,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Unowned"), 16).intValue());
-			Color background = new Color(
-					new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
+			Color background =
+					new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
 
 			int height = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Height"));
 			int width = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Width"));
