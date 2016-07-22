@@ -106,7 +106,7 @@ public class RetireDialog extends BubbaDialogPanel {
 
 			if (option == JOptionPane.OK_OPTION) {
 				this.client.log(name.toString() + " has retired!");
-				new RetireMessage(this.name);
+				this.client.sendMessage(new RetireMessage(this.name));
 			}
 		}
 
