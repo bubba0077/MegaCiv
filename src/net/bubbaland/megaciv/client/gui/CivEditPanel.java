@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -247,6 +248,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			this.popSpinner = new JSpinner(new SpinnerNumberModel(civ.getPopulation(), 0, Game.MAX_POPULATION, 1));
 			this.popSpinner.setFont(this.popSpinner.getFont()
 					.deriveFont(Float.parseFloat(props.getProperty("CivEditPanel.Population.FontSize"))));
+			this.popSpinner.setPreferredSize(
+					new Dimension(Integer.parseInt(props.getProperty("CivEditPanel.Population.Width")), heightBottom));
 			this.popSpinner.addChangeListener(this);
 			this.popSpinner.setName("Population");
 			this.add(this.popSpinner, constraints);
@@ -254,7 +257,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("Cities", Integer.parseInt(props.getProperty("CivEditPanel.City.Width")),
-					heightBottom, foreground, background, constraints,
+					heightTop, foreground, background, constraints,
 					Float.parseFloat(props.getProperty("CivEditPanel.City.Top.FontSize")), JLabel.CENTER, JLabel.TOP);
 
 			constraints.gridx = 0;
@@ -262,6 +265,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			this.citySpinner = new JSpinner(new SpinnerNumberModel(civ.getCityCount(), 0, Game.MAX_CITIES, 1));
 			this.citySpinner.setFont(this.citySpinner.getFont()
 					.deriveFont(Float.parseFloat(props.getProperty("CivEditPanel.City.FontSize"))));
+			this.citySpinner.setPreferredSize(
+					new Dimension(Integer.parseInt(props.getProperty("CivEditPanel.City.Width")), heightBottom));
 			this.citySpinner.addChangeListener(this);
 			this.citySpinner.setName("Cities");
 			this.add(this.citySpinner, constraints);
@@ -371,7 +376,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
 				constraints.gridy = 0 + tech.ordinal() % N_ROWS;
 
-				String techString = "<html>" + Game.capitalizeFirst(tech.toString());
+				String techString = "<html>" + tech.getName();
 				for (Type type : tech.getTypes()) {
 					techString = techString + " <span color=\"" + type.getHtmlColor() + "\">•</span>";
 				}

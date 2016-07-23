@@ -81,7 +81,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
-			JCheckBox checkbox = new JCheckBox(Game.capitalizeFirst(tech.toString()));
+			JCheckBox checkbox = new JCheckBox(tech.getName());
 			checkbox.addChangeListener(this);
 			checkbox.setToolTipText("<html><img src=\""
 					+ CivInfoPanel.class.getResource("images/" + tech.toString() + ".png") + "\"></html>");
@@ -203,7 +203,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			boolean isOwned = ownedTechs.contains(tech);
 			checkbox.setSelected(isOwned);
 			checkbox.setEnabled(!isOwned);
-			String techString = "<html>" + Game.capitalizeFirst(tech.toString());
+			String techString = "<html>" + tech.getName();
 			if (!isOwned) {
 				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
 					techString = techString + " (" + tech.getCost(civ) + "*) ";
