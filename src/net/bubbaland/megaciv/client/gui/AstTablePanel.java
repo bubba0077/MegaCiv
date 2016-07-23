@@ -215,6 +215,7 @@ public class AstTablePanel extends BubbaPanel {
 							backgroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
 						}
 						label.setVisible(astStep <= this.client.getGame().lastAstStep());
+						label.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
 				}
 				label.setText(text);
 				setLabelProperties(label, this.width.get(col), this.rowHeight, foregroundColor, backgroundColor,
@@ -366,12 +367,15 @@ public class AstTablePanel extends BubbaPanel {
 					case CITIES:
 						continue;
 					default:
+
 				}
 
 				int astStep = Integer.parseInt(col.toString().substring(3));
 				Civilization.Age age = firstCiv.getAge(astStep);
 				this.colLabels.get(col).getParent()
 						.setBackground(AstTablePanel.this.controller.getAstBackgroundColor(age));
+				this.colLabels.get(col).getParent()
+						.setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
 			}
 		}
 

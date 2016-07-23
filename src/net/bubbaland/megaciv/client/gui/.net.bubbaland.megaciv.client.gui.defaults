@@ -1,27 +1,31 @@
 #MegaCiv
 TimestampFormat=[yyyy MMM dd HH:mm:ss]
-StatusBar.Height=10
-StatusBar.FontSize=10.0
+StatusBar.Height=12
+StatusBar.FontSize=12.0
 
 OpenWindows=MegaCiv
 Window.MegaCiv.OpenTabs=AST
+
+Tab.FontSize=16.0
 
 Dialog.FontSize=20.0
 Dialog.TextArea.FontSize=16.0
 Dialog.Warning.Color=FF0000
 
-ControlPanel.Width=120
-ControlPanel.Height=30
-ControlPanel.FontSize=14.0
+ControlPanel.Width=160
+ControlPanel.Height=60
+ControlPanel.FontSize=20.0
 
 Stopwatch.Button.Width=60
-Stopwatch.Button.Height=15
-Stopwatch.Button.FontSize=14.0
-Stopwatch.Clock.Width=150
-Stopwatch.Clock.Height=30
-Stopwatch.Clock.FontSize=36.0
+Stopwatch.Button.Height=20
+Stopwatch.Button.FontSize=18.0
+Stopwatch.Clock.Width=250
+Stopwatch.Clock.Height=60
+Stopwatch.Clock.FontSize=56.0
 Stopwatch.Clock.ForegroundColor=ffffff
 Stopwatch.Clock.BackgroundColor=000000
+Stopwatch.Run.Width=60
+Stopwatch.Run.FontSize=24.0
 Stopwatch.Set.FontSize=24.0
 
 AstTable.STONE.ForegroundColor=000000
@@ -37,23 +41,23 @@ AstTable.EARLY_IRON.BackgroundColor=f7eaca
 AstTable.LATE_IRON.ForegroundColor=000000
 AstTable.LATE_IRON.BackgroundColor=f5f4f9
 
-AstTable.Header.Height=18
-AstTable.Header.FontSize=12.0
+AstTable.Header.Height=24
+AstTable.Header.FontSize=18.0
 AstTable.Header.ForegroundColor=ffffff
 AstTable.Header.BackgroundColor=000000
-AstTable.Row.Height=24
-AstTable.AST.Width=44
-AstTable.AST.FontSize=20.0
+AstTable.Row.Height=32
+AstTable.AST.Width=60
+AstTable.AST.FontSize=30.0
 AstTable.CIV.Width=300
-AstTable.CIV.FontSize=18.0
-AstTable.VP.Width=60
-AstTable.VP.FontSize=20.0
-AstTable.POPULATION.Width=30
-AstTable.POPULATION.FontSize=20.0
-AstTable.CITIES.Width=36
-AstTable.CITIES.FontSize=20.0
-AstTable.AstStep.Width=24
-AstTable.AstStep.FontSize=16.0
+AstTable.CIV.FontSize=24.0
+AstTable.VP.Width=70
+AstTable.VP.FontSize=30.0
+AstTable.POPULATION.Width=50
+AstTable.POPULATION.FontSize=30.0
+AstTable.CITIES.Width=50
+AstTable.CITIES.FontSize=30.0
+AstTable.AstStep.Width=30
+AstTable.AstStep.FontSize=30.0
 
 CivInfoPanel.Header.Height=50
 CivInfoPanel.CivName.Width=400
@@ -62,30 +66,30 @@ CivInfoPanel.Age.Width=300
 CivInfoPanel.Age.FontSize=24.0
 
 CivInfoPanel.Stat.Top.Height=18
-CivInfoPanel.Stat.Bottom.Height=30
+CivInfoPanel.Stat.Bottom.Height=40
 CivInfoPanel.Stat.Foreground=ffffff
 CivInfoPanel.Stat.Background=000000
 CivInfoPanel.Population.Width=40
-CivInfoPanel.Population.Top.FontSize=14.0
-CivInfoPanel.Population.FontSize=30.0
+CivInfoPanel.Population.Top.FontSize=18.0
+CivInfoPanel.Population.FontSize=50.0
 CivInfoPanel.City.Width=50
-CivInfoPanel.City.Top.FontSize=14.0
-CivInfoPanel.City.FontSize=30.0
+CivInfoPanel.City.Top.FontSize=18.0
+CivInfoPanel.City.FontSize=50.0
 CivInfoPanel.VP.Width=60
-CivInfoPanel.VP.Top.FontSize=14.0
-CivInfoPanel.VP.FontSize=30.0
+CivInfoPanel.VP.Top.FontSize=18.0
+CivInfoPanel.VP.FontSize=50.0
 CivInfoPanel.Credit0.Width=200
-CivInfoPanel.Credit0.FontSize=20.0
-CivInfoPanel.Credit.Top.FontSize=12.0
+CivInfoPanel.Credit0.FontSize=30.0
+CivInfoPanel.Credit.Top.FontSize=16.0
 CivInfoPanel.Credit.Width=50
-CivInfoPanel.Credit.FontSize=30.0
+CivInfoPanel.Credit.FontSize=40.0
 
 CivInfoPanel.Tech.Owned=000000
 CivInfoPanel.Tech.Unowned=aaaaaa
 CivInfoPanel.Tech.Background=ffffff
-CivInfoPanel.Tech.Width=200
-CivInfoPanel.Tech.Height=20
-CivInfoPanel.Tech.FontSize=14.0
+CivInfoPanel.Tech.Width=300
+CivInfoPanel.Tech.Height=24
+CivInfoPanel.Tech.FontSize=20.0
 
 CensusDialog.Civ.Height=20
 CensusDialog.Civ.Width=100

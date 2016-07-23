@@ -180,7 +180,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			this.setBounds(x, y, width, height);
 
 		} catch (final NumberFormatException e) {
-			this.setSize(800, 600);
+			this.setSize(1360, 768);
 			this.setLocationRelativeTo(null);
 		}
 	}

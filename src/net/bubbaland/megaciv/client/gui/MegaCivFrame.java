@@ -32,6 +32,9 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		this.controller = controller;
 		this.initTabInfoHash();
 
+		this.tabbedPane.setFont(this.tabbedPane.getFont()
+				.deriveFont(Float.parseFloat(this.controller.getProperties().getProperty("Tab.FontSize", "12f"))));
+
 		// Create Menu
 		final JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
@@ -153,7 +156,8 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				new UserDialog(this.controller, this.client);
 				break;
 			default:
-				this.setStatusBarMessage("Unknown action command " + command + "received by " + this.getClass().getSimpleName());
+				this.setStatusBarMessage(
+						"Unknown action command " + command + "received by " + this.getClass().getSimpleName());
 		}
 	}
 }
