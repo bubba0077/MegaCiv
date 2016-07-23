@@ -21,7 +21,7 @@ public enum Technology {
 
 		{
 			put(Type.CIVICS, 20);
-			put(Type.CRAFTS, 5);
+			put(Type.SCIENCE, 5);
 		}
 	}, "1) In conflicts, you may choose to remove tokens from areas adjacent by land. After each round of token removal a new check for token majority must be made. You may decide to wait for other token conflicts to be resolved first.\n"
 			+ "2) You are allowed to cause conflict in areas containing units belonging to players holding Cultural Ascendancy.\n"
@@ -179,7 +179,7 @@ public enum Technology {
 
 		{
 			put(Type.CRAFTS, 5);
-			put(Type.RELIGION, 5);
+			put(Type.RELIGION, 10);
 		}
 	}, "Superstition: Reduce 1 less city."),
 
@@ -248,7 +248,7 @@ public enum Technology {
 		private static final long serialVersionUID = 1791410751966280831L;
 
 		{
-			add(Type.CIVICS);
+			add(Type.SCIENCE);
 		}
 	}, 60, new HashMap<Technology.Type, Integer>() {
 		private static final long serialVersionUID = -2440070450841210384L;
@@ -298,7 +298,7 @@ public enum Technology {
 			+ "Epidemic: If you are the primary victim, prevent 5 damage.\n"
 			+ "Regression: For each step backward, you may choose to prevent the effect by destroying 2 of your cities (if possible non-coastal)."),
 
-	FUNDAMENTALISM("Fundamental", new ArrayList<Technology.Type>() {
+	FUNDAMENTALISM("Fundamentalism", new ArrayList<Technology.Type>() {
 		private static final long serialVersionUID = 1554440447155252840L;
 
 		{
@@ -473,7 +473,7 @@ public enum Technology {
 
 		{
 			put(Type.RELIGION, 5);
-			put(Type.SCIENCE, 10);
+			put(Type.CIVICS, 10);
 		}
 	}, "You may choose to increase your tax rate by 1.\n" + "Barbarian Hordes: 5 less barbarian tokens are used.\n"
 			+ "Tyranny: The beneficiary selects and annexes 5 additional unit points."),
@@ -552,7 +552,7 @@ public enum Technology {
 
 		{
 			put(Type.ARTS, 5);
-			put(Type.RELIGION, 5);
+			put(Type.RELIGION, 10);
 		}
 	}, "Slave Revolt: Your city support rate is decreased by 1 during the resolution of Slave Revolt."),
 
@@ -787,7 +787,7 @@ public enum Technology {
 		private static final long serialVersionUID = 7378454955481019071L;
 
 		{
-			add(Type.ARTS);
+			add(Type.CIVICS);
 		}
 	}, 50, new HashMap<Technology.Type, Integer>() {
 		private static final long serialVersionUID = -8854104313973154017L;
@@ -836,9 +836,9 @@ public enum Technology {
 	}, "(*) Acquire 10 additional points of credit tokens in any combination of colors.");
 
 	public enum Type {
-		SCIENCE("green", Color.GREEN, Color.BLACK), ARTS("blue", Color.BLUE, Color.WHITE),
-		CRAFTS("orange", Color.ORANGE, Color.BLACK), CIVICS("red", Color.RED, Color.WHITE),
-		RELIGION("yellow", Color.YELLOW, Color.BLACK);
+		ARTS("blue", Color.BLUE, Color.WHITE), CIVICS("red", Color.RED, Color.WHITE),
+		CRAFTS("orange", Color.ORANGE, Color.BLACK), RELIGION("yellow", Color.YELLOW, Color.BLACK),
+		SCIENCE("green", Color.GREEN, Color.BLACK);
 
 		public String getHtmlColor() {
 			return this.htmlColor;
@@ -927,14 +927,13 @@ public enum Technology {
 						put(TRADE_ROUTES, 10);
 					}
 				});
-				put(CULTURAL_ASCENDANCY, new HashMap<Technology, Integer>() {
+				put(CULTURAL_ASCENDANCY, new HashMap<Technology, Integer>());
+				put(DEISM, new HashMap<Technology, Integer>() {
 					private static final long serialVersionUID = 1L;
-
 					{
 						put(FUNDAMENTALISM, 10);
 					}
 				});
-				put(DEISM, new HashMap<Technology, Integer>());
 				put(DEMOCRACY, new HashMap<Technology, Integer>());
 				put(DIASPORA, new HashMap<Technology, Integer>());
 				put(DIPLOMACY, new HashMap<Technology, Integer>() {
@@ -1003,7 +1002,12 @@ public enum Technology {
 				});
 
 				put(MATHEMATICS, new HashMap<Technology, Integer>());
-				put(MEDICINE, new HashMap<Technology, Integer>());
+				put(MEDICINE, new HashMap<Technology, Integer>() {
+					private static final long serialVersionUID = -8024797919387478872L;
+					{
+						put(ANATOMY, 20);
+					}
+				});
 
 				put(METALWORKING, new HashMap<Technology, Integer>() {
 					private static final long serialVersionUID = 6341639742157385191L;
@@ -1065,7 +1069,7 @@ public enum Technology {
 					private static final long serialVersionUID = -3009806632786713328L;
 
 					{
-						put(DIASPORA, 10);
+						put(DIASPORA, 20);
 					}
 				});
 				put(PHILOSOPHY, new HashMap<Technology, Integer>());
@@ -1077,15 +1081,14 @@ public enum Technology {
 						put(AGRICULTURE, 10);
 					}
 				});
-				put(PROVINCIAL_EMPIRE, new HashMap<Technology, Integer>() {
+				put(PROVINCIAL_EMPIRE, new HashMap<Technology, Integer>());
+				put(PUBLIC_WORKS, new HashMap<Technology, Integer>());
+				put(RHETORIC, new HashMap<Technology, Integer>() {
 					private static final long serialVersionUID = 5253442009242988444L;
-
 					{
 						put(POLITICS, 20);
 					}
 				});
-				put(PUBLIC_WORKS, new HashMap<Technology, Integer>());
-				put(RHETORIC, new HashMap<Technology, Integer>());
 				put(ROADBUILDING, new HashMap<Technology, Integer>());
 				put(SCULPTURE, new HashMap<Technology, Integer>() {
 					private static final long serialVersionUID = -7321891526501761400L;
@@ -1146,6 +1149,11 @@ public enum Technology {
 				});
 			}
 		};
+
+		System.out.println("Tech dump");
+		for (Technology tech : Technology.values()) {
+			System.out.println(tech.toFullString());
+		}
 	}
 
 
@@ -1252,10 +1260,10 @@ public enum Technology {
 		s += "Base Cost: " + this.baseCost + "   VP: " + this.vp + "\n";
 		s += "Credits: ";
 		for (Technology.Type t : this.typeCredits.keySet()) {
-			s += this.typeCredits.get(t) + " " + t.toString() + " ";
+			s += t.toString() + " " + this.typeCredits.get(t) + " ";
 		}
-		for (Technology t : TECH_CREDITS.keySet()) {
-			s += TECH_CREDITS.get(t) + " " + t.name + " ";
+		for (Technology t : TECH_CREDITS.get(this).keySet()) {
+			s += t.name + " " + TECH_CREDITS.get(this).get(t) + " ";
 		}
 		s += "\n";
 		s += this.text + "\n";
