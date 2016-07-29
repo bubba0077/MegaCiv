@@ -206,9 +206,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			String techString = "<html>" + tech.getName();
 			if (!isOwned) {
 				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
-					techString = techString + " (" + tech.getCost(civ) + "*) ";
+					techString = techString + " (" + civ.getCost(tech) + "*/" + tech.getBaseCost() + ") ";
 				} else {
-					techString = techString + " (" + tech.getCost(civ) + ") ";
+					techString = techString + " (" + civ.getCost(tech) + "/" + tech.getBaseCost() + ") ";
 				}
 				for (Type type : tech.getTypes()) {
 					techString = techString + "<span color=\"" + type.getHtmlColor() + "\">•</span>";
@@ -238,7 +238,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = this.techCheckboxes.get(tech);
 			if (checkbox.isSelected() && checkbox.isEnabled()) {
-				costs.put(tech, tech.getCost(civ));
+				costs.put(tech, civ.getCost(tech));
 			}
 		}
 
@@ -254,7 +254,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			if (freeTech != null) {
 				costs.remove(freeTech);
 			}
-			costs.put(Technology.ANATOMY, Technology.ANATOMY.getCost(civ));
+			costs.put(Technology.ANATOMY, civ.getCost(Technology.ANATOMY));
 		}
 
 		if (costs.containsKey(Technology.LIBRARY)) {
@@ -262,18 +262,18 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			Technology discountedTech = null;
 			int discount = 0;
 			for (Technology tech : costs.keySet()) {
-				if (discountedTech == null || tech.getCost(civ) > discount) {
+				if (discountedTech == null || civ.getCost(tech) > discount) {
 					discountedTech = tech;
-					discount = Math.min(discountedTech.getCost(civ), 40);
+					discount = Math.min(civ.getCost(discountedTech), 40);
 				}
 				if (discount == 40) {
 					break;
 				}
 			}
 			if (discountedTech != null) {
-				costs.put(discountedTech, discountedTech.getCost(civ) - discount);
+				costs.put(discountedTech, civ.getCost(discountedTech) - discount);
 			}
-			costs.put(Technology.LIBRARY, Technology.LIBRARY.getCost(civ));
+			costs.put(Technology.LIBRARY, civ.getCost(Technology.LIBRARY));
 		}
 
 

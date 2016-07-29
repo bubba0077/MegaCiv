@@ -115,7 +115,7 @@ NewGameDialog.Civ.Width=100
 NewGameDialog.FontSize=16.0
 
 TechStoreDialog.Tech.Height=18
-TechStoreDialog.Tech.Width=250
+TechStoreDialog.Tech.Width=280
 TechStoreDialog.Tech.FontSize=14.0
 
 TechStoreDialog.BuyButton.Height=30

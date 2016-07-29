@@ -432,6 +432,24 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.player = player;
 	}
 
+	public int getCost(Technology tech) {
+		int cost = tech.getBaseCost();
+
+		int maxTypeDiscount = 0;
+
+		for (Technology.Type type : tech.getTypes()) {
+			maxTypeDiscount = Math.max(this.getTypeCredit(type), maxTypeDiscount);
+		}
+
+		cost = cost - maxTypeDiscount;
+
+		for (Technology tech2 : this.getTechs()) {
+			cost = cost - tech2.getTechCredit(tech);
+		}
+
+		return Math.max(cost, 0);
+	}
+
 	public int getTypeCredit(Technology.Type type) {
 		int credit = 0;
 		for (Technology tech : this.extraTypeCredits.keySet()) {

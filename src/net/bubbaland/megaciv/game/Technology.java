@@ -1192,20 +1192,6 @@ public enum Technology {
 		return this.baseCost;
 	}
 
-	public int getCost(Civilization civ) {
-		ArrayList<Technology> ownedTechs = civ.getTechs();
-		int cost = this.baseCost;
-		for (Technology tech : ownedTechs) {
-			for (Technology.Type type : tech.typeCredits.keySet()) {
-				if (this.types.contains(type)) {
-					cost = cost - tech.getTypeCredit(type);
-				}
-			}
-			cost = cost - tech.getTechCredit(this);
-		}
-		return Math.max(cost, 0);
-	}
-
 	public int getTechCredit(Technology tech) {
 		return TECH_CREDITS.get(this).containsKey(tech) ? TECH_CREDITS.get(this).get(tech) : 0;
 	}
