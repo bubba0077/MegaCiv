@@ -202,7 +202,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			NodeList difficultyNodes = requirementElement.getElementsByTagName("Difficulty");
 			for (int d = 0; d < difficultyNodes.getLength(); d++) {
 				Difficulty difficulty = Difficulty.valueOf(( (Element) difficultyNodes.item(d) ).getAttribute("level"));
-				NodeList ageNodes = requirementElement.getElementsByTagName("Age");
+				NodeList ageNodes = ( (Element) difficultyNodes.item(d) ).getElementsByTagName("Age");
 
 				HashMap<Age, AstRequirements> astReqs = new HashMap<Age, AstRequirements>();
 				for (int a = 0; a < ageNodes.getLength(); a++) {
@@ -702,6 +702,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			this.minLevelTwoPlusTechs = minLevelTwoPlusTechs;
 			this.minLevelThreeTechs = minLevelThreeTechs;
 			this.minTechVP = minTechVP;
+		}
+
+		public String toString() {
+			return "Text: " + this.text + "\n  Min Cities: " + this.minCities + "\n  Min Advances: " + this.minAdvances
+					+ "\n  Min L1 Techs: " + this.minLevelOneTechs + "\n  Min L2+ Techs: " + this.minLevelTwoPlusTechs
+					+ "\n  Min L3 Techs: " + this.minLevelThreeTechs + "\n  Min Tech VP: " + this.minTechVP;
 		}
 
 	}
