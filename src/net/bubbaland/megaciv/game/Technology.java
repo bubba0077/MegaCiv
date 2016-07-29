@@ -1149,11 +1149,6 @@ public enum Technology {
 				});
 			}
 		};
-
-		System.out.println("Tech dump");
-		for (Technology tech : Technology.values()) {
-			System.out.println(tech.toFullString());
-		}
 	}
 
 

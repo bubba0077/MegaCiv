@@ -31,7 +31,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	private static final long serialVersionUID = -9210563148479097901L;
 
 	public static enum Name {
-		MINOA, SABA, ASSYRIA, MAURYA, CELT, BABYLON, CARTHAGE, DRAVIDIA, HATTI, KUSHAN, ROME, PERSIA, IBERIA, NUBIA, HELLAS, INDUS, EGYPT, PARTHIA;
+		MINOA, SABA, ASSYRIA, MAURYA, CELT, BABYLON, CARTHAGE, DRAVIDIA, HATTI, KUSHAN, ROME, PERSIA, IBERIA, NUBIA,
+		HELLAS, INDUS, EGYPT, PARTHIA;
 
 		public final static HashSet<String> strings = new HashSet<String>() {
 			private static final long serialVersionUID = -4960803070653152009L;
@@ -90,7 +91,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			BACKGROUND_COLORS;
 	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	DEFAULT_STARTING_CIVS;
 
-	public final static String																			CIV_CONSTANTS_FILENAME	= "Civ_Constants.xml";
+	public final static String																			CIV_CONSTANTS_FILENAME	=
+			"Civ_Constants.xml";
 
 	static {
 		AST_TABLE = new HashMap<Civilization.Name, AstTableData>();
@@ -115,14 +117,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				final Civilization.Name name = Civilization.Name.valueOf(civElement.getAttribute("name").toUpperCase());
 				Region region = Region
 						.valueOf(civElement.getElementsByTagName("Region").item(0).getTextContent().toUpperCase());
-				final int astRank = Integer
-						.parseInt(civElement.getElementsByTagName("AstRank").item(0).getTextContent());
+				final int astRank =
+						Integer.parseInt(civElement.getElementsByTagName("AstRank").item(0).getTextContent());
 
 
 				HashMap<Difficulty, HashMap<Age, Integer>> hash = new HashMap<Difficulty, HashMap<Age, Integer>>();
 				for (Difficulty difficulty : EnumSet.allOf(Game.Difficulty.class)) {
-					final Element civAstElement = (Element) civElement
-							.getElementsByTagName(Game.capitalizeFirst(difficulty.name())).item(0);
+					final Element civAstElement =
+							(Element) civElement.getElementsByTagName(Game.capitalizeFirst(difficulty.name())).item(0);
 					final int earlyBronzeStart = Integer
 							.parseInt(civAstElement.getElementsByTagName("EarlyBronzeStart").item(0).getTextContent());
 					final int middleBronzeStart = Integer
@@ -163,8 +165,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 												.intValue()));
 			}
 
-			final Element startingCivElement = (Element) doc.getDocumentElement().getElementsByTagName("StartingCivs")
-					.item(0);
+			final Element startingCivElement =
+					(Element) doc.getDocumentElement().getElementsByTagName("StartingCivs").item(0);
 			NodeList startingNodes = startingCivElement.getElementsByTagName("PlayerCount");
 
 			for (int i = 0; i < startingNodes.getLength(); i++) {
@@ -184,8 +186,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 					for (int c = 0; c < civNodes.getLength(); c++) {
 						final Element civElement = (Element) civNodes.item(c);
-						final Civilization.Name name = Civilization.Name
-								.valueOf(civElement.getAttribute("name").toUpperCase());
+						final Civilization.Name name =
+								Civilization.Name.valueOf(civElement.getAttribute("name").toUpperCase());
 						civs.add(name);
 					}
 
@@ -195,8 +197,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				DEFAULT_STARTING_CIVS.put(nCivs, regionHash);
 			}
 
-			final Element requirementElement = (Element) doc.getDocumentElement()
-					.getElementsByTagName("AstRequirements").item(0);
+			final Element requirementElement =
+					(Element) doc.getDocumentElement().getElementsByTagName("AstRequirements").item(0);
 			NodeList difficultyNodes = requirementElement.getElementsByTagName("Difficulty");
 			for (int d = 0; d < difficultyNodes.getLength(); d++) {
 				Difficulty difficulty = Difficulty.valueOf(( (Element) difficultyNodes.item(d) ).getAttribute("level"));
@@ -207,18 +209,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					Element ageElement = ( (Element) ageNodes.item(a) );
 					Age age = Age.valueOf(ageElement.getAttribute("name"));
 					String reqText = ageElement.getElementsByTagName("Text").item(0).getTextContent();
-					int minCities = Integer
-							.parseInt(ageElement.getElementsByTagName("MinCities").item(0).getTextContent());
-					int minAdvances = Integer
-							.parseInt(ageElement.getElementsByTagName("MinAdvances").item(0).getTextContent());
-					int minLevelOneTechs = Integer
-							.parseInt(ageElement.getElementsByTagName("MinL1Techs").item(0).getTextContent());
+					int minCities =
+							Integer.parseInt(ageElement.getElementsByTagName("MinCities").item(0).getTextContent());
+					int minAdvances =
+							Integer.parseInt(ageElement.getElementsByTagName("MinAdvances").item(0).getTextContent());
+					int minLevelOneTechs =
+							Integer.parseInt(ageElement.getElementsByTagName("MinL1Techs").item(0).getTextContent());
 					int minLevelTwoPlusTechs = Integer
 							.parseInt(ageElement.getElementsByTagName("MinL2PlusTechs").item(0).getTextContent());
-					int minLevelThreeTechs = Integer
-							.parseInt(ageElement.getElementsByTagName("MinL3Techs").item(0).getTextContent());
-					int minTechVP = Integer
-							.parseInt(ageElement.getElementsByTagName("MinTechVP").item(0).getTextContent());
+					int minLevelThreeTechs =
+							Integer.parseInt(ageElement.getElementsByTagName("MinL3Techs").item(0).getTextContent());
+					int minTechVP =
+							Integer.parseInt(ageElement.getElementsByTagName("MinTechVP").item(0).getTextContent());
 					astReqs.put(age, new AstRequirements(reqText, minCities, minAdvances, minLevelOneTechs,
 							minLevelTwoPlusTechs, minLevelThreeTechs, minTechVP));
 				}
@@ -401,14 +403,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				}
 			}
 		};
-		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits = new HashMap<Technology, ArrayList<Technology.Type>>() {
-			private static final long serialVersionUID = 1L;
-			{
-				for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
-					put(tech, Civilization.this.extraTypeCredits.get(tech));
-				}
-			}
-		};
+		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits =
+				new HashMap<Technology, ArrayList<Technology.Type>>() {
+					private static final long serialVersionUID = 1L;
+					{
+						for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
+							put(tech, Civilization.this.extraTypeCredits.get(tech));
+						}
+					}
+				};
 		return new Civilization(this.name, this.player, this.population, this.nCities, techs, extraTypeCredits,
 				this.astPosition, this.difficulty);
 	}
@@ -586,7 +589,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		public int compare(Civilization civ1, Civilization civ2) {
 			int result = -Integer.compare(civ1.getCityCount(), civ2.getCityCount());
 			if (result == 0) {
-				result = civ1.compareTo(civ2);
+				result = -civ1.compareTo(civ2);
 			}
 			return result;
 		}

@@ -68,7 +68,8 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 		final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 		if (option == JOptionPane.OK_OPTION) {
-			HashMap<Civilization.Name, Civilization.AstChange> advanceAst = new HashMap<Civilization.Name, Civilization.AstChange>();
+			HashMap<Civilization.Name, Civilization.AstChange> advanceAst =
+					new HashMap<Civilization.Name, Civilization.AstChange>();
 			for (CivPanel panel : this.civPanels) {
 				advanceAst.put(panel.getCivName(), panel.getAstChange());
 			}
@@ -166,8 +167,6 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
-
-
 		}
 
 		public Civilization.Name getCivName() {
