@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.AutoFocusSpinner;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
@@ -25,7 +27,7 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 	private static final long							serialVersionUID	= 6704150091226095594L;
 
-	private final GameClient								client;
+	private final GameClient							client;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 
 	private final static int							N_COLUMNS			= 2;
@@ -104,7 +106,7 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.enclosedLabelFactory(Game.capitalizeFirst(name.toString()), civWidth, civHeight, foreground,
+			this.enclosedLabelFactory(WordUtils.capitalizeFully(name.toString()), civWidth, civHeight, foreground,
 					background, constraints, fontSize, JLabel.LEFT, JLabel.CENTER);
 			constraints.weightx = 0.0;
 

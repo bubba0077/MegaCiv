@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -74,6 +75,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			return values()[this.ordinal() + 1];
 		}
 
+		@Override
+		public String toString() {
+			return WordUtils.capitalizeFully(( this.name() + " Age" ).replace("_", " "));
+		}
+
 	}
 
 	public static enum SortOption {
@@ -123,8 +129,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 				HashMap<Difficulty, HashMap<Age, Integer>> hash = new HashMap<Difficulty, HashMap<Age, Integer>>();
 				for (Difficulty difficulty : EnumSet.allOf(Game.Difficulty.class)) {
-					final Element civAstElement =
-							(Element) civElement.getElementsByTagName(Game.capitalizeFirst(difficulty.name())).item(0);
+					final Element civAstElement = (Element) civElement
+							.getElementsByTagName(WordUtils.capitalizeFully(difficulty.name())).item(0);
 					final int earlyBronzeStart = Integer
 							.parseInt(civAstElement.getElementsByTagName("EarlyBronzeStart").item(0).getTextContent());
 					final int middleBronzeStart = Integer
@@ -302,7 +308,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public String toString() {
-		return Game.capitalizeFirst(this.name.name());
+		return WordUtils.capitalizeFully(this.name.name());
 	}
 
 	// public void incrementAST() {

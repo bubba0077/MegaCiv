@@ -25,6 +25,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
@@ -100,7 +102,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		this.add(okButton, constraints);
 
 		this.frame.add(this);
-		this.frame.setTitle("Editing " + Game.capitalizeFirst(this.name.toString()));
+		this.frame.setTitle("Editing " + WordUtils.capitalizeFully(this.name.toString()));
 		this.frame.pack();
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
@@ -139,7 +141,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridheight = 2;
-			this.enclosedLabelFactory(Game.capitalizeFirst(name.toString()),
+			this.enclosedLabelFactory(WordUtils.capitalizeFully(name.toString()),
 					Integer.parseInt(prop.getProperty("CivEditPanel.CivName.Width")), height, foreground, background,
 					constraints, Float.parseFloat(prop.getProperty("CivEditPanel.CivName.FontSize")), JLabel.LEFT,
 					JLabel.BOTTOM);
@@ -295,7 +297,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				constraints.gridx = 4 + type.ordinal();
 				constraints.gridy = 0;
 				this.creditLabelsTop.put(type,
-						this.enclosedLabelFactory(Game.capitalizeFirst(type.toString()), creditWidth, heightTop,
+						this.enclosedLabelFactory(WordUtils.capitalizeFully(type.toString()), creditWidth, heightTop,
 								type.getColor(), background, constraints, creditFontSizeTop, JLabel.CENTER,
 								JLabel.TOP));
 				constraints.gridy = 1;

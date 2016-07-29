@@ -29,6 +29,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
@@ -196,7 +198,7 @@ public class AstTablePanel extends BubbaPanel {
 						text = civ.getCityCount() + "";
 						break;
 					case CIV:
-						text = Game.capitalizeFirst(name.toString()) + " (" + civ.getPlayer() + ")";
+						text = WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")";
 						break;
 					case VP:
 						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(sortedCivs)) {
@@ -206,10 +208,12 @@ public class AstTablePanel extends BubbaPanel {
 						}
 						break;
 					default:
-						text = "";
 						int astStep = Integer.parseInt(col.toString().substring(3));
-						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-						if (astStep > civ.getAstPosition()) {
+						if (astStep <= civ.getAstPosition()) {
+							text = ( astStep * 5 ) + "";
+							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+							foregroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
+						} else {
 							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstForegroundColor(civ.getAge(astStep));
 							backgroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
@@ -221,8 +225,6 @@ public class AstTablePanel extends BubbaPanel {
 				setLabelProperties(label, this.width.get(col), this.rowHeight, foregroundColor, backgroundColor,
 						this.fontSize.get(col));
 			}
-
-
 		}
 
 		this.headerPanel.updateGui(forceUpdate, sortedCivs.get(0));
@@ -293,7 +295,7 @@ public class AstTablePanel extends BubbaPanel {
 				constraints.weightx = 0.0;
 				constraints.gridx = col.ordinal();
 
-				String string = Game.capitalizeFirst(col.toString());
+				String string = WordUtils.capitalizeFully(col.toString());
 
 				int justification = JLabel.CENTER;
 
@@ -347,17 +349,18 @@ public class AstTablePanel extends BubbaPanel {
 
 		public void updateGui(boolean forceUpdate, Civilization firstCiv) {
 			for (Column col : this.colLabels.keySet()) {
+				JLabel label = this.colLabels.get(col);
 				if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
 					switch (AstTablePanel.this.sortDirection) {
 						case ASCENDING:
-							this.colLabels.get(col).setIcon(DOWN_ARROW);
+							label.setIcon(DOWN_ARROW);
 							break;
 						case DESCENDING:
-							this.colLabels.get(col).setIcon(UP_ARROW);
+							label.setIcon(UP_ARROW);
 							break;
 					}
 				} else {
-					this.colLabels.get(col).setIcon(null);
+					label.setIcon(null);
 				}
 				switch (col) {
 					// case AST:
@@ -372,10 +375,10 @@ public class AstTablePanel extends BubbaPanel {
 
 				int astStep = Integer.parseInt(col.toString().substring(3));
 				Civilization.Age age = firstCiv.getAge(astStep);
-				this.colLabels.get(col).getParent()
-						.setBackground(AstTablePanel.this.controller.getAstBackgroundColor(age));
-				this.colLabels.get(col).getParent()
-						.setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
+				label.setToolTipText(age + ": " + Civilization.AGE_REQUIREMENTS
+						.get(AstTablePanel.this.client.getGame().getDifficulty()).get(age).getText());
+				label.getParent().setBackground(AstTablePanel.this.controller.getAstBackgroundColor(age));
+				label.getParent().setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
 			}
 		}
 
@@ -474,6 +477,7 @@ public class AstTablePanel extends BubbaPanel {
 					case VP:
 						break;
 					default:
+						justification = JLabel.CENTER;
 						// constraints.weightx = 1.0;
 				}
 				constraints.gridx = col.ordinal();
@@ -489,6 +493,8 @@ public class AstTablePanel extends BubbaPanel {
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						break;
 					default:
+						int astStep = Integer.parseInt(col.toString().substring(3));
+						label.setText(( astStep * 5 ) + "");
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				}
 				label.addMouseListener(new PopupListener(this.contextMenu));
@@ -520,15 +526,15 @@ public class AstTablePanel extends BubbaPanel {
 			switch (command) {
 				case "View":
 					( (MegaCivFrame) SwingUtilities.getWindowAncestor(this) )
-							.addTab(Game.capitalizeFirst(this.name.toString()));
+							.addTab(WordUtils.capitalizeFully(this.name.toString()));
 					break;
 				case "Edit":
 					new CivEditPanel(AstTablePanel.this.client, this.controller, this.name);
 					break;
 				case "Regress":
 					if (JOptionPane.showConfirmDialog(null,
-							"Confirm regression of " + Game.capitalizeFirst(name.toString()),
-							"Confirm regression of " + Game.capitalizeFirst(name.toString()),
+							"Confirm regression of " + WordUtils.capitalizeFully(name.toString()),
+							"Confirm regression of " + WordUtils.capitalizeFully(name.toString()),
 							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
 						AstTablePanel.this.client.sendMessage(
 								new AdvanceAstMessage(new HashMap<Civilization.Name, Civilization.AstChange>() {

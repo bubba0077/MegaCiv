@@ -27,12 +27,14 @@ import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Civilization.Region;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.messages.NewGameMessage;
@@ -47,7 +49,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
-	private final GameClient								client;
+	private final GameClient							client;
 
 	public NewGameDialog(GameClient client, GuiController controller) {
 		super(controller);
@@ -284,7 +286,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
+			this.checkbox = new JCheckBox(WordUtils.capitalizeFully(name.toString()));
 			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, foreground, background, fontSize);
 			this.checkbox.addActionListener(this);
 			this.add(this.checkbox, constraints);
@@ -292,7 +294,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			constraints.weightx = 1.0;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			this.textField = new JTextField(Game.capitalizeFirst(name.toString()) + " player", 20);
+			this.textField = new JTextField(WordUtils.capitalizeFully(name.toString()) + " player", 20);
 			this.add(this.textField, constraints);
 
 			this.setEnabled(false);

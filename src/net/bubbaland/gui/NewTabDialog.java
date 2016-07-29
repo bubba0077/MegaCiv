@@ -14,8 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Game;
 
 /**
  * Creates a dialog that allows the user to select a tab to be added to the tabbed pane.
@@ -109,7 +110,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 			SORT_ORDER = new Hashtable<String, Integer>(0);
 			SORT_ORDER.put("AST", 0);
 			for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
-				SORT_ORDER.put(Game.capitalizeFirst(name.toString()), name.ordinal());
+				SORT_ORDER.put(WordUtils.capitalizeFully(name.toString()), name.ordinal());
 			}
 		}
 

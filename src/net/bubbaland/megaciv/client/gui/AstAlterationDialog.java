@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -129,7 +131,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.checkbox = new JCheckBox(Game.capitalizeFirst(name.toString()));
+			this.checkbox = new JCheckBox(WordUtils.capitalizeFully(name.toString()));
 			group.add(this.checkbox);
 			BubbaPanel.setButtonProperties(this.checkbox, civWidth, civHeight, foreground, background, civFontSize);
 			this.add(this.checkbox, constraints);

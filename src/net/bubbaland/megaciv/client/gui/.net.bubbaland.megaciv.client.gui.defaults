@@ -28,16 +28,18 @@ Stopwatch.Run.Width=60
 Stopwatch.Run.FontSize=24.0
 Stopwatch.Set.FontSize=24.0
 
-AstTable.STONE.ForegroundColor=000000
-AstTable.STONE.BackgroundColor=f7eaca
+# Original print background colors:
+# f7eaca, f5f4f9
+AstTable.STONE.ForegroundColor=ffffff
+AstTable.STONE.BackgroundColor=ab9e7e
 AstTable.EARLY_BRONZE.ForegroundColor=000000
 AstTable.EARLY_BRONZE.BackgroundColor=f5f4f9
-AstTable.MIDDLE_BRONZE.ForegroundColor=000000
-AstTable.MIDDLE_BRONZE.BackgroundColor=f7eaca
+AstTable.MIDDLE_BRONZE.ForegroundColor=ffffff
+AstTable.MIDDLE_BRONZE.BackgroundColor=ab9e7e
 AstTable.LATE_BRONZE.ForegroundColor=000000
 AstTable.LATE_BRONZE.BackgroundColor=f5f4f9
-AstTable.EARLY_IRON.ForegroundColor=000000
-AstTable.EARLY_IRON.BackgroundColor=f7eaca
+AstTable.EARLY_IRON.ForegroundColor=ffffff
+AstTable.EARLY_IRON.BackgroundColor=ab9e7e
 AstTable.LATE_IRON.ForegroundColor=000000
 AstTable.LATE_IRON.BackgroundColor=f5f4f9
 
@@ -57,7 +59,7 @@ AstTable.POPULATION.FontSize=28.0
 AstTable.CITIES.Width=50
 AstTable.CITIES.FontSize=28.0
 AstTable.AstStep.Width=30
-AstTable.AstStep.FontSize=30.0
+AstTable.AstStep.FontSize=20.0
 
 CivInfoPanel.Header.Height=50
 CivInfoPanel.CivName.Width=400

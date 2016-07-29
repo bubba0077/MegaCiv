@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import javax.websocket.DeploymentException;
 import javax.websocket.Session;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.glassfish.tyrus.server.Server;
 
 import net.bubbaland.megaciv.game.Civilization;
@@ -30,8 +31,8 @@ public class GameServer extends Server {
 	private Hashtable<Session, ClientMessageReceiver>	sessionList;
 
 	// Date format to use inside backup files
-	static public final SimpleDateFormat				stringDateFormat	= new SimpleDateFormat(
-			"yyyy MMM dd HH:mm:ss");
+	static public final SimpleDateFormat				stringDateFormat	=
+			new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
 
 	public GameServer(String serverUrl, int serverPort) {
 		this.server = new Server(serverUrl, serverPort, "/", null, ClientMessageReceiver.class);
@@ -88,7 +89,7 @@ public class GameServer extends Server {
 				}
 				Difficulty difficulty = ( (NewGameMessage) message ).getDifficulty();
 				this.game.setDifficulty(difficulty);
-				this.log(user + " created new " + Game.capitalizeFirst(difficulty.toString())
+				this.log(user + " created new " + WordUtils.capitalizeFully(difficulty.toString())
 						+ " game with the following civilizations: " + startingCivs);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
@@ -219,8 +220,7 @@ public class GameServer extends Server {
 		GameServer server = new GameServer("localhost", 1100);
 		try {
 			server.start();
-			while (server.isRunning) {
-			}
+			while (server.isRunning) {}
 		} catch (final DeploymentException exception) {
 			exception.printStackTrace();
 			server.stop();

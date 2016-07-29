@@ -131,16 +131,14 @@ public class GuiController extends BubbaGuiController {
 		this.astForegroundColors = new HashMap<Civilization.Age, Color>();
 		this.astBackgroundColors = new HashMap<Civilization.Age, Color>();
 		for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
-			this.astForegroundColors
-					.put(age,
-							new Color(new BigInteger(
-									this.getProperties().getProperty("AstTable." + age + ".ForegroundColor"), 16)
-											.intValue()));
-			this.astBackgroundColors
-					.put(age,
-							new Color(new BigInteger(
-									this.getProperties().getProperty("AstTable." + age + ".BackgroundColor"), 16)
-											.intValue()));
+			this.astForegroundColors.put(age,
+					new Color(new BigInteger(
+							this.getProperties().getProperty("AstTable." + age.name() + ".ForegroundColor"), 16)
+									.intValue()));
+			this.astBackgroundColors.put(age,
+					new Color(new BigInteger(
+							this.getProperties().getProperty("AstTable." + age.name() + ".BackgroundColor"), 16)
+									.intValue()));
 		}
 
 	}

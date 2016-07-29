@@ -12,6 +12,8 @@ import java.util.Properties;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaDnDTabbedPane;
 import net.bubbaland.gui.BubbaMainPanel;
 import net.bubbaland.gui.BubbaPanel;
@@ -96,10 +98,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 			}
 			Civilization civ = game.getCivilization(name);
 
-			this.civNameLabel.setText(Game.capitalizeFirst(name.toString()) + " (" + civ.getPlayer() + ")");
-			this.ageLabel.setText(
-					Game.capitalizeFirst(civ.getCurrentAge().toString()) + " Age (" + civ.getAstPosition() + ")");
-
+			this.civNameLabel.setText(WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")");
+			this.ageLabel.setText(civ.getCurrentAge().toString() + " (" + civ.getAstPosition() + ")");
 		}
 
 		public void loadProperties() {
@@ -172,7 +172,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				constraints.gridx = 4 + type.ordinal();
 				constraints.gridy = 0;
-				this.creditLabelsTop.put(type, this.enclosedLabelFactory(Game.capitalizeFirst(type.toString()),
+				this.creditLabelsTop.put(type, this.enclosedLabelFactory(WordUtils.capitalizeFully(type.toString()),
 						constraints, JLabel.CENTER, JLabel.TOP));
 				constraints.gridy = 1;
 				this.creditLabels.put(type, this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER));

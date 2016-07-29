@@ -14,6 +14,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.bubbaland.gui.BubbaDragDropTabFrame;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
@@ -108,7 +110,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 						new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class },
 						new Object[] { this.client, this.controller, this }));
 		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
-			this.tabInformationHash.put(Game.capitalizeFirst(name.toString()),
+			this.tabInformationHash.put(WordUtils.capitalizeFully(name.toString()),
 					new TabInformation(name.toString() + " Information", CivInfoPanel.class,
 							new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class,
 									Civilization.Name.class },
