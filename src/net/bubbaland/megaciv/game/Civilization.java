@@ -258,6 +258,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	@JsonProperty("difficulty")
 	private Difficulty												difficulty;
 
+	@JsonProperty("hasPurchased")
+	private boolean													hasPurchased;
+
 	public Civilization(Name name, Difficulty difficulty) {
 
 		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology, ArrayList<Technology.Type>>() {
@@ -283,7 +286,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				});
 			}
-		}, 0, difficulty);
+		}, 0, difficulty, false);
 	}
 
 	@JsonCreator
@@ -291,7 +294,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
 			@JsonProperty("techs") ArrayList<Technology> techs,
 			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
-			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty) {
+			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty,
+			@JsonProperty("hasPurchased") boolean hasPurchased) {
 		this.name = name;
 		this.player = player;
 		this.population = population;
@@ -299,7 +303,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.techs = techs;
 		this.astPosition = astPosition;
 		this.extraTypeCredits = typeCredits;
-
+		this.hasPurchased = hasPurchased;
 		this.difficulty = difficulty;
 	}
 
@@ -362,8 +366,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return n;
 	}
 
-	public boolean passAstReqirements() {
-		AstRequirements reqs = AGE_REQUIREMENTS.get(this.difficulty).get(this.getNextStepAge());
+	public boolean passAstRequirements() {
+		return this.passAstRequirements(this.getNextStepAge());
+	}
+
+	public boolean passAstRequirements(Age age) {
+		AstRequirements reqs = AGE_REQUIREMENTS.get(this.difficulty).get(age);
 		return this.getCityCount() >= reqs.getMinCities() && this.techs.size() >= reqs.getMinAdvances()
 				&& this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs()
 				&& this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs.getMinLevelTwoPlusTechs()
@@ -399,6 +407,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.techs.add(newTech);
 	}
 
+	public void setPurchased(boolean hasPurchased) {
+		this.hasPurchased = hasPurchased;
+	}
+
+	public boolean hasPurchased() {
+		return this.hasPurchased;
+	}
+
 	public Civilization clone() {
 		ArrayList<Technology> techs = new ArrayList<Technology>() {
 			private static final long serialVersionUID = 577732084086917712L;
@@ -419,7 +435,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				};
 		return new Civilization(this.name, this.player, this.population, this.nCities, techs, extraTypeCredits,
-				this.astPosition, this.difficulty);
+				this.astPosition, this.difficulty, this.hasPurchased);
 	}
 
 	public ArrayList<Technology> getTechs() {

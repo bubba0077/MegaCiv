@@ -165,7 +165,7 @@ public class GuiController extends BubbaGuiController {
 		if (args.length > 0) {
 			serverURL = args[0];
 		} else {
-			serverURL = "ws://localhost:1100";
+			serverURL = "ws://localhost:1200";
 		}
 		new GuiController(serverURL);
 	}

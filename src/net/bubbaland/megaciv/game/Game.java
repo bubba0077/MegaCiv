@@ -51,6 +51,17 @@ public class Game implements Serializable {
 		this.difficulty = difficulty;
 	}
 
+	public void nextTurn() {
+		this.turnNumber++;
+		for (Civilization civ : this.civs.values()) {
+			civ.setPurchased(false);
+		}
+	}
+
+	public int getTurn() {
+		return this.turnNumber;
+	}
+
 	public void addCivilization(Civilization.Name name) {
 		Civilization civ = new Civilization(name, difficulty);
 		this.civs.put(name, civ);

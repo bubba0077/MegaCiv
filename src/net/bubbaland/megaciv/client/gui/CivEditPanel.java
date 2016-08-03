@@ -165,7 +165,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridheight = 2;
 			constraints.gridx = 2;
 			constraints.gridy = 0;
-			this.enclosedLabelFactory("Current AST Position",
+			this.enclosedLabelFactory("AST Position",
 					Integer.parseInt(prop.getProperty("CivEditPanel.AstPosition.Width")), height, foreground,
 					background, constraints, astFontSize, JLabel.RIGHT, JLabel.CENTER);
 

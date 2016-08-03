@@ -125,6 +125,7 @@ public class GameServer extends Server {
 				for (Technology newTech : newTechs) {
 					civ.addTech(newTech);
 				}
+				civ.setPurchased(true);
 				this.log(name + " bought the following technologies: " + newTechs + " (via " + user + ")");
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
@@ -134,6 +135,7 @@ public class GameServer extends Server {
 				for (Civilization.Name name : advanceAst.keySet()) {
 					this.game.getCivilization(name).changeAst(advanceAst.get(name));
 				}
+				this.game.nextTurn();
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
@@ -217,7 +219,7 @@ public class GameServer extends Server {
 	}
 
 	public static void main(String args[]) {
-		GameServer server = new GameServer("localhost", 1100);
+		GameServer server = new GameServer("localhost", 1200);
 		try {
 			server.start();
 			while (server.isRunning) {}

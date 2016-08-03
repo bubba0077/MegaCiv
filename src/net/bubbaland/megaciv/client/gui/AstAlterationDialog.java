@@ -152,7 +152,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 						JLabel.CENTER, JLabel.CENTER);
 			}
 
-			this.checkbox.setSelected(civ.passAstReqirements());
+			this.checkbox.setSelected(civ.passAstRequirements());
 
 			Game game = AstAlterationDialog.this.client.getGame();
 			Civilization.Age nextAge = game.getCivilization(name).getNextStepAge();

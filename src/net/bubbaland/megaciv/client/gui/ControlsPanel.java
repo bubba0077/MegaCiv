@@ -8,8 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.megaciv.game.Game;
 
 public class ControlsPanel extends BubbaPanel implements ActionListener {
 
@@ -18,6 +20,8 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	private final GuiClient		client;
 
 	private final JButton		censusButton, cityButton, astButton;
+
+	private final JLabel		turnLabel, turnNumberLabel;
 
 	public ControlsPanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
@@ -31,6 +35,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
+		constraints.gridheight = 2;
 		this.censusButton = new JButton("Take Census");
 		this.censusButton.setActionCommand("Take Census");
 		this.censusButton.addActionListener(this);
@@ -52,12 +57,26 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		this.astButton.addActionListener(this);
 		this.astButton.setMargin(new Insets(0, 0, 0, 0));
 		this.add(this.astButton, constraints);
+
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridheight = 1;
+		this.turnLabel = this.enclosedLabelFactory("Turn", constraints, JLabel.CENTER, JLabel.CENTER);
+
+		constraints.gridx = 3;
+		constraints.gridy = 1;
+		constraints.gridheight = 1;
+		this.turnNumberLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+
 	}
 
 	public void updateGui(boolean forceUpdate) {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
 		// TODO Auto-generated method stub
-
+		Game game = this.client.getGame();
+		if (game != null) {
+			this.turnNumberLabel.setText(this.client.getGame().getTurn() + "");
+		}
 	}
 
 	public void loadProperties() {
@@ -70,6 +89,15 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		BubbaPanel.setButtonProperties(this.censusButton, width, height, null, null, fontSize);
 		BubbaPanel.setButtonProperties(this.cityButton, width, height, null, null, fontSize);
 		BubbaPanel.setButtonProperties(this.astButton, width, height, null, null, fontSize);
+
+		width = Integer.parseInt(props.getProperty("ControlPanel.Turn.Width"));
+
+		BubbaPanel.setLabelProperties(this.turnLabel, width,
+				Integer.parseInt(props.getProperty("ControlPanel.Turn.Top.Height")), null, null,
+				Float.parseFloat(props.getProperty("ControlPanel.Turn.Top.FontSize")));
+		BubbaPanel.setLabelProperties(this.turnNumberLabel, width,
+				Integer.parseInt(props.getProperty("ControlPanel.Turn.Bottom.Height")), null, null,
+				Float.parseFloat(props.getProperty("ControlPanel.Turn.Bottom.FontSize")));
 	}
 
 	@Override

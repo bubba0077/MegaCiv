@@ -211,17 +211,22 @@ public class AstTablePanel extends BubbaPanel {
 						}
 						break;
 					case BUY:
+						panel.buyButton.setEnabled(!civ.hasPurchased());
 						continue;
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));
+						Civilization.Age age = civ.getAge(astStep);
 						if (astStep <= civ.getAstPosition()) {
 							text = ( astStep * 5 ) + "";
 							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-							foregroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
+							foregroundColor = this.controller.getAstBackgroundColor(age);
 						} else {
 							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							foregroundColor = this.controller.getAstForegroundColor(civ.getAge(astStep));
-							backgroundColor = this.controller.getAstBackgroundColor(civ.getAge(astStep));
+							foregroundColor = this.controller.getAstForegroundColor(age);
+							backgroundColor = this.controller.getAstBackgroundColor(age);
+							// if (astStep == civ.getAstPosition() + 1) {
+							// text = civ.passAstRequirements(age) ? "+" : "!";
+							// }
 						}
 						label.setVisible(astStep <= this.client.getGame().lastAstStep());
 						label.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());

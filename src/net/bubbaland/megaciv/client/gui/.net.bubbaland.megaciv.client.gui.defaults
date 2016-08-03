@@ -15,6 +15,11 @@ Dialog.Warning.Color=FF0000
 ControlPanel.Width=160
 ControlPanel.Height=60
 ControlPanel.FontSize=20.0
+ControlPanel.Turn.Width=100
+ControlPanel.Turn.Top.Height=20
+ControlPanel.Turn.Top.FontSize=16.0
+ControlPanel.Turn.Bottom.Height=40
+ControlPanel.Turn.Bottom.FontSize=36.0
 
 Stopwatch.Button.Width=60
 Stopwatch.Button.Height=20
