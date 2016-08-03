@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,6 +22,7 @@ import java.util.Properties;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -44,8 +46,8 @@ public class AstTablePanel extends BubbaPanel {
 	private static final long serialVersionUID = -1197287409680075891L;
 
 	private enum Column {
-		CIV, POPULATION, CITIES, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11, AST12,
-		AST13, AST14, AST15, AST16
+		BUY, CIV, POPULATION, CITIES, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11,
+		AST12, AST13, AST14, AST15, AST16
 	}
 
 	private static final HashMap<Column, Civilization.SortOption>	sortHash	=
@@ -153,6 +155,7 @@ public class AstTablePanel extends BubbaPanel {
 			constraints.gridy = civNames.indexOf(name) + 1;
 			this.civRows.put(civNames.indexOf(name), panel);
 			this.add(panel, constraints);
+			panel.loadProperties();
 		}
 
 		constraints.weighty = 1.0;
@@ -207,6 +210,8 @@ public class AstTablePanel extends BubbaPanel {
 							text = civ.getVP() + " ";
 						}
 						break;
+					case BUY:
+						continue;
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));
 						if (astStep <= civ.getAstPosition()) {
@@ -244,6 +249,7 @@ public class AstTablePanel extends BubbaPanel {
 				case CIV:
 				case POPULATION:
 				case CITIES:
+				case BUY:
 					// case AST:
 				case VP:
 					width = Integer.parseInt(props.getProperty("AstTable." + col + ".Width"));
@@ -280,8 +286,6 @@ public class AstTablePanel extends BubbaPanel {
 
 		public HeaderPanel(BubbaGuiController controller) {
 			super(controller, new GridBagLayout());
-
-			this.setBackground(Color.RED);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -368,6 +372,7 @@ public class AstTablePanel extends BubbaPanel {
 					case POPULATION:
 					case VP:
 					case CITIES:
+					case BUY:
 						continue;
 					default:
 
@@ -426,13 +431,12 @@ public class AstTablePanel extends BubbaPanel {
 
 		private final HashMap<Column, JLabel>	labels;
 		private final JPopupMenu				contextMenu;
+		private final JButton					buyButton;
 
 		private Civilization.Name				name;
 
 		public RowPanel(BubbaGuiController controller) {
 			super(controller, new GridBagLayout());
-
-			this.setBackground(Color.RED);
 
 			this.contextMenu = new JPopupMenu();
 			this.add(this.contextMenu);
@@ -441,7 +445,6 @@ public class AstTablePanel extends BubbaPanel {
 			viewItem.setActionCommand("View");
 			viewItem.addActionListener(this);
 			this.contextMenu.add(viewItem);
-
 
 			JMenuItem editItem = new JMenuItem("Edit");
 			editItem.setActionCommand("Edit");
@@ -453,6 +456,11 @@ public class AstTablePanel extends BubbaPanel {
 			regressItem.addActionListener(this);
 			this.contextMenu.add(regressItem);
 
+			this.buyButton = new JButton("Buy");
+			this.buyButton.setActionCommand("Buy");
+			this.buyButton.setMargin(new Insets(0, 0, 0, 0));
+			this.buyButton.addActionListener(this);
+
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -463,8 +471,12 @@ public class AstTablePanel extends BubbaPanel {
 
 			for (Column col : EnumSet.allOf(Column.class)) {
 				int justification = JLabel.RIGHT;
+				constraints.gridx = col.ordinal();
 				constraints.weightx = 0.0;
 				switch (col) {
+					case BUY:
+						this.add(this.buyButton, constraints);
+						continue;
 					case CIV:
 						justification = JLabel.LEFT;
 						constraints.weightx = 0.0625;
@@ -480,7 +492,6 @@ public class AstTablePanel extends BubbaPanel {
 						justification = JLabel.CENTER;
 						// constraints.weightx = 1.0;
 				}
-				constraints.gridx = col.ordinal();
 				JLabel label = this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
 				setLabelProperties(label, 100, 20, Color.BLACK, Color.WHITE, (float) 14.0);
 				switch (col) {
@@ -506,6 +517,11 @@ public class AstTablePanel extends BubbaPanel {
 
 		public void loadProperties() {
 			for (Column col : EnumSet.allOf(Column.class)) {
+				if (col == Column.BUY) {
+					BubbaPanel.setButtonProperties(this.buyButton, AstTablePanel.this.width.get(col),
+							AstTablePanel.this.rowHeight, null, null, AstTablePanel.this.fontSize.get(col));
+					continue;
+				}
 				JLabel label = this.labels.get(col);
 				BubbaPanel.setLabelProperties(label, AstTablePanel.this.width.get(col), AstTablePanel.this.rowHeight,
 						null, null, AstTablePanel.this.fontSize.get(col));
@@ -524,6 +540,10 @@ public class AstTablePanel extends BubbaPanel {
 		public void actionPerformed(ActionEvent event) {
 			String command = event.getActionCommand();
 			switch (command) {
+				case "Buy": {
+					new TechnologyStoreDialog(AstTablePanel.this.client, this.controller, this.name);
+				}
+					break;
 				case "View":
 					( (MegaCivFrame) SwingUtilities.getWindowAncestor(this) )
 							.addTab(WordUtils.capitalizeFully(this.name.toString()));

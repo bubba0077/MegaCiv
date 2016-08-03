@@ -24,7 +24,7 @@ public class GuiController extends BubbaGuiController {
 	// File name to store window positions
 	protected final static String				SETTINGS_FILENAME	= ".net.bubbaland.megaciv.client.gui.settings";
 	// Settings version to force reloading defaults
-	private final static String					SETTINGS_VERSION	= "7";
+	private final static String					SETTINGS_VERSION	= "8";
 
 	// private final static String FONT_FILENAME = "fonts/tahoma.ttf";
 

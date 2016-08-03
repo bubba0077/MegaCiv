@@ -48,6 +48,8 @@ AstTable.Header.FontSize=18.0
 AstTable.Header.ForegroundColor=ffffff
 AstTable.Header.BackgroundColor=000000
 AstTable.Row.Height=30
+AstTable.BUY.Width=60
+AstTable.BUY.FontSize=20.0
 AstTable.AST.Width=60
 AstTable.AST.FontSize=28.0
 AstTable.CIV.Width=300
@@ -116,6 +118,10 @@ NewGameDialog.Civ.Height=20
 NewGameDialog.Civ.Width=100
 NewGameDialog.FontSize=16.0
 
+TechStoreDialog.Civ.Height=28
+TechStoreDialog.Civ.Width=840
+TechStoreDialog.Civ.FontSize=24.0
+
 TechStoreDialog.Tech.Height=18
 TechStoreDialog.Tech.Width=280
 TechStoreDialog.Tech.FontSize=14.0
@@ -127,10 +133,6 @@ TechStoreDialog.BuyButton.FontSize=24.0
 TechStoreDialog.ResetButton.Height=24
 TechStoreDialog.ResetButton.Width=100
 TechStoreDialog.ResetButton.FontSize=16.0
-
-TechStoreDialog.NextButton.Height=30
-TechStoreDialog.NextButton.Width=100
-TechStoreDialog.NextButton.FontSize=16.0
 
 CivEditPanel.Header.Height=50
 CivEditPanel.CivName.Width=200

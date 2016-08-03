@@ -17,7 +17,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 	private final GuiClient		client;
 
-	private final JButton		censusButton, cityButton, techButton, astButton;
+	private final JButton		censusButton, cityButton, astButton;
 
 	public ControlsPanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
@@ -47,14 +47,6 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		this.techButton = new JButton("Purchase Techs");
-		this.techButton.setActionCommand("Purchase Techs");
-		this.techButton.addActionListener(this);
-		this.techButton.setMargin(new Insets(0, 0, 0, 0));
-		this.add(this.techButton, constraints);
-
-		constraints.gridx = 3;
-		constraints.gridy = 0;
 		this.astButton = new JButton("Advance AST");
 		this.astButton.setActionCommand("Advance AST");
 		this.astButton.addActionListener(this);
@@ -77,7 +69,6 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 		BubbaPanel.setButtonProperties(this.censusButton, width, height, null, null, fontSize);
 		BubbaPanel.setButtonProperties(this.cityButton, width, height, null, null, fontSize);
-		BubbaPanel.setButtonProperties(this.techButton, width, height, null, null, fontSize);
 		BubbaPanel.setButtonProperties(this.astButton, width, height, null, null, fontSize);
 	}
 
@@ -93,9 +84,6 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 				break;
 			case "Update Cities":
 				new CityUpdateDialog(this.client, this.controller);
-				break;
-			case "Purchase Techs":
-				new TechnologyStoreDialog(this.client, this.controller);
 				break;
 			case "Advance AST":
 				new AstAlterationDialog(this.client, this.controller);

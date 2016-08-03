@@ -15,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -23,7 +22,6 @@ import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.messages.AdditionalCreditMessage;
 import net.bubbaland.megaciv.messages.TechPurchaseMessage;
@@ -36,19 +34,20 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private static final int						N_ROWS				= 17;
 
-	private final CivilizationComboBox				civComboBox;
+	private final JLabel							civLabel;
 	private final HashMap<Technology, JCheckBox>	techCheckboxes;
 	private final GameClient						client;
 	private final JFrame							frame;
-	private final JButton							buyNextButton, nextButton, resetButton;
-	private final JPanel							spacerPanel;
+	private final JButton							buyNextButton, resetButton;
 	private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
 	private final JLabel							writtenRecordLabel, monumentLabel;
+	private final Civilization.Name					civName;
 
-	public TechnologyStoreDialog(GameClient client, BubbaGuiController controller) {
+	public TechnologyStoreDialog(GameClient client, BubbaGuiController controller, Civilization.Name civName) {
 		super(controller, new GridBagLayout());
 		this.frame = new JFrame();
 		this.client = client;
+		this.civName = civName;
 
 		Game game = this.client.getGame();
 		ArrayList<Civilization.Name> civNames = Civilization.sortByToName(game.getCivilizations(),
@@ -62,20 +61,17 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 2;
-		this.civComboBox = new CivilizationComboBox(civNameArray);
-		this.civComboBox.setActionCommand("Civ Changed");
-		this.civComboBox.addActionListener(this);
-		this.add(this.civComboBox, constraints);
-
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.gridwidth = 6;
-		this.spacerPanel = new JPanel();
-		this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-		this.add(this.spacerPanel, constraints);
+		constraints.gridwidth = 8;
+		this.civLabel = this.enclosedLabelFactory(civName.toString(), constraints, JLabel.LEFT, JLabel.CENTER);
+
+		// constraints.gridx = 1;
+		// constraints.gridy = 0;
+		// constraints.gridwidth = 6;
+		// this.spacerPanel = new JPanel();
+		// this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civLabel.getSelectedItem()));
+		// this.add(this.spacerPanel, constraints);
 		constraints.gridwidth = 2;
 
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
@@ -142,11 +138,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridx = 1;
 		constraints.gridy = 5 + N_ROWS;
 
-		this.nextButton = new JButton("Next Civ");
-		this.nextButton.setActionCommand("Next");
-		this.nextButton.addActionListener(this);
-		// this.add(this.nextButton, constraints);
-
 		constraints.gridx = 0;
 		constraints.gridy = 5 + N_ROWS;
 		this.resetButton = new JButton("Reset");
@@ -178,6 +169,11 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			BubbaPanel.setButtonProperties(checkbox, colWidth, rowHeight, null, null, fontSize);
 		}
 
+		BubbaPanel.setLabelProperties(this.civLabel, Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Width")),
+				Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Height")),
+				Civilization.FOREGROUND_COLORS.get(this.civName), Civilization.BACKGROUND_COLORS.get(this.civName),
+				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
+
 		BubbaPanel.setButtonProperties(this.buyNextButton,
 				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Width")),
 				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Height")), null, null,
@@ -187,16 +183,10 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Width")),
 				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Height")), null, null,
 				Float.parseFloat(props.getProperty("TechStoreDialog.ResetButton.FontSize")));
-
-		BubbaPanel.setButtonProperties(this.nextButton,
-				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Width")),
-				Integer.parseInt(props.getProperty("TechStoreDialog.NextButton.Height")), null, null,
-				Float.parseFloat(props.getProperty("TechStoreDialog.NextButton.FontSize")));
-
 	}
 
 	private void resetCheckboxes() {
-		Civilization civ = this.client.getGame().getCivilization((Name) this.civComboBox.getSelectedItem());
+		Civilization civ = this.client.getGame().getCivilization(this.civName);
 		ArrayList<Technology> ownedTechs = civ.getTechs();
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
 			JCheckBox checkbox = this.techCheckboxes.get(tech);
@@ -232,7 +222,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	}
 
 	private void updateTotalCost() {
-		Civilization civ = this.client.getGame().getCivilization((Name) this.civComboBox.getSelectedItem());
+		Civilization civ = this.client.getGame().getCivilization(this.civName);
 
 		HashMap<Technology, Integer> costs = new HashMap<Technology, Integer>();
 		for (Technology tech : EnumSet.allOf(Technology.class)) {
@@ -307,7 +297,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		String command = e.getActionCommand();
 		switch (command) {
 			case "Buy":
-				Civilization.Name civName = (Name) this.civComboBox.getSelectedItem();
 				ArrayList<Technology> newTechs = new ArrayList<Technology>();
 				for (Technology tech : EnumSet.allOf(Technology.class)) {
 					JCheckBox checkbox = this.techCheckboxes.get(tech);
@@ -326,7 +315,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 							}
 						}
 					};
-					this.client.sendMessage(new AdditionalCreditMessage(civName, Technology.WRITTEN_RECORD, credits));
+					this.client
+							.sendMessage(new AdditionalCreditMessage(this.civName, Technology.WRITTEN_RECORD, credits));
 				}
 				if (newTechs.contains(Technology.MONUMENT)) {
 					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
@@ -338,22 +328,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 							}
 						}
 					};
-					this.client.sendMessage(new AdditionalCreditMessage(civName, Technology.MONUMENT, credits));
+					this.client.sendMessage(new AdditionalCreditMessage(this.civName, Technology.MONUMENT, credits));
 				}
-				// Intentional fall through
-			case "Next":
-				int nextIndex = this.civComboBox.getSelectedIndex() + 1;
-				if (nextIndex == this.civComboBox.getItemCount()) {
-					this.frame.dispose();
-					return;
-				}
-				this.civComboBox.setSelectedIndex(nextIndex);
-				// Intentional fall through
-			case "Civ Changed":
-				// this.civComboBox.setForeground(Civilization.FOREGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-				// this.civComboBox.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-				this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civComboBox.getSelectedItem()));
-				// Intentional fall through
+				this.frame.dispose();
 			case "Reset":
 				this.resetCheckboxes();
 				break;
