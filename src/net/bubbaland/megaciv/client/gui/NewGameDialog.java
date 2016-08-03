@@ -61,22 +61,27 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		constraints.weightx = 3.0;
 		constraints.weighty = 0.0;
 
+		Properties props = controller.getProperties();
+		float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Number.FontSize"));
+
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridheight = 2;
 		JLabel label = new JLabel("Number of civilizations:");
-		label.setFont(label.getFont().deriveFont(18.0f));
+		label.setFont(label.getFont().deriveFont(fontSize));
 		this.add(label, constraints);
 
 		constraints.weightx = 0.0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		this.nCivSpinner = new JSpinner(new SpinnerNumberModel(5, 5, 18, 1));
-		this.nCivSpinner.setFont(this.nCivSpinner.getFont().deriveFont(24.0f));
+		this.nCivSpinner.setFont(this.nCivSpinner.getFont().deriveFont(fontSize));
 		this.nCivSpinner.addChangeListener(this);
 		this.add(this.nCivSpinner, constraints);
 		constraints.gridheight = 1;
 
+
+		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Option.FontSize"));
 		ButtonGroup regionGroup = new ButtonGroup();
 
 		constraints.gridx = 3;
@@ -85,6 +90,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.westRadioButton.setSelected(true);
 		this.westRadioButton.setActionCommand("West");
 		this.westRadioButton.addActionListener(this);
+		this.westRadioButton.setFont(this.westRadioButton.getFont().deriveFont(fontSize));
 		this.add(this.westRadioButton, constraints);
 
 		constraints.gridx = 4;
@@ -92,6 +98,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.eastRadioButton = new JRadioButton("East");
 		this.eastRadioButton.setActionCommand("East");
 		this.eastRadioButton.addActionListener(this);
+		this.eastRadioButton.setFont(this.eastRadioButton.getFont().deriveFont(fontSize));
 		this.add(this.eastRadioButton, constraints);
 
 		regionGroup.add(this.eastRadioButton);
@@ -106,6 +113,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.basicRadioButton.setActionCommand("Basic");
 		this.basicRadioButton.setSelected(true);
 		this.basicRadioButton.addActionListener(this);
+		this.basicRadioButton.setFont(this.basicRadioButton.getFont().deriveFont(fontSize));
 		this.add(this.basicRadioButton, constraints);
 
 		constraints.gridx = 4;
@@ -113,16 +121,20 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.expertRadioButton = new JRadioButton("Expert");
 		this.expertRadioButton.setActionCommand("Expert");
 		this.expertRadioButton.addActionListener(this);
+		this.expertRadioButton.setFont(this.expertRadioButton.getFont().deriveFont(fontSize));
 		this.add(this.expertRadioButton, constraints);
 
 		difficultyGroup.add(this.basicRadioButton);
 		difficultyGroup.add(this.expertRadioButton);
+
+		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Button.FontSize"));
 
 		constraints.gridx = 5;
 		constraints.gridy = 0;
 		this.randomizeButton = new JButton("Randomize Players");
 		this.randomizeButton.setActionCommand("Randomize");
 		this.randomizeButton.addActionListener(this);
+		this.randomizeButton.setFont(this.randomizeButton.getFont().deriveFont(fontSize));
 		this.add(this.randomizeButton, constraints);
 
 		constraints.gridx = 5;
@@ -130,6 +142,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.customButton = new JToggleButton("Custom Setup");
 		this.customButton.setActionCommand("Custom");
 		this.customButton.addActionListener(this);
+		this.customButton.setFont(this.customButton.getFont().deriveFont(fontSize));
 		this.add(this.customButton, constraints);
 
 		constraints.gridx = 0;
@@ -271,9 +284,9 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			this.name = name;
 
 			Properties props = controller.getProperties();
-			int civHeight = Integer.parseInt(props.getProperty("CensusDialog.Civ.Height"));
-			int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
-			float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
+			int civHeight = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Height"));
+			int civWidth = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Width"));
+			float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Civ.FontSize"));
 
 			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
 			Color background = Civilization.BACKGROUND_COLORS.get(name);

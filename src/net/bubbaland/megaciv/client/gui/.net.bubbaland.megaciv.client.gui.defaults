@@ -119,9 +119,12 @@ AdvanceAstDialog.Req.Height=50
 AdvanceAstDialog.Req.Width=250
 AdvanceAstDialog.Req.FontSize=14.0
 
-NewGameDialog.Civ.Height=20
-NewGameDialog.Civ.Width=100
-NewGameDialog.FontSize=16.0
+NewGameDialog.Number.FontSize=24.0
+NewGameDialog.Option.FontSize=14.0
+NewGameDialog.Button.FontSize=14.0
+NewGameDialog.Civ.Height=28
+NewGameDialog.Civ.Width=150
+NewGameDialog.Civ.FontSize=24.0
 
 TechStoreDialog.Civ.Height=28
 TechStoreDialog.Civ.Width=840
