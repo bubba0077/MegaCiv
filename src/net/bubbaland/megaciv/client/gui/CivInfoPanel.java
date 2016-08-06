@@ -125,10 +125,12 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 		private static final long						serialVersionUID	= 737717239222757041L;
 
-		private final JLabel							populationLabel, cityLabel, vpLabel;
-		private final JLabel							populationLabel0, cityLabel0, vpLabel0;
+		private final JLabel							populationLabel, cityLabel, vpLabel, techLabel;
+		private final JLabel							populationLabel0, cityLabel0, vpLabel0, techLabel0;
 		private final JLabel							creditLabel0;
 		private final HashMap<Technology.Type, JLabel>	creditLabels, creditLabelsTop;
+		// private final JLabel techDetailLabel0, techDetailL1Label0, techDetailL2Label0,
+		// techDetailL3Label0, techDetailL1Label, techDetailL2Label, techDetailL3Label;
 
 		public StatPanel() {
 			super(CivInfoPanel.this.controller, new GridBagLayout());
@@ -138,42 +140,101 @@ public class CivInfoPanel extends BubbaMainPanel {
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;
 
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			this.populationLabel0 = this.enclosedLabelFactory("Pop", constraints, JLabel.CENTER, JLabel.TOP);
-
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			this.populationLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
-
 			constraints.gridx = 0;
 			constraints.gridy = 0;
+			constraints.gridheight = 1;
 			this.cityLabel0 = this.enclosedLabelFactory("Cities", constraints, JLabel.CENTER, JLabel.TOP);
 
 			constraints.gridx = 0;
 			constraints.gridy = 1;
+			constraints.gridheight = 3;
 			this.cityLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			constraints.gridheight = 1;
+			this.populationLabel0 = this.enclosedLabelFactory("Pop", constraints, JLabel.CENTER, JLabel.TOP);
+
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.gridheight = 3;
+			this.populationLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
 
 			constraints.gridx = 2;
 			constraints.gridy = 0;
-			this.vpLabel0 = this.enclosedLabelFactory("VP", constraints, JLabel.CENTER, JLabel.TOP);
+			constraints.gridheight = 1;
+			this.techLabel0 = this.enclosedLabelFactory("Adv", constraints, JLabel.CENTER, JLabel.TOP);
 
 			constraints.gridx = 2;
 			constraints.gridy = 1;
-			this.vpLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+			constraints.gridheight = 3;
+			this.techLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
 
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			constraints.gridheight = 1;
+			this.vpLabel0 = this.enclosedLabelFactory("VP", constraints, JLabel.CENTER, JLabel.TOP);
 
 			constraints.gridx = 3;
 			constraints.gridy = 1;
+			constraints.gridheight = 3;
+			this.vpLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+
+			// constraints.gridx = 4;
+			// constraints.gridy = 0;
+			// constraints.gridwidth = 2;
+			// constraints.gridheight = 1;
+			// constraints.weightx = 0.5;
+			// constraints.weighty = 0.5;
+			// this.techDetailLabel0 = this.enclosedLabelFactory("Techs", constraints, JLabel.CENTER, JLabel.CENTER);
+			// constraints.gridwidth = 1;
+			//
+			// constraints.gridx = 4;
+			// constraints.gridy = 1;
+			// constraints.gridheight = 1;
+			// this.techDetailL1Label0 = this.enclosedLabelFactory("1 VP", constraints, JLabel.LEFT, JLabel.CENTER);
+			//
+			// constraints.gridx = 4;
+			// constraints.gridy = 2;
+			// constraints.gridheight = 1;
+			// this.techDetailL2Label0 = this.enclosedLabelFactory("3 VP", constraints, JLabel.LEFT, JLabel.CENTER);
+			//
+			// constraints.gridx = 4;
+			// constraints.gridy = 3;
+			// constraints.gridheight = 1;
+			// this.techDetailL3Label0 = this.enclosedLabelFactory("6 VP", constraints, JLabel.LEFT, JLabel.CENTER);
+			//
+			// constraints.gridx = 5;
+			// constraints.gridy = 1;
+			// constraints.gridheight = 1;
+			// this.techDetailL1Label = this.enclosedLabelFactory("", constraints, JLabel.RIGHT, JLabel.CENTER);
+			//
+			// constraints.gridx = 5;
+			// constraints.gridy = 2;
+			// constraints.gridheight = 1;
+			// this.techDetailL2Label = this.enclosedLabelFactory("", constraints, JLabel.RIGHT, JLabel.CENTER);
+			//
+			// constraints.gridx = 5;
+			// constraints.gridy = 3;
+			// constraints.gridheight = 1;
+			// this.techDetailL3Label = this.enclosedLabelFactory("", constraints, JLabel.RIGHT, JLabel.CENTER);
+
+			constraints.gridx = 4;
+			constraints.gridy = 1;
+			constraints.gridheight = 3;
+			constraints.weightx = 1.0;
+			constraints.weighty = 1.0;
 			this.creditLabel0 = this.enclosedLabelFactory("Credits:", constraints, JLabel.RIGHT, JLabel.CENTER);
 
 			this.creditLabelsTop = new HashMap<Technology.Type, JLabel>();
 			this.creditLabels = new HashMap<Technology.Type, JLabel>();
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
-				constraints.gridx = 4 + type.ordinal();
+				constraints.gridx = 5 + type.ordinal();
 				constraints.gridy = 0;
+				constraints.gridheight = 1;
 				this.creditLabelsTop.put(type, this.enclosedLabelFactory(WordUtils.capitalizeFully(type.toString()),
 						constraints, JLabel.CENTER, JLabel.TOP));
+				constraints.gridheight = 3;
 				constraints.gridy = 1;
 				this.creditLabels.put(type, this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER));
 			}
@@ -188,6 +249,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 			this.populationLabel.setText(String.format("%02d", civ.getPopulation()));
 			this.cityLabel.setText(civ.getCityCount() + "");
+			this.techLabel.setText(String.format("%02d", civ.getTechs().size()));
+
 			String text = String.format("%03d", civ.getVP());
 			if (civ.getCurrentAge() == Age.LATE_IRON
 					&& civ.onlyLateIron(CivInfoPanel.this.client.getGame().getCivilizations())) {
@@ -195,9 +258,14 @@ public class CivInfoPanel extends BubbaMainPanel {
 			}
 			this.vpLabel.setText(text);
 
+			// this.techDetailL1Label.setText(civ.getTechCountByVP(1) + "");
+			// this.techDetailL2Label.setText(civ.getTechCountByVP(3) + "");
+			// this.techDetailL3Label.setText(civ.getTechCountByVP(6) + "");
+
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				this.creditLabels.get(type).setText(civ.getTypeCredit(type) + "");
 			}
+
 
 		}
 
@@ -212,7 +280,11 @@ public class CivInfoPanel extends BubbaMainPanel {
 			int heightTop = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Top.Height"));
 			int heightBottom = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Bottom.Height"));
 
+			// int techLeftWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Left.Width"));
+			// int techRightWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Right.Width"));
 			int creditWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Credit.Width"));
+
+			// float techFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Stat.Tech.FontSize"));
 
 			float creditFontSizeTop = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.Top.FontSize"));
 			float creditFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.FontSize"));
@@ -227,6 +299,10 @@ public class CivInfoPanel extends BubbaMainPanel {
 					Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")), heightBottom, foreground,
 					background, Float.parseFloat(props.getProperty("CivInfoPanel.City.FontSize")));
 
+			BubbaPanel.setLabelProperties(this.techLabel,
+					Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Width")), heightBottom, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.Stat.Tech.FontSize")));
+
 			BubbaPanel.setLabelProperties(this.vpLabel, Integer.parseInt(props.getProperty("CivInfoPanel.VP.Width")),
 					heightBottom, foreground, background,
 					Float.parseFloat(props.getProperty("CivInfoPanel.VP.FontSize")));
@@ -239,9 +315,35 @@ public class CivInfoPanel extends BubbaMainPanel {
 					Integer.parseInt(props.getProperty("CivInfoPanel.City.Width")), heightTop, foreground, background,
 					Float.parseFloat(props.getProperty("CivInfoPanel.City.Top.FontSize")));
 
+			BubbaPanel.setLabelProperties(this.techLabel0,
+					Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Width")), heightTop, foreground,
+					background, Float.parseFloat(props.getProperty("CivInfoPanel.Stat.Tech.Top.FontSize")));
+
 			BubbaPanel.setLabelProperties(this.vpLabel0, Integer.parseInt(props.getProperty("CivInfoPanel.VP.Width")),
 					heightTop, foreground, background,
 					Float.parseFloat(props.getProperty("CivInfoPanel.VP.Top.FontSize")));
+
+			// BubbaPanel.setLabelProperties(this.techDetailLabel0, techLeftWidth + techRightWidth, heightTop,
+			// foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL1Label0, techLeftWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL2Label0, techLeftWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL3Label0, techLeftWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL1Label, techRightWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL2Label, techRightWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
+			//
+			// BubbaPanel.setLabelProperties(this.techDetailL3Label, techRightWidth, heightBottom / 3, foreground,
+			// background, techFontSize);
 
 			BubbaPanel.setLabelProperties(this.creditLabel0,
 					Integer.parseInt(props.getProperty("CivInfoPanel.Credit0.Width")), heightBottom, foreground,
@@ -307,6 +409,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 				Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
 				this.techLabels.get(tech).setForeground(color);
 			}
+
+
 		}
 
 		public void loadProperties() {

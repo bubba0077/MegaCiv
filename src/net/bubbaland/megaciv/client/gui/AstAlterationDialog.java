@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.BubbaDialog;
@@ -167,7 +166,6 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, foreground, background,
 					constraints, reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
 					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
 		}
 

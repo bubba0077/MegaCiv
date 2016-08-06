@@ -46,8 +46,8 @@ public class AstTablePanel extends BubbaPanel {
 	private static final long serialVersionUID = -1197287409680075891L;
 
 	private enum Column {
-		BUY, CIV, POPULATION, CITIES, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10, AST11,
-		AST12, AST13, AST14, AST15, AST16
+		BUY, CIV, POPULATION, CITIES, TECHS, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10,
+		AST11, AST12, AST13, AST14, AST15, AST16
 	}
 
 	private static final HashMap<Column, Civilization.SortOption>	sortHash	=
@@ -203,12 +203,17 @@ public class AstTablePanel extends BubbaPanel {
 					case CIV:
 						text = WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")";
 						break;
+					case TECHS:
+						text = civ.getTechs().size() + "";
+						label.setToolTipText(civ.getTechBreakdownString());
+						break;
 					case VP:
 						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(sortedCivs)) {
 							text = "*" + +civ.getVP();
 						} else {
 							text = civ.getVP() + " ";
 						}
+						label.setToolTipText(civ.getVpBreakdownString());
 						break;
 					case BUY:
 						panel.buyButton.setEnabled(!civ.hasPurchased());
@@ -217,9 +222,10 @@ public class AstTablePanel extends BubbaPanel {
 						int astStep = Integer.parseInt(col.toString().substring(3));
 						Civilization.Age age = civ.getAge(astStep);
 						if (astStep <= civ.getAstPosition()) {
-							text = ( astStep * 5 ) + "";
+							text = ( astStep * Game.VP_PER_AST_STEP ) + "";
 							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 							foregroundColor = this.controller.getAstBackgroundColor(age);
+							label.setToolTipText("");
 						} else {
 							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstForegroundColor(age);
@@ -227,9 +233,19 @@ public class AstTablePanel extends BubbaPanel {
 							// if (astStep == civ.getAstPosition() + 1) {
 							// text = civ.passAstRequirements(age) ? "+" : "!";
 							// }
+							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))) {
+								text = civ.passAstRequirements(age) ? "" : "!";
+							}
+							if (age != Age.STONE) {
+								label.setToolTipText(civ.astRequirementString(age));
+							} else {
+								label.setToolTipText("");
+							}
 						}
 						label.setVisible(astStep <= this.client.getGame().lastAstStep());
 						label.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
+
+
 				}
 				label.setText(text);
 				setLabelProperties(label, this.width.get(col), this.rowHeight, foregroundColor, backgroundColor,
@@ -254,6 +270,7 @@ public class AstTablePanel extends BubbaPanel {
 				case CIV:
 				case POPULATION:
 				case CITIES:
+				case TECHS:
 				case BUY:
 					// case AST:
 				case VP:
@@ -321,6 +338,10 @@ public class AstTablePanel extends BubbaPanel {
 						string = "Pop";
 						break;
 					case CITIES:
+						string = "Cities";
+						break;
+					case TECHS:
+						string = "Adv";
 						break;
 					case VP:
 						string = "VP";
@@ -377,6 +398,7 @@ public class AstTablePanel extends BubbaPanel {
 					case POPULATION:
 					case VP:
 					case CITIES:
+					case TECHS:
 					case BUY:
 						continue;
 					default:
@@ -487,10 +509,11 @@ public class AstTablePanel extends BubbaPanel {
 						constraints.weightx = 0.0625;
 						break;
 					case CITIES:
-						justification = JLabel.CENTER;
+						// justification = JLabel.CENTER;
 						break;
 					// case AST:
 					case POPULATION:
+					case TECHS:
 					case VP:
 						break;
 					default:
@@ -504,13 +527,14 @@ public class AstTablePanel extends BubbaPanel {
 						label.add(this.contextMenu);
 					case POPULATION:
 					case CITIES:
+					case TECHS:
 						// case AST:
 					case VP:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						break;
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));
-						label.setText(( astStep * 5 ) + "");
+						label.setText(( astStep * Game.VP_PER_AST_STEP ) + "");
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				}
 				label.addMouseListener(new PopupListener(this.contextMenu));

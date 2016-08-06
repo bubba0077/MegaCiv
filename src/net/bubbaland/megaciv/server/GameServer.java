@@ -219,7 +219,12 @@ public class GameServer extends Server {
 	}
 
 	public static void main(String args[]) {
-		GameServer server = new GameServer("localhost", 1200);
+		GameServer server = null;
+		if (args.length > 1) {
+			server = new GameServer(args[0], Integer.parseInt(args[1]));
+		} else {
+			server = new GameServer("localhost", 1200);
+		}
 		try {
 			server.start();
 			while (server.isRunning) {}

@@ -93,8 +93,7 @@ public abstract class BubbaPanel extends JPanel {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					try {
 						Desktop.getDesktop().browse(e.getURL().toURI());
-					} catch (IOException | URISyntaxException exception) {
-					}
+					} catch (IOException | URISyntaxException exception) {}
 				} else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
 					BubbaPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				} else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
@@ -137,6 +136,7 @@ public abstract class BubbaPanel extends JPanel {
 		pane.setEnabled(false);
 		this.add(pane, constraints);
 		final JTextPane textPane = new JTextPane(new DefaultStyledDocument());
+		// textPane.setContentType("text/html");
 		textPane.setText(string);
 		textPane.setBorder(BorderFactory.createEmptyBorder());
 		final DefaultCaret caret = (DefaultCaret) textPane.getCaret();
@@ -178,12 +178,15 @@ public abstract class BubbaPanel extends JPanel {
 		pane.setBorder(BorderFactory.createEmptyBorder());
 		this.add(pane, constraints);
 		final JTextPane textPane = new JTextPane(new DefaultStyledDocument());
+		// textPane.setContentType("text/html");
 		textPane.setBorder(BorderFactory.createEmptyBorder());
 		final DefaultCaret caret = (DefaultCaret) textPane.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		pane.setViewportView(textPane);
 
 		BubbaPanel.setTextPaneProperties(textPane, width, height, foreground, background, fontSize);
+
+		textPane.setText(string);
 
 		return textPane;
 	}

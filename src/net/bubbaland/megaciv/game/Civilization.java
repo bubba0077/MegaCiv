@@ -379,6 +379,38 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				&& this.getVPfromTech() >= reqs.getMinTechVP();
 	}
 
+	public String astRequirementString(Age age) {
+		AstRequirements reqs = AGE_REQUIREMENTS.get(this.difficulty).get(age);
+		String s = "<html>" + age.toString() + "<BR/>";
+		if (reqs.getMinCities() > 0) {
+			String colorName = this.nCities >= reqs.getMinCities() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinCities() + " Cities</span><BR/>";
+		}
+		if (reqs.getMinAdvances() > 0) {
+			String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinAdvances() + " Advances</span><BR/>";
+		}
+		if (reqs.getMinTechVP() > 0) {
+			String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinTechVP() + " VP from Advances</span><BR/>";
+		}
+		if (reqs.getMinLevelOneTechs() > 0) {
+			String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelOneTechs() + " Advances < 100</span><BR/>";
+		}
+		if (reqs.getMinLevelTwoPlusTechs() > 0) {
+			String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
+					.getMinLevelTwoPlusTechs() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span><BR/>";
+		}
+		if (reqs.getMinLevelThreeTechs() > 0) {
+			String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
+			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelThreeTechs() + " Advances > 200</span><BR/>";
+		}
+		s = s + "</html>";
+		return s;
+	}
+
 	public int getAgeStart(Civilization.Age age) {
 		return Civilization.AST_TABLE.get(this.getName()).getAgeStart(age, this.difficulty);
 	}
@@ -476,7 +508,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		int credit = 0;
 		for (Technology tech : this.extraTypeCredits.keySet()) {
 			if (this.hasTech(tech)) {
-				credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * 5;
+				credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * Game.VP_PER_AST_STEP;
 			}
 		}
 		for (Technology tech : this.techs) {
@@ -591,8 +623,27 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public int getVP() {
-		return this.nCities + this.astPosition * 5 + getVPfromTech();
+		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech();
 		// TODO Need to add adjustment for Late Iron Age only bonus
+	}
+
+	public String getTechBreakdownString() {
+		String s = "<html>Tech Breakdown<BR/>";
+		s = s + "<table cellpadding='1' cellspacing='1'><tr><td align='right'>1 VP (&lt;100)</td><td>"
+				+ this.getTechCountByVP(1) + "</td></tr>";
+		s = s + "<tr><td>3 VP (&gt;100)</td><td align='right'>" + this.getTechCountByVP(3) + "</td></tr>";
+		s = s + "<tr><td>6 VP (&gt;200)</td><td align='right'>" + this.getTechCountByVP(6)
+				+ "</td></tr></table></html>";
+		return s;
+	}
+
+	public String getVpBreakdownString() {
+		String s = "<html>VP by Source<BR/>";
+		s = s + "<table cellpadding='1' cellspacing='1'><tr><td>AST</td><td align='right'>"
+				+ this.astPosition * Game.VP_PER_AST_STEP + "</td></tr>";
+		s = s + "<tr><td>Tech</td><td align='right'>" + this.getVPfromTech() + "</td></tr>";
+		s = s + "<tr><td>Cities</td><td align='right'>" + this.getCityCount() + "</td></tr></table></html>";
+		return s;
 	}
 
 	public String toFullString() {
@@ -601,7 +652,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		s = s + "Current AST Step: " + this.astPosition + "(" + this.getCurrentAge() + ")\n";
 		s = s + "Next Step Age: " + this.getNextStepAge() + "\n";
 		s = s + "Cities: " + this.nCities + " Population: " + this.population + "\n";
-		s = s + "Technologies:" + this.techs;
+		s = s + "Technologies:" + this.techs + "</html>";
 		return s;
 	}
 
