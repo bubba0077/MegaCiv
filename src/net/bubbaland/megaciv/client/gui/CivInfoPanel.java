@@ -382,7 +382,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 				constraints.gridx = 0 + tech.ordinal() / N_ROWS;
 				constraints.gridy = 0 + tech.ordinal() % N_ROWS;
 
-				String techString = "<html>" + tech.getName();
+				String techString = "<html>" + tech.getName() + " (" + tech.getBaseCost() + ")";
 				for (Type type : tech.getTypes()) {
 					techString = techString + " <span color=\"" + type.getHtmlColor() + "\">•</span>";
 				}

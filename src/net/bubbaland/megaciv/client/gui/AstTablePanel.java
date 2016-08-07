@@ -521,7 +521,6 @@ public class AstTablePanel extends BubbaPanel {
 						// constraints.weightx = 1.0;
 				}
 				JLabel label = this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
-				setLabelProperties(label, 100, 20, Color.BLACK, Color.WHITE, (float) 14.0);
 				switch (col) {
 					case CIV:
 						label.add(this.contextMenu);
@@ -531,17 +530,13 @@ public class AstTablePanel extends BubbaPanel {
 						// case AST:
 					case VP:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+						label.addMouseListener(new PopupListener(this.contextMenu));
 						break;
 					default:
-						int astStep = Integer.parseInt(col.toString().substring(3));
-						label.setText(( astStep * Game.VP_PER_AST_STEP ) + "");
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				}
-				label.addMouseListener(new PopupListener(this.contextMenu));
 				this.labels.put(col, label);
 			}
-
-			// this.setBorder(BorderFactory.createEmptyBorder());
 		}
 
 		public void loadProperties() {

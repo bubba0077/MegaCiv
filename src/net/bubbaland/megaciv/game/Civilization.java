@@ -381,31 +381,31 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public String astRequirementString(Age age) {
 		AstRequirements reqs = AGE_REQUIREMENTS.get(this.difficulty).get(age);
-		String s = "<html>" + age.toString() + "<BR/>";
+		String s = "<html>" + age.toString() + "";
 		if (reqs.getMinCities() > 0) {
 			String colorName = this.nCities >= reqs.getMinCities() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinCities() + " Cities</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinCities() + " Cities</span>";
 		}
 		if (reqs.getMinAdvances() > 0) {
 			String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinAdvances() + " Advances</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinAdvances() + " Advances</span>";
 		}
 		if (reqs.getMinTechVP() > 0) {
 			String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinTechVP() + " VP from Advances</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinTechVP() + " VP from Advances</span>";
 		}
 		if (reqs.getMinLevelOneTechs() > 0) {
 			String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelOneTechs() + " Advances < 100</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelOneTechs() + " Advances < 100</span>";
 		}
 		if (reqs.getMinLevelTwoPlusTechs() > 0) {
 			String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span>";
 		}
 		if (reqs.getMinLevelThreeTechs() > 0) {
 			String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
-			s = s + "<span color='" + colorName + "'>" + reqs.getMinLevelThreeTechs() + " Advances > 200</span><BR/>";
+			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelThreeTechs() + " Advances > 200</span>";
 		}
 		s = s + "</html>";
 		return s;
@@ -628,7 +628,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public String getTechBreakdownString() {
-		String s = "<html>Tech Breakdown<BR/>";
+		String s = "<html>";
 		s = s + "<table cellpadding='1' cellspacing='1'><tr><td align='right'>1 VP (&lt;100)</td><td>"
 				+ this.getTechCountByVP(1) + "</td></tr>";
 		s = s + "<tr><td>3 VP (&gt;100)</td><td align='right'>" + this.getTechCountByVP(3) + "</td></tr>";
@@ -638,7 +638,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	public String getVpBreakdownString() {
-		String s = "<html>VP by Source<BR/>";
+		String s = "<html>";
 		s = s + "<table cellpadding='1' cellspacing='1'><tr><td>AST</td><td align='right'>"
 				+ this.astPosition * Game.VP_PER_AST_STEP + "</td></tr>";
 		s = s + "<tr><td>Tech</td><td align='right'>" + this.getVPfromTech() + "</td></tr>";

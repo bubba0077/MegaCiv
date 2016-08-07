@@ -69,6 +69,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		// Create drag & drop tabbed pane
 		this.tabbedPane = new BubbaDnDTabbedPane(controller, this);
 		this.tabbedPane.setName("Tabbed Pane");
+		this.tabbedPane.setDoubleBuffered(true);
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();

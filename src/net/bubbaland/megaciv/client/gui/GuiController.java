@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.ToolTipManager;
 
 import net.bubbaland.gui.*;
 import net.bubbaland.megaciv.client.GameClient;
@@ -38,7 +39,13 @@ public class GuiController extends BubbaGuiController {
 		this.client = new GuiClient(serverUrl, this);
 		this.client.run();
 
-		this.waitDialog = new WaitDialog(this);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				GuiController.this.waitDialog = new WaitDialog(GuiController.this);
+				;
+			}
+		});
 
 		while (!this.client.isConnected()) {
 			setStatusBarText("Awaiting data...");
@@ -50,14 +57,14 @@ public class GuiController extends BubbaGuiController {
 			}
 		}
 
-		if (this.waitDialog != null) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (GuiController.this.waitDialog != null) {
 					GuiController.this.waitDialog.dispose();
 				}
-			});
-		}
+			}
+		});
 
 		String userName = this.properties.getProperty("UserName");
 		if (userName == null) {
@@ -101,13 +108,6 @@ public class GuiController extends BubbaGuiController {
 			public void done() {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						// String[] tabs = GuiController.this.properties
-						// .getProperty("Window" + frameName + ".OpenTabs",
-						// GuiController.this.properties.getProperty("MegaCiv.OpenTabs"))
-						// .replaceAll("[\\[\\]]", "").split(", ");
-
-						// client.log(GuiController.this.properties.getProperty("Window.MegaCiv.OpenTabs"));
-
 						String[] tabs =
 								GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
 										.replaceAll("[\\[\\]]", "").split(", ");

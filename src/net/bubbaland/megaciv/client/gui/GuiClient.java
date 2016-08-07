@@ -1,5 +1,7 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.SwingUtilities;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.EndpointConfig;
@@ -36,7 +38,16 @@ public class GuiClient extends GameClient {
 	@OnMessage
 	public void onMessage(ServerMessage message, Session session) {
 		super.onMessage(message, session);
-		this.gui.updateGui(true);
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					GuiClient.this.gui.updateGui(true);
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	/**
