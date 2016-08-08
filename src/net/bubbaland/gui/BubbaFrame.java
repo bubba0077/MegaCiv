@@ -129,9 +129,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		// Apply to status bar
 		final int height = Integer.parseInt(this.loadProperty(id, "StatusBar.Height"));
 		final float fontSize = Float.parseFloat(this.loadProperty(id, "StatusBar.FontSize"));
-		this.statusBar.getParent().setPreferredSize(new Dimension(0, height));
-		this.statusBar.getParent().setMinimumSize(new Dimension(0, height));
-		this.statusBar.setFont(this.statusBar.getFont().deriveFont(fontSize));
+
+		BubbaPanel.setLabelProperties(this.statusBar, 1, height, null, null, fontSize);
 	}
 
 	/**

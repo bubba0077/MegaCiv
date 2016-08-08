@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -33,8 +35,8 @@ import javax.swing.border.BevelBorder;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Age;
@@ -83,14 +85,15 @@ public class AstTablePanel extends BubbaPanel {
 		try {
 			FILLER_IMAGE = ImageIO.read(AstTablePanel.class.getResource("images/filler.png"));
 		} catch (IOException exception) {
-			// TODO Auto-generated catch block
 			exception.printStackTrace();
 		}
 	}
 
-	private HashMap<Integer, RowPanel>	civRows;
-	private HeaderPanel					headerPanel;
+	private HashMap<Integer, CivRow>	civRows;
+	private Header						header;
 	private FillerPanel					fillerPanel;
+
+	private final LinkedLabelGroup		civNameGroup, statGroup, astGroup;
 
 	private final GameClient			client;
 
@@ -111,7 +114,9 @@ public class AstTablePanel extends BubbaPanel {
 		this.sortDirection = Civilization.SortDirection.ASCENDING;
 		this.civRows = null;
 
-		this.setBackground(Color.BLUE);
+		this.civNameGroup = new LinkedLabelGroup();
+		this.statGroup = new LinkedLabelGroup();
+		this.astGroup = new LinkedLabelGroup();
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -120,48 +125,57 @@ public class AstTablePanel extends BubbaPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 
-		this.headerPanel = new HeaderPanel(this.controller);
-		this.add(this.headerPanel, constraints);
+		this.header = new Header();
 
 		constraints.weighty = 1.0;
 		constraints.gridy = 1;
 		this.fillerPanel = new FillerPanel();
 		this.add(this.fillerPanel, constraints);
 
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				resizeFonts();
+			}
+		});
+
 		loadProperties();
 
 		this.updateGui(true);
 	}
 
+	public void resizeFonts() {
+		this.civNameGroup.resizeFonts();
+		this.statGroup.resizeFonts();
+		this.astGroup.resizeFonts();
+	}
+
 	public synchronized void redoRows(ArrayList<Civilization.Name> civNames) {
 		if (this.civRows != null) {
-			for (RowPanel panel : this.civRows.values()) {
-				this.remove(panel);
+			for (CivRow row : this.civRows.values()) {
+				row.remove();
 			}
 		}
 		this.remove(this.fillerPanel);
 
-		// Set up layout constraints
+		this.civRows = new HashMap<Integer, CivRow>();
+		for (Civilization.Name name : civNames) {
+			int rowNumber = civNames.indexOf(name) + 1;
+			CivRow row = new CivRow(rowNumber);
+			this.civRows.put(civNames.indexOf(name), row);
+			row.loadProperties();
+		}
+
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-
-		this.civRows = new HashMap<Integer, RowPanel>();
-		for (Civilization.Name name : civNames) {
-			RowPanel panel = new RowPanel(this.controller);
-			constraints.gridy = civNames.indexOf(name) + 1;
-			this.civRows.put(civNames.indexOf(name), panel);
-			this.add(panel, constraints);
-			panel.loadProperties();
-		}
-
 		constraints.weighty = 1.0;
+		constraints.gridx = 0;
 		constraints.gridy = civNames.size() + 2;
+		constraints.gridwidth = Column.values().length;
 		this.fillerPanel = new FillerPanel();
 		this.add(this.fillerPanel, constraints);
+		this.resizeFonts();
 	}
 
 	public synchronized void updateGui(boolean forceUpdate) {
@@ -177,16 +191,16 @@ public class AstTablePanel extends BubbaPanel {
 		ArrayList<Civilization> sortedCivs =
 				Civilization.sortBy(this.client.getGame().getCivilizations(), this.sortOption, this.sortDirection);
 
-		if (sortedCivs.size() == 0 || this.headerPanel == null) {
+		if (sortedCivs.size() == 0 || this.header == null) {
 			return;
 		}
 
 		for (Civilization civ : sortedCivs) {
 			Civilization.Name name = civ.getName();
-			RowPanel panel = this.civRows.get(sortedCivs.indexOf(civ));
-			panel.setName(name);
+			CivRow row = this.civRows.get(sortedCivs.indexOf(civ));
+			row.setName(name);
 			for (Column col : EnumSet.allOf(Column.class)) {
-				JLabel label = panel.getLabel(col);
+				JComponent component = row.getComponent(col);
 				String text = "";
 				Color foregroundColor = Civilization.FOREGROUND_COLORS.get(name);
 				Color backgroundColor = Civilization.BACKGROUND_COLORS.get(name);
@@ -195,65 +209,68 @@ public class AstTablePanel extends BubbaPanel {
 					// text = civ.getAst() + "";
 					// break;
 					case POPULATION:
-						text = civ.getPopulation() + "";
+						text = String.format("%1$2d", civ.getPopulation());
 						break;
 					case CITIES:
-						text = civ.getCityCount() + "";
+						text = String.format("%1$2d", civ.getCityCount());
 						break;
 					case CIV:
 						text = WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")";
 						break;
 					case TECHS:
-						text = civ.getTechs().size() + "";
-						label.setToolTipText(civ.getTechBreakdownString());
+						text = String.format("%1$2d", civ.getTechs().size());
+						component.setToolTipText(civ.getTechBreakdownString());
 						break;
 					case VP:
 						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(sortedCivs)) {
-							text = "*" + +civ.getVP();
+							text = "*" + String.format("%1$3d", civ.getVP());
 						} else {
-							text = civ.getVP() + " ";
+							text = String.format("%1$3d", civ.getVP());
 						}
-						label.setToolTipText(civ.getVpBreakdownString());
+						component.setToolTipText(civ.getVpBreakdownString());
 						break;
 					case BUY:
-						panel.buyButton.setEnabled(!civ.hasPurchased());
+						row.buyButton.setEnabled(!civ.hasPurchased());
 						continue;
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));
 						Civilization.Age age = civ.getAge(astStep);
 						if (astStep <= civ.getAstPosition()) {
-							text = ( astStep * Game.VP_PER_AST_STEP ) + "";
-							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+							text = String.format("%1$2d", ( astStep * Game.VP_PER_AST_STEP ));
+							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 							foregroundColor = this.controller.getAstBackgroundColor(age);
-							label.setToolTipText("");
+							component.setToolTipText("");
 						} else {
-							label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstForegroundColor(age);
 							backgroundColor = this.controller.getAstBackgroundColor(age);
 							// if (astStep == civ.getAstPosition() + 1) {
 							// text = civ.passAstRequirements(age) ? "+" : "!";
 							// }
 							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))) {
-								text = civ.passAstRequirements(age) ? "" : "!";
+								text = civ.passAstRequirements(age) ? "  " : "!";
 							}
 							if (age != Age.STONE) {
-								label.setToolTipText(civ.astRequirementString(age));
+								component.setToolTipText(civ.astRequirementString(age));
 							} else {
-								label.setToolTipText("");
+								component.setToolTipText("");
 							}
 						}
-						label.setVisible(astStep <= this.client.getGame().lastAstStep());
-						label.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
+						component.setVisible(astStep <= this.client.getGame().lastAstStep());
+						component.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
 
 
 				}
+				JLabel label = (JLabel) component;
 				label.setText(text);
-				setLabelProperties(label, this.width.get(col), this.rowHeight, foregroundColor, backgroundColor,
-						this.fontSize.get(col));
+				label.setForeground(foregroundColor);
+				label.setBackground(backgroundColor);
+				label.getParent().setBackground(backgroundColor);
 			}
 		}
 
-		this.headerPanel.updateGui(forceUpdate, sortedCivs.get(0));
+		this.header.updateGui(forceUpdate, sortedCivs.get(0));
+		this.resizeFonts();
 	}
 
 	public void loadProperties() {
@@ -289,30 +306,27 @@ public class AstTablePanel extends BubbaPanel {
 		this.rowHeight = Integer.parseInt(props.getProperty("AstTable.Row.Height"));
 
 		if (this.civRows != null) {
-			for (RowPanel panel : this.civRows.values()) {
+			for (CivRow panel : this.civRows.values()) {
 				panel.loadProperties();
 			}
 		}
 
-		this.headerPanel.loadProperties();
+		this.header.loadProperties();
 
+		this.resizeFonts();
 		this.updateGui(true);
 	}
 
-	private class HeaderPanel extends BubbaPanel implements MouseListener {
+	private class Header implements MouseListener {
 
-		private static final long				serialVersionUID	= 810881884756701202L;
+		private final HashMap<Column, JLabel> colLabels;
 
-		private final HashMap<Column, JLabel>	colLabels;
-		// private final HashMap<Civilization.Age, JLabel> ageLabels;
-
-		public HeaderPanel(BubbaGuiController controller) {
-			super(controller, new GridBagLayout());
+		public Header() {
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-			constraints.weighty = 1.0;
+			constraints.weighty = 0.0;
 			constraints.gridy = 0;
 
 			this.colLabels = new HashMap<Column, JLabel>();
@@ -332,7 +346,7 @@ public class AstTablePanel extends BubbaPanel {
 					case CIV:
 						string = "Civilization (Player)";
 						justification = JLabel.LEFT;
-						constraints.weightx = 0.0625;
+						constraints.weightx = 1.0;
 						break;
 					case POPULATION:
 						string = "Pop";
@@ -351,7 +365,8 @@ public class AstTablePanel extends BubbaPanel {
 						// constraints.weightx = 1.0;
 				}
 
-				JLabel label = this.enclosedLabelFactory(string, constraints, justification, JLabel.BOTTOM);
+				JLabel label =
+						AstTablePanel.this.enclosedLabelFactory(string, constraints, justification, JLabel.BOTTOM);
 				this.colLabels.put(col, label);
 				label.setName(col.toString());
 				label.addMouseListener(this);
@@ -359,7 +374,7 @@ public class AstTablePanel extends BubbaPanel {
 		}
 
 		public void loadProperties() {
-			Properties props = this.controller.getProperties();
+			Properties props = AstTablePanel.this.controller.getProperties();
 			int height = Integer.parseInt(props.getProperty("AstTable.Header.Height"));
 
 			Color foreground =
@@ -374,7 +389,6 @@ public class AstTablePanel extends BubbaPanel {
 				JLabel label = this.colLabels.get(col);
 				BubbaPanel.setLabelProperties(label, width, height, foreground, background, fontSize);
 			}
-
 		}
 
 		public void updateGui(boolean forceUpdate, Civilization firstCiv) {
@@ -452,21 +466,20 @@ public class AstTablePanel extends BubbaPanel {
 
 	}
 
-	private class RowPanel extends BubbaPanel implements ActionListener {
+	private class CivRow implements ActionListener {
 
-		private static final long				serialVersionUID	= 1L;
+		private final HashMap<Column, JComponent>	components;
+		private final JPopupMenu					contextMenu;
+		private final JButton						buyButton;
+		private final int							rowNumber;
 
-		private final HashMap<Column, JLabel>	labels;
-		private final JPopupMenu				contextMenu;
-		private final JButton					buyButton;
+		private Civilization.Name					name;
 
-		private Civilization.Name				name;
-
-		public RowPanel(BubbaGuiController controller) {
-			super(controller, new GridBagLayout());
+		public CivRow(int rowNumber) {
+			this.rowNumber = rowNumber;
 
 			this.contextMenu = new JPopupMenu();
-			this.add(this.contextMenu);
+			AstTablePanel.this.add(this.contextMenu);
 
 			JMenuItem viewItem = new JMenuItem("View");
 			viewItem.setActionCommand("View");
@@ -492,9 +505,9 @@ public class AstTablePanel extends BubbaPanel {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
 			constraints.weighty = 1.0;
-			constraints.gridy = 0;
+			constraints.gridy = this.rowNumber;
 
-			this.labels = new HashMap<Column, JLabel>();
+			this.components = new HashMap<Column, JComponent>();
 
 			for (Column col : EnumSet.allOf(Column.class)) {
 				int justification = JLabel.RIGHT;
@@ -502,11 +515,12 @@ public class AstTablePanel extends BubbaPanel {
 				constraints.weightx = 0.0;
 				switch (col) {
 					case BUY:
-						this.add(this.buyButton, constraints);
+						AstTablePanel.this.add(this.buyButton, constraints);
+						this.components.put(col, this.buyButton);
 						continue;
 					case CIV:
 						justification = JLabel.LEFT;
-						constraints.weightx = 0.0625;
+						constraints.weightx = 1.0;
 						break;
 					case CITIES:
 						// justification = JLabel.CENTER;
@@ -520,22 +534,28 @@ public class AstTablePanel extends BubbaPanel {
 						justification = JLabel.CENTER;
 						// constraints.weightx = 1.0;
 				}
-				JLabel label = this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
+				JLabel label = AstTablePanel.this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
+
 				switch (col) {
 					case CIV:
 						label.add(this.contextMenu);
+						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+						label.addMouseListener(new PopupListener(this.contextMenu));
+						AstTablePanel.this.civNameGroup.addLabel(label);
+						break;
 					case POPULATION:
 					case CITIES:
 					case TECHS:
-						// case AST:
 					case VP:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						label.addMouseListener(new PopupListener(this.contextMenu));
+						AstTablePanel.this.statGroup.addLabel(label);
 						break;
 					default:
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+						AstTablePanel.this.astGroup.addLabel(label);
 				}
-				this.labels.put(col, label);
+				this.components.put(col, label);
 			}
 		}
 
@@ -546,14 +566,23 @@ public class AstTablePanel extends BubbaPanel {
 							AstTablePanel.this.rowHeight, null, null, AstTablePanel.this.fontSize.get(col));
 					continue;
 				}
-				JLabel label = this.labels.get(col);
-				BubbaPanel.setLabelProperties(label, AstTablePanel.this.width.get(col), AstTablePanel.this.rowHeight,
-						null, null, AstTablePanel.this.fontSize.get(col));
+				// JLabel label = (JLabel) this.components.get(col);
+				// BubbaPanel.setLabelProperties(label, AstTablePanel.this.width.get(col), AstTablePanel.this.rowHeight,
+				// null, null, AstTablePanel.this.fontSize.get(col));
 			}
 		}
 
-		public JLabel getLabel(Column col) {
-			return labels.get(col);
+		public void remove() {
+			for (JComponent component : this.components.values()) {
+				AstTablePanel.this.remove(component);
+				if (component instanceof JLabel) {
+					AstTablePanel.this.remove(component.getParent());
+				}
+			}
+		}
+
+		public JComponent getComponent(Column col) {
+			return components.get(col);
 		}
 
 		public void setName(Civilization.Name name) {
@@ -565,15 +594,15 @@ public class AstTablePanel extends BubbaPanel {
 			String command = event.getActionCommand();
 			switch (command) {
 				case "Buy": {
-					new TechnologyStoreDialog(AstTablePanel.this.client, this.controller, this.name);
+					new TechnologyStoreDialog(AstTablePanel.this.client, AstTablePanel.this.controller, this.name);
 				}
 					break;
 				case "View":
-					( (MegaCivFrame) SwingUtilities.getWindowAncestor(this) )
+					( (MegaCivFrame) SwingUtilities.getWindowAncestor(AstTablePanel.this) )
 							.addTab(WordUtils.capitalizeFully(this.name.toString()));
 					break;
 				case "Edit":
-					new CivEditPanel(AstTablePanel.this.client, this.controller, this.name);
+					new CivEditPanel(AstTablePanel.this.client, AstTablePanel.this.controller, this.name);
 					break;
 				case "Regress":
 					if (JOptionPane.showConfirmDialog(null,
@@ -585,7 +614,7 @@ public class AstTablePanel extends BubbaPanel {
 									private static final long serialVersionUID = -5493408662716651786L;
 
 									{
-										put(RowPanel.this.name, Civilization.AstChange.REGRESS);
+										put(CivRow.this.name, Civilization.AstChange.REGRESS);
 									}
 								}));
 					}
