@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JRootPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 
@@ -40,7 +41,7 @@ public class TearAwayTab extends JWindow {
 
 	private final GhostGlassPane	glassPane;
 
-	private BubbaGuiController				gui;
+	private BubbaGuiController		gui;
 
 	public TearAwayTab(BubbaGuiController gui) {
 		this.gui = gui;
@@ -83,21 +84,21 @@ public class TearAwayTab extends JWindow {
 		if (this.isVisible()) return;
 		// Get image of tab
 		final Rectangle rect = tabbedPane.getBoundsAt(tabIndex);
-		BufferedImage tabImage = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage tabImage =
+				new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		final Graphics g = tabImage.getGraphics();
 		tabbedPane.paint(g);
 		tabImage = tabImage.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		// Get image of panel
 		final Component panel = tabbedPane.getComponentAt(tabIndex);
-		final BufferedImage panelImage = new BufferedImage(panel.getWidth(), panel.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage panelImage =
+				new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		final Graphics panelGraphics = panelImage.getGraphics();
 		panel.paint(panelGraphics);
 		final int combinedHeight = tabImage.getHeight() + panelImage.getHeight();
 		// Combine images into single image
-		final BufferedImage combinedImage = new BufferedImage(panelImage.getWidth(), combinedHeight,
-				BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage combinedImage =
+				new BufferedImage(panelImage.getWidth(), combinedHeight, BufferedImage.TYPE_INT_ARGB);
 		combinedImage.createGraphics().drawImage(tabImage, 0, 0, null);
 		combinedImage.createGraphics().drawImage(panelImage, 0, tabImage.getHeight(), null);
 		// Set image of pane
@@ -127,8 +128,9 @@ public class TearAwayTab extends JWindow {
 		offsetLocation.setLocation(location.x - 10, location.y - 10);
 		TearAwayTab.this.setLocation(offsetLocation);
 		for (final BubbaDnDTabbedPane pane : BubbaDnDTabbedPane.getTabbedPanes()) {
-			final Rectangle bounds = pane.getRootPane().getBounds();
-			bounds.setLocation(pane.getRootPane().getLocationOnScreen());
+			JRootPane root = pane.getRootPane();
+			final Rectangle bounds = root.getBounds();
+			bounds.setLocation(root.getLocationOnScreen());
 			if (bounds.contains(location)) {
 				this.setVisible(false);
 				return;
@@ -151,12 +153,10 @@ public class TearAwayTab extends JWindow {
 		}
 
 		@Override
-		public void dragExit(DropTargetEvent dte) {
-		}
+		public void dragExit(DropTargetEvent dte) {}
 
 		@Override
-		public void dragOver(DropTargetDragEvent dtde) {
-		}
+		public void dragOver(DropTargetDragEvent dtde) {}
 
 		@Override
 		public void drop(DropTargetDropEvent a_event) {
@@ -166,7 +166,6 @@ public class TearAwayTab extends JWindow {
 		}
 
 		@Override
-		public void dropActionChanged(DropTargetDragEvent dtde) {
-		}
+		public void dropActionChanged(DropTargetDragEvent dtde) {}
 	}
 }
