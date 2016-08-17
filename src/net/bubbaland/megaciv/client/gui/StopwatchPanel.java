@@ -23,6 +23,7 @@ import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
+import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.messages.ClientTimerMessage;
 import net.bubbaland.megaciv.messages.TimerMessage;
 

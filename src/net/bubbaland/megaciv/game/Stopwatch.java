@@ -1,4 +1,4 @@
-package net.bubbaland.megaciv.client.gui;
+package net.bubbaland.megaciv.game;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -105,17 +105,5 @@ public class Stopwatch implements ActionListener {
 	public int getTicsRemaining() {
 		return this.deciseconds;
 	}
-
-}
-
-interface StopwatchListener {
-
-	public abstract void tic(int deciseconds);
-
-	public abstract void watchStarted();
-
-	public abstract void watchStopped();
-
-	public abstract void watchReset();
 
 }
