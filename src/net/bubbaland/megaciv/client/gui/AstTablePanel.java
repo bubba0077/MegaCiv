@@ -165,16 +165,16 @@ public class AstTablePanel extends BubbaPanel {
 			row.loadProperties();
 		}
 
-		final GridBagConstraints constraints = new GridBagConstraints();
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		constraints.gridx = 0;
-		constraints.gridy = civNames.size() + 2;
-		constraints.gridwidth = Column.values().length;
-		this.fillerPanel = new FillerPanel();
-		this.add(this.fillerPanel, constraints);
+		// final GridBagConstraints constraints = new GridBagConstraints();
+		// constraints.fill = GridBagConstraints.BOTH;
+		// constraints.anchor = GridBagConstraints.CENTER;
+		// constraints.weightx = 1.0;
+		// constraints.weighty = 10.0;
+		// constraints.gridx = 0;
+		// constraints.gridy = civNames.size() + 2;
+		// constraints.gridwidth = Column.values().length;
+		// this.fillerPanel = new FillerPanel();
+		// this.add(this.fillerPanel, constraints);
 		this.resizeFonts();
 	}
 
@@ -244,9 +244,6 @@ public class AstTablePanel extends BubbaPanel {
 							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstForegroundColor(age);
 							backgroundColor = this.controller.getAstBackgroundColor(age);
-							// if (astStep == civ.getAstPosition() + 1) {
-							// text = civ.passAstRequirements(age) ? "+" : "!";
-							// }
 							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))) {
 								text = civ.passAstRequirements(age) ? "  " : "!";
 							}
@@ -523,12 +520,10 @@ public class AstTablePanel extends BubbaPanel {
 						constraints.weightx = 1.0;
 						break;
 					case CITIES:
-						// justification = JLabel.CENTER;
-						break;
-					// case AST:
 					case POPULATION:
 					case TECHS:
 					case VP:
+						constraints.weightx = 1.0;
 						break;
 					default:
 						justification = JLabel.CENTER;

@@ -136,5 +136,4 @@ public class LinkedLabelGroup {
 		size.height = fm.getHeight();
 		return size;
 	}
-
 }
