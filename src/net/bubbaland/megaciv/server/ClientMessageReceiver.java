@@ -20,9 +20,11 @@ public class ClientMessageReceiver {
 
 	private User				user;
 	private static GameServer	server	= null;
+	private final long			connectionTime;
 
 	public ClientMessageReceiver() {
 		this.user = new User();
+		this.connectionTime = System.currentTimeMillis();
 	}
 
 	static void registerServer(GameServer server) {
@@ -83,6 +85,10 @@ public class ClientMessageReceiver {
 	@OnClose
 	public void onClose(Session session) {
 		server.removeSession(session);
+	}
+
+	public long getConnectionTime() {
+		return this.connectionTime;
 	}
 
 }

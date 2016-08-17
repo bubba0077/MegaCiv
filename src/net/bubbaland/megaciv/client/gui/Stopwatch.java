@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 public class Stopwatch implements ActionListener {
 	private int									timerLength;
+	private volatile long						startTime;
 	private volatile int						deciseconds;
 	private final Timer							timer;
 
@@ -23,12 +24,31 @@ public class Stopwatch implements ActionListener {
 		this.timer.setActionCommand("tic");
 		this.timerLength = seconds;
 		this.deciseconds = this.timerLength * 10;
+		this.startTime = 0;
+	}
+
+	public synchronized void startOffset(long milliseconds) {
+		this.startTime = System.currentTimeMillis();
+		this.deciseconds = this.deciseconds - (int) ( ( this.startTime - milliseconds ) / 100 );
+		this.timer.start();
+		for (StopwatchListener listener : this.listeners) {
+			listener.watchStarted();
+		}
 	}
 
 	public synchronized void start() {
 		this.timer.start();
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStarted();
+		}
+	}
+
+	public synchronized void stopOffset(long milliseconds) {
+		this.timer.stop();
+		long now = System.currentTimeMillis();
+		this.deciseconds = this.deciseconds + (int) ( ( now - milliseconds ) / 100 );
+		for (StopwatchListener listener : this.listeners) {
+			listener.watchStopped();
 		}
 	}
 

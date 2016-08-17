@@ -22,6 +22,7 @@ import org.glassfish.tyrus.client.ClientManager;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.bubbaland.megaciv.client.gui.Stopwatch;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.*;
@@ -35,6 +36,8 @@ public class GameClient implements Runnable {
 	private final String		serverUrl;
 	private Session				session;
 
+	private long				connectionTime;
+
 	/**
 	 * @return the session
 	 */
@@ -42,13 +45,17 @@ public class GameClient implements Runnable {
 		return this.session;
 	}
 
-	private boolean			isConnected;
+	private boolean				isConnected;
 
-	private volatile Game	game;
+	private volatile Game		game;
 
-	private ArrayList<User>	userList;
+	private ArrayList<User>		userList;
 
-	private User			user;
+	private User				user;
+
+	private final static int	STARTING_TIMER_LENGTH_SEC	= 300;
+
+	private final Stopwatch		stopwatch;
 
 	public GameClient(final String serverUrl) {
 		this.serverUrl = serverUrl;
@@ -58,6 +65,8 @@ public class GameClient implements Runnable {
 		this.userList = new ArrayList<User>();
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
+		this.connectionTime = 0;
+		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH_SEC);
 	}
 
 	public Game getGame() {
@@ -106,6 +115,7 @@ public class GameClient implements Runnable {
 	 */
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
+		this.connectionTime = System.currentTimeMillis();
 		this.session = session;
 		this.log("Now connected to " + session.getRequestURI());
 		this.isConnected = true;
@@ -131,6 +141,25 @@ public class GameClient implements Runnable {
 				break;
 			case "UserListMessage":
 				this.userList = ( (UserListMessage) message ).getUserList();
+				break;
+			case "ServerTimerMessage":
+				long offset = ( (ServerTimerMessage) message ).getConnectionTime() + this.connectionTime;
+				TimerMessage.Action action = ( (ServerTimerMessage) message ).getAction();
+				int timerLength = ( (ServerTimerMessage) message ).getTimerLength();
+				switch (action) {
+					case START:
+						stopwatch.startOffset(offset);
+						break;
+					case STOP:
+						stopwatch.stopOffset(offset);
+						break;
+					case RESET:
+						stopwatch.reset();
+						break;
+					case SET:
+						stopwatch.setTimer(timerLength);
+						break;
+				}
 				break;
 			default:
 		}
@@ -221,6 +250,10 @@ public class GameClient implements Runnable {
 
 	public User getUser() {
 		return this.user;
+	}
+
+	public Stopwatch getStopwatch() {
+		return this.stopwatch;
 	}
 
 }

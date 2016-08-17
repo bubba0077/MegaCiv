@@ -76,10 +76,16 @@ public class GameServer extends Server {
 	}
 
 	public void processIncomingMessage(ClientMessage message, Session session) {
+		long messageTime = System.currentTimeMillis();
 		String messageType = message.getClass().getSimpleName();
 		User user = this.sessionList.get(session).getUser();
 		user.updateActivity();
 		switch (messageType) {
+			case "ClientTimerMessage":
+				TimerMessage.Action action = ( (ClientTimerMessage) message ).getAction();
+				int timerLength = ( (ClientTimerMessage) message ).getTimerLength();
+				broadcastTimeMessage(action, messageTime, timerLength);
+				break;
 			case "NewGameMessage":
 				this.game = new Game();
 				HashMap<Civilization.Name, String> startingCivs = ( (NewGameMessage) message ).getCivNames();
@@ -215,6 +221,13 @@ public class GameServer extends Server {
 	private void broadcastMessage(ServerMessage message) {
 		for (Session session : this.sessionList.keySet()) {
 			this.sendMessage(session, message);
+		}
+	}
+
+	private void broadcastTimeMessage(TimerMessage.Action action, long messageTime, int timerLength) {
+		for (Session session : this.sessionList.keySet()) {
+			this.sendMessage(session, new ServerTimerMessage(action,
+					messageTime - this.sessionList.get(session).getConnectionTime(), timerLength));
 		}
 	}
 

@@ -23,26 +23,26 @@ import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
+import net.bubbaland.megaciv.messages.ClientTimerMessage;
+import net.bubbaland.megaciv.messages.TimerMessage;
 
 public class StopwatchPanel extends BubbaPanel implements ActionListener, StopwatchListener {
 
-	private static final long		serialVersionUID			= 8183502027042074947L;
+	private static final long		serialVersionUID	= 8183502027042074947L;
 
-	private final static BubbaAudio	BEEP						=
-			new BubbaAudio(StopwatchPanel.class, "audio/beep.mp3");
-	private final static BubbaAudio	ALARM						=
-			new BubbaAudio(StopwatchPanel.class, "audio/finalSound.mp3");
-
-	public final static int			STARTING_TIMER_LENGTH_SEC	= 300;
-
-	private static Stopwatch		stopwatch					= new Stopwatch(STARTING_TIMER_LENGTH_SEC);
+	private final static BubbaAudio	BEEP				= new BubbaAudio(StopwatchPanel.class, "audio/beep.mp3");
+	private final static BubbaAudio	ALARM				= new BubbaAudio(StopwatchPanel.class, "audio/finalSound.mp3");
 
 	private final JToggleButton		runButton;
 	private final JButton			setButton, resetButton;
 	private final JLabel			clockLabel;
 
+	private final GameClient		client;
+
 	public StopwatchPanel(GameClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
+
+		this.client = client;
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -86,7 +86,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 		this.loadProperties();
 
-		stopwatch.addStopwatchListener(this);
+		this.client.getStopwatch().addStopwatchListener(this);
 
 		this.updateGui();
 	}
@@ -130,7 +130,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	public void updateGui() {
-		this.updateGui(stopwatch.getTicsRemaining());
+		this.updateGui(this.client.getStopwatch().getTicsRemaining());
 	}
 
 	public void updateGui(int deciseconds) {
@@ -151,13 +151,19 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
-				stopwatch.start();
+				// GameClient.stopwatch.start();
+				this.client.sendMessage(
+						new ClientTimerMessage(TimerMessage.Action.START, this.client.getStopwatch().getTimerLength()));
 				break;
 			case "Stop":
-				stopwatch.stop();
+				// GameClient.stopwatch.stop();
+				this.client.sendMessage(
+						new ClientTimerMessage(TimerMessage.Action.STOP, this.client.getStopwatch().getTimerLength()));
 				break;
 			case "Reset":
-				stopwatch.reset();
+				// GameClient.stopwatch.reset();
+				this.client.sendMessage(
+						new ClientTimerMessage(TimerMessage.Action.RESET, this.client.getStopwatch().getTimerLength()));
 				break;
 		}
 	}
@@ -202,7 +208,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			Properties props = this.controller.getProperties();
 			float fontSize = Float.parseFloat(props.getProperty("Stopwatch.Set.FontSize"));
 
-			int timerLength = stopwatch.getTimerLength();
+			int timerLength = StopwatchPanel.this.client.getStopwatch().getTimerLength();
 
 			int currentMin = timerLength / 60;
 			int currentSec = timerLength - ( 60 * currentMin );
@@ -240,9 +246,14 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 			if (option == JOptionPane.OK_OPTION) {
-				StopwatchPanel.stopwatch
-						.setTimer((int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue());
-				StopwatchPanel.stopwatch.reset();
+				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.Action.SET,
+						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue()));
+				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.Action.RESET,
+						StopwatchPanel.this.client.getStopwatch().getTimerLength()));
+
+				// GameClient.stopwatch.setTimer((int) this.minSpinner.getValue() * 60 + (int)
+				// this.secSpinner.getValue());
+				// GameClient.stopwatch.reset();
 			}
 		}
 
