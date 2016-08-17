@@ -14,6 +14,7 @@ import javax.swing.ListCellRenderer;
 
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Name;
+import net.bubbaland.megaciv.game.Game;
 
 public class CivilizationComboBox extends JComboBox<Civilization.Name> implements ActionListener {
 
@@ -42,8 +43,8 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 	private void finishInit() {
 		this.setRenderer(new CivilizationCellRenderer(this.getRenderer()));
 		Name selected = ( (Name) this.getSelectedItem() );
-		Color foreground = Civilization.FOREGROUND_COLORS.get(selected);
-		Color background = Civilization.BACKGROUND_COLORS.get(selected);
+		Color foreground = Game.FOREGROUND_COLORS.get(selected);
+		Color background = Game.BACKGROUND_COLORS.get(selected);
 
 		this.addActionListener(this);
 
@@ -55,8 +56,8 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		Name selected = ( (Name) this.getSelectedItem() );
-		Color foreground = Civilization.FOREGROUND_COLORS.get(selected);
-		Color background = Civilization.BACKGROUND_COLORS.get(selected);
+		Color foreground = Game.FOREGROUND_COLORS.get(selected);
+		Color background = Game.BACKGROUND_COLORS.get(selected);
 
 		this.setForeground(foreground);
 		this.setBackground(background);
@@ -75,8 +76,8 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 			final Component renderer = this.internal.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
 			if (renderer instanceof JLabel) {
-				Color foreground = Civilization.FOREGROUND_COLORS.get(value);
-				Color background = Civilization.BACKGROUND_COLORS.get(value);
+				Color foreground = Game.FOREGROUND_COLORS.get(value);
+				Color background = Game.BACKGROUND_COLORS.get(value);
 				if (isSelected) {
 					( (JLabel) renderer ).setForeground(background);
 					( (JLabel) renderer ).setBackground(foreground);

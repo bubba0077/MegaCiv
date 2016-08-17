@@ -202,8 +202,8 @@ public class AstTablePanel extends BubbaPanel {
 			for (Column col : EnumSet.allOf(Column.class)) {
 				JComponent component = row.getComponent(col);
 				String text = "";
-				Color foregroundColor = Civilization.FOREGROUND_COLORS.get(name);
-				Color backgroundColor = Civilization.BACKGROUND_COLORS.get(name);
+				Color foregroundColor = Game.FOREGROUND_COLORS.get(name);
+				Color backgroundColor = Game.BACKGROUND_COLORS.get(name);
 				switch (col) {
 					// case AST:
 					// text = civ.getAst() + "";
@@ -418,7 +418,7 @@ public class AstTablePanel extends BubbaPanel {
 
 				int astStep = Integer.parseInt(col.toString().substring(3));
 				Civilization.Age age = firstCiv.getAge(astStep);
-				label.setToolTipText(age + ": " + Civilization.AGE_REQUIREMENTS
+				label.setToolTipText(age + ": " + Game.AGE_REQUIREMENTS
 						.get(AstTablePanel.this.client.getGame().getDifficulty()).get(age).getText());
 				label.getParent().setBackground(AstTablePanel.this.controller.getAstBackgroundColor(age));
 				label.getParent().setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());

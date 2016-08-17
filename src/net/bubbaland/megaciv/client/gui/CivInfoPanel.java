@@ -105,8 +105,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 		public void loadProperties() {
 			Properties prop = CivInfoPanel.this.controller.getProperties();
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Header.Height"));
 
@@ -445,8 +445,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 		BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
 		int index = tabbedPane.indexOfComponent(this);
 
-		this.frame.getTabbedPane().setForegroundAt(index, Civilization.FOREGROUND_COLORS.get(this.name));
-		this.frame.getTabbedPane().setBackgroundAt(index, Civilization.BACKGROUND_COLORS.get(this.name));
+		this.frame.getTabbedPane().setForegroundAt(index, Game.FOREGROUND_COLORS.get(this.name));
+		this.frame.getTabbedPane().setBackgroundAt(index, Game.BACKGROUND_COLORS.get(this.name));
 	}
 
 	@Override

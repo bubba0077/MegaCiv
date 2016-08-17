@@ -93,8 +93,8 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 			int civWidth = Integer.parseInt(props.getProperty("CityUpdateDialog.Civ.Width"));
 			float fontSize = Float.parseFloat(props.getProperty("CityUpdateDialog.FontSize"));
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			this.setBackground(background);
 

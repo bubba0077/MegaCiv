@@ -171,7 +171,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		BubbaPanel.setLabelProperties(this.civLabel, Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Width")),
 				Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Height")),
-				Civilization.FOREGROUND_COLORS.get(this.civName), Civilization.BACKGROUND_COLORS.get(this.civName),
+				Game.FOREGROUND_COLORS.get(this.civName), Game.BACKGROUND_COLORS.get(this.civName),
 				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
 
 		BubbaPanel.setButtonProperties(this.buyNextButton,

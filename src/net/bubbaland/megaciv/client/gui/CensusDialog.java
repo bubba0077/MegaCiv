@@ -94,8 +94,8 @@ public class CensusDialog extends BubbaDialogPanel {
 			int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
 			float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			this.setBackground(background);
 

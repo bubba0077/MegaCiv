@@ -125,8 +125,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			Properties prop = CivEditPanel.this.controller.getProperties();
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			int height = Integer.parseInt(prop.getProperty("CivEditPanel.Header.Height"));
 			int playerWidth = Integer.parseInt(prop.getProperty("CivEditPanel.Player.Width"));

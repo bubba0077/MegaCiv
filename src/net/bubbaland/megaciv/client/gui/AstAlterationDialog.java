@@ -104,8 +104,8 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
 			float reqFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Req.FontSize"));
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -156,7 +156,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			Game game = AstAlterationDialog.this.client.getGame();
 			Civilization.Age nextAge = game.getCivilization(name).getNextStepAge();
 
-			String astReqText = Civilization.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
+			String astReqText = Game.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
 
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;

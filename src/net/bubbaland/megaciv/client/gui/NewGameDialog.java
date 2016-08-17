@@ -36,6 +36,7 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Region;
+import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.messages.NewGameMessage;
 
@@ -176,8 +177,8 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	public void setDefaultCivs() {
 		int nCivs = (int) this.nCivSpinner.getValue();
 
-		this.eastRadioButton.setEnabled(Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
-		this.westRadioButton.setEnabled(Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
+		this.eastRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
+		this.westRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
 
 		Region region = null;
 
@@ -199,7 +200,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			}
 		}
 
-		ArrayList<Civilization.Name> startingCivs = Civilization.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
+		ArrayList<Civilization.Name> startingCivs = Game.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
 
 		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			CivPanel panel = this.civPanels.get(name);
@@ -288,8 +289,8 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			int civWidth = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Width"));
 			float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Civ.FontSize"));
 
-			Color foreground = Civilization.FOREGROUND_COLORS.get(name);
-			Color background = Civilization.BACKGROUND_COLORS.get(name);
+			Color foreground = Game.FOREGROUND_COLORS.get(name);
+			Color background = Game.BACKGROUND_COLORS.get(name);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
