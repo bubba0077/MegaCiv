@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.Timer;
 import net.bubbaland.gui.BubbaAudio;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
@@ -24,7 +24,7 @@ import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.client.GameClient;
 
-public class StopwatchPanel extends BubbaPanel implements ActionListener {
+public class StopwatchPanel extends BubbaPanel implements ActionListener, StopwatchListener {
 
 	private static final long		serialVersionUID			= 8183502027042074947L;
 
@@ -33,12 +33,9 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 	private final static BubbaAudio	ALARM						=
 			new BubbaAudio(StopwatchPanel.class, "audio/finalSound.mp3");
 
-	public final int				STARTING_TIMER_LENGTH_SEC	= 300;
+	public final static int			STARTING_TIMER_LENGTH_SEC	= 300;
 
-	private int						timerLength;
-	private volatile int			deciseconds;
-
-	private Timer					timer;
+	private static Stopwatch		stopwatch					= new Stopwatch(STARTING_TIMER_LENGTH_SEC);
 
 	private final JToggleButton		runButton;
 	private final JButton			setButton, resetButton;
@@ -46,8 +43,6 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 
 	public StopwatchPanel(GameClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
-
-		this.timerLength = STARTING_TIMER_LENGTH_SEC * 10;
 
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -85,35 +80,64 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 		constraints.gridy = 0;
 		constraints.gridheight = 3;
 		this.runButton = new JToggleButton("Run");
-		this.runButton.setBackground(Color.GREEN);
 		this.runButton.addActionListener(this);
 		this.runButton.setMargin(new Insets(0, 0, 0, 0));
 		this.add(this.runButton, constraints);
 
-		this.timer = new Timer(100, this);
-		this.timer.setActionCommand("Tic");
-		this.resetTimer();
-
 		this.loadProperties();
+
+		stopwatch.addStopwatchListener(this);
 
 		this.updateGui();
 	}
 
-	public void resetTimer() {
-		this.timer.stop();
-		this.deciseconds = this.timerLength;
+	public void tic(int deciseconds) {
+		switch (deciseconds) {
+			case 10:
+			case 20:
+			case 30:
+			case 40:
+			case 50:
+			case 150:
+			case 600:
+				BEEP.play();
+				break;
+			case 0:
+				ALARM.play();
+				break;
+		}
+		this.updateGui(deciseconds);
+	}
+
+	public void watchStarted() {
 		this.runButton.setSelected(false);
+		this.runButton.setForeground(Color.WHITE);
+		this.runButton.setBackground(Color.RED);
+		this.runButton.setText("Stop");
+		this.runButton.setActionCommand("Stop");
+	}
+
+	public void watchStopped() {
+		this.runButton.setSelected(false);
+		this.runButton.setForeground(Color.BLACK);
 		this.runButton.setBackground(Color.GREEN);
 		this.runButton.setText("Run");
 		this.runButton.setActionCommand("Run");
+	}
+
+	public void watchReset() {
 		this.updateGui();
 	}
 
 	public void updateGui() {
-		int min = this.deciseconds / 600;
-		double sec = Math.max(( this.deciseconds - ( 600 * min ) ) * 0.1, 0.0);
+		this.updateGui(stopwatch.getTicsRemaining());
+	}
+
+	public void updateGui(int deciseconds) {
+		int min = deciseconds / 600;
+		double sec = Math.max(( deciseconds - ( 600 * min ) ) * 0.1, 0.0);
 		this.clockLabel.setText(String.format("%02d", min) + ":" + String.format("%04.1f", sec));
-		if (this.deciseconds < 150) {
+		if (deciseconds < 150) {
 			this.clockLabel.setForeground(Color.RED);
 		} else {
 			this.clockLabel.setForeground(Color.WHITE);
@@ -123,44 +147,17 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-			case "Tic":
-				switch (this.deciseconds--) {
-					case 10:
-					case 20:
-					case 30:
-					case 40:
-					case 50:
-					case 150:
-					case 600:
-						BEEP.play();
-						break;
-					case 0:
-						ALARM.play();
-						break;
-					case -150:
-						this.resetTimer();
-				}
-				this.updateGui();
-				break;
 			case "Set":
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
-				this.timer.start();
-				this.runButton.setForeground(Color.RED);
-				this.runButton.setText("Stop");
-				this.runButton.setActionCommand("Stop");
+				stopwatch.start();
 				break;
 			case "Stop":
-				this.timer.stop();
-				this.runButton.setForeground(null);
-				this.runButton.setBackground(Color.GREEN);
-				this.runButton.setText("Run");
-				this.runButton.setActionCommand("Run");
+				stopwatch.stop();
 				break;
 			case "Reset":
-				this.runButton.setText("Run");
-				this.resetTimer();
+				stopwatch.reset();
 				break;
 		}
 	}
@@ -187,7 +184,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 
 		BubbaPanel.setButtonProperties(this.resetButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
 		BubbaPanel.setButtonProperties(this.setButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
-		BubbaPanel.setButtonProperties(this.runButton, runWidth, clockHeight, Color.BLACK, Color.GREEN, runFontSize);
+		this.runButton.setPreferredSize(new Dimension(runWidth, clockHeight));
+		this.runButton.setFont(this.runButton.getFont().deriveFont(runFontSize));
 
 		BubbaPanel.setLabelProperties(this.clockLabel, clockWidth, clockHeight, foreground, background, clockFontSize);
 	}
@@ -204,8 +202,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 			Properties props = this.controller.getProperties();
 			float fontSize = Float.parseFloat(props.getProperty("Stopwatch.Set.FontSize"));
 
-			int currentMin = StopwatchPanel.this.timerLength / 600;
-			int currentSec = ( StopwatchPanel.this.timerLength - ( 600 * currentMin ) ) / 10;
+			int timerLength = stopwatch.getTimerLength();
+
+			int currentMin = timerLength / 60;
+			int currentSec = timerLength - ( 60 * currentMin );
 
 			this.minSpinner = new JSpinner(new SpinnerNumberModel(currentMin, 0, 59, 1));
 			this.minSpinner.setFont(this.minSpinner.getFont().deriveFont(fontSize));
@@ -240,9 +240,9 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener {
 			final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 			if (option == JOptionPane.OK_OPTION) {
-				StopwatchPanel.this.timerLength =
-						(int) this.minSpinner.getValue() * 600 + (int) this.secSpinner.getValue() * 10;
-				StopwatchPanel.this.resetTimer();
+				StopwatchPanel.stopwatch
+						.setTimer((int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue());
+				StopwatchPanel.stopwatch.reset();
 			}
 		}
 
