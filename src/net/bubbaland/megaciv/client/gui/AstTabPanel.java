@@ -2,9 +2,13 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
+
 import net.bubbaland.gui.BubbaMainPanel;
 
 public class AstTabPanel extends BubbaMainPanel {
@@ -29,38 +33,41 @@ public class AstTabPanel extends BubbaMainPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
+		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 
-		this.add(this.controlPanel, constraints);
+		JPanel panel = new JPanel(new GridBagLayout());
+
+		panel.add(this.controlPanel, constraints);
 
 		constraints.weightx = 1.0;
 		constraints.gridx = 1;
-		this.add(new JPanel(), constraints);
+		panel.add(new JPanel(), constraints);
 		constraints.weightx = 0.0;
 
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		this.add(this.countdownPanel, constraints);
+		panel.add(this.countdownPanel, constraints);
 
-		constraints.gridwidth = 3;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
-		separator.setPreferredSize(new Dimension(1, 5));
-		this.add(separator, constraints);
+		panel.setMinimumSize(new Dimension(0, 0));
+		this.astTablePanel.setMinimumSize(new Dimension(0, 0));
 
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panel, this.astTablePanel);
+		splitPane.setResizeWeight(0.0);
+		splitPane.setBorder(BorderFactory.createEmptyBorder());
+
+		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
-		constraints.gridy = 2;
-		this.add(this.astTablePanel, constraints);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(splitPane, constraints);
 
 		this.loadProperties();
 	}
 
 	@Override
 	public void updateGui(boolean forceUpdate) {
-		// this.client.log("Updating " + this.getClass().getSimpleName());
 		this.controlPanel.updateGui(forceUpdate);
 		this.astTablePanel.updateGui(forceUpdate);
 		this.countdownPanel.updateGui();
