@@ -18,7 +18,6 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JRootPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
@@ -34,17 +33,17 @@ import javax.swing.Timer;
  *
  */
 public class TearAwayTab extends JWindow {
-	private static final long		serialVersionUID	= -2723420566227526365L;
+	private static final long			serialVersionUID	= -2723420566227526365L;
 
 	// A timer to poll the mouse location and move the window around
-	private final Timer				mousePoller;
+	private final Timer					mousePoller;
 
-	private final GhostGlassPane	glassPane;
+	private final GhostGlassPane		glassPane;
 
-	private BubbaGuiController		gui;
+	private final BubbaDragDropTabFrame	sourceFrame;
 
-	public TearAwayTab(BubbaGuiController gui) {
-		this.gui = gui;
+	public TearAwayTab(BubbaDragDropTabFrame sourceFrame) {
+		this.sourceFrame = sourceFrame;
 		this.glassPane = new GhostGlassPane();
 		this.add(this.glassPane);
 		// Create a timer to poll the mouse location and update the window location
@@ -161,7 +160,7 @@ public class TearAwayTab extends JWindow {
 		@Override
 		public void drop(DropTargetDropEvent a_event) {
 			TearAwayTab.this.detach();
-			new BubbaDragDropTabFrame(TearAwayTab.this.gui, a_event, TearAwayTab.this.getLocation());
+			TearAwayTab.this.sourceFrame.deriveNewFrame(a_event, TearAwayTab.this.getLocation());
 			a_event.dropComplete(true);
 		}
 

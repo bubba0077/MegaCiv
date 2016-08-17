@@ -1,5 +1,7 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Point;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,7 @@ import javax.swing.JMenuItem;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.BubbaDragDropTabFrame;
+import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 
@@ -161,5 +164,9 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				this.setStatusBarMessage(
 						"Unknown action command " + command + "received by " + this.getClass().getSimpleName());
 		}
+	}
+
+	public MegaCivFrame copy() {
+		return new MegaCivFrame(this.client, this.controller);
 	}
 }

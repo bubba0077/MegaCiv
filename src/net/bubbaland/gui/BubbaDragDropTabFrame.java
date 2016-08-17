@@ -27,26 +27,6 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	protected final BubbaDnDTabbedPane			tabbedPane;
 
 	/**
-	 * Creates a new frame based on a drag-drop event from the tabbed pane in another frame. This is done when a tab is
-	 * dragged outside of all other TriviaFrames.
-	 *
-	 * @param client
-	 *            The root client
-	 * @param a_event
-	 *            The drag-drop event
-	 */
-	public BubbaDragDropTabFrame(BubbaGuiController gui, DropTargetDropEvent a_event, Point location) {
-		this(gui);
-		this.tabbedPane.convertTab(this.tabbedPane.getTabTransferData(a_event),
-				this.tabbedPane.getTargetTabIndex(a_event.getLocation()));
-		this.tabbedPane.setSelectedIndex(0);
-		this.pack();
-		this.setLocation(location);
-		this.tabbedPane.addChangeListener(this);
-		this.setCursor(null);
-	}
-
-	/**
 	 * Creates a new frame with specified tabs.
 	 *
 	 * @param client
@@ -86,7 +66,18 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 
 		// Load the properties
 		this.loadProperties();
+	}
 
+	public BubbaDragDropTabFrame deriveNewFrame(DropTargetDropEvent a_event, Point location) {
+		BubbaDragDropTabFrame newFrame = new BubbaDragDropTabFrame(this.controller);
+		newFrame.tabbedPane.convertTab(newFrame.tabbedPane.getTabTransferData(a_event),
+				newFrame.tabbedPane.getTargetTabIndex(a_event.getLocation()));
+		newFrame.tabbedPane.setSelectedIndex(0);
+		newFrame.pack();
+		newFrame.setLocation(location);
+		newFrame.tabbedPane.addChangeListener(this);
+		newFrame.setCursor(null);
+		return newFrame;
 	}
 
 	public void addTab(String tabName) {
@@ -186,10 +177,6 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		public String getTabDescription() {
 			return tabDescription;
 		}
-	}
-
-	public void newWindow(DropTargetDropEvent a_event, Point location) {
-		this.controller.registerWindow(this);
 	}
 
 	public void updateGui(boolean forceUpdate) {
