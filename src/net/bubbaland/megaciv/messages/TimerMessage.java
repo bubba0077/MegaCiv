@@ -2,11 +2,13 @@ package net.bubbaland.megaciv.messages;
 
 public interface TimerMessage {
 
-	public enum Action {
+	public enum StopwatchEvent {
 		START, STOP, RESET, SET
 	};
 
-	public Action getAction();
+	public StopwatchEvent getEvent();
 
 	public int getTimerLength();
+
+	public long getEventTime();
 }

@@ -26,6 +26,7 @@ import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.*;
+import net.bubbaland.sntp.SntpClient;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GameClient implements Runnable {
@@ -33,10 +34,19 @@ public class GameClient implements Runnable {
 	// Format for log timestamps
 	private SimpleDateFormat	timestampFormat;
 
-	private final String		serverUrl;
+	// private final String serverUrl;
 	private Session				session;
 
-	private long				connectionTime;
+	private final SntpClient	sntpClient;
+
+	/**
+	 * @return the sntpClient
+	 */
+	public SntpClient getSntpClient() {
+		return this.sntpClient;
+	}
+
+	private static int SNTP_POLL_INTERVAL = 30000;
 
 	/**
 	 * @return the session
@@ -57,16 +67,20 @@ public class GameClient implements Runnable {
 
 	private final Stopwatch		stopwatch;
 
+	private final URI			uri;
+
 	public GameClient(final String serverUrl) {
-		this.serverUrl = serverUrl;
+		// this.serverUrl = serverUrl;
 		this.session = null;
 		this.game = null;
 		this.user = new User();
 		this.userList = new ArrayList<User>();
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
-		this.connectionTime = 0;
 		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH_SEC);
+
+		this.uri = URI.create(serverUrl);
+		this.sntpClient = new SntpClient(this.uri.getHost(), this.uri.getPort() + 1, SNTP_POLL_INTERVAL);
 	}
 
 	public Game getGame() {
@@ -99,7 +113,7 @@ public class GameClient implements Runnable {
 	public void run() {
 		final ClientManager clientManager = ClientManager.createClient();
 		try {
-			clientManager.connectToServer(this, URI.create(this.serverUrl));
+			clientManager.connectToServer(this, this.uri);
 		} catch (DeploymentException | IOException exception) {
 			this.log("Couldn't connect");
 			exception.printStackTrace();
@@ -115,7 +129,6 @@ public class GameClient implements Runnable {
 	 */
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
-		this.connectionTime = System.currentTimeMillis();
 		this.session = session;
 		this.log("Now connected to " + session.getRequestURI());
 		this.isConnected = true;
@@ -123,6 +136,8 @@ public class GameClient implements Runnable {
 			this.user.setUserName(session.getId().substring(0, 7));
 		}
 		this.sendMessage(new SetUserMessage(this.user));
+
+		this.sntpClient.start();
 	}
 
 	/**
@@ -143,23 +158,7 @@ public class GameClient implements Runnable {
 				this.userList = ( (UserListMessage) message ).getUserList();
 				break;
 			case "ServerTimerMessage":
-				long offset = ( (ServerTimerMessage) message ).getConnectionTime() + this.connectionTime;
-				TimerMessage.Action action = ( (ServerTimerMessage) message ).getAction();
-				int timerLength = ( (ServerTimerMessage) message ).getTimerLength();
-				switch (action) {
-					case START:
-						stopwatch.startOffset(offset);
-						break;
-					case STOP:
-						stopwatch.stopOffset(offset);
-						break;
-					case RESET:
-						stopwatch.reset();
-						break;
-					case SET:
-						stopwatch.setTimer(timerLength);
-						break;
-				}
+				this.stopwatch.remoteEvent((ServerTimerMessage) message, this.sntpClient.getOffset());
 				break;
 			default:
 		}
@@ -218,11 +217,6 @@ public class GameClient implements Runnable {
 
 			}
 		} ).execute();
-
-		// if (SwingUtilities.isEventDispatchThread()) {
-		// System.out.println(this.getClass().getSimpleName() + "Trying to send message from Event Dispatch Thread!");
-		// }
-		// this.session.getAsyncRemote().sendObject(message);
 	}
 
 	public void saveGame(File file) {

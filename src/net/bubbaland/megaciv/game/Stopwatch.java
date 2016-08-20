@@ -3,12 +3,14 @@ package net.bubbaland.megaciv.game;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.Timer;
+
+import net.bubbaland.megaciv.messages.TimerMessage;
+import net.bubbaland.megaciv.messages.TimerMessage.StopwatchEvent;
 
 public class Stopwatch implements ActionListener {
 	private int									timerLength;
-	private volatile long						startTime;
+	private volatile long						lastEventTime;
 	private volatile int						deciseconds;
 	private final Timer							timer;
 
@@ -24,12 +26,12 @@ public class Stopwatch implements ActionListener {
 		this.timer.setActionCommand("tic");
 		this.timerLength = seconds;
 		this.deciseconds = this.timerLength * 10;
-		this.startTime = 0;
+		this.lastEventTime = -1;
 	}
 
-	public synchronized void startOffset(long milliseconds) {
-		this.startTime = System.currentTimeMillis();
-		this.deciseconds = this.deciseconds - (int) ( ( this.startTime - milliseconds ) / 100 );
+	public synchronized void startOffset(long eventTime) {
+		this.lastEventTime = eventTime;
+		this.deciseconds = this.deciseconds - (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
 		this.timer.start();
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStarted();
@@ -43,10 +45,10 @@ public class Stopwatch implements ActionListener {
 		}
 	}
 
-	public synchronized void stopOffset(long milliseconds) {
+	public synchronized void stopOffset(long eventTime) {
 		this.timer.stop();
-		long now = System.currentTimeMillis();
-		this.deciseconds = this.deciseconds + (int) ( ( now - milliseconds ) / 100 );
+		this.lastEventTime = eventTime;
+		this.deciseconds = this.deciseconds + (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStopped();
 		}
@@ -60,6 +62,10 @@ public class Stopwatch implements ActionListener {
 	}
 
 	public synchronized void reset() {
+		this.reset(System.currentTimeMillis());
+	}
+
+	public synchronized void reset(long eventTime) {
 		this.timer.stop();
 		this.deciseconds = this.timerLength * 10;
 		for (StopwatchListener listener : this.listeners) {
@@ -68,9 +74,13 @@ public class Stopwatch implements ActionListener {
 	}
 
 	public synchronized void setTimer(int seconds) {
+		this.setTimer(System.currentTimeMillis(), seconds);
+	}
+
+	public synchronized void setTimer(long eventTime, int seconds) {
 		this.timer.stop();
 		this.timerLength = seconds;
-		this.reset();
+		this.reset(eventTime);
 	}
 
 	public synchronized void addStopwatchListener(StopwatchListener listener) {
@@ -104,6 +114,35 @@ public class Stopwatch implements ActionListener {
 
 	public int getTicsRemaining() {
 		return this.deciseconds;
+	}
+
+	public long getLastEventTime() {
+		return this.lastEventTime;
+	}
+
+	public synchronized void remoteEvent(TimerMessage message, long offset) {
+		StopwatchEvent eventType = message.getEvent();
+		long eventTime = message.getEventTime() - offset;
+		if (this.timerLength != message.getTimerLength()) {
+			this.timerLength = message.getTimerLength();
+		}
+		switch (eventType) {
+			case START:
+				this.startOffset(eventTime);
+				break;
+			case STOP:
+				this.stopOffset(eventTime);
+				break;
+			case SET:
+				this.setTimer(eventTime, message.getTimerLength());
+				break;
+			case RESET:
+				this.reset(eventTime);
+				break;
+		}
+		// System.out.println("Remote event " + eventType.toString() + " that happened at " + new
+		// Date(this.lastEventTime)
+		// + " processed");
 	}
 
 }

@@ -5,30 +5,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ServerTimerMessage extends ServerMessage implements TimerMessage {
 
-	@JsonProperty("connectionTime")
-	private final long		connectionTime;
+	@JsonProperty("eventTime")
+	private final long				eventTime;
 	@JsonProperty("action")
-	private final Action	action;
+	private final StopwatchEvent	action;
 	@JsonProperty("timerLength")
-	private final int		timerLength;
+	private final int				timerLength;
 
 	@JsonCreator
-	public ServerTimerMessage(@JsonProperty("action") Action action,
-			@JsonProperty("connectionTime") long connectionTime, @JsonProperty("timerLength") int timerLength) {
+	public ServerTimerMessage(@JsonProperty("action") StopwatchEvent action,
+			@JsonProperty("eventTime") long eventTime, @JsonProperty("timerLength") int timerLength) {
 		this.action = action;
-		this.connectionTime = connectionTime;
+		this.eventTime = eventTime;
 		this.timerLength = timerLength;
 	}
 
-	public Action getAction() {
+	public StopwatchEvent getEvent() {
 		return this.action;
 	}
 
 	public long getConnectionTime() {
-		return this.connectionTime;
+		return this.eventTime;
 	}
 
 	public int getTimerLength() {
 		return this.timerLength;
+	}
+
+	@Override
+	public long getEventTime() {
+		return this.eventTime;
 	}
 }

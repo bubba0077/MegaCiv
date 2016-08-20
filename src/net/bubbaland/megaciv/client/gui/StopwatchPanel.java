@@ -147,24 +147,22 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		long eventTime = event.getWhen() - this.client.getSntpClient().getOffset();
 		switch (event.getActionCommand()) {
 			case "Set":
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
-				// GameClient.stopwatch.start();
-				this.client.sendMessage(
-						new ClientTimerMessage(TimerMessage.Action.START, this.client.getStopwatch().getTimerLength()));
+				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.START, eventTime,
+						this.client.getStopwatch().getTimerLength()));
 				break;
 			case "Stop":
-				// GameClient.stopwatch.stop();
-				this.client.sendMessage(
-						new ClientTimerMessage(TimerMessage.Action.STOP, this.client.getStopwatch().getTimerLength()));
+				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.STOP, eventTime,
+						this.client.getStopwatch().getTimerLength()));
 				break;
 			case "Reset":
-				// GameClient.stopwatch.reset();
-				this.client.sendMessage(
-						new ClientTimerMessage(TimerMessage.Action.RESET, this.client.getStopwatch().getTimerLength()));
+				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, eventTime,
+						this.client.getStopwatch().getTimerLength()));
 				break;
 		}
 	}
@@ -241,20 +239,17 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		}
 
 		public void windowClosed(WindowEvent event) {
+			long now = System.currentTimeMillis();
 			super.windowClosed(event);
 
 			// If the OK button was pressed, open the question
 			final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 			if (option == JOptionPane.OK_OPTION) {
-				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.Action.SET,
+				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.SET, now,
 						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue()));
-				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.Action.RESET,
-						StopwatchPanel.this.client.getStopwatch().getTimerLength()));
-
-				// GameClient.stopwatch.setTimer((int) this.minSpinner.getValue() * 60 + (int)
-				// this.secSpinner.getValue());
-				// GameClient.stopwatch.reset();
+				// StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, now,
+				// StopwatchPanel.this.client.getStopwatch().getTimerLength()));
 			}
 		}
 

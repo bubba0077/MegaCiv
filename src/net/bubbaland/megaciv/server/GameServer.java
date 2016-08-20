@@ -14,19 +14,28 @@ import org.glassfish.tyrus.server.Server;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
+import net.bubbaland.megaciv.game.Stopwatch;
+import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.game.Civilization.AstChange;
 import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.messages.*;
+import net.bubbaland.megaciv.messages.TimerMessage.StopwatchEvent;
+import net.bubbaland.sntp.SntpServer;
 
-public class GameServer extends Server {
+public class GameServer extends Server implements StopwatchListener {
 
 	private Game										game;
 
 	private Server										server;
+	private SntpServer									sntpServer;
+
+
+	private Stopwatch									stopwatch;
 
 	private boolean										isRunning;
+	private final int									serverPort;
 
 	private Hashtable<Session, ClientMessageReceiver>	sessionList;
 
@@ -35,18 +44,24 @@ public class GameServer extends Server {
 			new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
 
 	public GameServer(String serverUrl, int serverPort) {
+		this.serverPort = serverPort;
 		this.server = new Server(serverUrl, serverPort, "/", null, ClientMessageReceiver.class);
 		ClientMessageReceiver.registerServer(this);
+		this.sntpServer = new SntpServer(serverPort + 1);
 		this.sessionList = new Hashtable<Session, ClientMessageReceiver>();
+		this.stopwatch = new Stopwatch();
+		this.stopwatch.addStopwatchListener(this);
 	}
 
 	public void start() throws DeploymentException {
-		server.start();
+		this.server.start();
+		this.sntpServer.run();
 		this.isRunning = true;
 	}
 
 	public void stop() {
 		server.stop();
+		this.sntpServer = new SntpServer(serverPort + 1);
 		this.isRunning = false;
 	}
 
@@ -76,15 +91,12 @@ public class GameServer extends Server {
 	}
 
 	public void processIncomingMessage(ClientMessage message, Session session) {
-		long messageTime = System.currentTimeMillis();
 		String messageType = message.getClass().getSimpleName();
 		User user = this.sessionList.get(session).getUser();
 		user.updateActivity();
 		switch (messageType) {
 			case "ClientTimerMessage":
-				TimerMessage.Action action = ( (ClientTimerMessage) message ).getAction();
-				int timerLength = ( (ClientTimerMessage) message ).getTimerLength();
-				broadcastTimeMessage(action, messageTime, timerLength);
+				this.stopwatch.remoteEvent((ClientTimerMessage) message, 0);
 				break;
 			case "NewGameMessage":
 				this.game = new Game();
@@ -224,10 +236,9 @@ public class GameServer extends Server {
 		}
 	}
 
-	private void broadcastTimeMessage(TimerMessage.Action action, long messageTime, int timerLength) {
+	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, long eventTime, int timerLength) {
 		for (Session session : this.sessionList.keySet()) {
-			this.sendMessage(session, new ServerTimerMessage(action,
-					messageTime - this.sessionList.get(session).getConnectionTime(), timerLength));
+			this.sendMessage(session, new ServerTimerMessage(action, eventTime, timerLength));
 		}
 	}
 
@@ -245,6 +256,27 @@ public class GameServer extends Server {
 			exception.printStackTrace();
 			server.stop();
 		}
+	}
+
+	@Override
+	public void tic(int deciseconds) {}
+
+	@Override
+	public void watchStarted() {
+		this.broadcastTimeMessage(StopwatchEvent.START, this.stopwatch.getLastEventTime(),
+				this.stopwatch.getTimerLength());
+	}
+
+	@Override
+	public void watchStopped() {
+		this.broadcastTimeMessage(StopwatchEvent.STOP, this.stopwatch.getLastEventTime(),
+				this.stopwatch.getTimerLength());
+	}
+
+	@Override
+	public void watchReset() {
+		this.broadcastTimeMessage(StopwatchEvent.RESET, this.stopwatch.getLastEventTime(),
+				this.stopwatch.getTimerLength());
 	}
 
 }
