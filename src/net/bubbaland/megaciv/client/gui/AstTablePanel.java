@@ -165,16 +165,6 @@ public class AstTablePanel extends BubbaPanel {
 			row.loadProperties();
 		}
 
-		// final GridBagConstraints constraints = new GridBagConstraints();
-		// constraints.fill = GridBagConstraints.BOTH;
-		// constraints.anchor = GridBagConstraints.CENTER;
-		// constraints.weightx = 1.0;
-		// constraints.weighty = 10.0;
-		// constraints.gridx = 0;
-		// constraints.gridy = civNames.size() + 2;
-		// constraints.gridwidth = Column.values().length;
-		// this.fillerPanel = new FillerPanel();
-		// this.add(this.fillerPanel, constraints);
 		this.resizeFonts();
 	}
 

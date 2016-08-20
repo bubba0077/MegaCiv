@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.util.Properties;
@@ -22,6 +24,7 @@ import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.messages.ClientTimerMessage;
@@ -36,7 +39,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	private final JToggleButton		runButton;
 	private final JButton			setButton, resetButton;
+	private final LinkedLabelGroup	clockLabelGroup;
 	private final JLabel			clockLabel;
+
+	private final static double		ASPECT_RATIO		= 3.0;
 
 	private final GameClient		client;
 
@@ -70,11 +76,19 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		constraints.gridy = 1;
 		this.add(new JPanel(), constraints);
 
-		constraints.weightx = 0.0;
+		constraints.weightx = 1.0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridheight = 3;
 		this.clockLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.clockLabelGroup = new LinkedLabelGroup();
+		this.clockLabelGroup.addLabel(this.clockLabel);
+
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				StopwatchPanel.this.resized();
+			}
+		});
 
 		constraints.weightx = 0.0;
 		constraints.gridx = 2;
@@ -90,6 +104,15 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.client.getStopwatch().addStopwatchListener(this);
 
 		this.updateGui();
+	}
+
+	private void resized() {
+		JPanel panel = (JPanel) this.clockLabel.getParent();
+		int height = this.getHeight();
+		int width = (int) ( height * ASPECT_RATIO );
+		System.out.println(height + " " + width);
+		panel.setPreferredSize(new Dimension(width, height));
+		this.clockLabelGroup.resizeFonts();
 	}
 
 	public void tic(int deciseconds) {
@@ -143,6 +166,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		} else {
 			this.clockLabel.setForeground(Color.WHITE);
 		}
+		// this.resized();
 	}
 
 	@Override
@@ -180,19 +204,18 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 		int runWidth = Integer.parseInt(props.getProperty("Stopwatch.Run.Width"));
 
-		int clockWidth = Integer.parseInt(props.getProperty("Stopwatch.Clock.Width"));
 		int clockHeight = Integer.parseInt(props.getProperty("Stopwatch.Clock.Height"));
 
 		float buttonFontSize = Float.parseFloat(props.getProperty("Stopwatch.Button.FontSize"));
 		float runFontSize = Float.parseFloat(props.getProperty("Stopwatch.Run.FontSize"));
-		float clockFontSize = Float.parseFloat(props.getProperty("Stopwatch.Clock.FontSize"));
 
 		BubbaPanel.setButtonProperties(this.resetButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
 		BubbaPanel.setButtonProperties(this.setButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
 		this.runButton.setPreferredSize(new Dimension(runWidth, clockHeight));
 		this.runButton.setFont(this.runButton.getFont().deriveFont(runFontSize));
 
-		BubbaPanel.setLabelProperties(this.clockLabel, clockWidth, clockHeight, foreground, background, clockFontSize);
+		this.clockLabel.setForeground(foreground);
+		this.clockLabel.getParent().setBackground(background);
 	}
 
 	private class SetTimerDialog extends BubbaDialogPanel {
