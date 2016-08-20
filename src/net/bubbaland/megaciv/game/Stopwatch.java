@@ -3,6 +3,8 @@ package net.bubbaland.megaciv.game;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.Timer;
 
 import net.bubbaland.megaciv.messages.TimerMessage;
@@ -161,14 +163,16 @@ public class Stopwatch implements ActionListener {
 				this.reset(eventTime);
 				break;
 			case SET_LAST_TIC:
-				this.setTics(message.getLastDeciseconds());
+				this.setTics(message.getLastEventTic());
 				break;
 			default:
 				break;
 		}
-		// System.out.println("Remote event " + eventType.toString() + " that happened at " + new
-		// Date(this.lastEventTime)
-		// + " processed");
+		System.out.println("Remote event " + eventType.toString() + " processed");
+		System.out.println("   Server Time: " + new Date(message.getEventTime()));
+		System.out.println("   Local Time: " + new Date(eventTime));
+		System.out.println("   Now: " + new Date(System.currentTimeMillis()));
+		System.out.println("   Last Event Tic: " + message.getLastEventTic());
 	}
 
 }

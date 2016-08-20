@@ -25,6 +25,7 @@ public class SntpClient {
 	private int				pollInterval;
 	private String			host;
 
+	// offset = server - client
 	private double			offset;
 	private Timer			timer;
 
@@ -63,7 +64,7 @@ public class SntpClient {
 		}
 
 		final DatagramSocket socket = new DatagramSocket();
-		socket.setSoTimeout(0);
+		socket.setSoTimeout(10000);
 		final InetAddress hostAddr = InetAddress.getByName(host);
 
 		// Create request
@@ -111,7 +112,7 @@ public class SntpClient {
 			this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
 		}
 
-		// System.out.println("Average Offset: " + this.offset + " ms");
+		System.out.println("Average Offset: " + this.offset + " ms");
 	}
 
 

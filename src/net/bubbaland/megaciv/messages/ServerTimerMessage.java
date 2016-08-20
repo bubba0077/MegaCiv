@@ -36,7 +36,7 @@ public class ServerTimerMessage extends ServerMessage implements TimerMessage {
 		return this.eventTime;
 	}
 
-	public int getLastDeciseconds() {
+	public int getLastEventTic() {
 		return this.lastDeciseconds;
 	}
 }

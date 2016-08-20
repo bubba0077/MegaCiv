@@ -172,7 +172,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		long eventTime = event.getWhen() - this.client.getSntpClient().getOffset();
+		long eventTime = event.getWhen() + this.client.getSntpClient().getOffset();
 		Stopwatch stopwatch = this.client.getStopwatch();
 		switch (event.getActionCommand()) {
 			case "Set":
@@ -264,7 +264,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		}
 
 		public void windowClosed(WindowEvent event) {
-			long now = System.currentTimeMillis();
+			long now = System.currentTimeMillis() + client.getSntpClient().getOffset();
 			super.windowClosed(event);
 
 			// If the OK button was pressed, open the question
@@ -274,8 +274,6 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.SET, now,
 						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue(),
 						StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
-				// StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, now,
-				// StopwatchPanel.this.client.getStopwatch().getTimerLength()));
 			}
 		}
 

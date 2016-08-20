@@ -34,7 +34,7 @@ public class SntpServer {
 			while (true) {
 				socket.receive(packet);
 
-				// System.out.println("SNTP Request from " + packet.getAddress() + ":" + packet.getPort());
+				System.out.println("SNTP Request from " + packet.getAddress() + ":" + packet.getPort());
 
 				buffer = packet.getData();
 				request = new SntpMessage(buffer);

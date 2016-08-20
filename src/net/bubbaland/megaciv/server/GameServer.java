@@ -224,8 +224,8 @@ public class GameServer extends Server implements StopwatchListener {
 		int lastDeciseconds = this.stopwatch.getLastEventTic();
 		this.sendMessage(session,
 				new ServerTimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
-		this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC,
-				lastEventTime, timerLength, lastDeciseconds));
+		this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, lastEventTime,
+				timerLength, lastDeciseconds));
 		if (this.stopwatch.isRunning()) {
 			this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.START, lastEventTime,
 					timerLength, lastDeciseconds));

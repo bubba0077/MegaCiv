@@ -12,5 +12,5 @@ public interface TimerMessage {
 
 	public long getEventTime();
 
-	public int getLastDeciseconds();
+	public int getLastEventTic();
 }

@@ -41,7 +41,7 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	}
 
 	@Override
-	public int getLastDeciseconds() {
+	public int getLastEventTic() {
 		return this.lastDeciseconds;
 	}
 }
