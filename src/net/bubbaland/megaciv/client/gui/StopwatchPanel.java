@@ -26,6 +26,7 @@ import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
+import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.messages.ClientTimerMessage;
 import net.bubbaland.megaciv.messages.TimerMessage;
@@ -110,7 +111,6 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		JPanel panel = (JPanel) this.clockLabel.getParent();
 		int height = this.getHeight();
 		int width = (int) ( height * ASPECT_RATIO );
-		System.out.println(height + " " + width);
 		panel.setPreferredSize(new Dimension(width, height));
 		this.clockLabelGroup.resizeFonts();
 	}
@@ -150,6 +150,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	public void watchReset() {
+		this.watchStopped();
 		this.updateGui();
 	}
 
@@ -172,21 +173,22 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		long eventTime = event.getWhen() - this.client.getSntpClient().getOffset();
+		Stopwatch stopwatch = this.client.getStopwatch();
 		switch (event.getActionCommand()) {
 			case "Set":
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
 				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.START, eventTime,
-						this.client.getStopwatch().getTimerLength()));
+						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 			case "Stop":
 				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.STOP, eventTime,
-						this.client.getStopwatch().getTimerLength()));
+						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 			case "Reset":
 				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, eventTime,
-						this.client.getStopwatch().getTimerLength()));
+						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 		}
 	}
@@ -270,7 +272,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 			if (option == JOptionPane.OK_OPTION) {
 				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.SET, now,
-						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue()));
+						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue(),
+						StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
 				// StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, now,
 				// StopwatchPanel.this.client.getStopwatch().getTimerLength()));
 			}

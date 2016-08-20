@@ -1,7 +1,5 @@
 package net.bubbaland.megaciv.messages;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,22 +9,28 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	private final StopwatchEvent	eventType;
 	@JsonProperty("timerLength")
 	private final int				timerLength;
+	@JsonProperty("lastDeciseconds")
+	private final int				lastDeciseconds;
 	// Timer start in server time
 	@JsonProperty("eventTime")
 	private final long				eventTime;
 
 	@JsonCreator
-	public ClientTimerMessage(@JsonProperty("action") StopwatchEvent action, @JsonProperty("eventTime") long timerStart,
-			@JsonProperty("timerLength") int timerLength) {
-		this.eventType = action;
+	public ClientTimerMessage(@JsonProperty("action") StopwatchEvent eventType,
+			@JsonProperty("eventTime") long timerStart, @JsonProperty("timerLength") int timerLength,
+			@JsonProperty("lastDeciseconds") int lastDeciseconds) {
+		this.eventType = eventType;
 		this.timerLength = timerLength;
 		this.eventTime = timerStart;
+		this.lastDeciseconds = lastDeciseconds;
 	}
 
+	@Override
 	public StopwatchEvent getEvent() {
-		return this.eventType;
+		return eventType;
 	}
 
+	@Override
 	public int getTimerLength() {
 		return this.timerLength;
 	}
@@ -36,8 +40,8 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 		return this.eventTime;
 	}
 
-	public String toString() {
-		return "Client SNTP message\n" + " Action:" + eventType.toString() + " \n" + " Event Time: "
-				+ new Date(eventTime) + "\n" + " Timer Length: " + timerLength;
+	@Override
+	public int getLastDeciseconds() {
+		return this.lastDeciseconds;
 	}
 }

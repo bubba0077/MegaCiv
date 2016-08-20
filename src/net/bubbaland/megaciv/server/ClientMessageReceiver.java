@@ -50,6 +50,7 @@ public class ClientMessageReceiver {
 		this.user.setUserName("User " + session.getId());
 		ClientMessageReceiver.server.addSession(session, this);
 		ClientMessageReceiver.server.sendGame(session);
+		ClientMessageReceiver.server.sendClock(session);
 	}
 
 	/**

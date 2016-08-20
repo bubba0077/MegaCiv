@@ -3,7 +3,7 @@ package net.bubbaland.megaciv.messages;
 public interface TimerMessage {
 
 	public enum StopwatchEvent {
-		START, STOP, RESET, SET
+		START, STOP, RESET, SET, SET_LAST_TIC
 	};
 
 	public StopwatchEvent getEvent();
@@ -11,4 +11,6 @@ public interface TimerMessage {
 	public int getTimerLength();
 
 	public long getEventTime();
+
+	public int getLastDeciseconds();
 }

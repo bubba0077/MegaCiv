@@ -218,6 +218,20 @@ public class GameServer extends Server implements StopwatchListener {
 		this.sendMessage(session, new GameDataMessage(this.game));
 	}
 
+	void sendClock(Session session) {
+		long lastEventTime = this.stopwatch.getLastEventTime();
+		int timerLength = this.stopwatch.getTimerLength();
+		int lastDeciseconds = this.stopwatch.getLastEventTic();
+		this.sendMessage(session,
+				new ServerTimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
+		this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC,
+				lastEventTime, timerLength, lastDeciseconds));
+		if (this.stopwatch.isRunning()) {
+			this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.START, lastEventTime,
+					timerLength, lastDeciseconds));
+		}
+	}
+
 	/**
 	 * Send a message to the specified client
 	 *
@@ -236,9 +250,10 @@ public class GameServer extends Server implements StopwatchListener {
 		}
 	}
 
-	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, long eventTime, int timerLength) {
+	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, long eventTime, int timerLength,
+			int lastDeciseconds) {
 		for (Session session : this.sessionList.keySet()) {
-			this.sendMessage(session, new ServerTimerMessage(action, eventTime, timerLength));
+			this.sendMessage(session, new ServerTimerMessage(action, eventTime, timerLength, lastDeciseconds));
 		}
 	}
 
@@ -264,19 +279,19 @@ public class GameServer extends Server implements StopwatchListener {
 	@Override
 	public void watchStarted() {
 		this.broadcastTimeMessage(StopwatchEvent.START, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
 	}
 
 	@Override
 	public void watchStopped() {
 		this.broadcastTimeMessage(StopwatchEvent.STOP, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
 	}
 
 	@Override
 	public void watchReset() {
 		this.broadcastTimeMessage(StopwatchEvent.RESET, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
 	}
 
 }
