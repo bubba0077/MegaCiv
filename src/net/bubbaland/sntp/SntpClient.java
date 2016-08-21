@@ -112,7 +112,7 @@ public class SntpClient {
 			this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
 		}
 
-		System.out.println("Average Offset: " + this.offset + " ms");
+		// System.out.println("Average Offset: " + this.offset + " ms");
 	}
 
 
