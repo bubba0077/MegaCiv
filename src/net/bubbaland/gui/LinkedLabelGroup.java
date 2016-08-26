@@ -22,7 +22,7 @@ public class LinkedLabelGroup {
 
 	private final ArrayList<JLabel>	group;
 	private int						padding;
-	private float					minFontSize, maxFontSize;
+	private double					minFontSize, maxFontSize;
 
 	/**
 	 * @return the padding
@@ -42,7 +42,7 @@ public class LinkedLabelGroup {
 	/**
 	 * @return the minFontSize
 	 */
-	public float getMinFontSize() {
+	public double getMinFontSize() {
 		return this.minFontSize;
 	}
 
@@ -57,7 +57,7 @@ public class LinkedLabelGroup {
 	/**
 	 * @return the maxFontSize
 	 */
-	public float getMaxFontSize() {
+	public double getMaxFontSize() {
 		return this.maxFontSize;
 	}
 
@@ -69,8 +69,8 @@ public class LinkedLabelGroup {
 		this.maxFontSize = maxFontSize;
 	}
 
-	private static float	DEFAULT_MIN_FONTSIZE	= 6;
-	private static float	DEFAULT_MAX_FONTSIZE	= 128;
+	private static double	DEFAULT_MIN_FONTSIZE	= 6;
+	private static double	DEFAULT_MAX_FONTSIZE	= 128;
 	private static int		DEFAULT_PADDING			= 6;
 
 
@@ -82,11 +82,11 @@ public class LinkedLabelGroup {
 		this(DEFAULT_MIN_FONTSIZE, DEFAULT_MAX_FONTSIZE, padding);
 	}
 
-	public LinkedLabelGroup(float minFontSize, float maxFontSize) {
+	public LinkedLabelGroup(double minFontSize, double maxFontSize) {
 		this(minFontSize, maxFontSize, DEFAULT_PADDING);
 	}
 
-	public LinkedLabelGroup(float minFontSize, float maxFontSize, int padding) {
+	public LinkedLabelGroup(double minFontSize, double maxFontSize, int padding) {
 		this.group = new ArrayList<JLabel>();
 		this.minFontSize = minFontSize;
 		this.maxFontSize = maxFontSize;
@@ -104,22 +104,25 @@ public class LinkedLabelGroup {
 	}
 
 	public void resizeFonts() {
-		float fontSize = this.maxFontSize;
+		float fontSize = (float) this.maxFontSize;
 		for (JLabel label : this.group) {
 			Graphics g = label.getGraphics();
-			if (g == null || label.isVisible() == false) {
+			String text = label.getText();
+			Dimension bounds = label.getSize();
+			if (g == null || text.equals("")) {
 				continue;
 			}
-			Dimension bounds = label.getSize();
 			Font font = label.getFont();
 
 			Rectangle r1 = new Rectangle();
-			r1.setSize(getTextSize(label, font.deriveFont(fontSize)));
+			r1.setSize(getTextSize(g, text, font.deriveFont(fontSize)));
+
+			// System.out.println(text + ":" + r1 + " " + bounds);
 
 			while (fontSize > this.minFontSize && !( bounds.getWidth() > r1.getWidth() + this.padding
 					&& bounds.getHeight() > r1.getHeight() + this.padding )) {
 				fontSize--;
-				r1.setSize(getTextSize(label, font.deriveFont(fontSize)));
+				r1.setSize(getTextSize(g, text, font.deriveFont(fontSize)));
 			}
 		}
 		for (JLabel label : this.group) {
@@ -127,12 +130,11 @@ public class LinkedLabelGroup {
 		}
 	}
 
-	private static Dimension getTextSize(JLabel label, Font font) {
+	private static Dimension getTextSize(Graphics g, String text, Font font) {
 		Dimension size = new Dimension();
-		Graphics g = label.getGraphics();
 		g.setFont(font);
 		FontMetrics fm = g.getFontMetrics(font);
-		size.width = fm.stringWidth(label.getText());
+		size.width = fm.stringWidth(text);
 		size.height = fm.getHeight();
 		return size;
 	}

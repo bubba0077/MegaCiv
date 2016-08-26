@@ -109,7 +109,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	private void resized() {
 		JPanel panel = (JPanel) this.clockLabel.getParent();
-		int height = this.getHeight();
+		int height = panel.getHeight();
 		int width = (int) ( height * ASPECT_RATIO );
 		panel.setPreferredSize(new Dimension(width, height));
 		this.clockLabelGroup.resizeFonts();

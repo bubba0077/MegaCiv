@@ -38,16 +38,12 @@ public class GuiClient extends GameClient {
 	@OnMessage
 	public void onMessage(ServerMessage message, Session session) {
 		super.onMessage(message, session);
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					GuiClient.this.gui.updateGui(true);
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException exception) {
-			exception.printStackTrace();
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				GuiClient.this.gui.updateGui(true);
+			}
+		});
 	}
 
 	/**

@@ -174,12 +174,8 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.dialog.setVisible(true);
 	}
 
-	public void setDefaultCivs() {
-		int nCivs = (int) this.nCivSpinner.getValue();
 
-		this.eastRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
-		this.westRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
-
+	public Region getRegion() {
 		Region region = null;
 
 		if (this.eastRadioButton.isEnabled()) {
@@ -199,6 +195,17 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 				region = Region.BOTH;
 			}
 		}
+
+		return region;
+	}
+
+	public void setDefaultCivs() {
+		int nCivs = (int) this.nCivSpinner.getValue();
+
+		this.eastRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
+		this.westRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
+
+		Region region = this.getRegion();
 
 		ArrayList<Civilization.Name> startingCivs = Game.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
 
@@ -268,7 +275,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
 
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
-			this.client.sendMessage(new NewGameMessage(startingCivs, difficulty));
+			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty));
 		}
 	}
 

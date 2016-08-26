@@ -118,6 +118,12 @@ public class AstTablePanel extends BubbaPanel {
 		this.statGroup = new LinkedLabelGroup();
 		this.astGroup = new LinkedLabelGroup();
 
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				resizeFonts();
+			}
+		});
+
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -131,12 +137,6 @@ public class AstTablePanel extends BubbaPanel {
 		constraints.gridy = 1;
 		this.fillerPanel = new FillerPanel();
 		this.add(this.fillerPanel, constraints);
-
-		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) {
-				resizeFonts();
-			}
-		});
 
 		loadProperties();
 
@@ -257,6 +257,8 @@ public class AstTablePanel extends BubbaPanel {
 		}
 
 		this.header.updateGui(forceUpdate, sortedCivs.get(0));
+
+		this.validate();
 		this.resizeFonts();
 	}
 
@@ -300,7 +302,6 @@ public class AstTablePanel extends BubbaPanel {
 
 		this.header.loadProperties();
 
-		this.resizeFonts();
 		this.updateGui(true);
 	}
 
@@ -513,7 +514,7 @@ public class AstTablePanel extends BubbaPanel {
 					case POPULATION:
 					case TECHS:
 					case VP:
-						constraints.weightx = 1.0;
+						constraints.weightx = 0.2;
 						break;
 					default:
 						justification = JLabel.CENTER;
@@ -551,9 +552,6 @@ public class AstTablePanel extends BubbaPanel {
 							AstTablePanel.this.rowHeight, null, null, AstTablePanel.this.fontSize.get(col));
 					continue;
 				}
-				// JLabel label = (JLabel) this.components.get(col);
-				// BubbaPanel.setLabelProperties(label, AstTablePanel.this.width.get(col), AstTablePanel.this.rowHeight,
-				// null, null, AstTablePanel.this.fontSize.get(col));
 			}
 		}
 

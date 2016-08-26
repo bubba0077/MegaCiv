@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.bubbaland.gui.BubbaMainPanel;
 
@@ -28,6 +30,14 @@ public class AstTabPanel extends BubbaMainPanel {
 		this.controlPanel = new ControlsPanel(client, controller);
 		this.astTablePanel = new AstTablePanel(client, controller);
 
+		frame.getTabbedPane().addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				controlPanel.resizeFonts();
+				astTablePanel.resizeFonts();
+			}
+		});
+
 		// Set up layout constraints
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -47,6 +57,7 @@ public class AstTabPanel extends BubbaMainPanel {
 
 		constraints.gridx = 2;
 		constraints.gridy = 0;
+		constraints.weightx = 0.01;
 		panel.add(this.countdownPanel, constraints);
 
 		panel.setMinimumSize(new Dimension(0, 0));

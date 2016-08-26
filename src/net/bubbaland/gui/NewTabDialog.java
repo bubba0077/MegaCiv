@@ -109,8 +109,9 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		static {
 			SORT_ORDER = new Hashtable<String, Integer>(0);
 			SORT_ORDER.put("AST", 0);
+			SORT_ORDER.put("Trade", 1);
 			for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
-				SORT_ORDER.put(WordUtils.capitalizeFully(name.toString()), name.ordinal());
+				SORT_ORDER.put(WordUtils.capitalizeFully(name.toString()), name.ordinal() + 1);
 			}
 		}
 

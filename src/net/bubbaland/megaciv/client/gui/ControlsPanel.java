@@ -5,12 +5,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.game.Game;
 
 public class ControlsPanel extends BubbaPanel implements ActionListener {
@@ -20,6 +23,8 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	private final GuiClient		client;
 
 	private final JButton		censusButton, cityButton, astButton;
+
+	LinkedLabelGroup			turnGroup, turnNumberGroup;
 
 	private final JLabel		turnLabel, turnNumberLabel;
 
@@ -60,14 +65,30 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 		constraints.gridx = 3;
 		constraints.gridy = 0;
+		constraints.weighty = 0.0;
 		constraints.gridheight = 1;
 		this.turnLabel = this.enclosedLabelFactory("Turn", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.turnGroup = new LinkedLabelGroup(16.0, 16.0);
+		turnGroup.addLabel(this.turnLabel);
 
 		constraints.gridx = 3;
 		constraints.gridy = 1;
+		constraints.weighty = 1.0;
 		constraints.gridheight = 1;
 		this.turnNumberLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.turnNumberGroup = new LinkedLabelGroup();
+		this.turnNumberGroup.addLabel(this.turnNumberLabel);
 
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				resizeFonts();
+			}
+		});
+	}
+
+	public void resizeFonts() {
+		turnGroup.resizeFonts();
+		this.turnNumberGroup.resizeFonts();
 	}
 
 	public void updateGui(boolean forceUpdate) {
@@ -77,6 +98,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		if (game != null) {
 			this.turnNumberLabel.setText(this.client.getGame().getTurn() + "");
 		}
+		this.validate();
 	}
 
 	public void loadProperties() {

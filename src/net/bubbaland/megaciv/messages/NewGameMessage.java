@@ -14,13 +14,21 @@ public class NewGameMessage extends ClientMessage {
 	private final HashMap<Civilization.Name, String>	civNames;
 	@JsonProperty("Difficulty")
 	private final Difficulty							difficulty;
+	@JsonProperty("Region")
+	private final Civilization.Region					region;
 
 	@JsonCreator
-	public NewGameMessage(@JsonProperty("civNames") HashMap<Civilization.Name, String> newCivNames,
+	public NewGameMessage(@JsonProperty("Region") Civilization.Region region,
+			@JsonProperty("civNames") HashMap<Civilization.Name, String> newCivNames,
 			@JsonProperty("Difficulty") final Difficulty difficulty) {
 		super();
+		this.region = region;
 		this.civNames = newCivNames;
 		this.difficulty = difficulty;
+	}
+
+	public Civilization.Region getRegion() {
+		return this.region;
 	}
 
 	public HashMap<Civilization.Name, String> getCivNames() {

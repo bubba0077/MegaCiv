@@ -1,740 +1,3307 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Data>
-<StartingCivs>
-<PlayerCount count="5">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-</Region>
-<Region name="East">
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="6">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Iberia"></Civilization>	
-	<Civilization name="Carthage"></Civilization>
-</Region>
-<Region name="East">
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="7">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Rome"></Civilization>
-</Region>
-<Region name="East">
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="8">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Iberia"></Civilization>	
-</Region>
-<Region name="East">
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>	
-	<Civilization name="Dravidia"></Civilization>
-	<Civilization name="Maurya"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="9">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Celt"></Civilization>
-</Region>
-<Region name="East">
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>	
-	<Civilization name="Dravidia"></Civilization>
-	<Civilization name="Maurya"></Civilization>	
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="10">
-<Region name="West">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Parthia"></Civilization>	
-</Region>
-</PlayerCount>
-<PlayerCount count="11">
-<Region name="East">
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Kushan"></Civilization>	
-	<Civilization name="Indus"></Civilization>	
-	<Civilization name="Maurya"></Civilization>
-	<Civilization name="Dravidia"></Civilization>	
-</Region>
-</PlayerCount>
-<PlayerCount count="12">
-<Region name="Both">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="13">
-<Region name="Both">
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="14">
-<Region name="Both">
-	<Civilization name="Celt"></Civilization>
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-<PlayerCount count="15">
-<Region name="Both">
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount><PlayerCount count="16">
-<Region name="Both">
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-	<Civilization name="Celt"></Civilization>
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount><PlayerCount count="17">
-<Region name="Both">
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Maurya"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-	<Civilization name="Dravidia"></Civilization>
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount><PlayerCount count="18">
-<Region name="Both">
-	<Civilization name="Celt"></Civilization>
-	<Civilization name="Indus"></Civilization>
-	<Civilization name="Maurya"></Civilization>
-	<Civilization name="Kushan"></Civilization>
-	<Civilization name="Dravidia"></Civilization>
-	<Civilization name="Hellas"></Civilization>
-	<Civilization name="Minoa"></Civilization>
-	<Civilization name="Hatti"></Civilization>
-	<Civilization name="Assyria"></Civilization>
-	<Civilization name="Egypt"></Civilization>
-	<Civilization name="Rome"></Civilization>
-	<Civilization name="Carthage"></Civilization>
-	<Civilization name="Iberia"></Civilization>
-	<Civilization name="Parthia"></Civilization>
-	<Civilization name="Persia"></Civilization>
-	<Civilization name="Babylon"></Civilization>
-	<Civilization name="Saba"></Civilization>
-	<Civilization name="Nubia"></Civilization>
-</Region>
-</PlayerCount>
-</StartingCivs>
-<AstTable>
-<Civilization name="Minoa">
-    <Region>West</Region>
-	<AstRank>1</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>c2d650</Background>
-	<Basic>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Saba">
-    <Region>East</Region>
-	<AstRank>2</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>ee8a56</Background>
-	<Basic>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Assyria">
-    <Region>West</Region>
-	<AstRank>3</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>8bd6f5</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Maurya">
-    <Region>East</Region>
-	<AstRank>4</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>e9515d</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Celt">
-    <Region>West</Region>
-	<AstRank>5</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>72c170</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Babylon">
-    <Region>East</Region>
-	<AstRank>6</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>b6b6b8</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Carthage">
-    <Region>West</Region>
-	<AstRank>7</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>eda948</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Dravidia">
-    <Region>East</Region>
-	<AstRank>8</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>6d67a5</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Hatti">
-    <Region>West</Region>
-	<AstRank>9</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>f0a9cb</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Kushan">
-    <Region>East</Region>
-	<AstRank>10</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>905b57</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Rome">
-    <Region>West</Region>
-	<AstRank>11</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>e94ca5</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Persia">
-    <Region>East</Region>
-	<AstRank>12</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>b15ea2</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Iberia">
-    <Region>West</Region>
-	<AstRank>13</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>e5e6ea</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>6</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Nubia">
-    <Region>East</Region>
-	<AstRank>14</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>54bcb5</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Hellas">
-    <Region>West</Region>
-	<AstRank>15</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>f8ee4f</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Indus">
-    <Region>East</Region>
-	<AstRank>16</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>4ca974</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Egypt">
-    <Region>West</Region>
-	<AstRank>17</AstRank>
-	<Foreground>000000</Foreground>
-	<Background>f9e8d4</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-<Civilization name="Parthia">
-    <Region>East</Region>
-	<AstRank>18</AstRank>
-	<Foreground>ffffff</Foreground>
-	<Background>87835d</Background>
-	<Basic>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>9</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Basic>
-    <Expert>
-		<EarlyBronzeStart>5</EarlyBronzeStart>
-		<MiddleBronzeStart>8</MiddleBronzeStart>
-		<LateBronzeStart>11</LateBronzeStart>
-		<EarlyIronStart>14</EarlyIronStart>
-		<LateIronStart>15</LateIronStart>
-    </Expert>
-</Civilization>
-</AstTable>
-<AstRequirements>
-	<Difficulty level="BASIC">
-		<Age name="STONE">
-			<Text>No Requirements</Text>
-			<MinCities>0</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="EARLY_BRONZE">
-			<Text>2 Cities</Text>
-			<MinCities>2</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="MIDDLE_BRONZE">
-			<Text>3 Cities and 3 Advances</Text>
-			<MinCities>3</MinCities>
-			<MinAdvances>3</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="LATE_BRONZE">
-			<Text>3 Cities and 3 Advances worth 100 or more</Text>
-			<MinCities>3</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>3</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="EARLY_IRON">
-			<Text>4 Cities and 2 Advances worth 200 or more</Text>
-			<MinCities>4</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>2</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="LATE_IRON">
-			<Text>5 Cities and 3 Advances worth 200 or more</Text>
-			<MinCities>5</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>3</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-	</Difficulty>
-	<Difficulty level="EXPERT">
-		<Age name="STONE">
-			<Text>No Requirements</Text>	
-			<MinCities>0</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="EARLY_BRONZE">
-			<Text>3 Cities</Text>	
-			<MinCities>3</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
-		</Age>
-		<Age name="MIDDLE_BRONZE">
-			<Text>3 Cities and 5 VP in Advances</Text>
-			<MinCities>3</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>5</MinTechVP>
+	<TradeCards>
+		<PlayerCount count="5">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="6">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="7">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="8">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="9">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">8</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">4</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">4</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="East">8</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="10">
+			<GameRegion name="West">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">8</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">8</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">6</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">4</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">4</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="11">
+			<GameRegion name="East">
+				<Stack number="1">
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="East">8</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="East">8</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="East">6</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="12">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="13">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="14">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="15">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="16">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="17">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+		<PlayerCount count="18">
+			<GameRegion name="Both">
+				<Stack number="1">
+					<Good name="Ochre">
+						<Region name="West">9</Region>
+					</Good>
+					<Good name="Flax">
+						<Region name="East">9</Region>
+					</Good>
+					<Good name="Clay">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Hides">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Bone">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+				</Stack>
+				<Stack number="2">
+					<Good name="Papyrus">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Stone">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Iron">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Furs">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Wax">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">TEMPEST</Calamity>
+					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-nontradable">TREACHERY</Calamity>
+				</Stack>
+				<Stack number="3">
+					<Good name="Fish">
+						<Region name="West">8</Region>
+					</Good>
+					<Good name="Timber">
+						<Region name="East">8</Region>
+					</Good>
+					<Good name="Fruit">
+						<Region name="West">5</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Salt">
+						<Region name="West">4</Region>
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Ceramics">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
+					<Calamity type="major-tradable">FAMINE</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="4">
+					<Good name="Wool">
+						<Region name="West">7</Region>
+					</Good>
+					<Good name="Cotton">
+						<Region name="East">7</Region>
+					</Good>
+					<Good name="Oil">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Sugar">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Grain">
+						<Region name="West">4</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Calamity type="minor">CITY_RIOTS</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">Superstition</Calamity>
+				</Stack>
+				<Stack number="5">
+					<Good name="Wine">
+						<Region name="West">6</Region>
+					</Good>
+					<Good name="Lacquer">
+						<Region name="East">6</Region>
+					</Good>
+					<Good name="Textiles">
+						<Region name="West">4</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Livestock">
+						<Region name="West">3</Region>
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Glass">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
+					<Calamity type="major-tradable">FLOOD</Calamity>
+					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+				</Stack>
+				<Stack number="6">
+					<Good name="Tin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Silver">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Copper">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Bronze">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Lead">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
+					<Calamity type="major-tradable">CYCLONE</Calamity>
+					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+				</Stack>
+				<Stack number="7">
+					<Good name="Resin">
+						<Region name="West">5</Region>
+					</Good>
+					<Good name="Jade">
+						<Region name="East">5</Region>
+					</Good>
+					<Good name="Incense">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Spice">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Herbs">
+						<Region name="West">3</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Calamity type="minor">MINOR_UPRISING</Calamity>
+					<Calamity type="major-tradable">TYRANNY</Calamity>
+					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+				</Stack>
+				<Stack number="8">
+					<Good name="Marble">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Dye">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gemstones">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Tea">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Obsidian">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">BANDITRY</Calamity>
+					<Calamity type="major-tradable">CORRUPTION</Calamity>
+					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+				</Stack>
+				<Stack number="9">
+					<Good name="Ivory">
+						<Region name="West">4</Region>
+					</Good>
+					<Good name="Silk">
+						<Region name="East">4</Region>
+					</Good>
+					<Good name="Gold">
+						<Region name="West">3</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Good name="Pearls">
+						<Region name="West">2</Region>
+						<Region name="East">3</Region>
+					</Good>
+					<Good name="Amber">
+						<Region name="West">2</Region>
+						<Region name="East">2</Region>
+					</Good>
+					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
+					<Calamity type="major-tradable">REGRESSION</Calamity>
+					<Calamity type="major-nontradable">PIRACY</Calamity>
+				</Stack>
+			</GameRegion>
+		</PlayerCount>
+	</TradeCards>
+	<StartingCivs>
+		<PlayerCount count="5">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+			</Region>
+			<Region name="East">
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="6">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Rome" />
+				<Civilization name="Iberia" />
+				<Civilization name="Carthage" />
+			</Region>
+			<Region name="East">
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="7">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Carthage" />
+				<Civilization name="Rome" />
+			</Region>
+			<Region name="East">
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="8">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Carthage" />
+				<Civilization name="Rome" />
+				<Civilization name="Iberia" />
+			</Region>
+			<Region name="East">
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+				<Civilization name="Dravidia" />
+				<Civilization name="Maurya" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="9">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Carthage" />
+				<Civilization name="Rome" />
+				<Civilization name="Iberia" />
+				<Civilization name="Celt" />
+			</Region>
+			<Region name="East">
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+				<Civilization name="Dravidia" />
+				<Civilization name="Maurya" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="10">
+			<Region name="West">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Nubia" />
+				<Civilization name="Saba" />
+				<Civilization name="Babylon" />
+				<Civilization name="Persia" />
+				<Civilization name="Parthia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="11">
+			<Region name="East">
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Nubia" />
+				<Civilization name="Saba" />
+				<Civilization name="Babylon" />
+				<Civilization name="Persia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Kushan" />
+				<Civilization name="Indus" />
+				<Civilization name="Maurya" />
+				<Civilization name="Dravidia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="12">
+			<Region name="Both">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="13">
+			<Region name="Both">
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="14">
+			<Region name="Both">
+				<Civilization name="Celt" />
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="15">
+			<Region name="Both">
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="16">
+			<Region name="Both">
+				<Civilization name="Indus" />
+				<Civilization name="Kushan" />
+				<Civilization name="Celt" />
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="17">
+			<Region name="Both">
+				<Civilization name="Indus" />
+				<Civilization name="Maurya" />
+				<Civilization name="Kushan" />
+				<Civilization name="Dravidia" />
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+		<PlayerCount count="18">
+			<Region name="Both">
+				<Civilization name="Celt" />
+				<Civilization name="Indus" />
+				<Civilization name="Maurya" />
+				<Civilization name="Kushan" />
+				<Civilization name="Dravidia" />
+				<Civilization name="Hellas" />
+				<Civilization name="Minoa" />
+				<Civilization name="Hatti" />
+				<Civilization name="Assyria" />
+				<Civilization name="Egypt" />
+				<Civilization name="Rome" />
+				<Civilization name="Carthage" />
+				<Civilization name="Iberia" />
+				<Civilization name="Parthia" />
+				<Civilization name="Persia" />
+				<Civilization name="Babylon" />
+				<Civilization name="Saba" />
+				<Civilization name="Nubia" />
+			</Region>
+		</PlayerCount>
+	</StartingCivs>
+	<AstTable>
+		<Civilization name="Minoa">
+			<Region>West</Region>
+			<AstRank>1</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>c2d650</Background>
+			<Basic>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Saba">
+			<Region>East</Region>
+			<AstRank>2</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>ee8a56</Background>
+			<Basic>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Assyria">
+			<Region>West</Region>
+			<AstRank>3</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>8bd6f5</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Maurya">
+			<Region>East</Region>
+			<AstRank>4</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>e9515d</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Celt">
+			<Region>West</Region>
+			<AstRank>5</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>72c170</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Babylon">
+			<Region>East</Region>
+			<AstRank>6</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>b6b6b8</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Carthage">
+			<Region>West</Region>
+			<AstRank>7</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>eda948</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Dravidia">
+			<Region>East</Region>
+			<AstRank>8</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>6d67a5</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Hatti">
+			<Region>West</Region>
+			<AstRank>9</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>f0a9cb</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Kushan">
+			<Region>East</Region>
+			<AstRank>10</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>905b57</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Rome">
+			<Region>West</Region>
+			<AstRank>11</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>e94ca5</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Persia">
+			<Region>East</Region>
+			<AstRank>12</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>b15ea2</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Iberia">
+			<Region>West</Region>
+			<AstRank>13</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>e5e6ea</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>6</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Nubia">
+			<Region>East</Region>
+			<AstRank>14</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>54bcb5</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Hellas">
+			<Region>West</Region>
+			<AstRank>15</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>f8ee4f</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Indus">
+			<Region>East</Region>
+			<AstRank>16</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>4ca974</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Egypt">
+			<Region>West</Region>
+			<AstRank>17</AstRank>
+			<Foreground>000000</Foreground>
+			<Background>f9e8d4</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+		<Civilization name="Parthia">
+			<Region>East</Region>
+			<AstRank>18</AstRank>
+			<Foreground>ffffff</Foreground>
+			<Background>87835d</Background>
+			<Basic>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>9</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Basic>
+			<Expert>
+				<EarlyBronzeStart>5</EarlyBronzeStart>
+				<MiddleBronzeStart>8</MiddleBronzeStart>
+				<LateBronzeStart>11</LateBronzeStart>
+				<EarlyIronStart>14</EarlyIronStart>
+				<LateIronStart>15</LateIronStart>
+			</Expert>
+		</Civilization>
+	</AstTable>
+	<AstRequirements>
+		<Difficulty level="BASIC">
+			<Age name="STONE">
+				<Text>No Requirements</Text>
+				<MinCities>0</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
 			</Age>
-		<Age name="LATE_BRONZE">
-		<Text>4 Cities and 12 Advances</Text>	
-			<MinCities>4</MinCities>
-			<MinAdvances>12</MinAdvances>
-			<MinL1Techs>0</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>0</MinTechVP>
+			<Age name="EARLY_BRONZE">
+				<Text>2 Cities</Text>
+				<MinCities>2</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
 			</Age>
-		<Age name="EARLY_IRON">
-		<Text>5 Cities and 38 VP in Advances and 10 Advances worth less than 100</Text>
-			<MinCities>5</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>10</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>38</MinTechVP>
+			<Age name="MIDDLE_BRONZE">
+				<Text>3 Cities and 3 Advances</Text>
+				<MinCities>3</MinCities>
+				<MinAdvances>3</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
 			</Age>
-		<Age name="LATE_IRON">
-		<Text>6 Cities and 56 VP in Advances and 17 Advances worth less than 100</Text>
-			<MinCities>6</MinCities>
-			<MinAdvances>0</MinAdvances>
-			<MinL1Techs>17</MinL1Techs>
-			<MinL2PlusTechs>0</MinL2PlusTechs>
-			<MinL3Techs>0</MinL3Techs>
-			<MinTechVP>56</MinTechVP>
-		</Age>
-	</Difficulty>
-</AstRequirements>
+			<Age name="LATE_BRONZE">
+				<Text>3 Cities and 3 Advances worth 100 or more</Text>
+				<MinCities>3</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>3</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+			<Age name="EARLY_IRON">
+				<Text>4 Cities and 2 Advances worth 200 or more</Text>
+				<MinCities>4</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>2</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+			<Age name="LATE_IRON">
+				<Text>5 Cities and 3 Advances worth 200 or more</Text>
+				<MinCities>5</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>3</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+		</Difficulty>
+		<Difficulty level="EXPERT">
+			<Age name="STONE">
+				<Text>No Requirements</Text>
+				<MinCities>0</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+			<Age name="EARLY_BRONZE">
+				<Text>3 Cities</Text>
+				<MinCities>3</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+			<Age name="MIDDLE_BRONZE">
+				<Text>3 Cities and 5 VP in Advances</Text>
+				<MinCities>3</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>5</MinTechVP>
+			</Age>
+			<Age name="LATE_BRONZE">
+				<Text>4 Cities and 12 Advances</Text>
+				<MinCities>4</MinCities>
+				<MinAdvances>12</MinAdvances>
+				<MinL1Techs>0</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>0</MinTechVP>
+			</Age>
+			<Age name="EARLY_IRON">
+				<Text>5 Cities and 38 VP in Advances and 10 Advances worth less than
+					100
+				</Text>
+				<MinCities>5</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>10</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>38</MinTechVP>
+			</Age>
+			<Age name="LATE_IRON">
+				<Text>6 Cities and 56 VP in Advances and 17 Advances worth less than
+					100
+				</Text>
+				<MinCities>6</MinCities>
+				<MinAdvances>0</MinAdvances>
+				<MinL1Techs>17</MinL1Techs>
+				<MinL2PlusTechs>0</MinL2PlusTechs>
+				<MinL3Techs>0</MinL3Techs>
+				<MinTechVP>56</MinTechVP>
+			</Age>
+		</Difficulty>
+	</AstRequirements>
 </Data>

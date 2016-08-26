@@ -107,6 +107,8 @@ public class GameServer extends Server implements StopwatchListener {
 				}
 				Difficulty difficulty = ( (NewGameMessage) message ).getDifficulty();
 				this.game.setDifficulty(difficulty);
+				Civilization.Region region = ( (NewGameMessage) message ).getRegion();
+				this.game.setRegion(region);
 				this.log(user + " created new " + WordUtils.capitalizeFully(difficulty.toString())
 						+ " game with the following civilizations: " + startingCivs);
 				this.broadcastMessage(new GameDataMessage(this.game));
