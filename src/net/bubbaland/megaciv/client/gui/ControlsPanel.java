@@ -87,7 +87,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	}
 
 	public void resizeFonts() {
-		turnGroup.resizeFonts();
+		this.turnGroup.resizeFonts();
 		this.turnNumberGroup.resizeFonts();
 	}
 
@@ -99,6 +99,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 			this.turnNumberLabel.setText(this.client.getGame().getTurn() + "");
 		}
 		this.validate();
+		this.resizeFonts();
 	}
 
 	public void loadProperties() {

@@ -1,7 +1,5 @@
 package net.bubbaland.megaciv.client.gui;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.SwingUtilities;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.EndpointConfig;
