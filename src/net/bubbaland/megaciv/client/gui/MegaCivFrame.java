@@ -113,7 +113,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 						new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class },
 						new Object[] { this.client, this.controller, this }));
 		this.tabInformationHash.put("Trade",
-				new TabInformation("Tab listing trade cards", TradeTabPanel.class,
+				new TabInformation("Tab listing trade cards", TradeCardPanel.class,
 						new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class },
 						new Object[] { this.client, this.controller, this }));
 		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {

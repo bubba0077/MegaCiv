@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
@@ -11,8 +12,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import net.bubbaland.gui.BubbaPanel;
+import net.bubbaland.gui.BubbaMainPanel;
 import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
@@ -23,9 +26,11 @@ import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.TradeStack.TradeCard;
 import net.bubbaland.megaciv.game.TradeStack.TradeGood;
 
-public class TradeCardPanel extends BubbaPanel {
+public class TradeCardPanel extends BubbaMainPanel {
 
-	private static final long serialVersionUID = 7562478662505466778L;
+	private static final long	serialVersionUID	= 7562478662505466778L;
+
+	private static final int	N_COLUMNS			= 2;
 
 	private enum Column {
 		STACK, WEST, SHARED, EAST, CALAMITIES
@@ -36,8 +41,8 @@ public class TradeCardPanel extends BubbaPanel {
 	private LinkedLabelGroup							stackNumberGroup, labelGroup;
 
 
-	public TradeCardPanel(GameClient client, GuiController controller) {
-		super(controller, new GridBagLayout());
+	public TradeCardPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
+		super(controller, frame);
 		this.client = client;
 
 		this.panels = new HashMap<Integer, HashMap<Column, JPanel>>();
@@ -50,10 +55,17 @@ public class TradeCardPanel extends BubbaPanel {
 			}
 		});
 
+		frame.getTabbedPane().addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				resizeFonts();
+			}
+		});
+
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 
@@ -64,24 +76,40 @@ public class TradeCardPanel extends BubbaPanel {
 		constraints2.gridx = 0;
 		constraints2.gridy = 0;
 
-		for (Column col : Column.values()) {
-			constraints.gridx = col.ordinal();
-			if (col == Column.STACK) {
-				constraints.weightx = 0.0;
-			} else {
-				constraints.weightx = 1.0;
-			}
+		int nCols = Column.values().length;
 
-			JLabel label = new JLabel(col.name(), JLabel.CENTER);
-			this.add(label, constraints);
+		for (int c = 0; c < N_COLUMNS; c++) {
+			for (Column col : Column.values()) {
+				constraints.gridx = col.ordinal() + c * nCols;
+				if (col == Column.STACK) {
+					constraints.weightx = 0.0;
+				} else {
+					constraints.weightx = 1.0;
+				}
+
+				JLabel label = new JLabel(col.name(), JLabel.CENTER);
+				this.add(label, constraints);
+			}
 		}
+
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = nCols;
+		constraints.gridy = 1; // ( TradeCardSet.N_STACKS + 1 - 1 ) / N_COLUMNS + 1;
+		constraints.gridwidth = nCols;
+		StopwatchPanel clockPanel = new StopwatchPanel(client, controller);
+		clockPanel.setPreferredSize(new Dimension(0, 0));
+		this.add(clockPanel, constraints);
+
+		constraints.weighty = 1.0;
+		constraints.gridwidth = 1;
 
 		for (int r = 1; r <= TradeCardSet.N_STACKS; r++) {
 			this.panels.put(r, new HashMap<Column, JPanel>());
-			constraints.gridy = r;
+			constraints.gridy = r == 1 ? 1 : r / N_COLUMNS + 1;
 
 			for (Column col : Column.values()) {
-				constraints.gridx = col.ordinal();
+				constraints.gridx = r == 1 ? col.ordinal() : col.ordinal() + ( r % N_COLUMNS ) * nCols;
 				if (col == Column.STACK) {
 					constraints.weightx = 0.0;
 				} else {
@@ -99,10 +127,6 @@ public class TradeCardPanel extends BubbaPanel {
 				this.add(panel, constraints);
 			}
 		}
-
-		// this.updateGui(true);
-		// stackNumberGroup.resizeFonts();
-
 	}
 
 	public void resizeFonts() {
@@ -114,10 +138,8 @@ public class TradeCardPanel extends BubbaPanel {
 	public void updateGui(boolean forceUpdate) {
 		Game game = this.client.getGame();
 		if (game == null) {
-			System.out.println("Game is null");
 			return;
 		}
-		System.out.println("Game exists");
 		TradeCardSet stacks = game.getTradeCards();
 		ArrayList<Region> regions = new ArrayList<Region>();
 		regions.add(this.client.getGame().getRegion());
