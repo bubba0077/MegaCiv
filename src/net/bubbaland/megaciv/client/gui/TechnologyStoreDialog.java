@@ -66,12 +66,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridwidth = 8;
 		this.civLabel = this.enclosedLabelFactory(civName.toString(), constraints, JLabel.LEFT, JLabel.CENTER);
 
-		// constraints.gridx = 1;
-		// constraints.gridy = 0;
-		// constraints.gridwidth = 6;
-		// this.spacerPanel = new JPanel();
-		// this.spacerPanel.setBackground(Civilization.BACKGROUND_COLORS.get(this.civLabel.getSelectedItem()));
-		// this.add(this.spacerPanel, constraints);
 		constraints.gridwidth = 2;
 
 		this.techCheckboxes = new HashMap<Technology, JCheckBox>();

@@ -29,6 +29,14 @@ import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.Civilization.Region;
 import net.bubbaland.megaciv.game.Civilization.SortDirection;
 
+/**
+ * Primary class for game data. All data necessary to represent the game state is held within an instance of this class.
+ * This class also loads static data from the Civ_Constants.xml file, which contains constants such as the default
+ * starting civilizations, AST requirements, trade cards, etc.
+ * 
+ * @author Walter Kolczynski
+ *
+ */
 public class Game implements Serializable {
 
 	private static final long	serialVersionUID	= 3617165171580835437L;

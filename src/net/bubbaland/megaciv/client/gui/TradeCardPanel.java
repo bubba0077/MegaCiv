@@ -40,7 +40,6 @@ public class TradeCardPanel extends BubbaMainPanel {
 	private HashMap<Integer, HashMap<Column, JPanel>>	panels;
 	private LinkedLabelGroup							stackNumberGroup, labelGroup;
 
-
 	public TradeCardPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
 		super(controller, frame);
 		this.client = client;
@@ -51,6 +50,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
+				validate();
 				resizeFonts();
 			}
 		});
@@ -58,6 +58,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 		frame.getTabbedPane().addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
+				validate();
 				resizeFonts();
 			}
 		});
