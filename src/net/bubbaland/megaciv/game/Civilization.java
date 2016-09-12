@@ -126,32 +126,32 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * The civilization name
 	 */
 	@JsonProperty("name")
-	private Name											name;
+	private Name													name;
 	/**
 	 * The name of the player controlling this civilization.
 	 */
 	@JsonProperty("player")
-	private String											player;
+	private String													player;
 	/**
 	 * The AST Position of the civilization (number of spaces advanced).
 	 */
 	@JsonProperty("astPosition")
-	private int												astPosition;
+	private int														astPosition;
 	/**
 	 * The population of this civilization.
 	 */
 	@JsonProperty("population")
-	private int												population;
+	private int														population;
 	/**
 	 * The number of cities this civilization controls.
 	 */
 	@JsonProperty("nCities")
-	private int												nCities;
+	private int														nCities;
 	/**
 	 * A list of the advances the civilization has purchased.
 	 */
 	@JsonProperty("techs")
-	private ArrayList<Technology>								techs;
+	private ArrayList<Technology>									techs;
 
 	/**
 	 * Some advances ({@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD Written Record}) provide
@@ -161,12 +161,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	@JsonProperty("typeCredits")
 	private final HashMap<Technology, ArrayList<Technology.Type>>	extraTypeCredits;	// Each
-																				// listed
-																				// type
-																				// worth
-																				// 5
-																				// credits
-																				// each
+	// listed
+	// type
+	// worth
+	// 5
+	// credits
+	// each
 
 	/**
 	 * The current difficulty of the game. This property really belongs to the Game, but Civilization needs it to
@@ -174,13 +174,13 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * each Civilization.
 	 */
 	@JsonProperty("difficulty")
-	private Difficulty										difficulty;
+	private Difficulty												difficulty;
 
 	/**
 	 * A boolean for tracking whether this civilization has purchased advances yet this turn.
 	 */
 	@JsonProperty("hasPurchased")
-	private boolean											hasPurchased;
+	private boolean													hasPurchased;
 
 	/**
 	 * The primary constructor for creating a civilization. Values are initialized to their start-of-game values.
@@ -527,14 +527,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				}
 			}
 		};
-		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits = new HashMap<Technology, ArrayList<Technology.Type>>() {
-			private static final long serialVersionUID = 1L;
-			{
-				for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
-					put(tech, Civilization.this.extraTypeCredits.get(tech));
-				}
-			}
-		};
+		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits =
+				new HashMap<Technology, ArrayList<Technology.Type>>() {
+					private static final long serialVersionUID = 1L;
+					{
+						for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
+							put(tech, Civilization.this.extraTypeCredits.get(tech));
+						}
+					}
+				};
 		return new Civilization(this.name, this.player, this.population, this.nCities, techs, extraTypeCredits,
 				this.astPosition, this.difficulty, this.hasPurchased);
 	}
@@ -633,8 +634,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
-	 * Get a list of the chosen credits for advances that provide additional credits ({@link Technology#MONUMENT Monument}
-	 * and {@link Technology#WRITTEN_RECORD Written Record}).
+	 * Get a list of the chosen credits for advances that provide additional credits ({@link Technology#MONUMENT
+	 * Monument} and {@link Technology#WRITTEN_RECORD Written Record}).
 	 * 
 	 * @param tech
 	 *            The specified advance.
@@ -645,8 +646,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
-	 * Set the additional type credits for advances that provide additional credits ({@link Technology#MONUMENT Monument}
-	 * and {@link Technology#WRITTEN_RECORD Written Record}).
+	 * Set the additional type credits for advances that provide additional credits ({@link Technology#MONUMENT
+	 * Monument} and {@link Technology#WRITTEN_RECORD Written Record}).
 	 * 
 	 * @param tech
 	 *            The specified advance.
@@ -857,7 +858,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * Get the number of victory points from all sources except the Late Iron Age bonus.
 	 * 
-	 * @return The number of vicotry points.
+	 * @return The number of victory points.
 	 */
 	public int getVP() {
 		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech();
@@ -1073,6 +1074,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			this.minTechVP = minTechVP;
 		}
 
+		@Override
 		public String toString() {
 			return "Text: " + this.text + "\n  Min Cities: " + this.minCities + "\n  Min Advances: " + this.minAdvances
 					+ "\n  Min L1 Techs: " + this.minLevelOneTechs + "\n  Min L2+ Techs: " + this.minLevelTwoPlusTechs
@@ -1081,6 +1083,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	}
 
+	/**
+	 * A data object to hold all of the static data from the AST table for this civilization.
+	 */
 	static final class AstTableData {
 		@JsonProperty("astRank")
 		public final int												astRank;
@@ -1097,19 +1102,41 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			this.subTable = subTable;
 		}
 
+		/**
+		 * @return AST rank for this civilization.
+		 */
 		public int getAstRank() {
 			return this.astRank;
 		}
 
+		/**
+		 * @return Normal region for this civilization.
+		 */
 		public Region getRegion() {
 			return this.region;
 		}
 
+		/**
+		 * Get the AST step on which the specified age begins.
+		 * 
+		 * @param age
+		 *            The specified age.
+		 * @param difficulty
+		 *            The game difficulty.
+		 * @return The first AST step of the specified age.
+		 */
 		public int getAgeStart(Age age, Difficulty difficulty) {
 			return this.subTable.get(difficulty).get(age).intValue();
 		}
 	}
 
+	/**
+	 * Determine whether this civilization is the only one in the late iron age.
+	 * 
+	 * @param civs
+	 *            Array of all civilizations in game
+	 * @return Whether this civilization is the only one in the late iron age.
+	 */
 	public boolean onlyLateIron(ArrayList<Civilization> civs) {
 		if (this.getCurrentAge() != Age.LATE_IRON) {
 			return false;
@@ -1122,6 +1149,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return true;
 	}
 
+	/**
+	 * Remove a technological advance from this civilization.
+	 * 
+	 * @param tech
+	 */
 	public void removeTech(Technology tech) {
 		this.techs.remove(tech);
 	}
