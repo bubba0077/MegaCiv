@@ -42,6 +42,7 @@ import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.AdvanceAstMessage;
+import net.bubbaland.megaciv.messages.UndoPurchaseMessage;
 
 public class AstTablePanel extends BubbaPanel {
 
@@ -189,6 +190,7 @@ public class AstTablePanel extends BubbaPanel {
 			Civilization.Name name = civ.getName();
 			CivRow row = this.civRows.get(sortedCivs.indexOf(civ));
 			row.setName(name);
+			row.setUndoVisibility(civ.hasPurchased());
 			for (Column col : EnumSet.allOf(Column.class)) {
 				JComponent component = row.getComponent(col);
 				String text = "";
@@ -458,6 +460,7 @@ public class AstTablePanel extends BubbaPanel {
 
 		private final HashMap<Column, JComponent>	components;
 		private final JPopupMenu					contextMenu;
+		private final JMenuItem						undoPurchaseMenuItem;
 		private final JButton						buyButton;
 		private final int							rowNumber;
 
@@ -483,6 +486,11 @@ public class AstTablePanel extends BubbaPanel {
 			regressItem.setActionCommand("Regress");
 			regressItem.addActionListener(this);
 			this.contextMenu.add(regressItem);
+
+			this.undoPurchaseMenuItem = new JMenuItem("Undo Purchase");
+			this.undoPurchaseMenuItem.setActionCommand("Undo");
+			this.undoPurchaseMenuItem.addActionListener(this);
+			this.contextMenu.add(this.undoPurchaseMenuItem);
 
 			this.buyButton = new JButton("Buy");
 			this.buyButton.setActionCommand("Buy");
@@ -572,6 +580,10 @@ public class AstTablePanel extends BubbaPanel {
 			this.name = name;
 		}
 
+		public void setUndoVisibility(boolean show) {
+			this.undoPurchaseMenuItem.setVisible(show);
+		}
+
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			String command = event.getActionCommand();
@@ -601,6 +613,9 @@ public class AstTablePanel extends BubbaPanel {
 									}
 								}));
 					}
+					break;
+				case "Undo":
+					AstTablePanel.this.client.sendMessage(new UndoPurchaseMessage(CivRow.this.name));
 					break;
 				default:
 					AstTablePanel.this.client.log("ActionCommand " + command + " not implemented in "

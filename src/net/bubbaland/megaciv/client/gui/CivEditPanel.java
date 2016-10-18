@@ -494,7 +494,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					String techName = source.getName();
 					Technology tech = Technology.valueOf(techName);
 					if (source.isSelected()) {
-						CivEditPanel.this.civ.addTech(tech);
+						CivEditPanel.this.civ.addTech(tech, client.getGame().getTurn());
 					} else {
 						CivEditPanel.this.civ.removeTech(tech);
 					}

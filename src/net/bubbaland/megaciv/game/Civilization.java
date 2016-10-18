@@ -151,7 +151,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A list of the advances the civilization has purchased.
 	 */
 	@JsonProperty("techs")
-	private ArrayList<Technology>									techs;
+	private HashMap<Technology, Integer>							techs;
 
 	/**
 	 * Some advances ({@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD Written Record}) provide
@@ -192,30 +192,31 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public Civilization(Name name, Difficulty difficulty) {
 
-		this(name, null, 1, 0, new ArrayList<Technology>(), new HashMap<Technology, ArrayList<Technology.Type>>() {
-			private static final long serialVersionUID = 6611228131955386821L;
-
-			{
-				put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
-					private static final long serialVersionUID = 3890391732659207236L;
+		this(name, null, 1, 0, new HashMap<Technology, Integer>(),
+				new HashMap<Technology, ArrayList<Technology.Type>>() {
+					private static final long serialVersionUID = 6611228131955386821L;
 
 					{
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
-					}
-				});
-				put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
-					private static final long serialVersionUID = 3890391732659207236L;
+						put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
+							private static final long serialVersionUID = 3890391732659207236L;
 
-					{
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
+							{
+								add(Technology.Type.SCIENCE);
+								add(Technology.Type.SCIENCE);
+							}
+						});
+						put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
+							private static final long serialVersionUID = 3890391732659207236L;
+
+							{
+								add(Technology.Type.SCIENCE);
+								add(Technology.Type.SCIENCE);
+								add(Technology.Type.SCIENCE);
+								add(Technology.Type.SCIENCE);
+							}
+						});
 					}
-				});
-			}
-		}, 0, difficulty, false);
+				}, 0, difficulty, false);
 	}
 
 	/**
@@ -244,7 +245,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	@JsonCreator
 	private Civilization(@JsonProperty("name") Name name, @JsonProperty("player") String player,
 			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
-			@JsonProperty("techs") ArrayList<Technology> techs,
+			@JsonProperty("techs") HashMap<Technology, Integer> techs,
 			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
 			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty,
 			@JsonProperty("hasPurchased") boolean hasPurchased) {
@@ -347,7 +348,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public int getTechCountByVP(int vp) {
 		int n = 0;
-		for (Technology tech : this.techs) {
+		for (Technology tech : this.techs.keySet()) {
 			if (tech.getVP() == vp) {
 				n++;
 			}
@@ -487,9 +488,32 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * 
 	 * @param newTech
 	 *            The new advance.
+	 * @param round
+	 *            TODO
 	 */
-	public void addTech(Technology newTech) {
-		this.techs.add(newTech);
+	public void addTech(Technology newTech, int round) {
+		this.techs.put(newTech, round);
+	}
+
+	/**
+	 * Removes all technologies that were purchased in the given round. This allows the undo of technology purchases.
+	 * 
+	 * @param currentRound
+	 *            the current round number to undo.
+	 * 
+	 */
+	public ArrayList<Technology> undoTechPurchase(int currentRound) {
+		ArrayList<Technology> undoneTechs = new ArrayList<Technology>();
+		for (Technology tech : Civilization.this.techs.keySet()) {
+			Integer round = Civilization.this.techs.get(tech);
+			if (round == currentRound) {
+				undoneTechs.add(tech);
+			}
+		}
+		for (Technology tech : undoneTechs) {
+			this.techs.remove(tech);
+		}
+		return undoneTechs;
 	}
 
 	/**
@@ -518,12 +542,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return A deep copy of this Civilization.
 	 */
 	public Civilization clone() {
-		ArrayList<Technology> techs = new ArrayList<Technology>() {
+		HashMap<Technology, Integer> techs = new HashMap<Technology, Integer>() {
 			private static final long serialVersionUID = 577732084086917712L;
 
 			{
-				for (Technology tech : Civilization.this.techs) {
-					add(tech);
+				for (Technology tech : Civilization.this.techs.keySet()) {
+					put(tech, Civilization.this.techs.get(tech));
 				}
 			}
 		};
@@ -546,7 +570,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return A list of advances owned by this civilization.
 	 */
 	public ArrayList<Technology> getTechs() {
-		return this.techs;
+		return new ArrayList<Technology>(this.techs.keySet());
 	}
 
 	/**
@@ -557,7 +581,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return Whether this civilization owns the given advance.
 	 */
 	public boolean hasTech(Technology tech) {
-		return this.techs.contains(tech);
+		return this.techs.containsKey(tech);
 	}
 
 	/**
@@ -621,7 +645,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public int getTypeCredit(Technology.Type type) {
 		int credit = 0;
 		// Add credits from each advance
-		for (Technology tech : this.techs) {
+		for (Technology tech : this.techs.keySet()) {
 			credit = credit + tech.getTypeCredit(type);
 		}
 		// Add additional credits chosen for Monument and Written Record
@@ -849,7 +873,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public int getVPfromTech() {
 		int vp = 0;
-		for (Technology tech : this.techs) {
+		for (Technology tech : this.techs.keySet()) {
 			vp = vp + tech.getVP();
 		}
 		return vp;

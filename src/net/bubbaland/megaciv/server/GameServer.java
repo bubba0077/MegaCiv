@@ -143,10 +143,21 @@ public class GameServer extends Server implements StopwatchListener {
 				Civilization civ = this.game.getCivilization(name);
 				ArrayList<Technology> newTechs = ( (TechPurchaseMessage) message ).getTechs();
 				for (Technology newTech : newTechs) {
-					civ.addTech(newTech);
+					civ.addTech(newTech, this.game.getTurn());
 				}
 				civ.setPurchased(true);
 				this.log(name + " bought the following technologies: " + newTechs + " (via " + user + ")");
+				this.broadcastMessage(new GameDataMessage(this.game));
+				break;
+			}
+			case "UndoPurchaseMessage": {
+				Civilization.Name name = ( (UndoPurchaseMessage) message ).getCivName();
+				Civilization civ = this.game.getCivilization(name);
+				int currentRound = this.game.getTurn();
+				ArrayList<Technology> undoneTechs = civ.undoTechPurchase(currentRound);
+				civ.setPurchased(false);
+				this.log(name + " undid the following technology purchases from this round: " + undoneTechs + " (via "
+						+ user + ")");
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			}
