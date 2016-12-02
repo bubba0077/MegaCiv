@@ -438,6 +438,12 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 	@Override
 	public void updateGui(boolean forceUpdate) {
+		if (!this.client.getGame().getCivilizationNames().contains(this.name)) {
+			BubbaDnDTabbedPane pane = this.frame.getTabbedPane();
+			pane.removeTabAt(pane.indexOfComponent(this));
+			return;
+		}
+
 		this.headerPanel.updateGui(forceUpdate);
 		this.statPanel.updateGui(forceUpdate);
 		this.techPanel.updateGui(forceUpdate);
