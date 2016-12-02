@@ -52,6 +52,8 @@ public class Game implements Serializable {
 	private final static String																			CIV_CONSTANTS_FILENAME	=
 			"Civ_Constants.xml";
 
+	public final static HashMap<Integer, Integer>														SMALL_GAME_CREDITS		=
+			new HashMap<Integer, Integer>();
 	public final static HashMap<Civilization.Name, Color>												BACKGROUND_COLORS		=
 			new HashMap<Civilization.Name, Color>();
 	public final static HashMap<Civilization.Name, Color>												FOREGROUND_COLORS		=
@@ -132,6 +134,13 @@ public class Game implements Serializable {
 	public void addCivilization(Civilization.Name name) {
 		Civilization civ = new Civilization(name, difficulty);
 		this.civs.put(name, civ);
+	}
+
+	public void finalizeStart() {
+		int credit = SMALL_GAME_CREDITS.get(this.civs.size());
+		for (Civilization civ : this.civs.values()) {
+			civ.setSmallGameCredits(credit);
+		}
 	}
 
 	public void retireCivilization(Civilization.Name name) {
@@ -289,6 +298,22 @@ public class Game implements Serializable {
 
 			DEFAULT_STARTING_CIVS.put(nCivs, regionHash);
 		}
+
+		/*
+		 * Small game credits
+		 */
+		final Element creditTopElement =
+				(Element) doc.getDocumentElement().getElementsByTagName("SmallGameCredits").item(0);
+		NodeList creditNodes = creditTopElement.getElementsByTagName("PlayerCount");
+
+		for (int i = 0; i < creditNodes.getLength(); i++) {
+			final Element creditElement = (Element) creditNodes.item(i);
+			final int nCivs = Integer.parseInt(creditElement.getAttribute("count"));
+			final int credit = Integer.parseInt(creditElement.getTextContent());
+
+			SMALL_GAME_CREDITS.put(nCivs, credit);
+		}
+
 
 		/*
 		 * AST Requirements

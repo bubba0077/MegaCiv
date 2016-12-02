@@ -3304,4 +3304,20 @@
 			</Age>
 		</Difficulty>
 	</AstRequirements>
+	<SmallGameCredits>
+		<PlayerCount count="5">10</PlayerCount>
+		<PlayerCount count="6">5</PlayerCount>
+		<PlayerCount count="7">0</PlayerCount>
+		<PlayerCount count="8">0</PlayerCount>
+		<PlayerCount count="9">0</PlayerCount>
+		<PlayerCount count="10">0</PlayerCount>
+		<PlayerCount count="11">0</PlayerCount>
+		<PlayerCount count="12">0</PlayerCount>
+		<PlayerCount count="13">0</PlayerCount>
+		<PlayerCount count="14">0</PlayerCount>
+		<PlayerCount count="15">0</PlayerCount>
+		<PlayerCount count="16">0</PlayerCount>
+		<PlayerCount count="17">0</PlayerCount>
+		<PlayerCount count="18">0</PlayerCount>
+	</SmallGameCredits>
 </Data>

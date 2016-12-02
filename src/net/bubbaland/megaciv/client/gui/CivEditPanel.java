@@ -440,13 +440,13 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				JCheckBox checkbox = this.techCheckboxes.get(tech);
 				checkbox.setSelected(CivEditPanel.this.civ.hasTech(tech));
 			}
-			ArrayList<Technology.Type> credits = CivEditPanel.this.civ.getExtraTypeCredits(Technology.WRITTEN_RECORD);
+			ArrayList<Technology.Type> credits = CivEditPanel.this.civ.getTypeCredits(Technology.WRITTEN_RECORD);
 			for (int i = 0; i < 2; i++) {
 				this.writtenRecordComboboxes.get(i).removeActionListener(this);
 				this.writtenRecordComboboxes.get(i).setSelectedItem(credits.get(i));
 				this.writtenRecordComboboxes.get(i).addActionListener(this);
 			}
-			credits = CivEditPanel.this.civ.getExtraTypeCredits(Technology.MONUMENT);
+			credits = CivEditPanel.this.civ.getTypeCredits(Technology.MONUMENT);
 			for (int i = 0; i < 4; i++) {
 				this.monumentComboboxes.get(i).removeActionListener(this);
 				this.monumentComboboxes.get(i).setSelectedItem(credits.get(i));

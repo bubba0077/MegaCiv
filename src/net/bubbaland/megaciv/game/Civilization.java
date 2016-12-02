@@ -160,13 +160,16 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * credits the associated value.
 	 */
 	@JsonProperty("typeCredits")
-	private final HashMap<Technology, ArrayList<Technology.Type>>	extraTypeCredits;	// Each
+	private final HashMap<Technology, ArrayList<Technology.Type>>	typeCredits;		// Each
 	// listed
 	// type
 	// worth
 	// 5
 	// credits
 	// each
+
+	@JsonProperty("smallGameCredits")
+	private HashMap<Technology.Type, Integer>						smallGameCredits;
 
 	/**
 	 * The current difficulty of the game. This property really belongs to the Game, but Civilization needs it to
@@ -192,31 +195,37 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public Civilization(Name name, Difficulty difficulty) {
 
-		this(name, null, 1, 0, new HashMap<Technology, Integer>(),
-				new HashMap<Technology, ArrayList<Technology.Type>>() {
-					private static final long serialVersionUID = 6611228131955386821L;
+		this(name, null, 1, 0, new HashMap<Technology, Integer>(), new HashMap<Technology.Type, Integer>() {
+			private static final long serialVersionUID = -8494150522727469271L;
+			{
+				for (Technology.Type type : Technology.Type.values()) {
+					put(type, 0);
+				}
+			}
+		}, new HashMap<Technology, ArrayList<Technology.Type>>() {
+			private static final long serialVersionUID = 6611228131955386821L;
+
+			{
+				put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
+					private static final long serialVersionUID = 3890391732659207236L;
 
 					{
-						put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
-							private static final long serialVersionUID = 3890391732659207236L;
-
-							{
-								add(Technology.Type.SCIENCE);
-								add(Technology.Type.SCIENCE);
-							}
-						});
-						put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
-							private static final long serialVersionUID = 3890391732659207236L;
-
-							{
-								add(Technology.Type.SCIENCE);
-								add(Technology.Type.SCIENCE);
-								add(Technology.Type.SCIENCE);
-								add(Technology.Type.SCIENCE);
-							}
-						});
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
 					}
-				}, 0, difficulty, false);
+				});
+				put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
+					private static final long serialVersionUID = 3890391732659207236L;
+
+					{
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+						add(Technology.Type.SCIENCE);
+					}
+				});
+			}
+		}, 0, difficulty, false);
 	}
 
 	/**
@@ -246,6 +255,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	private Civilization(@JsonProperty("name") Name name, @JsonProperty("player") String player,
 			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
 			@JsonProperty("techs") HashMap<Technology, Integer> techs,
+			@JsonProperty("smallGameCredits") HashMap<Technology.Type, Integer> scenarioCredits,
 			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
 			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty,
 			@JsonProperty("hasPurchased") boolean hasPurchased) {
@@ -255,7 +265,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.nCities = nCities;
 		this.techs = techs;
 		this.astPosition = astPosition;
-		this.extraTypeCredits = typeCredits;
+		this.typeCredits = typeCredits;
+		this.smallGameCredits = scenarioCredits;
 		this.hasPurchased = hasPurchased;
 		this.difficulty = difficulty;
 	}
@@ -464,6 +475,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.population = population;
 	}
 
+	public void setSmallGameCredits(int credit) {
+		for (Technology.Type type : Technology.Type.values()) {
+			this.smallGameCredits.put(type, credit);
+		}
+	}
+
 	/**
 	 * Get the current number of cities.
 	 * 
@@ -555,13 +572,13 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				new HashMap<Technology, ArrayList<Technology.Type>>() {
 					private static final long serialVersionUID = 1L;
 					{
-						for (Technology tech : Civilization.this.extraTypeCredits.keySet()) {
-							put(tech, Civilization.this.extraTypeCredits.get(tech));
+						for (Technology tech : Civilization.this.typeCredits.keySet()) {
+							put(tech, Civilization.this.typeCredits.get(tech));
 						}
 					}
 				};
-		return new Civilization(this.name, this.player, this.population, this.nCities, techs, extraTypeCredits,
-				this.astPosition, this.difficulty, this.hasPurchased);
+		return new Civilization(this.name, this.player, this.population, this.nCities, techs, smallGameCredits,
+				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased);
 	}
 
 	/**
@@ -643,15 +660,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return The number of credits for the specified type.
 	 */
 	public int getTypeCredit(Technology.Type type) {
-		int credit = 0;
+		int credit = this.smallGameCredits.get(type);
 		// Add credits from each advance
 		for (Technology tech : this.techs.keySet()) {
 			credit = credit + tech.getTypeCredit(type);
 		}
 		// Add additional credits chosen for Monument and Written Record
-		for (Technology tech : this.extraTypeCredits.keySet()) {
+		for (Technology tech : this.typeCredits.keySet()) {
 			if (this.hasTech(tech)) {
-				credit = credit + Collections.frequency(this.extraTypeCredits.get(tech), type) * Game.VP_PER_AST_STEP;
+				credit = credit + Collections.frequency(this.typeCredits.get(tech), type) * Game.VP_PER_AST_STEP;
 			}
 		}
 		return credit;
@@ -665,8 +682,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            The specified advance.
 	 * @return A list of the type credits chosen (worth 5 each).
 	 */
-	public ArrayList<Technology.Type> getExtraTypeCredits(Technology tech) {
-		return this.extraTypeCredits.get(tech);
+	public ArrayList<Technology.Type> getTypeCredits(Technology tech) {
+		return this.typeCredits.get(tech);
 	}
 
 	/**
@@ -679,7 +696,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            A list of the type credits chosen (worth 5 each).
 	 */
 	public void addTypeCredits(Technology tech, ArrayList<Technology.Type> newCredits) {
-		this.extraTypeCredits.put(tech, newCredits);
+		this.typeCredits.put(tech, newCredits);
 	}
 
 	/**

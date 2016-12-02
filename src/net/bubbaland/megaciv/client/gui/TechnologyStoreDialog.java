@@ -202,11 +202,11 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			checkbox.setText(techString);
 		}
 
-		ArrayList<Technology.Type> credits = civ.getExtraTypeCredits(Technology.WRITTEN_RECORD);
+		ArrayList<Technology.Type> credits = civ.getTypeCredits(Technology.WRITTEN_RECORD);
 		for (int i = 0; i < 2; i++) {
 			this.writtenRecordComboboxes.get(i).setSelectedItem(credits.get(i));
 		}
-		credits = civ.getExtraTypeCredits(Technology.MONUMENT);
+		credits = civ.getTypeCredits(Technology.MONUMENT);
 		for (int i = 0; i < 4; i++) {
 			this.monumentComboboxes.get(i).setSelectedItem(credits.get(i));
 		}
