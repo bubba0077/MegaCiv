@@ -1,19 +1,36 @@
+/**
+ * Simple class to play an audio file repeatedly.
+ * 
+ * @author Walter Kolczynski
+ * 
+ */
+
 package net.bubbaland.gui;
 
+import java.net.URL;
 import javazoom.jl.player.Player;
 
 public class BubbaAudio {
-	private final String	filename;
-	private final Class<?>	sourceClass;
 
-	public BubbaAudio(Class<?> sourceClass, String filename) {
-		this.sourceClass = sourceClass;
-		this.filename = filename;
+	private final URL url;
+
+	/**
+	 * Create a new instance for a given resource
+	 * 
+	 * @param url
+	 *            Audio file to be played
+	 */
+	public BubbaAudio(URL url) {
+		this.url = url;
 	}
 
+	/**
+	 * Play the audio file
+	 */
 	public void play() {
 		try {
-			final Player player = new Player(sourceClass.getResourceAsStream(this.filename));
+			// Open a new stream from the audio file
+			final Player player = new Player(this.url.openStream());
 			new Thread() {
 				@Override
 				public void run() {

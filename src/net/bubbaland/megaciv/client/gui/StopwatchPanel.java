@@ -35,8 +35,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	private static final long		serialVersionUID	= 8183502027042074947L;
 
-	private final static BubbaAudio	BEEP				= new BubbaAudio(StopwatchPanel.class, "audio/beep.mp3");
-	private final static BubbaAudio	ALARM				= new BubbaAudio(StopwatchPanel.class, "audio/finalSound.mp3");
+	private final static BubbaAudio	BEEP				=
+			new BubbaAudio(StopwatchPanel.class.getResource("audio/beep.mp3"));
+	private final static BubbaAudio	ALARM				=
+			new BubbaAudio(StopwatchPanel.class.getResource("audio/finalSound.mp3"));
 
 	private final JToggleButton		runButton;
 	private final JButton			setButton, resetButton;
