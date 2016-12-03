@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,19 +33,19 @@ public class TradeCardPanel extends BubbaMainPanel {
 
 	private static final int	N_COLUMNS			= 2;
 
-	private enum Column {
+	private enum ColumnType {
 		STACK, WEST, SHARED, EAST, CALAMITIES
 	};
 
-	private GameClient									client;
-	private HashMap<Integer, HashMap<Column, JPanel>>	panels;
-	private LinkedLabelGroup							stackNumberGroup, labelGroup;
+	private GameClient										client;
+	private HashMap<Integer, HashMap<ColumnType, JPanel>>	panels;
+	private LinkedLabelGroup								stackNumberGroup, labelGroup;
 
 	public TradeCardPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
 		super(controller, frame);
 		this.client = client;
 
-		this.panels = new HashMap<Integer, HashMap<Column, JPanel>>();
+		this.panels = new HashMap<Integer, HashMap<ColumnType, JPanel>>();
 		this.stackNumberGroup = new LinkedLabelGroup();
 		this.labelGroup = new LinkedLabelGroup();
 
@@ -77,12 +78,15 @@ public class TradeCardPanel extends BubbaMainPanel {
 		constraints2.gridx = 0;
 		constraints2.gridy = 0;
 
-		int nCols = Column.values().length;
+		int nColTypes = ColumnType.values().length;
 
+		/**
+		 * Create the headers
+		 */
 		for (int c = 0; c < N_COLUMNS; c++) {
-			for (Column col : Column.values()) {
-				constraints.gridx = col.ordinal() + c * nCols;
-				if (col == Column.STACK) {
+			for (ColumnType col : ColumnType.values()) {
+				constraints.gridx = col.ordinal() + c * nColTypes;
+				if (col == ColumnType.STACK) {
 					constraints.weightx = 0.0;
 				} else {
 					constraints.weightx = 1.0;
@@ -93,11 +97,14 @@ public class TradeCardPanel extends BubbaMainPanel {
 			}
 		}
 
+		/**
+		 * Create stopwatch panel
+		 */
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = nCols;
+		constraints.gridx = nColTypes;
 		constraints.gridy = 1; // ( TradeCardSet.N_STACKS + 1 - 1 ) / N_COLUMNS + 1;
-		constraints.gridwidth = nCols;
+		constraints.gridwidth = nColTypes;
 		StopwatchPanel clockPanel = new StopwatchPanel(client, controller);
 		clockPanel.setPreferredSize(new Dimension(0, 0));
 		this.add(clockPanel, constraints);
@@ -105,13 +112,19 @@ public class TradeCardPanel extends BubbaMainPanel {
 		constraints.weighty = 1.0;
 		constraints.gridwidth = 1;
 
-		for (int r = 1; r <= TradeCardSet.N_STACKS; r++) {
-			this.panels.put(r, new HashMap<Column, JPanel>());
-			constraints.gridy = r == 1 ? 1 : r / N_COLUMNS + 1;
+		/**
+		 * Fill the other spaces
+		 */
+		int nRows = (int) Math.ceil(TradeCardSet.N_STACKS / ( N_COLUMNS + 0.0 ));
+		System.out.println("nRows = " + nRows);
+		for (int stack = 1; stack <= TradeCardSet.N_STACKS; stack++) {
+			this.panels.put(stack, new HashMap<ColumnType, JPanel>());
+			int xOffset = ( stack - 2 ) / ( nRows - 1 );
+			constraints.gridy = stack == 1 ? 1 : ( ( stack - 2 ) % ( nRows - 1 ) ) + 2;
 
-			for (Column col : Column.values()) {
-				constraints.gridx = r == 1 ? col.ordinal() : col.ordinal() + ( r % N_COLUMNS ) * nCols;
-				if (col == Column.STACK) {
+			for (ColumnType col : ColumnType.values()) {
+				constraints.gridx = stack == 1 ? col.ordinal() : col.ordinal() + xOffset * nColTypes;
+				if (col == ColumnType.STACK) {
 					constraints.weightx = 0.0;
 				} else {
 					constraints.weightx = 1.0;
@@ -119,12 +132,12 @@ public class TradeCardPanel extends BubbaMainPanel {
 				JPanel panel = new JPanel();
 				panel.setLayout(new GridBagLayout());
 				panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-				if (col == Column.STACK) {
-					JLabel label = new JLabel(r + "", JLabel.CENTER);
+				if (col == ColumnType.STACK) {
+					JLabel label = new JLabel(stack + "", JLabel.CENTER);
 					this.stackNumberGroup.addLabel(label);
 					panel.add(label, constraints2);
 				}
-				this.panels.get(r).put(col, panel);
+				this.panels.get(stack).put(col, panel);
 				this.add(panel, constraints);
 			}
 		}
@@ -177,7 +190,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 				}
 			}
 
-			for (Column col : Column.values()) {
+			for (ColumnType col : ColumnType.values()) {
 				JPanel panel = this.panels.get(r).get(col);
 				switch (col) {
 					case STACK:
@@ -191,7 +204,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 						constraints.gridy = 0;
 						for (TradeCard card : stackDivision.get(region)) {
 							int quantity = goods.get(card).get(region);
-							JLabel label = new JLabel(card.toString() + " (" + quantity + "W)", JLabel.LEFT);
+							JLabel label = new JLabel(card.toString() + " (" + quantity + ")", JLabel.LEFT);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
@@ -206,7 +219,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 						constraints.gridy = 0;
 						for (TradeCard card : stackDivision.get(region)) {
 							int quantity = goods.get(card).get(region);
-							JLabel label = new JLabel(card.toString() + " (" + quantity + "E)", JLabel.RIGHT);
+							JLabel label = new JLabel(card.toString() + " (" + quantity + ")", JLabel.RIGHT);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
@@ -221,11 +234,22 @@ public class TradeCardPanel extends BubbaMainPanel {
 						for (TradeCard card : stackDivision.get(Region.BOTH)) {
 							int westQuantity = goods.get(card).get(Region.WEST);
 							int eastQuantity = goods.get(card).get(Region.EAST);
-							JLabel label = new JLabel(
-									"(" + westQuantity + "W) " + card.toString() + " (" + eastQuantity + "E)",
-									JLabel.CENTER);
+
+							constraints.gridx = 0;
+							JLabel label = new JLabel("(" + westQuantity + ")", JLabel.LEFT);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
+
+							constraints.gridx = 1;
+							label = new JLabel(card.toString(), JLabel.CENTER);
+							this.labelGroup.addLabel(label);
+							panel.add(label, constraints);
+
+							constraints.gridx = 2;
+							label = new JLabel("(" + eastQuantity + ")", JLabel.RIGHT);
+							this.labelGroup.addLabel(label);
+							panel.add(label, constraints);
+
 							constraints.gridy = constraints.gridy + 1;
 						}
 						break;
@@ -236,6 +260,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 							JLabel label = new JLabel(calamity.toString(), JLabel.CENTER);
 							this.labelGroup.addLabel(label);
 							label.setToolTipText(calamity.toHtmlString());
+							label.setForeground(Color.RED);
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
 						}

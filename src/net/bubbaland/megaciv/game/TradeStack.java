@@ -91,6 +91,7 @@ public class TradeStack {
 
 		private MinorCalamity(String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><br/>";
+			s = s + "<i>Minor Calamity</i><BR/>";
 			for (String t : text.split("<BR/>")) {
 				Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
 				Matcher matcher = regex.matcher(t);
@@ -120,8 +121,8 @@ public class TradeStack {
 
 	public enum MajorTradableCalamity implements Calamity {
 		VOLCANIC_ERUPTION_EARTHQUAKE(
-				"Volcanic Eruption: Only if you have a city in an area with a volcano, destroy all units (irrespective of ownership) in the area(s) touched by the volcano. If you have cities in more than 1 area with a volcano, select the volcano that would affect the most of your unit points."
-						+ "<BR/>Earthquake: If you have no cities in an area with a volcano, select and destroy 1 city and select and reduce 1 city adjacent by land or water (irrespective of ownership).") {
+				"<strong>Volcanic Eruption</strong>: Only if you have a city in an area with a volcano, destroy all units (irrespective of ownership) in the area(s) touched by the volcano. If you have cities in more than 1 area with a volcano, select the volcano that would affect the most of your unit points."
+						+ "<BR/><strong>Earthquake</strong>: If you have no cities in an area with a volcano, select and destroy 1 city and select and reduce 1 city adjacent by land or water (irrespective of ownership).") {
 			public String toString() {
 				return "Volcano/Earthquake";
 			}
@@ -139,6 +140,7 @@ public class TradeStack {
 
 		private MajorTradableCalamity(String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><br/>";
+			s = s + "<i>Major Calamity — Tradable</i><BR/>";
 			for (String t : text.split("<BR/>")) {
 				Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
 				Matcher matcher = regex.matcher(t);
@@ -187,6 +189,7 @@ public class TradeStack {
 
 		private MajorNontradableCalamity(String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><br/>";
+			s = s + "<i>Major Calamity — Non-Tradable</i><BR/>";
 			for (String t : text.split("<BR/>")) {
 				Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
 				Matcher matcher = regex.matcher(t);
