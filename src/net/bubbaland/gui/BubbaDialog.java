@@ -32,7 +32,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	private final BubbaGuiController	gui;
 
 	/**
-	 * Create a TriviaDialog with no arguments for the JOptionPane
+	 * Create a BubbaDialog with no arguments for the JOptionPane
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -44,8 +44,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane. This is generally used internally after the option pane
-	 * has been created.
+	 * Create a BubbaDialog using the specified option pane. This is generally used internally after the option pane has
+	 * been created.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -72,7 +72,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -87,7 +87,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -104,7 +104,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -123,7 +123,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -145,7 +145,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -169,7 +169,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	/**
-	 * Create a TriviaDialog using the specified option pane arguments.
+	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
 	 * @param frame
 	 *            Parent frame for the dialog
@@ -233,12 +233,10 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-	}
+	public void windowActivated(WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent e) {
-	}
+	public void windowClosed(WindowEvent e) {}
 
 	/**
 	 * Set the option pane value if the dialog is closed using the window decoration.
@@ -249,16 +247,13 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) {
-	}
+	public void windowIconified(WindowEvent e) {}
 
 	@Override
 	public void windowOpened(WindowEvent e) {

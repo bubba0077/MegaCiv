@@ -1,14 +1,14 @@
+package net.bubbaland.gui;
+
+import java.net.URL;
+import javazoom.jl.player.Player;
+
 /**
  * Simple class to play an audio file repeatedly.
  * 
  * @author Walter Kolczynski
  * 
  */
-
-package net.bubbaland.gui;
-
-import java.net.URL;
-import javazoom.jl.player.Player;
 
 public class BubbaAudio {
 

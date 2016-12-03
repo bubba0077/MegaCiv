@@ -19,15 +19,16 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 /**
- * Super-class for most of the dialog box panels in the trivia GUI.
+ * Super-class for most of the dialog box panels in the GUI.
  *
  * Creates a new panel using the GridBagLayout manager. Also implements an AncestorListener to allow focus on an element
  * after the dialog is created.
+ * 
+ * @author Walter Kolczynski
  *
  */
 public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorListener, FocusListener, WindowListener {
 
-	/** The Constant serialVersionUID. */
 	private static final long	serialVersionUID	= -4127179718225373888L;
 
 	protected static float		fontSize, textAreaFontSize;
@@ -69,8 +70,7 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 		final AncestorListener al = this;
 		try {
 			Thread.sleep(10);
-		} catch (final InterruptedException e) {
-		}
+		} catch (final InterruptedException e) {}
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -84,12 +84,10 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent event) {
-	}
+	public void ancestorMoved(AncestorEvent event) {}
 
 	@Override
-	public void ancestorRemoved(AncestorEvent event) {
-	}
+	public void ancestorRemoved(AncestorEvent event) {}
 
 	@Override
 	public void focusGained(FocusEvent event) {
@@ -109,16 +107,13 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 	}
 
 	@Override
-	public void focusLost(FocusEvent e) {
-	}
+	public void focusLost(FocusEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent event) {
-	}
+	public void windowOpened(WindowEvent event) {}
 
 	@Override
-	public void windowClosing(WindowEvent event) {
-	}
+	public void windowClosing(WindowEvent event) {}
 
 	@Override
 	public void windowClosed(WindowEvent event) {
@@ -126,20 +121,16 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 	}
 
 	@Override
-	public void windowIconified(WindowEvent event) {
-	}
+	public void windowIconified(WindowEvent event) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent event) {
-	}
+	public void windowDeiconified(WindowEvent event) {}
 
 	@Override
-	public void windowActivated(WindowEvent event) {
-	}
+	public void windowActivated(WindowEvent event) {}
 
 	@Override
-	public void windowDeactivated(WindowEvent event) {
-	}
+	public void windowDeactivated(WindowEvent event) {}
 
 	/**
 	 * Tell the dialog to click the OK button on the option pane.

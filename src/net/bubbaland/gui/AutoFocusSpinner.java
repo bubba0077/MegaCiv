@@ -1,11 +1,3 @@
-/**
- * Creates a spinner that automatically selects all of the text when the spinner receives focus. This allows for easier
- * data entry when components are being navigated by tabbing.
- * 
- * @author Walter Kolczynski
- * 
- */
-
 package net.bubbaland.gui;
 
 import java.awt.event.FocusEvent;
@@ -14,6 +6,14 @@ import java.awt.event.FocusListener;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SwingUtilities;
+
+/**
+ * Creates a spinner that automatically selects all of the text when the spinner receives focus. This allows for easier
+ * data entry when components are being navigated by tabbing.
+ * 
+ * @author Walter Kolczynski
+ * 
+ */
 
 public class AutoFocusSpinner extends JSpinner {
 	private static final long serialVersionUID = -7900543713955610434L;
