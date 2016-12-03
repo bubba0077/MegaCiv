@@ -191,7 +191,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 						constraints.gridy = 0;
 						for (TradeCard card : stackDivision.get(region)) {
 							int quantity = goods.get(card).get(region);
-							JLabel label = new JLabel(card.toString() + " " + quantity, JLabel.LEFT);
+							JLabel label = new JLabel(card.toString() + " (" + quantity + "W)", JLabel.LEFT);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
@@ -206,7 +206,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 						constraints.gridy = 0;
 						for (TradeCard card : stackDivision.get(region)) {
 							int quantity = goods.get(card).get(region);
-							JLabel label = new JLabel(card.toString() + " " + quantity, JLabel.RIGHT);
+							JLabel label = new JLabel(card.toString() + " (" + quantity + "E)", JLabel.RIGHT);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
@@ -221,7 +221,8 @@ public class TradeCardPanel extends BubbaMainPanel {
 						for (TradeCard card : stackDivision.get(Region.BOTH)) {
 							int westQuantity = goods.get(card).get(Region.WEST);
 							int eastQuantity = goods.get(card).get(Region.EAST);
-							JLabel label = new JLabel(westQuantity + " " + card.toString() + " " + eastQuantity,
+							JLabel label = new JLabel(
+									"(" + westQuantity + "W) " + card.toString() + " (" + eastQuantity + "E)",
 									JLabel.CENTER);
 							this.labelGroup.addLabel(label);
 							panel.add(label, constraints);
@@ -234,6 +235,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 						for (TradeStack.Calamity calamity : calamities) {
 							JLabel label = new JLabel(calamity.toString(), JLabel.CENTER);
 							this.labelGroup.addLabel(label);
+							label.setToolTipText(calamity.toHtmlString());
 							panel.add(label, constraints);
 							constraints.gridy = constraints.gridy + 1;
 						}
