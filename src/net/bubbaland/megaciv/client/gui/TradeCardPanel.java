@@ -38,6 +38,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 	};
 
 	private GameClient										client;
+	private HashMap<Integer, JLabel>						headers;
 	private HashMap<Integer, HashMap<ColumnType, JPanel>>	panels;
 	private LinkedLabelGroup								stackNumberGroup, labelGroup;
 
@@ -83,6 +84,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 		/**
 		 * Create the headers
 		 */
+		this.headers = new HashMap<Integer, JLabel>();
 		for (int c = 0; c < N_COLUMNS; c++) {
 			for (ColumnType col : ColumnType.values()) {
 				constraints.gridx = col.ordinal() + c * nColTypes;
@@ -93,6 +95,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 				}
 
 				JLabel label = new JLabel(col.name(), JLabel.CENTER);
+				this.headers.put(constraints.gridx, label);
 				this.add(label, constraints);
 			}
 		}
@@ -116,7 +119,6 @@ public class TradeCardPanel extends BubbaMainPanel {
 		 * Fill the other spaces
 		 */
 		int nRows = (int) Math.ceil(TradeCardSet.N_STACKS / ( N_COLUMNS + 0.0 ));
-		System.out.println("nRows = " + nRows);
 		for (int stack = 1; stack <= TradeCardSet.N_STACKS; stack++) {
 			this.panels.put(stack, new HashMap<ColumnType, JPanel>());
 			int xOffset = ( stack - 2 ) / ( nRows - 1 );
@@ -192,13 +194,20 @@ public class TradeCardPanel extends BubbaMainPanel {
 
 			for (ColumnType col : ColumnType.values()) {
 				JPanel panel = this.panels.get(r).get(col);
+				int c = ( (GridBagLayout) this.getLayout() ).getConstraints(panel).gridx;
+				JLabel header = this.headers.get(c);
 				switch (col) {
 					case STACK:
 						break;
-					case WEST:
+					case WEST: {
 						panel.removeAll();
 						Region region = Region.valueOf(col.name());
-						if (!regions.contains(region)) {
+						boolean visible = regions.contains(region);
+						panel.setVisible(visible);
+						if (header != null) {
+							header.setVisible(visible);
+						}
+						if (!visible) {
 							continue;
 						}
 						constraints.gridy = 0;
@@ -210,10 +219,16 @@ public class TradeCardPanel extends BubbaMainPanel {
 							constraints.gridy = constraints.gridy + 1;
 						}
 						break;
-					case EAST:
+					}
+					case EAST: {
 						panel.removeAll();
-						region = Region.valueOf(col.name());
-						if (!regions.contains(region)) {
+						Region region = Region.valueOf(col.name());
+						boolean visible = regions.contains(region);
+						panel.setVisible(visible);
+						if (header != null) {
+							header.setVisible(visible);
+						}
+						if (!visible) {
 							continue;
 						}
 						constraints.gridy = 0;
@@ -225,9 +240,15 @@ public class TradeCardPanel extends BubbaMainPanel {
 							constraints.gridy = constraints.gridy + 1;
 						}
 						break;
-					case SHARED:
+					}
+					case SHARED: {
 						panel.removeAll();
-						if (!regions.contains(Region.BOTH)) {
+						boolean visible = regions.contains(Region.BOTH);
+						panel.setVisible(visible);
+						if (header != null) {
+							header.setVisible(visible);
+						}
+						if (!visible) {
 							continue;
 						}
 						constraints.gridy = 0;
@@ -253,6 +274,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 							constraints.gridy = constraints.gridy + 1;
 						}
 						break;
+					}
 					case CALAMITIES:
 						panel.removeAll();
 						constraints.gridy = 0;
