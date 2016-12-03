@@ -1,3 +1,11 @@
+/**
+ * Creates a spinner that automatically selects all of the text when the spinner receives focus. This allows for easier
+ * data entry when components are being navigated by tabbing.
+ * 
+ * @author Walter Kolczynski
+ * 
+ */
+
 package net.bubbaland.gui;
 
 import java.awt.event.FocusEvent;
@@ -12,6 +20,8 @@ public class AutoFocusSpinner extends JSpinner {
 
 	public AutoFocusSpinner(SpinnerModel model) {
 		super(model);
+
+		// Add an anonymous focus listener that will select all of the text when this gets focus
 		( (JSpinner.DefaultEditor) AutoFocusSpinner.this.getEditor() ).getTextField()
 				.addFocusListener(new FocusListener() {
 
@@ -31,7 +41,7 @@ public class AutoFocusSpinner extends JSpinner {
 					@Override
 					public void focusLost(FocusEvent e) {
 
-					}
+			}
 
 				});
 	}
