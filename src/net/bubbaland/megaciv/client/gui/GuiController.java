@@ -90,6 +90,9 @@ public class GuiController extends BubbaGuiController {
 		} catch (InvocationTargetException | InterruptedException exception) {
 			exception.printStackTrace();
 		}
+
+		ToolTipManager.sharedInstance().setDismissDelay(5 * 60000); // Make tooltip timeout 5 minutes
+
 		// this.log("Welcome " + this.client.getUser().getUserName());
 
 	}
@@ -111,6 +114,7 @@ public class GuiController extends BubbaGuiController {
 						String[] tabs =
 								GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
 										.replaceAll("[\\[\\]]", "").split(", ");
+						System.out.println(tabs);
 						new MegaCivFrame(GuiController.this.client, GuiController.this).addTabs(tabs);
 					}
 				});

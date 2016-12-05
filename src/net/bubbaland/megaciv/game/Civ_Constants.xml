@@ -18,8 +18,8 @@
 					<Good name="Iron">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -28,8 +28,8 @@
 					<Good name="Fruit">
 						<Region name="West">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -38,8 +38,8 @@
 					<Good name="Oil">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -48,8 +48,8 @@
 					<Good name="Textiles">
 						<Region name="West">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -58,8 +58,8 @@
 					<Good name="Copper">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -68,8 +68,8 @@
 					<Good name="Incense">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -78,8 +78,8 @@
 					<Good name="Gemstones">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -88,8 +88,8 @@
 					<Good name="Gold">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 			<GameRegion name="East">
@@ -108,8 +108,8 @@
 					<Good name="Furs">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -118,8 +118,8 @@
 					<Good name="Salt">
 						<Region name="East">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -128,8 +128,8 @@
 					<Good name="Sugar">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -138,8 +138,8 @@
 					<Good name="Livestock">
 						<Region name="East">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -148,8 +148,8 @@
 					<Good name="Bronze">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -158,8 +158,8 @@
 					<Good name="Spice">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -168,8 +168,8 @@
 					<Good name="Tea">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -178,8 +178,8 @@
 					<Good name="Pearls">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -200,8 +200,8 @@
 					<Good name="Iron">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -210,8 +210,8 @@
 					<Good name="Fruit">
 						<Region name="West">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -220,8 +220,8 @@
 					<Good name="Oil">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -230,8 +230,8 @@
 					<Good name="Textiles">
 						<Region name="West">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -240,8 +240,8 @@
 					<Good name="Copper">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -250,8 +250,8 @@
 					<Good name="Incense">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -260,8 +260,8 @@
 					<Good name="Gemstones">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -270,8 +270,8 @@
 					<Good name="Gold">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 			<GameRegion name="East">
@@ -290,8 +290,8 @@
 					<Good name="Furs">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -300,8 +300,8 @@
 					<Good name="Salt">
 						<Region name="East">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -310,8 +310,8 @@
 					<Good name="Sugar">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -320,8 +320,8 @@
 					<Good name="Livestock">
 						<Region name="East">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -330,8 +330,8 @@
 					<Good name="Bronze">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -340,8 +340,8 @@
 					<Good name="Spice">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -350,8 +350,8 @@
 					<Good name="Tea">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -360,8 +360,8 @@
 					<Good name="Pearls">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -382,8 +382,8 @@
 					<Good name="Iron">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -392,8 +392,8 @@
 					<Good name="Fruit">
 						<Region name="West">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -402,8 +402,8 @@
 					<Good name="Oil">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -412,8 +412,8 @@
 					<Good name="Textiles">
 						<Region name="West">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -422,8 +422,8 @@
 					<Good name="Copper">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -432,8 +432,8 @@
 					<Good name="Incense">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -442,8 +442,8 @@
 					<Good name="Gemstones">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -452,8 +452,8 @@
 					<Good name="Gold">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 			<GameRegion name="East">
@@ -472,8 +472,8 @@
 					<Good name="Furs">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -482,8 +482,8 @@
 					<Good name="Salt">
 						<Region name="East">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -492,8 +492,8 @@
 					<Good name="Sugar">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -502,8 +502,8 @@
 					<Good name="Livestock">
 						<Region name="East">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -512,8 +512,8 @@
 					<Good name="Bronze">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -522,8 +522,8 @@
 					<Good name="Spice">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -532,8 +532,8 @@
 					<Good name="Tea">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -542,8 +542,8 @@
 					<Good name="Pearls">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -564,8 +564,8 @@
 					<Good name="Iron">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -574,8 +574,8 @@
 					<Good name="Fruit">
 						<Region name="West">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -584,8 +584,8 @@
 					<Good name="Oil">
 						<Region name="West">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -594,8 +594,8 @@
 					<Good name="Textiles">
 						<Region name="West">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -604,8 +604,8 @@
 					<Good name="Copper">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -614,8 +614,8 @@
 					<Good name="Incense">
 						<Region name="West">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -624,8 +624,8 @@
 					<Good name="Gemstones">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -634,8 +634,8 @@
 					<Good name="Gold">
 						<Region name="West">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 			<GameRegion name="East">
@@ -654,8 +654,8 @@
 					<Good name="Furs">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -664,8 +664,8 @@
 					<Good name="Salt">
 						<Region name="East">9</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -674,8 +674,8 @@
 					<Good name="Sugar">
 						<Region name="East">8</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -684,8 +684,8 @@
 					<Good name="Livestock">
 						<Region name="East">7</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -694,8 +694,8 @@
 					<Good name="Bronze">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -704,8 +704,8 @@
 					<Good name="Spice">
 						<Region name="East">6</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -714,8 +714,8 @@
 					<Good name="Tea">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -724,8 +724,8 @@
 					<Good name="Pearls">
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -753,8 +753,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -767,8 +767,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -781,8 +781,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -795,8 +795,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -809,8 +809,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -823,8 +823,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -837,8 +837,8 @@
 						<Region name="West">4</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -851,8 +851,8 @@
 						<Region name="West">4</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 			<GameRegion name="East">
@@ -878,8 +878,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -892,8 +892,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -906,8 +906,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -920,8 +920,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -934,8 +934,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -948,8 +948,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -962,8 +962,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -976,8 +976,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1005,8 +1005,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -1019,8 +1019,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -1033,8 +1033,8 @@
 						<Region name="West">8</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -1047,8 +1047,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -1061,8 +1061,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -1075,8 +1075,8 @@
 						<Region name="West">6</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -1089,8 +1089,8 @@
 						<Region name="West">4</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -1103,8 +1103,8 @@
 						<Region name="West">4</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1132,8 +1132,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Timber">
@@ -1146,8 +1146,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Cotton">
@@ -1160,8 +1160,8 @@
 						<Region name="East">8</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Lacquer">
@@ -1174,8 +1174,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Silver">
@@ -1188,8 +1188,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Jade">
@@ -1202,8 +1202,8 @@
 						<Region name="East">6</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Dye">
@@ -1216,8 +1216,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Silk">
@@ -1230,8 +1230,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1268,8 +1268,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -1286,8 +1286,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -1304,8 +1304,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -1322,8 +1322,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -1340,8 +1340,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -1358,8 +1358,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -1376,8 +1376,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -1394,8 +1394,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1432,8 +1432,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -1450,8 +1450,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -1468,8 +1468,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -1486,8 +1486,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -1504,8 +1504,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -1522,8 +1522,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -1540,8 +1540,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -1558,8 +1558,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1596,8 +1596,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -1614,8 +1614,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">5</Region>
 					</Good>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -1632,8 +1632,8 @@
 						<Region name="West">4</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -1650,8 +1650,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">4</Region>
 					</Good>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -1668,8 +1668,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -1686,8 +1686,8 @@
 						<Region name="West">3</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -1704,8 +1704,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -1722,8 +1722,8 @@
 						<Region name="West">2</Region>
 						<Region name="East">3</Region>
 					</Good>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1769,8 +1769,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -1792,8 +1792,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -1815,8 +1815,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -1838,8 +1838,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -1861,8 +1861,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -1884,8 +1884,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -1907,8 +1907,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -1930,8 +1930,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -1977,8 +1977,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -2000,8 +2000,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -2023,8 +2023,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -2046,8 +2046,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -2069,8 +2069,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -2092,8 +2092,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -2115,8 +2115,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -2138,8 +2138,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -2185,8 +2185,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -2208,8 +2208,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -2231,8 +2231,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -2254,8 +2254,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -2277,8 +2277,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -2300,8 +2300,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -2323,8 +2323,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -2346,8 +2346,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>
@@ -2393,8 +2393,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">TEMPEST</Calamity>
-					<Calamity type="major-tradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
-					<Calamity type="major-nontradable">TREACHERY</Calamity>
+					<Calamity type="major-nontradable">VOLCANIC_ERUPTION_EARTHQUAKE</Calamity>
+					<Calamity type="major-tradable">TREACHERY</Calamity>
 				</Stack>
 				<Stack number="3">
 					<Good name="Fish">
@@ -2416,8 +2416,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">SQUANDERED_WEALTH</Calamity>
-					<Calamity type="major-tradable">FAMINE</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">FAMINE</Calamity>
+					<Calamity type="major-tradable">SLAVE_REVOLT</Calamity>
 				</Stack>
 				<Stack number="4">
 					<Good name="Wool">
@@ -2439,8 +2439,8 @@
 						<Region name="East">4</Region>
 					</Good>
 					<Calamity type="minor">CITY_RIOTS</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">Superstition</Calamity>
+					<Calamity type="major-nontradable">FLOOD</Calamity>
+					<Calamity type="major-tradable">Superstition</Calamity>
 				</Stack>
 				<Stack number="5">
 					<Good name="Wine">
@@ -2462,8 +2462,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">CITY_IN_FLAMES</Calamity>
-					<Calamity type="major-tradable">FLOOD</Calamity>
-					<Calamity type="major-nontradable">SLAVE_REVOLT</Calamity>
+					<Calamity type="major-nontradable">CIVIL_WAR</Calamity>
+					<Calamity type="major-tradable">BARBARIAN_HORDES</Calamity>
 				</Stack>
 				<Stack number="6">
 					<Good name="Tin">
@@ -2485,8 +2485,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">TRIBAL_CONFLICT</Calamity>
-					<Calamity type="major-tradable">CYCLONE</Calamity>
-					<Calamity type="major-nontradable">BARBARIAN_HORDES</Calamity>
+					<Calamity type="major-nontradable">CYCLONE</Calamity>
+					<Calamity type="major-tradable">EPIDEMIC</Calamity>
 				</Stack>
 				<Stack number="7">
 					<Good name="Resin">
@@ -2508,8 +2508,8 @@
 						<Region name="East">3</Region>
 					</Good>
 					<Calamity type="minor">MINOR_UPRISING</Calamity>
-					<Calamity type="major-tradable">TYRANNY</Calamity>
-					<Calamity type="major-nontradable">CIVIL_DISORDER</Calamity>
+					<Calamity type="major-nontradable">TYRANNY</Calamity>
+					<Calamity type="major-tradable">CIVIL_DISORDER</Calamity>
 				</Stack>
 				<Stack number="8">
 					<Good name="Marble">
@@ -2531,8 +2531,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">BANDITRY</Calamity>
-					<Calamity type="major-tradable">CORRUPTION</Calamity>
-					<Calamity type="major-nontradable">ICONOCLASM_AND_HERESY</Calamity>
+					<Calamity type="major-nontradable">CORRUPTION</Calamity>
+					<Calamity type="major-tradable">ICONOCLASM_AND_HERESY</Calamity>
 				</Stack>
 				<Stack number="9">
 					<Good name="Ivory">
@@ -2554,8 +2554,8 @@
 						<Region name="East">2</Region>
 					</Good>
 					<Calamity type="minor">COASTAL_MIGRATION</Calamity>
-					<Calamity type="major-tradable">REGRESSION</Calamity>
-					<Calamity type="major-nontradable">PIRACY</Calamity>
+					<Calamity type="major-nontradable">REGRESSION</Calamity>
+					<Calamity type="major-tradable">PIRACY</Calamity>
 				</Stack>
 			</GameRegion>
 		</PlayerCount>

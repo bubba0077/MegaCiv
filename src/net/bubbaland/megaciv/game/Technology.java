@@ -3,10 +3,9 @@ package net.bubbaland.megaciv.game;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import net.bubbaland.gui.StringTools;
 
 public enum Technology {
 
@@ -1221,14 +1220,7 @@ public enum Technology {
 		}
 		s = s + "<BR/>";
 		String text = this.text.replace("\n", "<BR/>");
-		for (String t : text.split("<BR/>")) {
-			Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
-			Matcher matcher = regex.matcher(t);
-			while (matcher.find()) {
-				s = s + matcher.group() + "<BR/>";
-			}
-		}
-		s = s + "</html>";
+		s = s + StringTools.wrapHtml(text, MAX_HTML_WIDTH) + "</html>";
 		return s;
 	}
 
