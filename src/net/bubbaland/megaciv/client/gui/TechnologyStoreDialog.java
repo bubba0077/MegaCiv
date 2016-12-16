@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
@@ -34,8 +35,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private static final int						N_ROWS				= 17;
 
-	private final JLabel							civLabel;
-	private final HashMap<Technology, JCheckBox>	techCheckboxes;
+	private final JLabel							civLabel, sortLabel;
+	private final JComboBox<String>					sortComboBox;
+	private final ArrayList<TechnologyCheckBox>		techCheckboxes;
 	private final GameClient						client;
 	private final JFrame							frame;
 	private final JButton							buyNextButton, resetButton;
@@ -63,23 +65,33 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.gridwidth = 8;
+		constraints.gridwidth = 3;
 		this.civLabel = this.enclosedLabelFactory(civName.toString(), constraints, JLabel.LEFT, JLabel.CENTER);
+
+		constraints.gridwidth = 1;
+		constraints.gridx = 4;
+		this.sortLabel = this.enclosedLabelFactory("Sort by:", constraints, JLabel.RIGHT, JLabel.CENTER);
+
+		constraints.gridx = 5;
+		this.sortComboBox = new JComboBox<String>();
+		this.sortComboBox.addItem("Alphabetical");
+		this.sortComboBox.addItem("Base Cost");
+		this.sortComboBox.addItem("Current Cost");
+		this.sortComboBox.setActionCommand("Sort");
+		this.sortComboBox.addActionListener(this);
+		this.add(this.sortComboBox, constraints);
 
 		constraints.gridwidth = 2;
 
-		this.techCheckboxes = new HashMap<Technology, JCheckBox>();
+		this.techCheckboxes = new ArrayList<TechnologyCheckBox>();
 
-		for (Technology tech : EnumSet.allOf(Technology.class)) {
-			JCheckBox checkbox = new JCheckBox(tech.getName());
+		for (int i = 0; i < EnumSet.allOf(Technology.class).size(); i++) {
+			TechnologyCheckBox checkbox = new TechnologyCheckBox();
 			checkbox.addChangeListener(this);
-			checkbox.setToolTipText("<html><img src=\""
-					+ CivInfoPanel.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
+			constraints.gridx = ( 0 + i / N_ROWS ) * constraints.gridwidth;
+			constraints.gridy = 1 + i % N_ROWS;
 
-			constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
-			constraints.gridy = 1 + tech.ordinal() % N_ROWS;
-
-			this.techCheckboxes.put(tech, checkbox);
+			this.techCheckboxes.add(checkbox);
 			this.add(checkbox, constraints);
 		}
 
@@ -139,6 +151,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.resetButton.addActionListener(this);
 		this.add(this.resetButton, constraints);
 
+		this.setCheckboxTechs();
+
 		this.resetCheckboxes();
 
 		this.updateTotalCost();
@@ -159,11 +173,16 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		int rowHeight = Integer.parseInt(props.getProperty("TechStoreDialog.Tech.Height"));
 		float fontSize = Float.parseFloat(props.getProperty("TechStoreDialog.Tech.FontSize"));
 
-		for (JCheckBox checkbox : this.techCheckboxes.values()) {
+		for (JCheckBox checkbox : this.techCheckboxes) {
 			BubbaPanel.setButtonProperties(checkbox, colWidth, rowHeight, null, null, fontSize);
 		}
 
 		BubbaPanel.setLabelProperties(this.civLabel, Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Width")),
+				Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Height")),
+				Game.FOREGROUND_COLORS.get(this.civName), Game.BACKGROUND_COLORS.get(this.civName),
+				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
+
+		BubbaPanel.setLabelProperties(this.sortLabel, 0,
 				Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Height")),
 				Game.FOREGROUND_COLORS.get(this.civName), Game.BACKGROUND_COLORS.get(this.civName),
 				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
@@ -179,11 +198,58 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				Float.parseFloat(props.getProperty("TechStoreDialog.ResetButton.FontSize")));
 	}
 
+	private void setCheckboxTechs() {
+		Civilization civ = this.client.getGame().getCivilization(this.civName);
+		ArrayList<Technology> ownedTechs = civ.getTechs();
+		ArrayList<Technology> checkedTechs = new ArrayList<Technology>();
+		ArrayList<Technology> allTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
+
+		for (TechnologyCheckBox checkbox : this.techCheckboxes) {
+			if (checkbox.isSelected()) {
+				checkedTechs.add(checkbox.getTechnology());
+			}
+		}
+
+		switch ((String) this.sortComboBox.getSelectedItem()) {
+			case "Alphabetical":
+				break;
+			case "Base Cost":
+				allTechs.sort(new Technology.techCostComparator());
+				break;
+			case "Current Cost":
+				allTechs.sort(new Technology.techCostComparator(civ));
+				break;
+		}
+
+		for (int i = 0; i < this.techCheckboxes.size(); i++) {
+			TechnologyCheckBox checkbox = this.techCheckboxes.get(i);
+			Technology tech = allTechs.get(i);
+			checkbox.setTechnology(tech);
+
+			boolean isOwned = ownedTechs.contains(tech);
+			checkbox.setSelected(isOwned || checkedTechs.contains(tech));
+			checkbox.setEnabled(!isOwned);
+			String techString = "<html>" + tech.getName();
+			if (!isOwned) {
+				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
+					techString = techString + " (" + civ.getCost(tech) + "*/" + tech.getBaseCost() + ") ";
+				} else {
+					techString = techString + " (" + civ.getCost(tech) + "/" + tech.getBaseCost() + ") ";
+				}
+				for (Type type : tech.getTypes()) {
+					techString = techString + "<span color=\"" + type.getHtmlColor() + "\">•</span>";
+				}
+			}
+			techString = techString + "</html>";
+			checkbox.setText(techString);
+		}
+	}
+
 	private void resetCheckboxes() {
 		Civilization civ = this.client.getGame().getCivilization(this.civName);
 		ArrayList<Technology> ownedTechs = civ.getTechs();
-		for (Technology tech : EnumSet.allOf(Technology.class)) {
-			JCheckBox checkbox = this.techCheckboxes.get(tech);
+		for (TechnologyCheckBox checkbox : techCheckboxes) {
+			Technology tech = checkbox.getTechnology();
 			boolean isOwned = ownedTechs.contains(tech);
 			checkbox.setSelected(isOwned);
 			checkbox.setEnabled(!isOwned);
@@ -219,8 +285,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		Civilization civ = this.client.getGame().getCivilization(this.civName);
 
 		HashMap<Technology, Integer> costs = new HashMap<Technology, Integer>();
-		for (Technology tech : EnumSet.allOf(Technology.class)) {
-			JCheckBox checkbox = this.techCheckboxes.get(tech);
+		for (TechnologyCheckBox checkbox : this.techCheckboxes) {
+			Technology tech = checkbox.getTechnology();
 			if (checkbox.isSelected() && checkbox.isEnabled()) {
 				costs.put(tech, civ.getCost(tech));
 			}
@@ -260,7 +326,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			costs.put(Technology.LIBRARY, civ.getCost(Technology.LIBRARY));
 		}
 
-
 		for (TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
 			combobox.setEnabled(costs.containsKey(Technology.WRITTEN_RECORD));
 		}
@@ -292,8 +357,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		switch (command) {
 			case "Buy":
 				ArrayList<Technology> newTechs = new ArrayList<Technology>();
-				for (Technology tech : EnumSet.allOf(Technology.class)) {
-					JCheckBox checkbox = this.techCheckboxes.get(tech);
+				for (TechnologyCheckBox checkbox : this.techCheckboxes) {
+					Technology tech = checkbox.getTechnology();
 					if (checkbox.isSelected() && checkbox.isEnabled()) {
 						newTechs.add(tech);
 					}
@@ -328,6 +393,27 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			case "Reset":
 				this.resetCheckboxes();
 				break;
+			case "Sort":
+				this.setCheckboxTechs();
+				break;
 		}
+	}
+
+	private class TechnologyCheckBox extends JCheckBox {
+
+		private static final long	serialVersionUID	= 7910433610896447288L;
+
+		private Technology			tech				= null;
+
+		public void setTechnology(Technology tech) {
+			this.tech = tech;
+			this.setToolTipText("<html><img src=\""
+					+ CivInfoPanel.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
+		}
+
+		public Technology getTechnology() {
+			return this.tech;
+		}
+
 	}
 }

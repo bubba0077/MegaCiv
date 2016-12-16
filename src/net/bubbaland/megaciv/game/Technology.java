@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.game;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -862,6 +863,26 @@ public enum Technology {
 
 
 	};
+
+	public final static class techCostComparator implements Comparator<Technology> {
+		private Civilization civ;
+
+		public techCostComparator() {
+			this.civ = null;
+		}
+
+		public techCostComparator(Civilization civ) {
+			this.civ = civ;
+		}
+
+		public int compare(Technology tech1, Technology tech2) {
+			if (civ == null) {
+				return Integer.compare(tech1.baseCost, tech2.baseCost);
+			} else {
+				return Integer.compare(this.civ.getCost(tech1), this.civ.getCost(tech2));
+			}
+		}
+	}
 
 	private final static HashMap<Technology, HashMap<Technology, Integer>> TECH_CREDITS;
 	static {
