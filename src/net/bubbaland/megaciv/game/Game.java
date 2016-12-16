@@ -77,6 +77,9 @@ public class Game implements Serializable {
 
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
+		for (Civilization civ : this.civs.values()) {
+			civ.setDifficulty(difficulty);
+		}
 	}
 
 	public Difficulty getDifficulty() {

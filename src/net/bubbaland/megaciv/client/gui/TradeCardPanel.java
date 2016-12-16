@@ -48,7 +48,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 
 		this.panels = new HashMap<Integer, HashMap<ColumnType, JPanel>>();
 		this.stackNumberGroup = new LinkedLabelGroup();
-		this.labelGroup = new LinkedLabelGroup();
+		this.labelGroup = new LinkedLabelGroup(0);
 
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
