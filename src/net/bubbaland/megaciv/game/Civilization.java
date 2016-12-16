@@ -387,7 +387,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public boolean passAstRequirements(Age age) {
 		AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
-		return this.getCityCount() >= reqs.getMinCities() && this.techs.size() >= reqs.getMinAdvances()
+		int cityCount =
+				this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this.getCityCount();
+		return cityCount >= reqs.getMinCities() && this.techs.size() >= reqs.getMinAdvances()
 				&& this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs()
 				&& this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs.getMinLevelTwoPlusTechs()
 				&& this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs()
@@ -407,7 +409,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
 		String s = "<html>" + age.toString() + "";
 		if (reqs.getMinCities() > 0) {
-			String colorName = this.nCities >= reqs.getMinCities() ? "green" : "red";
+			int cityCount = this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this
+					.getCityCount();
+			String colorName = cityCount >= reqs.getMinCities() ? "green" : "red";
 			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinCities() + " Cities</span>";
 		}
 		if (reqs.getMinAdvances() > 0) {
