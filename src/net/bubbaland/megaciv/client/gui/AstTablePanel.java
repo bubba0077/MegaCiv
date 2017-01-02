@@ -237,7 +237,7 @@ public class AstTablePanel extends BubbaPanel {
 							foregroundColor = this.controller.getAstForegroundColor(age);
 							backgroundColor = this.controller.getAstBackgroundColor(age);
 							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))) {
-								text = civ.passAstRequirements(age) ? "  " : "!";
+								text = civ.passAstRequirements(age) ? "" : "!";
 							}
 							if (age != Age.STONE) {
 								component.setToolTipText(civ.astRequirementString(age));

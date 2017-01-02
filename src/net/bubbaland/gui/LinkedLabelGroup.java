@@ -138,4 +138,16 @@ public class LinkedLabelGroup {
 		size.height = fm.getHeight();
 		return size;
 	}
+
+	public String toString() {
+		String s = "LinkedLabelGroup " + super.toString() + "\n";
+		s = s + "Minimum font size: " + this.minFontSize + "\n";
+		s = s + "Maximum font size: " + this.maxFontSize + "\n";
+		s = s + "Padding: " + this.padding + "\n";
+		s = s + "Contains these labels: \n";
+		for (JLabel label : this.group) {
+			s = s + label.getName() + ": " + label.getText() + "\n";
+		}
+		return s;
+	}
 }
