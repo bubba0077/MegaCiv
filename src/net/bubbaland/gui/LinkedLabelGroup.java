@@ -109,7 +109,8 @@ public class LinkedLabelGroup {
 			Graphics g = label.getGraphics();
 			String text = label.getText();
 			Dimension bounds = label.getSize();
-			if (g == null || text.equals("")) {
+			if (g == null || !label.isVisible()) {
+				// System.out.println("Skipping: " + label.getName() + " " + text + " " + ( !label.isVisible() ));
 				continue;
 			}
 			Font font = label.getFont();
@@ -117,7 +118,7 @@ public class LinkedLabelGroup {
 			Rectangle r1 = new Rectangle();
 			r1.setSize(getTextSize(g, text, font.deriveFont(fontSize)));
 
-			// System.out.println(text + ":" + r1 + " " + bounds);
+			// System.out.println(label.getName() + " " + text + ":" + r1 + " " + bounds);
 
 			while (fontSize > this.minFontSize && !( bounds.getWidth() > r1.getWidth() + this.padding
 					&& bounds.getHeight() > r1.getHeight() + this.padding )) {

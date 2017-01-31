@@ -227,17 +227,19 @@ public class AstTablePanel extends BubbaPanel {
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));
 						Civilization.Age age = civ.getAge(astStep);
+						text = String.format("%1$02d", ( astStep * Game.VP_PER_AST_STEP ));
 						if (astStep <= civ.getAstPosition()) {
-							text = String.format("%1$2d", ( astStep * Game.VP_PER_AST_STEP ));
 							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 							foregroundColor = this.controller.getAstBackgroundColor(age);
 							component.setToolTipText("");
 						} else {
 							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							foregroundColor = this.controller.getAstForegroundColor(age);
+							foregroundColor = this.controller.getAstBackgroundColor(age);
 							backgroundColor = this.controller.getAstBackgroundColor(age);
-							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))) {
-								text = civ.passAstRequirements(age) ? "" : "!";
+							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))
+									&& !civ.passAstRequirements(age)) {
+								foregroundColor = this.controller.getAstForegroundColor(age);
+								text = " ! ";
 							}
 							if (age != Age.STONE) {
 								component.setToolTipText(civ.astRequirementString(age));
@@ -247,7 +249,8 @@ public class AstTablePanel extends BubbaPanel {
 						}
 						component.setVisible(astStep <= this.client.getGame().lastAstStep());
 						component.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
-
+						component.setName(civ.toString() + " " + astStep);
+						// System.out.println(civ.toString() + " " + astStep + " " + component.isVisible());
 
 				}
 				JLabel label = (JLabel) component;
@@ -526,7 +529,7 @@ public class AstTablePanel extends BubbaPanel {
 						break;
 					default:
 						justification = JLabel.CENTER;
-						// constraints.weightx = 1.0;
+						constraints.weightx = 0.1;
 				}
 				JLabel label = AstTablePanel.this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
 
