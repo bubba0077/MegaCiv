@@ -478,7 +478,7 @@ public enum Technology {
 	}, "You may choose to increase your tax rate by 1.\n" + "Barbarian Hordes: 5 less barbarian tokens are used.\n"
 			+ "Tyranny: The beneficiary selects and annexes 5 additional unit points."),
 
-	MONOTHEISM("Montheism", new ArrayList<Technology.Type>() {
+	MONOTHEISM("Monotheism", new ArrayList<Technology.Type>() {
 		private static final long serialVersionUID = 4934854144715439723L;
 
 		{
