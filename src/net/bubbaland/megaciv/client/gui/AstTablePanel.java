@@ -232,12 +232,14 @@ public class AstTablePanel extends BubbaPanel {
 							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 							foregroundColor = this.controller.getAstBackgroundColor(age);
 							component.setToolTipText("");
+							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))
+									&& !civ.passAstRequirements(age)) {}
 						} else {
 							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							foregroundColor = this.controller.getAstBackgroundColor(age);
 							backgroundColor = this.controller.getAstBackgroundColor(age);
-							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))
-									&& !civ.passAstRequirements(age)) {
+							if (!civ.passAstRequirements(age) && ( civ.passAstRequirements(civ.getAge(astStep - 1))
+									|| ( astStep - civ.getAstPosition() ) == 1 )) {
 								foregroundColor = this.controller.getAstForegroundColor(age);
 								text = " ! ";
 							}
