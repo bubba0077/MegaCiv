@@ -380,7 +380,9 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 				String techString = "<html>" + tech.getName();
 				for (Type type : tech.getTypes()) {
-					techString = techString + " <span color=\"" + type.getHtmlColor() + "\">•</span>";
+					techString = techString + " <img height=\"16\" width=\"16\" align=\"bottom\" src=\""
+							+ GuiClient.class.getResource("images/" + type.toString() + ".png") + "\" alt=\""
+							+ type.toString() + "\">";
 				}
 				techString = techString + "</html>";
 

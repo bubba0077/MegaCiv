@@ -164,6 +164,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.frame.pack();
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
+
+		this.setCheckboxTechs();
 	}
 
 	public void loadProperties() {
@@ -237,7 +239,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 					techString = techString + " (" + civ.getCost(tech) + "/" + tech.getBaseCost() + ") ";
 				}
 				for (Type type : tech.getTypes()) {
-					techString = techString + "<span color=\"" + type.getHtmlColor() + "\">•</span>";
+					techString = techString + " <img height=\"16\" width=\"16\" align=\"bottom\" src=\""
+							+ GuiClient.class.getResource("images/" + type.toString() + ".png") + "\" alt=\""
+							+ type.toString() + "\">";
 				}
 			}
 			techString = techString + "</html>";
@@ -261,7 +265,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 					techString = techString + " (" + civ.getCost(tech) + "/" + tech.getBaseCost() + ") ";
 				}
 				for (Type type : tech.getTypes()) {
-					techString = techString + "<span color=\"" + type.getHtmlColor() + "\">•</span>";
+					techString = techString + "<img height=\"20\" width=\"20\" style=\"vertical-align:middle\" src=\""
+							+ GuiClient.class.getResource("images/" + type.toString() + ".png");
 				}
 			}
 			techString = techString + "</html>";
@@ -408,7 +413,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		public void setTechnology(Technology tech) {
 			this.tech = tech;
 			this.setToolTipText("<html><img src=\""
-					+ CivInfoPanel.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
+					+ GuiClient.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
 		}
 
 		public Technology getTechnology() {

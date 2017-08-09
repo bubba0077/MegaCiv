@@ -384,13 +384,15 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 				String techString = "<html>" + tech.getName() + " (" + tech.getBaseCost() + ")";
 				for (Type type : tech.getTypes()) {
-					techString = techString + " <span color=\"" + type.getHtmlColor() + "\">•</span>";
+					techString = techString + " <img height=\"20\" width=\"20\" align=\"bottom\" src=\""
+							+ GuiClient.class.getResource("images/" + type.toString() + ".png") + "\" alt=\""
+							+ type.toString() + "\">";
 				}
 				techString = techString + "</html>";
 
 				JLabel label = this.enclosedLabelFactory(techString, constraints, JLabel.LEFT, JLabel.CENTER);
 				label.setToolTipText("<html><img src=\""
-						+ CivInfoPanel.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
+						+ GuiClient.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
 				this.techLabels.put(tech, label);
 			}
 

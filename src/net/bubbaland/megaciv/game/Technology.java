@@ -1,9 +1,11 @@
 package net.bubbaland.megaciv.game;
 
 import java.awt.Color;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.gui.StringTools;
@@ -836,9 +838,11 @@ public enum Technology {
 	}, "(*) Acquire 10 additional points of credit tokens in any combination of colors.");
 
 	public enum Type {
-		ARTS("blue", Color.BLUE, Color.WHITE), CIVICS("red", Color.RED, Color.WHITE),
-		CRAFTS("orange", Color.ORANGE, Color.BLACK), RELIGION("yellow", Color.YELLOW, Color.BLACK),
-		SCIENCE("green", Color.GREEN, Color.BLACK);
+		ARTS("blue", Color.BLUE, Color.WHITE, "images/Arts.png"),
+		CIVICS("red", Color.RED, Color.WHITE, "images/Civics.png"),
+		CRAFTS("orange", Color.ORANGE, Color.BLACK, "images/Crafts.png"),
+		RELIGION("yellow", Color.YELLOW, Color.BLACK, "images/Religion.png"),
+		SCIENCE("green", Color.GREEN, Color.BLACK, "images/Science.png");
 
 		public String getHtmlColor() {
 			return this.htmlColor;
@@ -852,15 +856,20 @@ public enum Technology {
 			return this.color;
 		}
 
+		public URL getIconURL() {
+			return this.iconUrl;
+		}
+
 		private final String	htmlColor;
 		private final Color		color, textColor;
+		private final URL		iconUrl;
 
-		private Type(String htmlColor, Color color, Color textColor) {
+		private Type(String htmlColor, Color color, Color textColor, String iconName) {
 			this.htmlColor = htmlColor;
 			this.color = color;
 			this.textColor = textColor;
+			this.iconUrl = Technology.class.getResource(iconName);
 		}
-
 
 	};
 
