@@ -12,6 +12,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import net.bubbaland.megaciv.client.gui.GuiClient;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 
 
@@ -412,28 +413,47 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			int cityCount = this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this
 					.getCityCount();
 			String colorName = cityCount >= reqs.getMinCities() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinCities() + " Cities</span>";
+			String iconName = cityCount >= reqs.getMinCities() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinCities() + " Cities</span>";
 		}
 		if (reqs.getMinAdvances() > 0) {
 			String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinAdvances() + " Advances</span>";
+			String iconName = this.techs.size() >= reqs.getMinAdvances() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinAdvances() + " Advances</span>";
 		}
 		if (reqs.getMinTechVP() > 0) {
 			String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinTechVP() + " VP from Advances</span>";
+			String iconName = this.getVPfromTech() >= reqs.getMinTechVP() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinTechVP() + " VP from Advances</span>";
 		}
 		if (reqs.getMinLevelOneTechs() > 0) {
 			String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelOneTechs() + " Advances < 100</span>";
+			String iconName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinLevelOneTechs() + " Advances < 100</span>";
 		}
 		if (reqs.getMinLevelTwoPlusTechs() > 0) {
 			String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span>";
+			String iconName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
+					.getMinLevelTwoPlusTechs() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span>";
 		}
 		if (reqs.getMinLevelThreeTechs() > 0) {
 			String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
-			s = s + "<BR/><span color='" + colorName + "'>" + reqs.getMinLevelThreeTechs() + " Advances > 200</span>";
+			String iconName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "check" : "x";
+			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
+					+ "'>&nbsp;" + reqs.getMinLevelThreeTechs() + " Advances > 200</span>";
 		}
 		s = s + "</html>";
 		return s;
