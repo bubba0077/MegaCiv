@@ -139,7 +139,7 @@ public class Game implements Serializable {
 		this.civs.put(name, civ);
 	}
 
-	public void finalizeStart() {
+	public void assignStartCredits() {
 		int credit = SMALL_GAME_CREDITS.get(this.civs.size());
 		for (Civilization civ : this.civs.values()) {
 			civ.setSmallGameCredits(credit);

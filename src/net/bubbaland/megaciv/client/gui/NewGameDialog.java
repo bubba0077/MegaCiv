@@ -49,6 +49,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JButton								randomizeButton;
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
+	private final JCheckBox								useCreditsCheckbox;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 	private final GameClient							client;
 
@@ -67,7 +68,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridheight = 2;
+		constraints.gridheight = 1;
 		JLabel label = new JLabel("Number of civilizations:");
 		label.setFont(label.getFont().deriveFont(fontSize));
 		this.add(label, constraints);
@@ -81,6 +82,11 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.add(this.nCivSpinner, constraints);
 		constraints.gridheight = 1;
 
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.useCreditsCheckbox = new JCheckBox("Use start game credits");
+		this.useCreditsCheckbox.setSelected(true);
+		this.add(this.useCreditsCheckbox, constraints);
 
 		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Option.FontSize"));
 		ButtonGroup regionGroup = new ButtonGroup();
@@ -202,6 +208,11 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	public void setDefaultCivs() {
 		int nCivs = (int) this.nCivSpinner.getValue();
 
+		int startCredits = Game.SMALL_GAME_CREDITS.get(nCivs);
+
+		this.useCreditsCheckbox.setText("Use start game credits (" + startCredits + ")");
+		this.useCreditsCheckbox.setEnabled(startCredits > 0);
+
 		this.eastRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
 		this.westRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
 
@@ -273,9 +284,9 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 				}
 			}
 			Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
-
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
-			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty));
+			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty,
+					this.useCreditsCheckbox.isSelected()));
 		}
 	}
 

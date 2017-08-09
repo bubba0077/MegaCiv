@@ -16,15 +16,19 @@ public class NewGameMessage extends ClientMessage {
 	private final Difficulty							difficulty;
 	@JsonProperty("Region")
 	private final Civilization.Region					region;
+	@JsonProperty("useCredits")
+	private final boolean								useCredits;
 
 	@JsonCreator
 	public NewGameMessage(@JsonProperty("Region") Civilization.Region region,
 			@JsonProperty("civNames") HashMap<Civilization.Name, String> newCivNames,
-			@JsonProperty("Difficulty") final Difficulty difficulty) {
+			@JsonProperty("Difficulty") final Difficulty difficulty,
+			@JsonProperty("useCredits") final boolean useCredits) {
 		super();
 		this.region = region;
 		this.civNames = newCivNames;
 		this.difficulty = difficulty;
+		this.useCredits = useCredits;
 	}
 
 	public Civilization.Region getRegion() {
@@ -37,5 +41,9 @@ public class NewGameMessage extends ClientMessage {
 
 	public Difficulty getDifficulty() {
 		return this.difficulty;
+	}
+
+	public boolean useCredits() {
+		return this.useCredits;
 	}
 }
