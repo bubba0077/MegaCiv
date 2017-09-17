@@ -404,56 +404,65 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * 
 	 * @param age
 	 *            The specified Age.
+	 * @param printAgeName
+	 *            TODO
 	 * @return A string representation of the given age's requirements.
 	 */
-	public String astRequirementString(Age age) {
+	public String astRequirementString(Age age, boolean printAgeName) {
 		AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
-		String s = "<html>" + age.toString() + "";
+		String s = "<html>";
+		if (printAgeName) {
+			s = s + age.toString() + "<BR/>";
+		}
+		if (age == Age.STONE) {
+			s = s + "No Requirements</html>";
+			return s;
+		}
 		if (reqs.getMinCities() > 0) {
 			int cityCount = this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this
 					.getCityCount();
 			String colorName = cityCount >= reqs.getMinCities() ? "green" : "red";
 			String iconName = cityCount >= reqs.getMinCities() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinCities() + " Cities</span>";
+					+ "'>&nbsp;" + reqs.getMinCities() + " Cities</span><BR/>";
 		}
 		if (reqs.getMinAdvances() > 0) {
 			String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
 			String iconName = this.techs.size() >= reqs.getMinAdvances() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinAdvances() + " Advances</span>";
+					+ "'>&nbsp;" + reqs.getMinAdvances() + " Advances</span><BR/>";
 		}
 		if (reqs.getMinTechVP() > 0) {
 			String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
 			String iconName = this.getVPfromTech() >= reqs.getMinTechVP() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinTechVP() + " VP from Advances</span>";
+					+ "'>&nbsp;" + reqs.getMinTechVP() + " VP from Advances</span><BR/>";
 		}
 		if (reqs.getMinLevelOneTechs() > 0) {
 			String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
 			String iconName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinLevelOneTechs() + " Advances < 100</span>";
+					+ "'>&nbsp;" + reqs.getMinLevelOneTechs() + " Advances < 100</span><BR/>";
 		}
 		if (reqs.getMinLevelTwoPlusTechs() > 0) {
 			String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "green" : "red";
 			String iconName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span>";
+					+ "'>&nbsp;" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span><BR/>";
 		}
 		if (reqs.getMinLevelThreeTechs() > 0) {
 			String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
 			String iconName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "check" : "x";
-			s = s + "<BR/><img height=\"10\" width=\"10\" align=\"bottom\" src=\""
+			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
-					+ "'>&nbsp;" + reqs.getMinLevelThreeTechs() + " Advances > 200</span>";
+					+ "'>&nbsp;" + reqs.getMinLevelThreeTechs() + " Advances > 200</span><BR/>";
 		}
 		s = s + "</html>";
 		return s;

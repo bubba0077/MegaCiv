@@ -120,7 +120,7 @@ AdvanceAstDialog.Civ.FontSize=24.0
 AdvanceAstDialog.Regress.Height=24
 AdvanceAstDialog.Regress.FontSize=12.0
 
-AdvanceAstDialog.Req.Height=50
+AdvanceAstDialog.Req.Height=64
 AdvanceAstDialog.Req.Width=250
 AdvanceAstDialog.Req.FontSize=14.0
 

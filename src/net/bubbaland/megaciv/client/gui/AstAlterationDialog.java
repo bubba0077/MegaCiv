@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.BorderFactory;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.BubbaDialog;
@@ -46,7 +47,6 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 		constraints.weighty = 1.0;
 
 		this.civPanels = new ArrayList<CivPanel>();
-
 
 		ArrayList<Civilization> civs = this.client.getGame().getCivilizations();
 		for (Civilization civ : civs) {
@@ -153,19 +153,18 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 			this.checkbox.setSelected(civ.passAstRequirements());
 
-			Game game = AstAlterationDialog.this.client.getGame();
-			Civilization.Age nextAge = game.getCivilization(name).getNextStepAge();
-
-			String astReqText = Game.AGE_REQUIREMENTS.get(game.getDifficulty()).get(nextAge).getText();
-
+			String astReqText = civ.astRequirementString(civ.getNextStepAge(), false);
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			constraints.gridheight = 3;
-			this.textArea = this.scrollableTextPaneFactory(astReqText, reqWidth, reqHeight, foreground, background,
+			this.textArea = this.scrollableTextPaneFactory("", reqWidth, reqHeight, foreground, Color.WHITE,
 					constraints, reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
 					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			this.textArea.setContentType("text/html");
+			this.textArea.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, background));
+			this.textArea.setText(astReqText);
 			this.textArea.setEditable(false);
 		}
 
