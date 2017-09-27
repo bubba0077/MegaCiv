@@ -2,7 +2,6 @@ package net.bubbaland.megaciv.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -1434,13 +1433,19 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @param size
 	 * @return
 	 */
-	public static <E> Stream<List<E>> Combinations(List<E> l, int size) {
+	private static <E> Stream<List<E>> Combinations(List<E> l, int size) {
 		if (size == 0) {
 			return Stream.of(Collections.emptyList());
 		} else {
 			return IntStream.range(0, l.size()).boxed().<List<E>> flatMap(
-					i -> Combinations(l.subList(i + 1, l.size()), size - 1).map(t -> Technology.pipe(l.get(i), t)));
+					i -> Combinations(l.subList(i + 1, l.size()), size - 1).map(t -> Civilization.pipe(l.get(i), t)));
 		}
+	}
+
+	private static <E> List<E> pipe(E head, List<E> tail) {
+		List<E> newList = new ArrayList<>(tail);
+		newList.add(0, head);
+		return newList;
 	}
 
 

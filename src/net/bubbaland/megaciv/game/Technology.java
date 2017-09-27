@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.bubbaland.gui.StringTools;
@@ -1270,11 +1269,5 @@ public enum Technology {
 		s += "\n";
 		s += this.text + "\n";
 		return s;
-	}
-
-	static <E> List<E> pipe(E head, List<E> tail) {
-		List<E> newList = new ArrayList<>(tail);
-		newList.add(0, head);
-		return newList;
 	}
 }
