@@ -14,8 +14,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableList;
-
 import net.bubbaland.gui.StringTools;
 
 public enum Technology {
@@ -951,58 +949,70 @@ public enum Technology {
 		return cost;
 	}
 
-	private static ArrayList<Technology> getOptimalTechsWorthNVp(Civilization civ, int vp,
+	private static ArrayList<Technology> addCombinations(Civilization civ, List<Technology> l1Techs,
+			List<Technology> l2Techs, List<Technology> l3Techs, int nL1, int nL2, int nL3) {
+		List<List<Technology>> l1List = Technology.Combinations(l1Techs, nL1).collect(Collectors.toList());
+		List<List<Technology>> l2List = Technology.Combinations(l2Techs, nL2).collect(Collectors.toList());
+		List<List<Technology>> l3List = Technology.Combinations(l3Techs, nL3).collect(Collectors.toList());
+
+		return ( (Stream<ArrayList<Technology>>) l1List.parallelStream().flatMap(l1t -> {
+			return l2List.parallelStream().flatMap(l2t -> {
+				return l3List.parallelStream().map(l3t -> {
+					ArrayList<Technology> list = new ArrayList<Technology>();
+					list.addAll(l1t);
+					list.addAll(l2t);
+					list.addAll(l3t);
+					return list;
+				});
+			});
+		}) ).filter(l -> l != null).collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null);
+	}
+
+	private static List<Technology> getOptimalTechsWorthNVp(Civilization civ, int vp,
 			ArrayList<Technology> availableTechs) {
 		ArrayList<List<Technology>> list = new ArrayList<List<Technology>>();
 
-		List<Technology> l1 = availableTechs.stream().filter(t -> t.getVP() == 1).collect(Collectors.toList());
-		List<Technology> l2 = availableTechs.stream().filter(t -> t.getVP() == 3).collect(Collectors.toList());
-		List<Technology> l3 = availableTechs.stream().filter(t -> t.getVP() == 6).collect(Collectors.toList());
+		int maxL3 = vp / 6;
+		int maxL2 = vp / 3;
+		int maxL1 = vp;
 
-		list.addAll(Technology.Combinations(l1, vp).collect(Collectors.toList()));
-		for (int nL2 = vp / 3; nL2 > 0; nL2--) {
-			int nL1 = vp - nL2 * 3;
-			System.out.println("L2: " + nL2 + " L1:" + nL1);
-			List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
-			List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
+		List<Technology> l1Techs = availableTechs.stream().filter(t -> t.getVP() == 1).sorted(new techCostComparator())
+				.limit(maxL1).collect(Collectors.toList());
+		List<Technology> l2Techs = availableTechs.stream().filter(t -> t.getVP() == 3).sorted(new techCostComparator())
+				.limit(maxL2).collect(Collectors.toList());
+		List<Technology> l3Techs = availableTechs.stream().filter(t -> t.getVP() == 6).sorted(new techCostComparator())
+				.limit(maxL3).collect(Collectors.toList());
+		l3Techs.addAll(availableTechs.stream().filter(
+				t -> ( t == ANATOMY && !l3Techs.contains(ANATOMY) ) || ( t == LIBRARY && !l3Techs.contains(LIBRARY) ))
+				.collect(Collectors.toList()));
 
-			List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
-			l1List.forEach(l1t -> l2List.forEach(
-					l2t -> crossProduct.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).build())));
-			list.addAll(crossProduct);
-		}
-		for (int nL3 = vp / 6; nL3 > 0; nL3--) {
-			for (int nL2 = ( vp - nL3 * 6 ) / 3; nL2 >= 0; nL2--) {
-				int nL1 = vp - ( nL3 * 6 + nL2 * 3 );
-				System.out.println("L3: " + nL3 + " L2: " + nL2 + " L1:" + nL1);
-				List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
-				List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
-				List<List<Technology>> l3List = Technology.Combinations(l3, nL3).collect(Collectors.toList());
+		IntStream.rangeClosed(0, vp / 6)
+				.forEach(nL3 -> IntStream.rangeClosed(0, ( vp - nL3 * 6 ) / 3).forEach(nL2 -> list
+						.add(addCombinations(civ, l1Techs, l2Techs, l3Techs, vp - ( nL3 * 6 + nL2 * 3 ), nL2, nL3))));
 
-				List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
-				l1List.forEach(l1t -> l2List.forEach(l2t -> l3List.forEach(l3t -> crossProduct
-						.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).addAll(l3t).build()))));
-				list.addAll(crossProduct);
-			}
-		}
-
-		ArrayList<Technology> optimalList = new ArrayList<Technology>(
-				list.stream().parallel().collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null));
+		List<Technology> optimalList = list.stream().filter(l -> l != null)
+				.collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null);
 
 		return optimalList;
 	}
 
-	public static ArrayList<Technology> getOptimalTechs(Civilization civ, int budget) {
+	public static List<Technology> getOptimalTechs(Civilization civ, int budget) {
 		ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
 		availableTechs.removeAll(civ.getTechs());
 
-		ArrayList<Technology> optimalTechs = new ArrayList<Technology>();
+		List<Technology> optimalTechs = new ArrayList<Technology>();
 
-		for (int vp = 1; vp <= availableTechs.size(); vp++) {
-			System.out.println("Trying " + vp + "VP");
-			ArrayList<Technology> candidate = getOptimalTechsWorthNVp(civ, vp, availableTechs);
+		int maxCost = availableTechs.parallelStream().mapToInt(t -> civ.getCost(t)).max().orElse(Integer.MAX_VALUE);
+		long startTime = System.nanoTime();
+		for (int vp = ( budget / maxCost ) * 6 + 1; vp <= availableTechs.size(); vp++) {
+			long loopStartTime = System.nanoTime();
+			System.out.println("Trying " + vp + " VP");
+			List<Technology> candidate = getOptimalTechsWorthNVp(civ, vp, availableTechs);
 			System.out.println(
 					"Candidate: " + Arrays.toString(candidate.toArray()) + "  Cost: " + getTotalCost(civ, candidate));
+			long loopEndTime = System.nanoTime();
+			System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
+
 
 			if (getTotalCost(civ, candidate) <= budget) {
 				optimalTechs = candidate;
@@ -1011,6 +1021,8 @@ public enum Technology {
 				break;
 			}
 		}
+		long endTime = System.nanoTime();
+		System.out.println("Optimal purchase found in " + ( endTime - startTime ) / 1000000000.0 + " s");
 
 		return optimalTechs;
 	}

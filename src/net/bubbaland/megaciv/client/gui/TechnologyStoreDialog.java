@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -176,6 +179,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.suggestButton.setActionCommand("Maximize VP");
 		this.suggestButton.addActionListener(this);
 		this.suggestButton.setEnabled(false);
+		this.suggestButton.setToolTipText(
+				"<html>Suggest a purchase that earns the maximum number of VP this turn.<BR>(May take over a minute for large budgets.)</html>");
 		this.add(this.suggestButton, constraints);
 
 		constraints.gridx = 2;
@@ -279,21 +284,41 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	}
 
 	private void selectOptimal() {
-		resetCheckboxes();
 
 		Civilization civ = this.client.getGame().getCivilization(this.civName);
-		int budget = (int) this.spinner.getValue();
-		ArrayList<Technology> optimalTech = Technology.getOptimalTechs(civ, budget);
+		final int budget = (int) this.spinner.getValue();
 
-		if (optimalTech != null) {
-			for (TechnologyCheckBox checkbox : techCheckboxes) {
-				if (optimalTech.contains(checkbox.getTechnology())) {
-					checkbox.setSelected(true);
-				}
+		new SwingWorker<Void, Void>() {
+
+			List<Technology>	optimalTech;
+			String				buttonText;
+
+			public Void doInBackground() {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				TechnologyStoreDialog.this.suggestButton.setEnabled(false);
+				this.buttonText = TechnologyStoreDialog.this.suggestButton.getText();
+				TechnologyStoreDialog.this.suggestButton.setText("Optimizing...");
+				this.optimalTech = Technology.getOptimalTechs(civ, budget);
+				return null;
 			}
-		}
 
-		this.setCheckboxTechs();
+			public void done() {
+				if (this.optimalTech != null) {
+					resetCheckboxes();
+					for (TechnologyCheckBox checkbox : techCheckboxes) {
+						if (this.optimalTech.contains(checkbox.getTechnology())) {
+							checkbox.setSelected(true);
+						}
+					}
+					TechnologyStoreDialog.this.setCheckboxTechs();
+				}
+				TechnologyStoreDialog.this.suggestButton.setText(this.buttonText);
+				TechnologyStoreDialog.this.suggestButton
+						.setEnabled((int) TechnologyStoreDialog.this.spinner.getValue() > 0);
+				frame.setCursor(Cursor.getDefaultCursor());
+			}
+
+		}.execute();
 	}
 
 	private void setCheckboxTechs() {
@@ -470,6 +495,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				this.frame.dispose();
 			case "Reset":
 				this.resetCheckboxes();
+				this.spinner.setValue(0);
 				break;
 			case "Sort":
 				this.setCheckboxTechs();
