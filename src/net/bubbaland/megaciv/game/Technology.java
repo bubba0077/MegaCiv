@@ -3,6 +3,7 @@ package net.bubbaland.megaciv.game;
 import java.awt.Color;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -959,9 +960,9 @@ public enum Technology {
 		List<Technology> l3 = availableTechs.stream().filter(t -> t.getVP() == 6).collect(Collectors.toList());
 
 		list.addAll(Technology.Combinations(l1, vp).collect(Collectors.toList()));
-		if (vp >= 3) {
-			int nL2 = vp / 3;
+		for (int nL2 = vp / 3; nL2 > 0; nL2--) {
 			int nL1 = vp - nL2 * 3;
+			System.out.println("L2: " + nL2 + " L1:" + nL1);
 			List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
 			List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
 
@@ -970,22 +971,23 @@ public enum Technology {
 					l2t -> crossProduct.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).build())));
 			list.addAll(crossProduct);
 		}
-		if (vp >= 6) {
-			int nL3 = vp / 6;
-			int nL2 = ( vp - nL3 * 6 ) / 3;
-			int nL1 = vp - ( nL3 * 6 + nL2 * 3 );
-			List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
-			List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
-			List<List<Technology>> l3List = Technology.Combinations(l3, nL3).collect(Collectors.toList());
+		for (int nL3 = vp / 6; nL3 > 0; nL3--) {
+			for (int nL2 = ( vp - nL3 * 6 ) / 3; nL2 >= 0; nL2--) {
+				int nL1 = vp - ( nL3 * 6 + nL2 * 3 );
+				System.out.println("L3: " + nL3 + " L2: " + nL2 + " L1:" + nL1);
+				List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
+				List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
+				List<List<Technology>> l3List = Technology.Combinations(l3, nL3).collect(Collectors.toList());
 
-			List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
-			l1List.forEach(l1t -> l2List.forEach(l2t -> l3List.forEach(l3t -> crossProduct
-					.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).addAll(l3t).build()))));
-			list.addAll(crossProduct);
+				List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
+				l1List.forEach(l1t -> l2List.forEach(l2t -> l3List.forEach(l3t -> crossProduct
+						.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).addAll(l3t).build()))));
+				list.addAll(crossProduct);
+			}
 		}
 
 		ArrayList<Technology> optimalList = new ArrayList<Technology>(
-				list.stream().collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null));
+				list.stream().parallel().collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null));
 
 		return optimalList;
 	}
@@ -997,114 +999,20 @@ public enum Technology {
 		ArrayList<Technology> optimalTechs = new ArrayList<Technology>();
 
 		for (int vp = 1; vp <= availableTechs.size(); vp++) {
-			// System.out.println("Trying " + vp + "VP");
+			System.out.println("Trying " + vp + "VP");
 			ArrayList<Technology> candidate = getOptimalTechsWorthNVp(civ, vp, availableTechs);
-			// System.out.println("Candidate: " + Arrays.toString(candidate.toArray()));
+			System.out.println(
+					"Candidate: " + Arrays.toString(candidate.toArray()) + "  Cost: " + getTotalCost(civ, candidate));
 
 			if (getTotalCost(civ, candidate) <= budget) {
 				optimalTechs = candidate;
 			} else {
+				System.out.println("Candidate over budget! Optimal purchase found.");
 				break;
 			}
 		}
 
 		return optimalTechs;
-	}
-
-	public static ArrayList<Technology> getOptimalTechsNoSpecials(Civilization civ, int budget,
-			ArrayList<Technology> availableTechs) {
-		ArrayList<Technology> optimalTechs = new ArrayList<Technology>();
-
-		List<Technology> level1Techs = availableTechs.stream().filter(t -> t.getVP() == 1).collect(Collectors.toList());
-		List<Technology> level2Techs = availableTechs.stream().filter(t -> t.getVP() == 3).collect(Collectors.toList());
-		List<Technology> level3Techs = availableTechs.stream().filter(t -> t.getVP() == 6).collect(Collectors.toList());
-
-		level1Techs.sort(new Technology.techCostComparator(civ));
-		level2Techs.sort(new Technology.techCostComparator(civ));
-		level3Techs.sort(new Technology.techCostComparator(civ));
-
-		while (true) {
-			ArrayList<Technology> techs100 = new ArrayList<Technology>();
-			techs100.add(level3Techs.get(0));
-			ArrayList<Technology> techs010 = new ArrayList<Technology>();
-			techs010.add(level2Techs.get(0));
-			ArrayList<Technology> techs001 = new ArrayList<Technology>();
-			techs001.add(level1Techs.get(0));
-
-			ArrayList<Technology> techs006 = ( level1Techs.size() >= 6 ) ? new ArrayList<Technology>(
-					level1Techs.stream().limit(6).collect(Collectors.toList())) : null;
-			ArrayList<Technology> techs003 = ( level1Techs.size() >= 3 ) ? new ArrayList<Technology>(
-					level1Techs.stream().limit(3).collect(Collectors.toList())) : null;
-			ArrayList<Technology> techs020 = ( level2Techs.size() >= 2 ) ? new ArrayList<Technology>(
-					level2Techs.stream().limit(2).collect(Collectors.toList())) : null;
-
-			ArrayList<Technology> techs013 = null;
-			if (level1Techs.size() >= 3 && level2Techs.size() >= 1) {
-				techs013 = new ArrayList<Technology>();
-				techs013.addAll(level1Techs.stream().limit(3).collect(Collectors.toList()));
-				techs013.add(level2Techs.get(0));
-			}
-
-			// VP 1
-			final int cost001 = ( techs001 != null ) ? Technology.getTotalCost(civ, techs001) : Integer.MAX_VALUE;
-
-			// VP 3
-			final int cost003 = ( techs003 != null ) ? Technology.getTotalCost(civ, techs003) : Integer.MAX_VALUE;
-			final int cost010 = ( techs010 != null ) ? Technology.getTotalCost(civ, techs010) : Integer.MAX_VALUE;
-			int costVP3 = Math.min(cost010, cost003);
-
-			// VP 6
-			final int cost006 = ( techs006 != null ) ? Technology.getTotalCost(civ, techs006) : Integer.MAX_VALUE;
-			final int cost020 = ( techs020 != null ) ? Technology.getTotalCost(civ, techs020) : Integer.MAX_VALUE;
-			final int cost013 = ( techs013 != null ) ? Technology.getTotalCost(civ, techs013) : Integer.MAX_VALUE;
-			final int cost100 = ( techs100 != null ) ? Technology.getTotalCost(civ, techs100) : Integer.MAX_VALUE;
-			int costVP6 = Math.min(Math.min(cost100, cost020), cost006);
-
-			System.out.println("Budget: " + budget);
-			System.out.println("VP6 cost: " + costVP6);
-			System.out.println("VP3 cost: " + costVP3);
-			System.out.println("VP1 cost: " + cost001);
-
-			if (costVP6 <= budget) {
-				List<Technology> listVP6 = null;
-				if (costVP6 == cost006) {
-					listVP6 = techs006;
-				} else if (costVP6 == cost020) {
-					listVP6 = techs020;
-				} else if (costVP6 == cost013) {
-					listVP6 = techs013;
-				} else if (costVP6 == cost100) {
-					listVP6 = techs100;
-				}
-
-				optimalTechs.addAll(listVP6);
-				level1Techs.removeAll(listVP6);
-				level2Techs.removeAll(listVP6);
-				level3Techs.removeAll(listVP6);
-				budget = budget - costVP6;
-			} else if (costVP3 <= budget) {
-				List<Technology> listVP3 = null;
-				if (costVP3 == cost003) {
-					listVP3 = techs003;
-				} else if (costVP3 == cost010) {
-					listVP3 = techs010;
-				}
-				optimalTechs.addAll(listVP3);
-				level1Techs.removeAll(listVP3);
-				level2Techs.removeAll(listVP3);
-				budget = budget - costVP3;
-			} else if (cost001 <= budget) {
-				optimalTechs.addAll(techs001);
-				level1Techs.removeAll(techs001);
-				budget = budget - cost001;
-			} else {
-				break;
-			}
-		}
-
-		return optimalTechs;
-
-		// System.out.println("========= Finding optimal techs =========");
 	}
 
 	private final static HashMap<Technology, HashMap<Technology, Integer>> TECH_CREDITS;
