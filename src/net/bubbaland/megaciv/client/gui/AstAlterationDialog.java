@@ -151,7 +151,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 						JLabel.CENTER, JLabel.CENTER);
 			}
 
-			this.checkbox.setSelected(civ.passAstRequirements());
+			this.checkbox.setSelected(civ.passAstRequirements(civ.getCurrentAge()));
 
 			String astReqText = civ.astRequirementString(civ.getNextStepAge(), false);
 			constraints.weightx = 1.0;

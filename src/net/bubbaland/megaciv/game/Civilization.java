@@ -362,24 +362,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            The victory point amount.
 	 * @return The number of advances the civilization owns worth the specified VP.
 	 */
-	public int getTechCountByVP(int vp) {
-		int n = 0;
-		for (Technology tech : this.techs.keySet()) {
-			if (tech.getVP() == vp) {
-				n++;
-			}
-		}
-		return n;
-	}
-
-	/**
-	 * Determine whether this civilization satisfies the requirements for advancing to the next AST step.
-	 * 
-	 * @return boolean indicating whether this civilization satisfies the requirements for advancing to the next AST
-	 *         step.
-	 */
-	public boolean passAstRequirements() {
-		return this.passAstRequirements(this.getNextStepAge());
+	private int getTechCountByVP(int vp) {
+		return (int) this.techs.keySet().parallelStream().filter(t -> t.getVP() == vp).count();
 	}
 
 	/**
@@ -402,7 +386,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
-	 * Create a string listing all of the AST requirements for the given age, color-coded by whether the civiliztion
+	 * Create a string listing all of the AST requirements for the given age, color-coded by whether the civilization
 	 * currently meets each requirement. Requirements in green are currently satisfied; requirements in red are
 	 * currently not satisfied.
 	 * 
@@ -668,27 +652,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public int getCost(Technology tech) {
 		int cost = tech.getBaseCost();
 
-		int maxTypeDiscount = 0;
-
-		// Determine the type that provides the largest discount.
-		for (Technology.Type type : tech.getTypes()) {
-			maxTypeDiscount = Math.max(this.getTypeCredit(type), maxTypeDiscount);
-		}
-
 		// Reduce the cost by the maximum type discount.
-		cost = cost - maxTypeDiscount;
+		cost = cost - tech.getTypes().stream().mapToInt(t -> this.getTypeCredit(t)).max().orElse(0);
 
 		// Apply any additional credit based on the specific advance.
-		for (Technology tech2 : this.getTechs()) {
-			cost = cost - tech2.getTechCredit(tech);
-		}
+		cost = cost - this.getTechs().parallelStream().mapToInt(t -> t.getTechCredit(tech)).sum();
 
 		// If the cost is negative, return 0 instead.
 		return Math.max(cost, 0);
-	}
-
-	public int getAdjustedCost(Technology tech) {
-		return this.getCost(tech) - ( tech.equals(Technology.LIBRARY) ? 40 : 0 );
 	}
 
 	/**
@@ -701,17 +672,16 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return The number of credits for the specified type.
 	 */
 	public int getTypeCredit(Technology.Type type) {
+		// Start with game-start credits
 		int credit = this.smallGameCredits.get(type);
+
 		// Add credits from each advance
-		for (Technology tech : this.techs.keySet()) {
-			credit = credit + tech.getTypeCredit(type);
-		}
+		credit = credit + this.techs.keySet().parallelStream().mapToInt(t -> t.getTypeCredit(type)).sum();
+
 		// Add additional credits chosen for Monument and Written Record
-		for (Technology tech : this.typeCredits.keySet()) {
-			if (this.hasTech(tech)) {
-				credit = credit + Collections.frequency(this.typeCredits.get(tech), type) * Game.VP_PER_AST_STEP;
-			}
-		}
+		credit = credit + this.typeCredits.keySet().stream().filter(t -> this.hasTech(t))
+				.mapToInt(t -> Collections.frequency(this.typeCredits.get(t), type)).sum() * Game.VP_PER_AST_STEP;
+
 		return credit;
 	}
 
@@ -865,6 +835,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static ArrayList<Civilization.Name> sortByToName(ArrayList<Civilization> civs, Civilization.SortOption sort,
 			SortDirection direction) {
 		ArrayList<Civilization> sortedCivs = sortBy(civs, sort, direction);
+
 		ArrayList<Civilization.Name> sortedNames = new ArrayList<Civilization.Name>();
 		for (Civilization civ : sortedCivs) {
 			sortedNames.add(civ.getName());
@@ -930,11 +901,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * @return The number of victory points.
 	 */
 	public int getVPfromTech() {
-		int vp = 0;
-		for (Technology tech : this.techs.keySet()) {
-			vp = vp + tech.getVP();
-		}
-		return vp;
+		return this.techs.keySet().stream().mapToInt(t -> t.getVP()).sum();
 	}
 
 	/**
@@ -1212,6 +1179,26 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		}
 	}
 
+	public final static class techCostComparator implements Comparator<Technology> {
+		private Civilization civ;
+
+		public techCostComparator() {
+			this.civ = null;
+		}
+
+		public techCostComparator(Civilization civ) {
+			this.civ = civ;
+		}
+
+		public int compare(Technology list1, Technology list2) {
+			if (civ == null) {
+				return Integer.compare(list1.getBaseCost(), list2.getBaseCost());
+			} else {
+				return Integer.compare(civ.getCost(list1), civ.getCost(list2));
+			}
+		}
+	}
+
 	public final static class totalTechCostComparator implements Comparator<List<Technology>> {
 		private Civilization civ;
 
@@ -1266,7 +1253,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * 
 	 * @param techList
 	 *            List of technologies to purchase
-	 * @return
+	 * @return Total cost to purchase all technologies in list, applying all appropriate discounts
 	 */
 	public int getTotalCost(List<Technology> techList) {
 
@@ -1277,13 +1264,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		 * included in the title (it is free).
 		 */
 		if (techList.contains(Technology.ANATOMY)) {
-			Technology freeTech = null;
-			for (Technology tech : techList) {
-				if (tech.getTypes().contains(Technology.Type.SCIENCE) && tech.getBaseCost() < 100
-						&& ( freeTech == null || tech.getBaseCost() > freeTech.getBaseCost() )) {
-					freeTech = tech;
-				}
-			}
+			Technology freeTech = techList.parallelStream().filter(t -> t.getBaseCost() < 100)
+					.collect(Collectors.maxBy(new techCostComparator(this))).orElse(null);
 			if (freeTech != null) {
 				techCopy.remove(freeTech);
 			}
@@ -1309,7 +1291,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return cost;
 	}
 
-
+	/**
+	 * Get the lowest cost list of techs that are worth a given number of VP total
+	 * 
+	 * @param vp
+	 *            Number of total VP for the techs
+	 * @param availableTechs
+	 *            Techs available to purchase
+	 * @return Lowest cost list of techs that are worth vp
+	 */
 	private List<Technology> getOptimalTechsWorthNVp(int vp, ArrayList<Technology> availableTechs) {
 		ArrayList<List<Technology>> list = new ArrayList<List<Technology>>();
 
@@ -1317,19 +1307,42 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		int maxL2 = vp / 3;
 		int maxL1 = vp;
 
+		/*
+		 * We will never need more techs than the maximum number for each level, so only consider those
+		 */
 		List<Technology> l1Techs = availableTechs.stream().filter(t -> t.getVP() == 1)
 				.sorted(new Technology.techCostComparator()).limit(maxL1).collect(Collectors.toList());
 		List<Technology> l2Techs = availableTechs.stream().filter(t -> t.getVP() == 3)
 				.sorted(new Technology.techCostComparator()).limit(maxL2).collect(Collectors.toList());
 		List<Technology> l3Techs = availableTechs.stream().filter(t -> t.getVP() == 6)
 				.sorted(new Technology.techCostComparator()).limit(maxL3).collect(Collectors.toList());
+		/*
+		 * Always include Anatomy and Library if available as they are special cases that change the total cost
+		 */
 		l3Techs.addAll(availableTechs.stream()
 				.filter(t -> ( t == Technology.ANATOMY && !l3Techs.contains(Technology.ANATOMY) )
 						|| ( t == Technology.LIBRARY && !l3Techs.contains(Technology.LIBRARY) ))
 				.collect(Collectors.toList()));
 
-		IntStream.rangeClosed(0, vp / 6).forEach(nL3 -> IntStream.rangeClosed(0, ( vp - nL3 * 6 ) / 3).forEach(
-				nL2 -> list.add(addCombinations(l1Techs, l2Techs, l3Techs, vp - ( nL3 * 6 + nL2 * 3 ), nL2, nL3))));
+		/*
+		 * For every combination of nL3, nL2, and nL1 that totals the correct number of VP, check all combinations of
+		 * techs from those lists looking for the minimum cost
+		 */
+		/*- For instance, 12 VP can be gained by:
+		 * 2 tier-three (6 VP each), 0 tier-two (3 VP each), and 0 tier-one (1 VP each): (2,0,0)
+		 * 1 tier-three, 2 tier-two, and 0 tier-one: (1,2,0)
+		 * (1,1,3)
+		 * (0,4,0)
+		 * (0,3,3)
+		 * (0,2,6)
+		 * (0,1,9)
+		 * (0,0,12)
+		 * 
+		 */
+		IntStream.rangeClosed(0, vp / 6)
+				.forEach(nL3 -> IntStream.rangeClosed(0, ( vp - nL3 * 6 ) / 3)
+						.forEach(nL2 -> list.add(getOptimalTechByCombinations(l1Techs, l2Techs, l3Techs,
+								vp - ( nL3 * 6 + nL2 * 3 ), nL2, nL3))));
 
 		List<Technology> optimalList = list.stream().filter(l -> l != null)
 				.collect(Collectors.minBy(new totalTechCostComparator())).orElse(null);
@@ -1337,6 +1350,17 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return optimalList;
 	}
 
+	/**
+	 * Returns the optimal tech purchase, in terms of maximizing VP, for a given budget.
+	 * 
+	 * Note: While the return will always have the lowest cost for the max VP possible, purchases including Anatomy (and
+	 * less often Library) may be sub-optimal in the sense that the "free" tier-one technology taken may not be the most
+	 * expensive available.
+	 * 
+	 * @param budget
+	 *            Amount of money available to spend
+	 * @return List of technologies worth the most VP at the lowest cost
+	 */
 	public List<Technology> getOptimalTechs(int budget) {
 		ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
 		availableTechs.removeAll(this.getTechs());
@@ -1346,19 +1370,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		int maxCost = availableTechs.parallelStream().mapToInt(t -> this.getCost(t)).max().orElse(Integer.MAX_VALUE);
 		long startTime = System.nanoTime();
 		for (int vp = ( budget / maxCost ) * 6 + 1; vp <= availableTechs.size(); vp++) {
-			long loopStartTime = System.nanoTime();
-			System.out.println("Trying " + vp + " VP");
+			// long loopStartTime = System.nanoTime();
+			// System.out.println("Trying " + vp + " VP");
 			List<Technology> candidate = this.getOptimalTechsWorthNVp(vp, availableTechs);
-			System.out.println(
-					"Candidate: " + Arrays.toString(candidate.toArray()) + "  Cost: " + this.getTotalCost(candidate));
-			long loopEndTime = System.nanoTime();
-			System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
-
+			// System.out.println(
+			// "Candidate: " + Arrays.toString(candidate.toArray()) + " Cost: " + this.getTotalCost(candidate));
+			// long loopEndTime = System.nanoTime();
+			// System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
 
 			if (this.getTotalCost(candidate) <= budget) {
 				optimalTechs = candidate;
 			} else {
-				System.out.println("Candidate over budget! Optimal purchase found.");
+				// System.out.println("Candidate over budget! Optimal purchase found.");
 				break;
 			}
 		}
@@ -1368,8 +1391,25 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return optimalTechs;
 	}
 
-	private static ArrayList<Technology> addCombinations(List<Technology> l1Techs, List<Technology> l2Techs,
-			List<Technology> l3Techs, int nL1, int nL2, int nL3) {
+	/**
+	 * Returns the minimum cost technology list for all possible combinations of list provided
+	 * 
+	 * @param l1Techs
+	 *            List of tier-one technologies
+	 * @param l2Techs
+	 *            List of tier-two technologies
+	 * @param l3Techs
+	 *            List of tier-three technologies
+	 * @param nL1
+	 *            Number of tier-one technologies to use
+	 * @param nL2
+	 *            Number of tier-two technologies to use
+	 * @param nL3
+	 *            Number of tier-three technologies to use
+	 * @return Lowest-cost combination of technologies
+	 */
+	private static ArrayList<Technology> getOptimalTechByCombinations(List<Technology> l1Techs,
+			List<Technology> l2Techs, List<Technology> l3Techs, int nL1, int nL2, int nL3) {
 		List<List<Technology>> l1List = Combinations(l1Techs, nL1).collect(Collectors.toList());
 		List<List<Technology>> l2List = Combinations(l2Techs, nL2).collect(Collectors.toList());
 		List<List<Technology>> l3List = Combinations(l3Techs, nL3).collect(Collectors.toList());
