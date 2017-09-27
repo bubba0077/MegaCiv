@@ -298,7 +298,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				TechnologyStoreDialog.this.suggestButton.setEnabled(false);
 				this.buttonText = TechnologyStoreDialog.this.suggestButton.getText();
 				TechnologyStoreDialog.this.suggestButton.setText("Optimizing...");
-				this.optimalTech = Technology.getOptimalTechs(civ, budget);
+				this.optimalTech = civ.getOptimalTechs(budget);
 				return null;
 			}
 
@@ -430,7 +430,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			combobox.setEnabled(selectedTechs.contains(Technology.MONUMENT));
 		}
 
-		int cost = Technology.getTotalCost(civ, selectedTechs);
+		int cost = civ.getTotalCost(selectedTechs);
 
 		this.buyNextButton.setText("Buy (" + String.format("%04d", cost) + ")");
 		if (cost > 0) {
