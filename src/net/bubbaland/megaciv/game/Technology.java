@@ -3,10 +3,17 @@ package net.bubbaland.megaciv.game;
 import java.awt.Color;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableList;
 
 import net.bubbaland.gui.StringTools;
 
@@ -262,7 +269,7 @@ public enum Technology {
 			put(Type.RELIGION, 5);
 			put(Type.SCIENCE, 10);
 		}
-	}, "—"),
+	}, "ï¿½"),
 
 	ENGINEERING("Engineering", new ArrayList<Technology.Type>() {
 		private static final long serialVersionUID = -5500908068718899766L;
@@ -365,7 +372,7 @@ public enum Technology {
 			put(Type.RELIGION, 5);
 			put(Type.SCIENCE, 5);
 		}
-	}, "—"),
+	}, "ï¿½"),
 
 	MASONRY("Masonry", new ArrayList<Technology.Type>() {
 		private static final long serialVersionUID = -4759806750315959504L;
@@ -399,7 +406,7 @@ public enum Technology {
 			put(Type.RELIGION, 10);
 			put(Type.SCIENCE, 20);
 		}
-	}, "—"),
+	}, "ï¿½"),
 
 	MEDICINE("Medicine", new ArrayList<Technology.Type>() {
 		private static final long serialVersionUID = -2539202365013314947L;
@@ -893,6 +900,213 @@ public enum Technology {
 		}
 	}
 
+	public final static class totalTechCostComparator implements Comparator<List<Technology>> {
+		private Civilization civ;
+
+		public totalTechCostComparator() {
+			this.civ = null;
+		}
+
+		public totalTechCostComparator(Civilization civ) {
+			this.civ = civ;
+		}
+
+		public int compare(List<Technology> list1, List<Technology> list2) {
+			if (civ == null) {
+				return Integer.compare(list1.stream().mapToInt(t -> t.getBaseCost()).sum(),
+						list2.stream().mapToInt(t -> t.getBaseCost()).sum());
+			} else {
+				return Integer.compare(getTotalCost(civ, list1), getTotalCost(civ, list2));
+			}
+		}
+	}
+
+	public static int getTotalCost(Civilization civ, List<Technology> l) {
+
+		ArrayList<Technology> techCopy = new ArrayList<Technology>(l);
+
+		if (l.contains(Technology.ANATOMY)) {
+			Technology freeTech = null;
+			for (Technology tech : l) {
+				if (tech.getTypes().contains(Type.SCIENCE) && tech.getBaseCost() < 100
+						&& ( freeTech == null || tech.getBaseCost() > freeTech.getBaseCost() )) {
+					freeTech = tech;
+				}
+			}
+			if (freeTech != null) {
+				techCopy.remove(freeTech);
+			}
+		}
+
+		int discount = 0;
+		if (l.contains(Technology.LIBRARY)) {
+			techCopy.remove(Technology.LIBRARY);
+			discount = Math.min(40, techCopy.stream().mapToInt(t -> civ.getCost(t)).max().orElse(0));
+			techCopy.add(Technology.LIBRARY);
+		}
+
+		int cost = techCopy.stream().mapToInt(t -> civ.getCost(t)).sum() - discount;
+
+		return cost;
+	}
+
+	private static ArrayList<Technology> getOptimalTechsWorthNVp(Civilization civ, int vp,
+			ArrayList<Technology> availableTechs) {
+		ArrayList<List<Technology>> list = new ArrayList<List<Technology>>();
+
+		List<Technology> l1 = availableTechs.stream().filter(t -> t.getVP() == 1).collect(Collectors.toList());
+		List<Technology> l2 = availableTechs.stream().filter(t -> t.getVP() == 3).collect(Collectors.toList());
+		List<Technology> l3 = availableTechs.stream().filter(t -> t.getVP() == 6).collect(Collectors.toList());
+
+		list.addAll(Technology.Combinations(l1, vp).collect(Collectors.toList()));
+		if (vp >= 3) {
+			int nL2 = vp / 3;
+			int nL1 = vp - nL2 * 3;
+			List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
+			List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
+
+			List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
+			l1List.forEach(l1t -> l2List.forEach(
+					l2t -> crossProduct.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).build())));
+			list.addAll(crossProduct);
+		}
+		if (vp >= 6) {
+			int nL3 = vp / 6;
+			int nL2 = ( vp - nL3 * 6 ) / 3;
+			int nL1 = vp - ( nL3 * 6 + nL2 * 3 );
+			List<List<Technology>> l1List = Technology.Combinations(l1, nL1).collect(Collectors.toList());
+			List<List<Technology>> l2List = Technology.Combinations(l2, nL2).collect(Collectors.toList());
+			List<List<Technology>> l3List = Technology.Combinations(l3, nL3).collect(Collectors.toList());
+
+			List<List<Technology>> crossProduct = new ArrayList<List<Technology>>();
+			l1List.forEach(l1t -> l2List.forEach(l2t -> l3List.forEach(l3t -> crossProduct
+					.add(ImmutableList.<Technology> builder().addAll(l1t).addAll(l2t).addAll(l3t).build()))));
+			list.addAll(crossProduct);
+		}
+
+		ArrayList<Technology> optimalList = new ArrayList<Technology>(
+				list.stream().collect(Collectors.minBy(new totalTechCostComparator(civ))).orElse(null));
+
+		return optimalList;
+	}
+
+	public static ArrayList<Technology> getOptimalTechs(Civilization civ, int budget) {
+		ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
+		availableTechs.removeAll(civ.getTechs());
+
+		ArrayList<Technology> optimalTechs = new ArrayList<Technology>();
+
+		for (int vp = 1; vp <= availableTechs.size(); vp++) {
+			// System.out.println("Trying " + vp + "VP");
+			ArrayList<Technology> candidate = getOptimalTechsWorthNVp(civ, vp, availableTechs);
+			// System.out.println("Candidate: " + Arrays.toString(candidate.toArray()));
+
+			if (getTotalCost(civ, candidate) <= budget) {
+				optimalTechs = candidate;
+			} else {
+				break;
+			}
+		}
+
+		return optimalTechs;
+	}
+
+	public static ArrayList<Technology> getOptimalTechsNoSpecials(Civilization civ, int budget,
+			ArrayList<Technology> availableTechs) {
+		ArrayList<Technology> optimalTechs = new ArrayList<Technology>();
+
+		List<Technology> level1Techs = availableTechs.stream().filter(t -> t.getVP() == 1).collect(Collectors.toList());
+		List<Technology> level2Techs = availableTechs.stream().filter(t -> t.getVP() == 3).collect(Collectors.toList());
+		List<Technology> level3Techs = availableTechs.stream().filter(t -> t.getVP() == 6).collect(Collectors.toList());
+
+		level1Techs.sort(new Technology.techCostComparator(civ));
+		level2Techs.sort(new Technology.techCostComparator(civ));
+		level3Techs.sort(new Technology.techCostComparator(civ));
+
+		while (true) {
+			ArrayList<Technology> techs100 = new ArrayList<Technology>();
+			techs100.add(level3Techs.get(0));
+			ArrayList<Technology> techs010 = new ArrayList<Technology>();
+			techs010.add(level2Techs.get(0));
+			ArrayList<Technology> techs001 = new ArrayList<Technology>();
+			techs001.add(level1Techs.get(0));
+
+			ArrayList<Technology> techs006 = ( level1Techs.size() >= 6 ) ? new ArrayList<Technology>(
+					level1Techs.stream().limit(6).collect(Collectors.toList())) : null;
+			ArrayList<Technology> techs003 = ( level1Techs.size() >= 3 ) ? new ArrayList<Technology>(
+					level1Techs.stream().limit(3).collect(Collectors.toList())) : null;
+			ArrayList<Technology> techs020 = ( level2Techs.size() >= 2 ) ? new ArrayList<Technology>(
+					level2Techs.stream().limit(2).collect(Collectors.toList())) : null;
+
+			ArrayList<Technology> techs013 = null;
+			if (level1Techs.size() >= 3 && level2Techs.size() >= 1) {
+				techs013 = new ArrayList<Technology>();
+				techs013.addAll(level1Techs.stream().limit(3).collect(Collectors.toList()));
+				techs013.add(level2Techs.get(0));
+			}
+
+			// VP 1
+			final int cost001 = ( techs001 != null ) ? Technology.getTotalCost(civ, techs001) : Integer.MAX_VALUE;
+
+			// VP 3
+			final int cost003 = ( techs003 != null ) ? Technology.getTotalCost(civ, techs003) : Integer.MAX_VALUE;
+			final int cost010 = ( techs010 != null ) ? Technology.getTotalCost(civ, techs010) : Integer.MAX_VALUE;
+			int costVP3 = Math.min(cost010, cost003);
+
+			// VP 6
+			final int cost006 = ( techs006 != null ) ? Technology.getTotalCost(civ, techs006) : Integer.MAX_VALUE;
+			final int cost020 = ( techs020 != null ) ? Technology.getTotalCost(civ, techs020) : Integer.MAX_VALUE;
+			final int cost013 = ( techs013 != null ) ? Technology.getTotalCost(civ, techs013) : Integer.MAX_VALUE;
+			final int cost100 = ( techs100 != null ) ? Technology.getTotalCost(civ, techs100) : Integer.MAX_VALUE;
+			int costVP6 = Math.min(Math.min(cost100, cost020), cost006);
+
+			System.out.println("Budget: " + budget);
+			System.out.println("VP6 cost: " + costVP6);
+			System.out.println("VP3 cost: " + costVP3);
+			System.out.println("VP1 cost: " + cost001);
+
+			if (costVP6 <= budget) {
+				List<Technology> listVP6 = null;
+				if (costVP6 == cost006) {
+					listVP6 = techs006;
+				} else if (costVP6 == cost020) {
+					listVP6 = techs020;
+				} else if (costVP6 == cost013) {
+					listVP6 = techs013;
+				} else if (costVP6 == cost100) {
+					listVP6 = techs100;
+				}
+
+				optimalTechs.addAll(listVP6);
+				level1Techs.removeAll(listVP6);
+				level2Techs.removeAll(listVP6);
+				level3Techs.removeAll(listVP6);
+				budget = budget - costVP6;
+			} else if (costVP3 <= budget) {
+				List<Technology> listVP3 = null;
+				if (costVP3 == cost003) {
+					listVP3 = techs003;
+				} else if (costVP3 == cost010) {
+					listVP3 = techs010;
+				}
+				optimalTechs.addAll(listVP3);
+				level1Techs.removeAll(listVP3);
+				level2Techs.removeAll(listVP3);
+				budget = budget - costVP3;
+			} else if (cost001 <= budget) {
+				optimalTechs.addAll(techs001);
+				level1Techs.removeAll(techs001);
+				budget = budget - cost001;
+			} else {
+				break;
+			}
+		}
+
+		return optimalTechs;
+
+		// System.out.println("========= Finding optimal techs =========");
+	}
+
 	private final static HashMap<Technology, HashMap<Technology, Integer>> TECH_CREDITS;
 	static {
 		TECH_CREDITS = new HashMap<Technology, HashMap<Technology, Integer>>() {
@@ -1180,7 +1394,6 @@ public enum Technology {
 		};
 	}
 
-
 	private final int								MAX_HTML_WIDTH	= 50;
 
 	@JsonProperty("name")
@@ -1271,5 +1484,27 @@ public enum Technology {
 		s += "\n";
 		s += this.text + "\n";
 		return s;
+	}
+
+	/**
+	 * Copied from https://stackoverflow.com/questions/28515516/enumeration-combinations-of-k-elements-using-java-8
+	 * 
+	 * @param l
+	 * @param size
+	 * @return
+	 */
+	private static <E> Stream<List<E>> Combinations(List<E> l, int size) {
+		if (size == 0) {
+			return Stream.of(Collections.emptyList());
+		} else {
+			return IntStream.range(0, l.size()).boxed().<List<E>> flatMap(
+					i -> Combinations(l.subList(i + 1, l.size()), size - 1).map(t -> pipe(l.get(i), t)));
+		}
+	}
+
+	private static <E> List<E> pipe(E head, List<E> tail) {
+		List<E> newList = new ArrayList<>(tail);
+		newList.add(0, head);
+		return newList;
 	}
 }

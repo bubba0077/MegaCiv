@@ -1,6 +1,7 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -16,6 +16,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -35,12 +37,14 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 	private static final int						N_ROWS				= 17;
 
-	private final JLabel							civLabel, sortLabel;
+	private final JLabel							civLabel, sortLabel, budgetLabel, shoppingAssistantLabel, vpLabel;
 	private final JComboBox<String>					sortComboBox;
 	private final ArrayList<TechnologyCheckBox>		techCheckboxes;
 	private final GameClient						client;
 	private final JFrame							frame;
-	private final JButton							buyNextButton, resetButton;
+	private final JSpinner							spinner;
+	private final JCheckBox							disableUnbuyable;
+	private final JButton							buyNextButton, resetButton, suggestButton;
 	private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
 	private final JLabel							writtenRecordLabel, monumentLabel;
 	private final Civilization.Name					civName;
@@ -63,9 +67,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridwidth = 3;
+		constraints.gridwidth = 4;
 		this.civLabel = this.enclosedLabelFactory(civName.toString(), constraints, JLabel.LEFT, JLabel.CENTER);
 
 		constraints.gridwidth = 1;
@@ -82,6 +86,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.add(this.sortComboBox, constraints);
 
 		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
 
 		this.techCheckboxes = new ArrayList<TechnologyCheckBox>();
 
@@ -131,25 +136,73 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			this.monumentComboboxes.add(combobox);
 		}
 
+
+		constraints.gridx = 0;
+		constraints.gridy = N_ROWS + 2;
+		constraints.gridwidth = 2;
+		this.shoppingAssistantLabel =
+				this.enclosedLabelFactory("Shopping Assistant", constraints, JLabel.CENTER, JLabel.CENTER);
+
+		constraints.gridx = 0;
+		constraints.gridy = N_ROWS + 3;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 2;
+		this.budgetLabel = this.enclosedLabelFactory("Budget", constraints, JLabel.CENTER, JLabel.CENTER);
+
+		constraints.gridx = 1;
+		constraints.gridy = N_ROWS + 3;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 2;
+		this.spinner = new JSpinner(new SpinnerNumberModel(0, 0, 7790, 5));
+		// this.spinner.setFont(this.spinner.getFont().deriveFont(fontSize));
+		this.spinner.addChangeListener(this);
+		this.add(this.spinner, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = N_ROWS + 5;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		this.disableUnbuyable = new JCheckBox("Disable Overbudget");
+		this.disableUnbuyable.setSelected(true);
+		this.disableUnbuyable.setActionCommand("Overbudget Changed");
+		this.disableUnbuyable.addActionListener(this);
+		this.add(this.disableUnbuyable, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = N_ROWS + 6;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		this.suggestButton = new JButton("Maximize VP");
+		this.suggestButton.setActionCommand("Maximize VP");
+		this.suggestButton.addActionListener(this);
+		this.suggestButton.setEnabled(false);
+		this.add(this.suggestButton, constraints);
+
+		constraints.gridx = 2;
+		constraints.gridy = 5 + N_ROWS;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		this.resetButton = new JButton("Reset");
+		this.resetButton.setActionCommand("Reset");
+		this.resetButton.addActionListener(this);
+		this.add(this.resetButton, constraints);
+
+		constraints.gridx = 3;
+		constraints.gridy = 5 + N_ROWS + 1;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		this.vpLabel = this.enclosedLabelFactory("VP Gained: 0", constraints, JLabel.RIGHT, JLabel.CENTER);
+
 		constraints.gridx = 4;
 		constraints.gridy = 5 + N_ROWS;
 		constraints.weighty = 1.0;
+		constraints.gridheight = 2;
 		constraints.gridwidth = 2;
 		this.buyNextButton = new JButton("Buy");
 		this.buyNextButton.setActionCommand("Buy");
 		this.buyNextButton.addActionListener(this);
 		this.add(this.buyNextButton, constraints);
 		constraints.gridheight = 1;
-
-		constraints.gridx = 1;
-		constraints.gridy = 5 + N_ROWS;
-
-		constraints.gridx = 0;
-		constraints.gridy = 5 + N_ROWS;
-		this.resetButton = new JButton("Reset");
-		this.resetButton.setActionCommand("Reset");
-		this.resetButton.addActionListener(this);
-		this.add(this.resetButton, constraints);
 
 		this.setCheckboxTechs();
 
@@ -164,8 +217,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.frame.pack();
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
-
-		this.setCheckboxTechs();
 	}
 
 	public void loadProperties() {
@@ -175,11 +226,24 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		int rowHeight = Integer.parseInt(props.getProperty("TechStoreDialog.Tech.Height"));
 		float fontSize = Float.parseFloat(props.getProperty("TechStoreDialog.Tech.FontSize"));
 
+		Color assistantForeground = Game.FOREGROUND_COLORS.get(this.civName);
+		Color assistantBackground = Game.BACKGROUND_COLORS.get(this.civName);
+
 		for (JCheckBox checkbox : this.techCheckboxes) {
 			BubbaPanel.setButtonProperties(checkbox, colWidth, rowHeight, null, null, fontSize);
 		}
 
-		BubbaPanel.setLabelProperties(this.civLabel, Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Width")),
+		for (TechnologyTypeComboBox comboBox : this.monumentComboboxes) {
+			comboBox.setPreferredSize(new Dimension(colWidth / 2, rowHeight));
+			comboBox.setMinimumSize(new Dimension(colWidth / 2, rowHeight));
+		}
+
+		for (TechnologyTypeComboBox comboBox : this.writtenRecordComboboxes) {
+			comboBox.setPreferredSize(new Dimension(colWidth / 2, rowHeight));
+			comboBox.setMinimumSize(new Dimension(colWidth / 2, rowHeight));
+		}
+
+		BubbaPanel.setLabelProperties(this.civLabel, colWidth * 2,
 				Integer.parseInt(props.getProperty("TechStoreDialog.Civ.Height")),
 				Game.FOREGROUND_COLORS.get(this.civName), Game.BACKGROUND_COLORS.get(this.civName),
 				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
@@ -189,15 +253,47 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				Game.FOREGROUND_COLORS.get(this.civName), Game.BACKGROUND_COLORS.get(this.civName),
 				Float.parseFloat(props.getProperty("TechStoreDialog.Civ.FontSize")));
 
-		BubbaPanel.setButtonProperties(this.buyNextButton,
-				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Width")),
+		BubbaPanel.setButtonProperties(this.buyNextButton, colWidth,
 				Integer.parseInt(props.getProperty("TechStoreDialog.BuyButton.Height")), null, null,
 				Float.parseFloat(props.getProperty("TechStoreDialog.BuyButton.FontSize")));
 
-		BubbaPanel.setButtonProperties(this.resetButton,
-				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Width")),
+		BubbaPanel.setButtonProperties(this.resetButton, colWidth / 2,
 				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Height")), null, null,
 				Float.parseFloat(props.getProperty("TechStoreDialog.ResetButton.FontSize")));
+
+		BubbaPanel.setButtonProperties(this.suggestButton, colWidth / 2,
+				Integer.parseInt(props.getProperty("TechStoreDialog.ResetButton.Height")), null, null,
+				Float.parseFloat(props.getProperty("TechStoreDialog.ResetButton.FontSize")));
+
+		BubbaPanel.setLabelProperties(this.shoppingAssistantLabel, colWidth, rowHeight, assistantForeground,
+				assistantBackground, fontSize);
+		BubbaPanel.setLabelProperties(this.budgetLabel, colWidth / 3, rowHeight, assistantForeground,
+				assistantBackground, fontSize);
+		this.spinner.getEditor().getComponent(0).setForeground(assistantForeground);
+		this.spinner.getEditor().getComponent(0).setBackground(assistantBackground);
+		this.spinner.setFont(this.spinner.getFont().deriveFont(fontSize));
+		BubbaPanel.setButtonProperties(this.disableUnbuyable, colWidth * 2 / 3, rowHeight, assistantForeground,
+				assistantBackground, fontSize);
+		BubbaPanel.setButtonProperties(this.suggestButton, colWidth * 2 / 3, rowHeight, null, null, fontSize);
+
+	}
+
+	private void selectOptimal() {
+		resetCheckboxes();
+
+		Civilization civ = this.client.getGame().getCivilization(this.civName);
+		int budget = (int) this.spinner.getValue();
+		ArrayList<Technology> optimalTech = Technology.getOptimalTechs(civ, budget);
+
+		if (optimalTech != null) {
+			for (TechnologyCheckBox checkbox : techCheckboxes) {
+				if (optimalTech.contains(checkbox.getTechnology())) {
+					checkbox.setSelected(true);
+				}
+			}
+		}
+
+		this.setCheckboxTechs();
 	}
 
 	private void setCheckboxTechs() {
@@ -223,6 +319,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				break;
 		}
 
+		int budget = (int) this.spinner.getValue();
+
 		for (int i = 0; i < this.techCheckboxes.size(); i++) {
 			TechnologyCheckBox checkbox = this.techCheckboxes.get(i);
 			Technology tech = allTechs.get(i);
@@ -230,7 +328,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 			boolean isOwned = ownedTechs.contains(tech);
 			checkbox.setSelected(isOwned || checkedTechs.contains(tech));
-			checkbox.setEnabled(!isOwned);
+			boolean overBudget = this.disableUnbuyable.isSelected() && budget != 0 && civ.getCost(tech) > budget;
+			boolean enabled = !( isOwned || overBudget );
+			checkbox.setEnabled(enabled);
 			String techString = "<html>" + tech.getName();
 			if (!isOwned) {
 				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
@@ -283,77 +383,50 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		}
 
 		this.updateTotalCost();
-
+		this.setCheckboxTechs();
 	}
 
 	private void updateTotalCost() {
 		Civilization civ = this.client.getGame().getCivilization(this.civName);
 
-		HashMap<Technology, Integer> costs = new HashMap<Technology, Integer>();
+		ArrayList<Technology> selectedTechs = new ArrayList<Technology>();
 		for (TechnologyCheckBox checkbox : this.techCheckboxes) {
 			Technology tech = checkbox.getTechnology();
 			if (checkbox.isSelected() && checkbox.isEnabled()) {
-				costs.put(tech, civ.getCost(tech));
+				selectedTechs.add(tech);
 			}
-		}
-
-		if (costs.containsKey(Technology.ANATOMY)) {
-			costs.remove(Technology.ANATOMY);
-			Technology freeTech = null;
-			for (Technology tech : costs.keySet()) {
-				if (tech.getTypes().contains(Type.SCIENCE) && tech.getBaseCost() < 100
-						&& ( freeTech == null || tech.getBaseCost() > freeTech.getBaseCost() )) {
-					freeTech = tech;
-				}
-			}
-			if (freeTech != null) {
-				costs.remove(freeTech);
-			}
-			costs.put(Technology.ANATOMY, civ.getCost(Technology.ANATOMY));
-		}
-
-		if (costs.containsKey(Technology.LIBRARY)) {
-			costs.remove(Technology.LIBRARY);
-			Technology discountedTech = null;
-			int discount = 0;
-			for (Technology tech : costs.keySet()) {
-				if (discountedTech == null || civ.getCost(tech) > discount) {
-					discountedTech = tech;
-					discount = Math.min(civ.getCost(discountedTech), 40);
-				}
-				if (discount == 40) {
-					break;
-				}
-			}
-			if (discountedTech != null) {
-				costs.put(discountedTech, civ.getCost(discountedTech) - discount);
-			}
-			costs.put(Technology.LIBRARY, civ.getCost(Technology.LIBRARY));
 		}
 
 		for (TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
-			combobox.setEnabled(costs.containsKey(Technology.WRITTEN_RECORD));
+			combobox.setEnabled(selectedTechs.contains(Technology.WRITTEN_RECORD));
 		}
 
 		for (TechnologyTypeComboBox combobox : this.monumentComboboxes) {
-			combobox.setEnabled(costs.containsKey(Technology.MONUMENT));
+			combobox.setEnabled(selectedTechs.contains(Technology.MONUMENT));
 		}
 
-		int cost = 0;
-		for (int c : costs.values()) {
-			cost = cost + c;
-		}
+		int cost = Technology.getTotalCost(civ, selectedTechs);
+
 		this.buyNextButton.setText("Buy (" + String.format("%04d", cost) + ")");
 		if (cost > 0) {
 			this.buyNextButton.setForeground(new Color(new BigInteger("00b300", 16).intValue()));
 		} else {
 			this.buyNextButton.setForeground(null);
 		}
+
+		int totalVP = selectedTechs.stream().mapToInt(Technology::getVP).sum();
+		this.vpLabel.setText("VP Gained: " + totalVP);
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		this.updateTotalCost();
+		if (e.getSource().equals(this.spinner)) {
+			this.setCheckboxTechs();
+			this.disableUnbuyable.setEnabled((int) this.spinner.getValue() > 0);
+			this.suggestButton.setEnabled((int) this.spinner.getValue() > 0);
+		} else {
+			this.updateTotalCost();
+		}
 	}
 
 	@Override
@@ -400,6 +473,12 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				break;
 			case "Sort":
 				this.setCheckboxTechs();
+				break;
+			case "Overbudget Changed":
+				this.setCheckboxTechs();
+				break;
+			case "Maximize VP":
+				this.selectOptimal();
 				break;
 		}
 	}

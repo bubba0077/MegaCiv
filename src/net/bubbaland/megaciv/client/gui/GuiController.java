@@ -25,7 +25,7 @@ public class GuiController extends BubbaGuiController {
 	// File name to store window positions
 	protected final static String				SETTINGS_FILENAME	= ".net.bubbaland.megaciv.client.gui.settings";
 	// Settings version to force reloading defaults
-	private final static String					SETTINGS_VERSION	= "8";
+	private final static String					SETTINGS_VERSION	= "9";
 
 	// private final static String FONT_FILENAME = "fonts/tahoma.ttf";
 
@@ -135,14 +135,12 @@ public class GuiController extends BubbaGuiController {
 		this.astForegroundColors = new HashMap<Civilization.Age, Color>();
 		this.astBackgroundColors = new HashMap<Civilization.Age, Color>();
 		for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
-			this.astForegroundColors.put(age,
-					new Color(new BigInteger(
-							this.getProperties().getProperty("AstTable." + age.name() + ".ForegroundColor"), 16)
-									.intValue()));
-			this.astBackgroundColors.put(age,
-					new Color(new BigInteger(
-							this.getProperties().getProperty("AstTable." + age.name() + ".BackgroundColor"), 16)
-									.intValue()));
+			this.astForegroundColors.put(age, new Color(
+					new BigInteger(this.getProperties().getProperty("AstTable." + age.name() + ".ForegroundColor"), 16)
+							.intValue()));
+			this.astBackgroundColors.put(age, new Color(
+					new BigInteger(this.getProperties().getProperty("AstTable." + age.name() + ".BackgroundColor"), 16)
+							.intValue()));
 		}
 
 	}

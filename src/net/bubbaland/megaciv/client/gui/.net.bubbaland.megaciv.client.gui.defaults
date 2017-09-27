@@ -132,7 +132,6 @@ NewGameDialog.Civ.Width=150
 NewGameDialog.Civ.FontSize=24.0
 
 TechStoreDialog.Civ.Height=28
-TechStoreDialog.Civ.Width=840
 TechStoreDialog.Civ.FontSize=24.0
 
 TechStoreDialog.Tech.Height=18
@@ -140,11 +139,9 @@ TechStoreDialog.Tech.Width=280
 TechStoreDialog.Tech.FontSize=14.0
 
 TechStoreDialog.BuyButton.Height=30
-TechStoreDialog.BuyButton.Width=100
 TechStoreDialog.BuyButton.FontSize=24.0
 
 TechStoreDialog.ResetButton.Height=24
-TechStoreDialog.ResetButton.Width=100
 TechStoreDialog.ResetButton.FontSize=16.0
 
 CivEditPanel.Header.Height=50

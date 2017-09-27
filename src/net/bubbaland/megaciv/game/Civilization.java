@@ -683,6 +683,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return Math.max(cost, 0);
 	}
 
+	public int getAdjustedCost(Technology tech) {
+		return this.getCost(tech) - ( tech.equals(Technology.LIBRARY) ? 40 : 0 );
+	}
+
 	/**
 	 * Get the number of credits towards the specified advance Type. This includes credits from all purchased advances,
 	 * including additional credits chosen for {@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD
