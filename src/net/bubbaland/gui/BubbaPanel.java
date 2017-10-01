@@ -65,8 +65,6 @@ public abstract class BubbaPanel extends JPanel {
 	 * Adds a word-wrapping text pane inside of a scrollable pane to the panel that can process hyperlink clicks. A
 	 * reference to the text pane is returned so the text can be read/changed later.
 	 *
-	 * @param client
-	 *            TODO
 	 * @param string
 	 *            The initial string for the text pane
 	 * @param constraints
@@ -115,8 +113,6 @@ public abstract class BubbaPanel extends JPanel {
 	 * Adds a word-wrapping text pane inside of a scrollable pane to the panel that can process hyperlink clicks. A
 	 * reference to the text pane is returned so the text can be read/changed later.
 	 *
-	 * @param client
-	 *            TODO
 	 * @param string
 	 *            The initial string for the text pane
 	 * @param constraints
@@ -359,6 +355,8 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The new height
 	 * @param foreground
 	 *            The new foreground color
+	 * @param background
+	 *            The new background color
 	 * @param fontSize
 	 *            The new font size
 	 */

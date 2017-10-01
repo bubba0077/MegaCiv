@@ -76,8 +76,10 @@ public class TearAwayTab extends JWindow {
 	/**
 	 * Display this window and attach it to the mouse pointer.
 	 *
-	 * @param location
-	 *            The location to start at
+	 * @param tabbedPane
+	 *            The tabbed pane to attach to
+	 * @param tabIndex
+	 *            The position where this should be inserted
 	 */
 	public void attach(BubbaDnDTabbedPane tabbedPane, int tabIndex) {
 		if (this.isVisible()) return;

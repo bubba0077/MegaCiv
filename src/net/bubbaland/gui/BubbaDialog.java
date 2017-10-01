@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- * Custom dialog that handles setting up a lot of the characteristics used by all trivia dialogs.
+ * Custom dialog that handles setting up a lot of the characteristics used by all GUI dialogs.
  *
- * The TriviaDialog class handles the creation of the option pane for the dialog. It also handles the saving and loading
+ * The BubbaDialog class handles the creation of the option pane for the dialog. It also handles the saving and loading
  * of position and size and makes the dialog resizable.
  *
  * The constructor takes in the parent frame and title for the dialog box, followed by the usual arguments for
@@ -34,8 +34,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog with no arguments for the JOptionPane
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
 	 */
@@ -47,8 +47,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * Create a BubbaDialog using the specified option pane. This is generally used internally after the option pane has
 	 * been created.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
 	 * @param optionPane
@@ -74,11 +74,12 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
 	 * @param panel
+	 *            Panel to display in this dialog
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel) {
@@ -89,13 +90,14 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
-	 * @param message
-	 * @see JOptionPane
+	 * @param panel
+	 *            Panel to show in this dialog
 	 * @param messageType
+	 *            Dialog message type,
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType) {
@@ -106,15 +108,17 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
-	 * @param message
-	 * @see JOptionPane
+	 * @param panel
+	 *            Panel to display in this dialog
 	 * @param messageType
+	 *            Dialog message type,
 	 * @see JOptionPane
 	 * @param optionType
+	 *            Dialog option type
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType) {
@@ -125,17 +129,20 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
-	 * @param message
-	 * @see JOptionPane
+	 * @param panel
+	 *            Panel to display in this dialog
 	 * @param messageType
+	 *            Dialog message type,
 	 * @see JOptionPane
 	 * @param optionType
+	 *            Dialog option type
 	 * @see JOptionPane
 	 * @param icon
+	 *            Decorative icon to use for this dialog
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
@@ -147,19 +154,23 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
-	 * @param message
-	 * @see JOptionPane
+	 * @param panel
+	 *            Panel to display in this dialog
 	 * @param messageType
+	 *            Dialog message type,
 	 * @see JOptionPane
 	 * @param optionType
+	 *            Dialog option type
 	 * @see JOptionPane
 	 * @param icon
+	 *            Decorative icon to use for this dialog
 	 * @see JOptionPane
 	 * @param options
+	 *            Array of choices for this dialog
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
@@ -171,21 +182,25 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	/**
 	 * Create a BubbaDialog using the specified option pane arguments.
 	 *
-	 * @param frame
-	 *            Parent frame for the dialog
+	 * @param gui
+	 *            Parent GUI for the dialog
 	 * @param title
 	 *            Title for the dialog
-	 * @param message
-	 * @see JOptionPane
+	 * @param panel
+	 *            Panel to display in this dialog
 	 * @param messageType
+	 *            Dialog message type,
 	 * @see JOptionPane
 	 * @param optionType
+	 *            Dialog option type
 	 * @see JOptionPane
 	 * @param icon
+	 *            Decorative icon to use for this dialog
 	 * @see JOptionPane
 	 * @param options
-	 * @see JOptionPane
+	 *            Array of choices for this dialog
 	 * @param initialValue
+	 *            The default option
 	 * @see JOptionPane
 	 */
 	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,

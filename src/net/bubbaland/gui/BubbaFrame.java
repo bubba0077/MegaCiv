@@ -48,8 +48,8 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	/**
 	 * Internal constructor containing code common to the public constructors.
 	 *
-	 * @param client
-	 *            The root client
+	 * @param controller
+	 *            The root GUI controller for this frame
 	 */
 	protected BubbaFrame(BubbaGuiController controller) {
 		super();
