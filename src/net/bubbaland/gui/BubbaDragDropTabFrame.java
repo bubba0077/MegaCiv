@@ -93,6 +93,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 
 	public void addTab(String tabName) {
 		try {
+			// Remove (#) from tab name duplicates
 			BubbaMainPanel newTab = this.tabFactory(tabName.replaceFirst(" \\([0-9]*\\)", ""));
 			this.tabbedPane.addTab(tabName, newTab);
 			this.tabbedPane.setSelectedComponent(newTab);
@@ -145,7 +146,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 * 
 	 * @return
 	 */
-	public BubbaMainPanel tabFactory(String tabType) {
+	private BubbaMainPanel tabFactory(String tabType) {
 		TabInformation tabInfo = this.tabInformationHash.get(tabType);
 		try {
 			return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses())
