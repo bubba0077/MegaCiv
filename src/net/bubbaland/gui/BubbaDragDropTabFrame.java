@@ -25,12 +25,22 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	/** List of available tabs and associated descriptions. */
 	protected Hashtable<String, TabInformation>	tabInformationHash;
 	protected final BubbaDnDTabbedPane			tabbedPane;
+	// Field specifying whether we should save which tabs are open when closing
+	private boolean								saveTabs;
+
+	/**
+	 * @param saveTabs
+	 *            the saveTabs to set
+	 */
+	protected void setSaveTabs(boolean saveTabs) {
+		this.saveTabs = saveTabs;
+	}
 
 	/**
 	 * Creates a new frame with specified tabs.
 	 *
-	 * @param client
-	 *            The root client
+	 * @param gui
+	 *            The GUI controller for this frame
 	 * @param initialTabs
 	 *            Tabs to open initially
 	 */
@@ -45,6 +55,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	public BubbaDragDropTabFrame(BubbaGuiController controller) {
 		super(controller);
 		this.initTabInfoHash();
+		this.saveTabs = true;
 
 		// Create drag & drop tabbed pane
 		this.tabbedPane = new BubbaDnDTabbedPane(controller, this);
@@ -82,12 +93,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 
 	public void addTab(String tabName) {
 		try {
-			BubbaMainPanel newTab = this.tabFactory(this, tabName.replaceFirst(" \\([0-9]*\\)", ""));
+			BubbaMainPanel newTab = this.tabFactory(tabName.replaceFirst(" \\([0-9]*\\)", ""));
 			this.tabbedPane.addTab(tabName, newTab);
 			this.tabbedPane.setSelectedComponent(newTab);
 			newTab.updateGui(true);
 		} catch (IllegalArgumentException | SecurityException exception) {
-			// TODO Auto-generated catch block
 			exception.printStackTrace();
 		}
 	}
@@ -98,6 +108,9 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 	}
 
+	/**
+	 * Initializes the tab information hash, which maps tab names to tab descriptions.
+	 */
 	protected void initTabInfoHash() {
 		this.tabInformationHash = new Hashtable<String, TabInformation>();
 	}
@@ -125,7 +138,14 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		return tabInformationHash.get(tabName).getTabDescription();
 	}
 
-	public BubbaMainPanel tabFactory(BubbaFrame frame, String tabType) {
+	/**
+	 * Creates a new tab that contains a BubbaMainPanel and returns the panel.
+	 * 
+	 * @param tabType
+	 * 
+	 * @return
+	 */
+	public BubbaMainPanel tabFactory(String tabType) {
 		TabInformation tabInfo = this.tabInformationHash.get(tabType);
 		try {
 			return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses())
@@ -224,8 +244,10 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	public void saveProperties() {
 		super.saveProperties();
 		final String id = this.getTitle();
-		this.controller.getProperties().setProperty("Window." + id + ".OpenTabs",
-				String.join(", ", ( (BubbaDragDropTabFrame) this ).tabbedPane.getTabNames()));
+		if (this.saveTabs) {
+			this.controller.getProperties().setProperty("Window." + id + ".OpenTabs",
+					String.join(", ", ( (BubbaDragDropTabFrame) this ).tabbedPane.getTabNames()));
+		}
 	}
 
 	@Override

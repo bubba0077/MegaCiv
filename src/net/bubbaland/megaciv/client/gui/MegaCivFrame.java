@@ -33,6 +33,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 
 	protected MegaCivFrame(GuiClient client, GuiController controller) {
 		super(controller);
+		this.setSaveTabs(false);
 		this.client = client;
 		this.controller = controller;
 		this.initTabInfoHash();

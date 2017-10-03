@@ -16,6 +16,14 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+/**
+ * GUI controller to coordinate multiple frames and provide access to saved properties.
+ * 
+ * 
+ * 
+ * @author Walter Kolczynski
+ *
+ */
 public abstract class BubbaGuiController {
 
 	protected Properties					properties;
@@ -179,6 +187,10 @@ public abstract class BubbaGuiController {
 			name = "MegaCiv (" + i + ")";
 		}
 		return name;
+	}
+
+	public BubbaFrame getFirstWindow() {
+		return this.windowList.get(0);
 	}
 
 	/**

@@ -163,16 +163,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 				i++;
 			}
 			// Add the tab to the tabbed pane
-			BubbaMainPanel newTab = null;
-			try {
-				newTab = this.parent.tabFactory(this.parent, tabName);
-			} catch (IllegalArgumentException | SecurityException exception) {
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
-			}
-			this.parent.getTabbedPane().addTab(altName, newTab);
-			newTab.updateGui(true);
-			// Make the new tab the selected one
+			this.parent.addTab(altName);
 			final int tabLocation = pane.indexOfTab(altName);
 			pane.setSelectedIndex(tabLocation);
 		}

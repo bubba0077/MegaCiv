@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -13,11 +12,9 @@ import javax.swing.SwingWorker;
 import javax.swing.ToolTipManager;
 
 import net.bubbaland.gui.*;
-import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.User;
 
-@SuppressWarnings("unused")
 public class GuiController extends BubbaGuiController {
 
 	// File name to store window positions
@@ -25,9 +22,7 @@ public class GuiController extends BubbaGuiController {
 	// File name to store window positions
 	protected final static String				SETTINGS_FILENAME	= ".net.bubbaland.megaciv.client.gui.settings";
 	// Settings version to force reloading defaults
-	private final static String					SETTINGS_VERSION	= "9";
-
-	// private final static String FONT_FILENAME = "fonts/tahoma.ttf";
+	private final static String					SETTINGS_VERSION	= "10";
 
 	private final GuiClient						client;
 	private WaitDialog							waitDialog;
