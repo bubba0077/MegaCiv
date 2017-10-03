@@ -25,7 +25,6 @@ public class GuiController extends BubbaGuiController {
 	private final static String					SETTINGS_VERSION	= "10";
 
 	private final GuiClient						client;
-	private WaitDialog							waitDialog;
 
 	private HashMap<Civilization.Age, Color>	astForegroundColors, astBackgroundColors;
 
@@ -34,16 +33,8 @@ public class GuiController extends BubbaGuiController {
 		this.client = new GuiClient(serverUrl, this);
 		this.client.run();
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				GuiController.this.waitDialog = new WaitDialog(GuiController.this);
-				;
-			}
-		});
-
 		while (!this.client.isConnected()) {
-			setStatusBarText("Awaiting data...");
+			setStatusBarText("Awaiting connection...");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {
@@ -51,15 +42,6 @@ public class GuiController extends BubbaGuiController {
 				System.exit(2);
 			}
 		}
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (GuiController.this.waitDialog != null) {
-					GuiController.this.waitDialog.dispose();
-				}
-			}
-		});
 
 		String userName = this.properties.getProperty("UserName");
 		if (userName == null) {
@@ -151,7 +133,8 @@ public class GuiController extends BubbaGuiController {
 	public void saveProperties() {
 		super.saveProperties();
 		String userName = this.client.getUser().getUserName();
-		if (userName != null && !userName.equals(this.client.getSession().getId().substring(0, 7))) {
+		if (userName != null && this.client.getSession() != null
+				&& !userName.equals(this.client.getSession().getId().substring(0, 7))) {
 			this.properties.setProperty("UserName", this.client.getUser().getUserName());
 		}
 		this.savePropertyFile();

@@ -115,8 +115,8 @@ public class GameClient implements Runnable {
 		try {
 			clientManager.connectToServer(this, this.uri);
 		} catch (DeploymentException | IOException exception) {
-			this.log("Couldn't connect");
-			exception.printStackTrace();
+			this.log("Couldn't connect to " + this.uri);
+			// exception.printStackTrace();
 			this.connectionClosed();
 		}
 	}

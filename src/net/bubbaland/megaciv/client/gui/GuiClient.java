@@ -36,7 +36,7 @@ public class GuiClient extends GameClient {
 	@OnClose
 	public void connectionClosed() {
 		super.connectionClosed();
-		this.gui.endProgram();
+		new DisconnectedDialog(this.gui, this);
 	}
 
 	@OnOpen
@@ -71,8 +71,6 @@ public class GuiClient extends GameClient {
 							.collect(Collectors.toList());
 
 					List<String> newTabs = frame.getTabNames().stream()
-							.peek(tabName -> System.out.println(tabName + " " + !tabName.startsWith("*") + " "
-									+ ( pane.indexOfTab(tabName) == -1 )))
 							.filter(tabName -> !tabName.startsWith("*") && pane.indexOfTab(tabName) == -1)
 							.collect(Collectors.toList());
 
