@@ -10,8 +10,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Properties;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
-import net.bubbaland.gui.BubbaAudio;
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -33,19 +38,26 @@ import net.bubbaland.megaciv.messages.TimerMessage;
 
 public class StopwatchPanel extends BubbaPanel implements ActionListener, StopwatchListener {
 
-	private static final long		serialVersionUID	= 8183502027042074947L;
+	private static final long	serialVersionUID	= 8183502027042074947L;
 
-	private final static BubbaAudio	BEEP				=
-			new BubbaAudio(StopwatchPanel.class.getResource("audio/beep.mp3"));
-	private final static BubbaAudio	ALARM				=
-			new BubbaAudio(StopwatchPanel.class.getResource("audio/finalSound.mp3"));
+	private static Clip			BEEP, ALARM;
+	static {
+		try {
+			BEEP = AudioSystem.getClip();
+			BEEP.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/beep.wav")));
+			ALARM = AudioSystem.getClip();
+			ALARM.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/finalSound.wav")));
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException exception) {
+			System.out.println("Unable to load audio clips in StopwatchPanel!");
+		}
+	}
 
 	private final JToggleButton		runButton;
 	private final JButton			setButton, resetButton;
 	private final LinkedLabelGroup	clockLabelGroup;
 	private final JLabel			clockLabel;
 
-	private final static double		ASPECT_RATIO		= 3.0;
+	private final static double		ASPECT_RATIO	= 3.0;
 
 	private final GameClient		client;
 
@@ -126,10 +138,12 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			case 50:
 			case 150:
 			case 600:
-				BEEP.play();
+				BEEP.setFramePosition(0);
+				BEEP.start();
 				break;
 			case 0:
-				ALARM.play();
+				ALARM.setFramePosition(0);
+				ALARM.start();
 				break;
 		}
 		this.updateGui(deciseconds);

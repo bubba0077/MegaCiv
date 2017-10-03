@@ -51,10 +51,6 @@
   		<artifactId>jsoup</artifactId>
   	</dependency>
   	<dependency>
-  		<groupId>javazoom</groupId>
-  		<artifactId>jlayer</artifactId>
-  	</dependency>
-  	<dependency>
   		<groupId>org.glassfish.tyrus</groupId>
   		<artifactId>tyrus-client</artifactId>
   	</dependency>
@@ -116,11 +112,6 @@
   			<groupId>org.jfree</groupId>
   			<artifactId>jfreechart</artifactId>
   			<version>1.0.19</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>javazoom</groupId>
-  			<artifactId>jlayer</artifactId>
-  			<version>1.0.1</version>
   		</dependency>
   		<dependency>
   			<groupId>org.glassfish.tyrus</groupId>
