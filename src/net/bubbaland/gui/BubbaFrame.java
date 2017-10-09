@@ -68,7 +68,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			private static final long serialVersionUID = -3431542881790392652L;
 
 			@Override
-			public void updateGui(boolean forceUpdate) {}
+			public void updateGui() {}
 
 			@Override
 			protected void loadProperties() {}
@@ -154,13 +154,13 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		this.statusBar.setToolTipText(maxWidthText);
 	}
 
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		while (!this.initComplete) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException exception) {}
 		}
-		this.mainPanel.updateGui(forceUpdate);
+		this.mainPanel.updateGui();
 	}
 
 	/**

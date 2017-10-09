@@ -107,7 +107,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		this.frame.setResizable(false);
 		this.frame.setVisible(true);
 
-		this.updateGui(true);
+		this.updateGui();
 	}
 
 	private class HeaderPanel extends BubbaPanel implements DocumentListener, ChangeListener {
@@ -184,7 +184,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		@Override
 		public void stateChanged(ChangeEvent event) {
 			CivEditPanel.this.civ.setAstPosition((int) this.astPositionSpinner.getValue());
-			CivEditPanel.this.updateGui(true);
+			CivEditPanel.this.updateGui();
 		}
 
 		@Override
@@ -319,7 +319,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				default:
 					client.log("Source not recognized in " + this.getClass().getSimpleName());
 			}
-			CivEditPanel.this.updateGui(true);
+			CivEditPanel.this.updateGui();
 		}
 
 		public void reset() {
@@ -327,7 +327,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			this.citySpinner.setValue(civ.getCityCount());
 		}
 
-		public void updateGui(boolean forceUpdate) {
+		public void updateGui() {
 			String text = String.format("%03d", civ.getVP());
 			if (civ.getCurrentAge() == Age.LATE_IRON
 					&& civ.onlyLateIron(CivEditPanel.this.client.getGame().getCivilizations())) {
@@ -454,10 +454,10 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 				this.monumentComboboxes.get(i).setSelectedItem(credits.get(i));
 				this.monumentComboboxes.get(i).addActionListener(this);
 			}
-			this.updateGui(true);
+			this.updateGui();
 		}
 
-		public void updateGui(boolean forceUpdate) {
+		public void updateGui() {
 			Properties prop = CivEditPanel.this.controller.getProperties();
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Owned"), 16).intValue());
@@ -527,7 +527,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					CivEditPanel.this.civ.addTypeCredits(Technology.MONUMENT, credits);
 					break;
 			}
-			CivEditPanel.this.updateGui(true);
+			CivEditPanel.this.updateGui();
 
 		}
 
@@ -557,14 +557,14 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		this.techPanel.reset();
 	}
 
-	public void updateGui(boolean forceUpdate) {
-		this.statPanel.updateGui(forceUpdate);
-		this.techPanel.updateGui(forceUpdate);
+	public void updateGui() {
+		this.statPanel.updateGui();
+		this.techPanel.updateGui();
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent event) {
-		this.updateGui(true);
+		this.updateGui();
 	}
 
 }

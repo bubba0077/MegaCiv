@@ -35,6 +35,7 @@ import javax.swing.border.BevelBorder;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import net.bubbaland.gui.BubbaDnDTabbedPane;
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
@@ -182,7 +183,7 @@ public class AstTablePanel extends BubbaPanel {
 		// Load and apply properties
 		loadProperties();
 
-		this.updateGui(true);
+		this.updateGui();
 	}
 
 	/**
@@ -219,16 +220,22 @@ public class AstTablePanel extends BubbaPanel {
 		this.resizeFonts();
 	}
 
-	public synchronized void updateGui(boolean forceUpdate) {
+	/**
+	 * Update elements of the GUI.
+	 * 
+	 */
+	public synchronized void updateGui() {
 		Game game = this.client.getGame();
 		if (game == null) {
 			return;
 		}
 
+		// If the number of civs change, reinitialize the row panels
 		if (this.civRows == null || game.getNCivilizations() != this.civRows.size()) {
 			this.redoRows(game.getCivilizationNames());
 		}
 
+		// Sort civilization based on the current sort method
 		ArrayList<Civilization> sortedCivs =
 				Civilization.sortBy(this.client.getGame().getCivilizations(), this.sortOption, this.sortDirection);
 
@@ -236,14 +243,19 @@ public class AstTablePanel extends BubbaPanel {
 			return;
 		}
 
+		// Update the civ attached to each row
 		this.civRows.forEach(row -> row.updateCiv(sortedCivs.get(row.getRowNumber()), sortedCivs));
 
-		this.header.updateGui(forceUpdate, sortedCivs.get(0));
+		// Since how the ages line up on the AST table, need to update header so the ages match the first civ
+		this.header.updateGui(sortedCivs.get(0));
 
 		this.validate();
 		this.resizeFonts();
 	}
 
+	/**
+	 * Set properties based on the properties in the master controller.
+	 */
 	public void loadProperties() {
 		Properties props = this.controller.getProperties();
 
@@ -282,13 +294,22 @@ public class AstTablePanel extends BubbaPanel {
 
 		this.header.loadProperties();
 
-		this.updateGui(true);
+		this.updateGui();
 	}
 
+	/**
+	 * Class to hold GUI elements that make up the header and listen for mouse clicks that will change the sorting.
+	 * 
+	 * @author Walter Kolczynski
+	 *
+	 */
 	private class Header implements MouseListener {
 
 		private final HashMap<Column, JLabel> colLabels;
 
+		/**
+		 * Create a new Header.
+		 */
 		public Header() {
 
 			final GridBagConstraints constraints = new GridBagConstraints();
@@ -307,6 +328,7 @@ public class AstTablePanel extends BubbaPanel {
 
 				int justification = JLabel.CENTER;
 
+				// Determine label text based on the column
 				switch (col) {
 					// case AST:
 					// string = "AST";
@@ -341,6 +363,9 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
+		/**
+		 * Set properties based on the properties in the master controller.
+		 */
 		public void loadProperties() {
 			Properties props = AstTablePanel.this.controller.getProperties();
 			int height = Integer.parseInt(props.getProperty("AstTable.Header.Height"));
@@ -359,7 +384,11 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
-		public void updateGui(boolean forceUpdate, Civilization firstCiv) {
+		/**
+		 * Update elements of the GUI.
+		 * 
+		 */
+		public void updateGui(Civilization firstCiv) {
 			for (Column col : this.colLabels.keySet()) {
 				JLabel label = this.colLabels.get(col);
 				if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
@@ -382,16 +411,21 @@ public class AstTablePanel extends BubbaPanel {
 					case CITIES:
 					case TECHS:
 					case BUY:
+						// Nothing in these columns need to change other than the sort icon
 						continue;
 					default:
+						// All of the AST columns
 
 				}
 
 				int astStep = Integer.parseInt(col.toString().substring(3));
 				Civilization.Age age = firstCiv.getAge(astStep);
+				// Set the tooltip showing the requirements and requirement status for this AST step
 				label.setToolTipText(age + ": " + Game.AGE_REQUIREMENTS
 						.get(AstTablePanel.this.client.getGame().getDifficulty()).get(age).getText());
+				// Set the color of this AST step based on the age and whether it has been gained
 				label.getParent().setBackground(AstTablePanel.this.controller.getAstBackgroundColor(age));
+				// Hide the final column if playing the basic game
 				label.getParent().setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
 			}
 		}
@@ -402,6 +436,7 @@ public class AstTablePanel extends BubbaPanel {
 			final String source = ( (JComponent) e.getSource() ).getName();
 			Column col = Column.valueOf(source);
 			if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
+				// If the current sort column is clicked, reverse the sort order
 				switch (AstTablePanel.this.sortDirection) {
 					case ASCENDING:
 						AstTablePanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
@@ -411,13 +446,14 @@ public class AstTablePanel extends BubbaPanel {
 						break;
 				}
 			} else {
+				// Change the sort method to the clicked column
 				Civilization.SortOption newSort = AstTablePanel.sortHash.get(col);
 				if (newSort != null) {
 					AstTablePanel.this.sortOption = AstTablePanel.sortHash.get(col);
 					AstTablePanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
 				}
 			}
-			AstTablePanel.this.updateGui(true);
+			AstTablePanel.this.updateGui();
 		}
 
 		@Override
@@ -434,6 +470,12 @@ public class AstTablePanel extends BubbaPanel {
 
 	}
 
+	/**
+	 * Class to hold GUI elements that make up one row and handle actions triggered by UI elements there.
+	 * 
+	 * @author Walter Kolczynski
+	 *
+	 */
 	private class CivRow implements ActionListener {
 
 		private final HashMap<Column, JComponent>	components;
@@ -444,9 +486,18 @@ public class AstTablePanel extends BubbaPanel {
 
 		private Civilization.Name					name;
 
+		/**
+		 * Create a new CivRow.
+		 * 
+		 * @param rowNumber
+		 *            Row where these GUI elements appear.
+		 */
 		public CivRow(int rowNumber) {
 			this.rowNumber = rowNumber;
 
+			/**
+			 * Create a new context menu
+			 */
 			this.contextMenu = new JPopupMenu();
 			AstTablePanel.this.add(this.contextMenu);
 
@@ -470,6 +521,7 @@ public class AstTablePanel extends BubbaPanel {
 			this.undoPurchaseMenuItem.addActionListener(this);
 			this.contextMenu.add(this.undoPurchaseMenuItem);
 
+			// Create the buy button
 			this.buyButton = new JButton("Buy");
 			this.buyButton.setActionCommand("Buy");
 			this.buyButton.setMargin(new Insets(0, 0, 0, 0));
@@ -483,6 +535,9 @@ public class AstTablePanel extends BubbaPanel {
 
 			this.components = new HashMap<Column, JComponent>();
 
+			/**
+			 * Create the component associated with each column.
+			 */
 			for (Column col : EnumSet.allOf(Column.class)) {
 				int justification = JLabel.RIGHT;
 				constraints.gridx = col.ordinal();
@@ -508,9 +563,11 @@ public class AstTablePanel extends BubbaPanel {
 				}
 				JLabel label = AstTablePanel.this.enclosedLabelFactory("", constraints, justification, JLabel.CENTER);
 
+				/**
+				 * Add context menus and place labels in the appropriate label group to keep their fontsizes the same.
+				 */
 				switch (col) {
 					case CIV:
-						label.add(this.contextMenu);
 						label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						label.addMouseListener(new PopupListener(this.contextMenu));
 						AstTablePanel.this.civNameGroup.addLabel(label);
@@ -531,11 +588,20 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
-		public int getRowNumber() {
+		/**
+		 * Get the row number for this row.
+		 * 
+		 * @return The row number.
+		 */
+		private int getRowNumber() {
 			return this.rowNumber;
 		}
 
-		public void loadProperties() {
+
+		/**
+		 * Set properties based on the properties in the master controller.
+		 */
+		private void loadProperties() {
 			for (Column col : EnumSet.allOf(Column.class)) {
 				if (col == Column.BUY) {
 					BubbaPanel.setButtonProperties(this.buyButton, AstTablePanel.this.width.get(col),
@@ -545,7 +611,10 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
-		public void remove() {
+		/**
+		 * Remove all of the elements in this row from the panel.
+		 */
+		private void remove() {
 			for (JComponent component : this.components.values()) {
 				AstTablePanel.this.remove(component);
 				if (component instanceof JLabel) {
@@ -554,10 +623,23 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
-		public void updateCiv(Civilization civ, ArrayList<Civilization> allCivs) {
+		/**
+		 * Change the civilization associated with this row.
+		 * 
+		 * @param civ
+		 *            The new civilization to be associated with this row.
+		 * @param allCivs
+		 *            All civilizations in this game.
+		 */
+		private void updateCiv(Civilization civ, ArrayList<Civilization> allCivs) {
 			this.name = civ.getName();
+
+			// Only show the undo purchase item if this civ has made a purchase this turn.
 			this.undoPurchaseMenuItem.setVisible(civ.hasPurchased());
 
+			/**
+			 * Update all of the information and colors to reflect the new civilization.
+			 */
 			for (Column col : EnumSet.allOf(Column.class)) {
 				JComponent component = this.components.get(col);
 				String text = "";
@@ -626,22 +708,39 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
+		/**
+		 * Handle events triggered by GUI elements in this row.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			String command = event.getActionCommand();
 			switch (command) {
 				case "Buy": {
+					// Open a tech purchase dialog
 					new TechnologyStoreDialog(AstTablePanel.this.client, AstTablePanel.this.controller, this.name);
 				}
 					break;
 				case "View":
-					( (MegaCivFrame) SwingUtilities.getWindowAncestor(AstTablePanel.this) )
-							.addTab(WordUtils.capitalizeFully(this.name.toString()));
+					// Open a civilization view tab
+					MegaCivFrame frame = ( (MegaCivFrame) SwingUtilities.getWindowAncestor(AstTablePanel.this) );
+					BubbaDnDTabbedPane pane = frame.getTabbedPane();
+					String tabName = WordUtils.capitalizeFully(this.name.toString());
+					int index = pane.indexOfTab(tabName);
+
+					if (index > -1) {
+						// Switch to that tab
+						pane.setSelectedIndex(index);
+					} else {
+						// Create that tab (and switch to it)
+						( (MegaCivFrame) SwingUtilities.getWindowAncestor(AstTablePanel.this) ).addTab(tabName);
+					}
 					break;
 				case "Edit":
+					// Open an edit dialog
 					new CivEditPanel(AstTablePanel.this.client, AstTablePanel.this.controller, this.name);
 					break;
 				case "Regress":
+					// Create a dialog to confirm user wants to regress the civilization
 					if (JOptionPane.showConfirmDialog(null,
 							"Confirm regression of " + WordUtils.capitalizeFully(name.toString()),
 							"Confirm regression of " + WordUtils.capitalizeFully(name.toString()),
@@ -657,15 +756,23 @@ public class AstTablePanel extends BubbaPanel {
 					}
 					break;
 				case "Undo":
+					// Undo tech purchase for this round and reactivate button
 					AstTablePanel.this.client.sendMessage(new UndoPurchaseMessage(CivRow.this.name));
 					break;
 				default:
+					// This code should never execute
 					AstTablePanel.this.client.log("ActionCommand " + command + " not implemented in "
 							+ this.getClass().getSimpleName() + " yet!");
 			}
 
 		}
 
+		/**
+		 * Class to create context menus.
+		 * 
+		 * @author Walter Kolczynski
+		 *
+		 */
 		private class PopupListener extends MouseAdapter {
 
 			private final JPopupMenu menu;
@@ -699,6 +806,12 @@ public class AstTablePanel extends BubbaPanel {
 		}
 	}
 
+	/**
+	 * A panel that contains a single image that is scaled to fill the entire width of the panel.
+	 * 
+	 * @author Walter Kolczynski
+	 *
+	 */
 	private class FillerPanel extends BubbaPanel {
 
 		private static final long	serialVersionUID	= 1832956209036106492L;
@@ -706,6 +819,9 @@ public class AstTablePanel extends BubbaPanel {
 		private int					width;
 		private Image				scaledImage;
 
+		/**
+		 * Create a new panel
+		 */
 		public FillerPanel() {
 			super(AstTablePanel.this.controller);
 		}
@@ -714,6 +830,7 @@ public class AstTablePanel extends BubbaPanel {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			if (width != this.getWidth()) {
+				// Rescale the image to fill the entire width of the panel
 				this.width = this.getWidth();
 				double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
 				this.scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),

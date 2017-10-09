@@ -267,12 +267,12 @@ public abstract class BubbaGuiController {
 
 	}
 
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		for (final BubbaFrame frame : this.windowList) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					frame.updateGui(forceUpdate);
+					frame.updateGui();
 				}
 			});
 		}

@@ -151,7 +151,7 @@ public class TradeCardPanel extends BubbaMainPanel {
 	}
 
 
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		Game game = this.client.getGame();
 		if (game == null) {
 			return;

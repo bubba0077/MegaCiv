@@ -126,8 +126,8 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		}
 	}
 
-	public void updateGui(boolean forceUpdate) {
-		super.updateGui(forceUpdate);
+	public void updateGui() {
+		super.updateGui();
 	}
 
 	@Override

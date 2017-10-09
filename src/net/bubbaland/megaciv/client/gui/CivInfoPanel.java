@@ -91,7 +91,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 			this.ageLabel = this.enclosedLabelFactory("", constraints, JLabel.RIGHT, JLabel.BOTTOM);
 		}
 
-		public void updateGui(boolean forceUpdate) {
+		public void updateGui() {
 			Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
@@ -240,7 +240,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 			}
 		}
 
-		public void updateGui(boolean forceUpdate) {
+		public void updateGui() {
 			Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
@@ -398,7 +398,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 		}
 
-		public void updateGui(boolean forceUpdate) {
+		public void updateGui() {
 			Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
@@ -434,21 +434,21 @@ public class CivInfoPanel extends BubbaMainPanel {
 				BubbaPanel.setLabelProperties(this.techLabels.get(tech), width, height, this.unownedColor, background,
 						fontSize);
 			}
-			this.updateGui(true);
+			this.updateGui();
 		}
 	}
 
 	@Override
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		if (!this.client.getGame().getCivilizationNames().contains(this.name)) {
 			BubbaDnDTabbedPane pane = this.frame.getTabbedPane();
 			pane.removeTabAt(pane.indexOfComponent(this));
 			return;
 		}
 
-		this.headerPanel.updateGui(forceUpdate);
-		this.statPanel.updateGui(forceUpdate);
-		this.techPanel.updateGui(forceUpdate);
+		this.headerPanel.updateGui();
+		this.statPanel.updateGui();
+		this.techPanel.updateGui();
 
 		BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
 		int index = tabbedPane.indexOfComponent(this);

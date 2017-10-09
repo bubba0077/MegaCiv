@@ -91,7 +91,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		this.turnNumberGroup.resizeFonts();
 	}
 
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
 		// TODO Auto-generated method stub
 		Game game = this.client.getGame();

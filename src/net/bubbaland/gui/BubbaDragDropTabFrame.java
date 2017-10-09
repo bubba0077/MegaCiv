@@ -97,7 +97,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 			BubbaMainPanel newTab = this.tabFactory(tabName.replaceFirst(" \\([0-9]*\\)", ""));
 			this.tabbedPane.addTab(tabName, newTab);
 			this.tabbedPane.setSelectedComponent(newTab);
-			newTab.updateGui(true);
+			newTab.updateGui();
 		} catch (IllegalArgumentException | SecurityException exception) {
 			exception.printStackTrace();
 		}
@@ -200,8 +200,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 	}
 
-	public void updateGui(boolean forceUpdate) {
-		super.updateGui(forceUpdate);
+	public void updateGui() {
+		super.updateGui();
 
 		// Propagate update to tabs
 		while (this.tabbedPane == null) {
@@ -214,7 +214,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 			final int index = this.tabbedPane.indexOfTab(tabName);
 			final Component component = this.tabbedPane.getComponentAt(index);
 			if (component instanceof BubbaMainPanel) {
-				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).updateGui(forceUpdate);
+				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).updateGui();
 			}
 		}
 	}

@@ -53,7 +53,7 @@ public class GuiClient extends GameClient {
 		super.onMessage(message, session);
 
 
-		GuiClient.this.gui.updateGui(true);
+		GuiClient.this.gui.updateGui();
 		ArrayList<Civilization.Name> civNamesAfter = ( GuiClient.this.getGame() != null ) ? GuiClient.this.getGame()
 				.getCivilizationNames() : new ArrayList<Civilization.Name>();
 		boolean civNamesIdentical =

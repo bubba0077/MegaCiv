@@ -34,11 +34,8 @@ public abstract class BubbaMainPanel extends BubbaPanel {
 	/**
 	 * Requires all sub-classes to have a method that updates their contents.
 	 */
-	public void updateGui() {
-		this.updateGui(false);
-	}
+	public abstract void updateGui();
 
-	public abstract void updateGui(boolean forceUpdate);
 
 	protected abstract void loadProperties();
 

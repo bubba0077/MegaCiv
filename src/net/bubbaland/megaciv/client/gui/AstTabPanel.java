@@ -77,9 +77,9 @@ public class AstTabPanel extends BubbaMainPanel {
 	}
 
 	@Override
-	public void updateGui(boolean forceUpdate) {
-		this.controlPanel.updateGui(forceUpdate);
-		this.astTablePanel.updateGui(forceUpdate);
+	public void updateGui() {
+		this.controlPanel.updateGui();
+		this.astTablePanel.updateGui();
 		this.countdownPanel.updateGui();
 	}
 

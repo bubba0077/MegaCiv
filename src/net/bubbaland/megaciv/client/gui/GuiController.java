@@ -61,7 +61,7 @@ public class GuiController extends BubbaGuiController {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-					GuiController.this.updateGui(true);
+					GuiController.this.updateGui();
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException exception) {
@@ -150,9 +150,9 @@ public class GuiController extends BubbaGuiController {
 		new GuiController(serverURL);
 	}
 
-	public void updateGui(boolean forceUpdate) {
+	public void updateGui() {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
-		super.updateGui(forceUpdate);
+		super.updateGui();
 	}
 
 }
