@@ -109,7 +109,7 @@ public class AstTablePanel extends BubbaPanel {
 	// Panel with column headers
 	private Header						header;
 	// Mapping between the row number and the panel holding civilization UI for that row
-	private HashMap<Integer, CivRow>	civRows;
+	private ArrayList<CivRow>			civRows;
 	// Panel with an image to fill space when there is no game data
 	private FillerPanel					fillerPanel;
 
@@ -203,16 +203,16 @@ public class AstTablePanel extends BubbaPanel {
 	public synchronized void redoRows(ArrayList<Civilization.Name> civNames) {
 		if (this.civRows != null) {
 			// Remove existing panels
-			this.civRows.values().forEach(row -> row.remove());
-			this.remove(this.fillerPanel);
+			this.civRows.forEach(row -> row.remove());
 		}
+		this.remove(this.fillerPanel);
 
 		// Create a new panel for each civilization
-		this.civRows = new HashMap<Integer, CivRow>();
+		this.civRows = new ArrayList<CivRow>();
 		for (Civilization.Name name : civNames) {
-			int rowNumber = civNames.indexOf(name) + 1;
+			int rowNumber = civNames.indexOf(name);
 			CivRow row = new CivRow(rowNumber);
-			this.civRows.put(civNames.indexOf(name), row);
+			this.civRows.add(row);
 			row.loadProperties();
 		}
 
@@ -236,78 +236,7 @@ public class AstTablePanel extends BubbaPanel {
 			return;
 		}
 
-		for (Civilization civ : sortedCivs) {
-			Civilization.Name name = civ.getName();
-			CivRow row = this.civRows.get(sortedCivs.indexOf(civ));
-			row.setName(name);
-			row.setUndoVisibility(civ.hasPurchased());
-			for (Column col : EnumSet.allOf(Column.class)) {
-				JComponent component = row.getComponent(col);
-				String text = "";
-				Color foregroundColor = Game.FOREGROUND_COLORS.get(name);
-				Color backgroundColor = Game.BACKGROUND_COLORS.get(name);
-				switch (col) {
-					// case AST:
-					// text = civ.getAst() + "";
-					// break;
-					case POPULATION:
-						text = String.format("%1$2d", civ.getPopulation());
-						break;
-					case CITIES:
-						text = String.format("%1$2d", civ.getCityCount());
-						break;
-					case CIV:
-						text = WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")";
-						break;
-					case TECHS:
-						text = String.format("%1$2d", civ.getTechs().size());
-						component.setToolTipText(civ.getTechBreakdownString());
-						break;
-					case VP:
-						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(sortedCivs)) {
-							text = "*" + String.format("%1$3d", civ.getVP());
-						} else {
-							text = String.format("%1$3d", civ.getVP());
-						}
-						component.setToolTipText(civ.getVpBreakdownString());
-						break;
-					case BUY:
-						row.buyButton.setEnabled(!civ.hasPurchased());
-						continue;
-					default:
-						int astStep = Integer.parseInt(col.toString().substring(3));
-						Civilization.Age age = civ.getAge(astStep);
-						text = String.format("%1$02d", ( astStep * Game.VP_PER_AST_STEP ));
-						if (astStep <= civ.getAstPosition()) {
-							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-							foregroundColor = this.controller.getAstBackgroundColor(age);
-							component.setToolTipText("");
-							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))
-									&& !civ.passAstRequirements(age)) {}
-						} else {
-							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							foregroundColor = this.controller.getAstBackgroundColor(age);
-							backgroundColor = this.controller.getAstBackgroundColor(age);
-							if (!civ.passAstRequirements(age) && ( civ.passAstRequirements(civ.getAge(astStep - 1))
-									|| ( astStep - civ.getAstPosition() ) == 1 )) {
-								foregroundColor = this.controller.getAstForegroundColor(age);
-								text = " ! ";
-							}
-							component.setToolTipText(civ.astRequirementString(age, true));
-						}
-						component.setVisible(astStep <= this.client.getGame().lastAstStep());
-						component.getParent().setVisible(astStep <= this.client.getGame().lastAstStep());
-						component.setName(civ.toString() + " " + astStep);
-						// System.out.println(civ.toString() + " " + astStep + " " + component.isVisible());
-
-				}
-				JLabel label = (JLabel) component;
-				label.setText(text);
-				label.setForeground(foregroundColor);
-				label.setBackground(backgroundColor);
-				label.getParent().setBackground(backgroundColor);
-			}
-		}
+		this.civRows.forEach(row -> row.updateCiv(sortedCivs.get(row.getRowNumber()), sortedCivs));
 
 		this.header.updateGui(forceUpdate, sortedCivs.get(0));
 
@@ -348,9 +277,7 @@ public class AstTablePanel extends BubbaPanel {
 		this.rowHeight = Integer.parseInt(props.getProperty("AstTable.Row.Height"));
 
 		if (this.civRows != null) {
-			for (CivRow panel : this.civRows.values()) {
-				panel.loadProperties();
-			}
+			this.civRows.forEach(row -> row.loadProperties());
 		}
 
 		this.header.loadProperties();
@@ -552,7 +479,7 @@ public class AstTablePanel extends BubbaPanel {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
 			constraints.weighty = 1.0;
-			constraints.gridy = this.rowNumber;
+			constraints.gridy = this.rowNumber + 1;
 
 			this.components = new HashMap<Column, JComponent>();
 
@@ -604,6 +531,10 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
+		public int getRowNumber() {
+			return this.rowNumber;
+		}
+
 		public void loadProperties() {
 			for (Column col : EnumSet.allOf(Column.class)) {
 				if (col == Column.BUY) {
@@ -623,16 +554,76 @@ public class AstTablePanel extends BubbaPanel {
 			}
 		}
 
-		public JComponent getComponent(Column col) {
-			return components.get(col);
-		}
+		public void updateCiv(Civilization civ, ArrayList<Civilization> allCivs) {
+			this.name = civ.getName();
+			this.undoPurchaseMenuItem.setVisible(civ.hasPurchased());
 
-		public void setName(Civilization.Name name) {
-			this.name = name;
-		}
+			for (Column col : EnumSet.allOf(Column.class)) {
+				JComponent component = this.components.get(col);
+				String text = "";
+				Color foregroundColor = Game.FOREGROUND_COLORS.get(name);
+				Color backgroundColor = Game.BACKGROUND_COLORS.get(name);
+				switch (col) {
+					// case AST:
+					// text = civ.getAst() + "";
+					// break;
+					case POPULATION:
+						text = String.format("%1$2d", civ.getPopulation());
+						break;
+					case CITIES:
+						text = String.format("%1$2d", civ.getCityCount());
+						break;
+					case CIV:
+						text = WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")";
+						break;
+					case TECHS:
+						text = String.format("%1$2d", civ.getTechs().size());
+						component.setToolTipText(civ.getTechBreakdownString());
+						break;
+					case VP:
+						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(allCivs)) {
+							text = "*" + String.format("%1$3d", civ.getVP());
+						} else {
+							text = String.format("%1$3d", civ.getVP());
+						}
+						component.setToolTipText(civ.getVpBreakdownString());
+						break;
+					case BUY:
+						this.buyButton.setEnabled(!civ.hasPurchased());
+						continue;
+					default:
+						int astStep = Integer.parseInt(col.toString().substring(3));
+						Civilization.Age age = civ.getAge(astStep);
+						text = String.format("%1$02d", ( astStep * Game.VP_PER_AST_STEP ));
+						if (astStep <= civ.getAstPosition()) {
+							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+							foregroundColor = AstTablePanel.this.controller.getAstBackgroundColor(age);
+							component.setToolTipText("");
+							if (astStep > 0 && civ.passAstRequirements(civ.getAge(astStep - 1))
+									&& !civ.passAstRequirements(age)) {}
+						} else {
+							component.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							foregroundColor = AstTablePanel.this.controller.getAstBackgroundColor(age);
+							backgroundColor = AstTablePanel.this.controller.getAstBackgroundColor(age);
+							if (!civ.passAstRequirements(age) && ( civ.passAstRequirements(civ.getAge(astStep - 1))
+									|| ( astStep - civ.getAstPosition() ) == 1 )) {
+								foregroundColor = AstTablePanel.this.controller.getAstForegroundColor(age);
+								text = " ! ";
+							}
+							component.setToolTipText(civ.astRequirementString(age, true));
+						}
+						component.setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
+						component.getParent().setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
+						component.setName(civ.toString() + " " + astStep);
+						// System.out.println(civ.toString() + " " + astStep + " " + component.isVisible());
 
-		public void setUndoVisibility(boolean show) {
-			this.undoPurchaseMenuItem.setVisible(show);
+				}
+				JLabel label = (JLabel) component;
+				label.setText(text);
+				label.setForeground(foregroundColor);
+				label.setBackground(backgroundColor);
+				label.getParent().setBackground(backgroundColor);
+			}
 		}
 
 		@Override
@@ -725,10 +716,8 @@ public class AstTablePanel extends BubbaPanel {
 			if (width != this.getWidth()) {
 				this.width = this.getWidth();
 				double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
-				client.log(width + " " + FILLER_IMAGE.getWidth() + " " + scale);
 				this.scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),
 						Image.SCALE_SMOOTH);
-				client.log(this.scaledImage.getWidth(this) + " " + this.scaledImage.getHeight(this));
 			}
 			g.drawImage(this.scaledImage, 0, 0, this);
 		}
