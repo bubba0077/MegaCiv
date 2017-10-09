@@ -1,11 +1,16 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Cursor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.websocket.ClientEndpoint;
@@ -22,16 +27,34 @@ import net.bubbaland.gui.NewTabDialog.TabComparator;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
+import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.messages.*;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
-public class GuiClient extends GameClient {
+public class GuiClient extends GameClient implements StopwatchListener {
 
-	private final GuiController gui;
+	private final GuiController	gui;
+
+	private static Clip			ONE_MINUTE, BEEP, TIME_UP;
+	static {
+		try {
+			ONE_MINUTE = AudioSystem.getClip();
+			ONE_MINUTE.open(AudioSystem
+					.getAudioInputStream(StopwatchPanel.class.getResource("audio/one_minute_remaining.wav")));
+
+			BEEP = AudioSystem.getClip();
+			BEEP.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/beep.wav")));
+			TIME_UP = AudioSystem.getClip();
+			TIME_UP.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/time_up.wav")));
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException exception) {
+			System.out.println("Unable to load audio clips in GuiClient!");
+		}
+	}
 
 	public GuiClient(final String serverURL, GuiController gui) {
 		super(serverURL);
 		this.gui = gui;
+		this.getStopwatch().addStopwatchListener(this);
 	}
 
 	@OnClose
@@ -138,5 +161,42 @@ public class GuiClient extends GameClient {
 			}
 		});
 	}
+
+	/**
+	 * Play audio alerts at the appropriate times.
+	 */
+	@Override
+	public void tic(int deciseconds) {
+		switch (deciseconds) {
+			case 10:
+			case 20:
+			case 30:
+			case 40:
+			case 50:
+			case 150:
+				BEEP.setFramePosition(0);
+				BEEP.start();
+				break;
+			case 600:
+				ONE_MINUTE.setFramePosition(0);
+				ONE_MINUTE.start();
+				break;
+			case 0:
+				TIME_UP.setFramePosition(0);
+				TIME_UP.start();
+				break;
+		}
+	}
+
+	@Override
+	public void watchStarted() {}
+
+
+	@Override
+	public void watchStopped() {}
+
+
+	@Override
+	public void watchReset() {}
 
 }
