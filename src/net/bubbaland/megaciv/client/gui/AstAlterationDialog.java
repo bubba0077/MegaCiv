@@ -53,7 +53,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 	 * Create a new dialog to advance AST.
 	 * 
 	 * @param client
-	 *            Client handling communication to game server.
+	 *            Client with game data handling communication to game server.
 	 * @param controller
 	 *            Master GUI controller for this dialog.
 	 */
@@ -74,7 +74,6 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 		for (Civilization civ : civs) {
 			constraints.gridx = civ.getName().ordinal() % N_COLUMNS;
 			constraints.gridy = civ.getName().ordinal() / N_COLUMNS;
-			client.log(civ.getName() + ": (" + constraints.gridx + ", " + constraints.gridy + ")");
 			CivPanel panel = new CivPanel(controller, civ);
 			this.civPanels.add(panel);
 			this.add(panel, constraints);

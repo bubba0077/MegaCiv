@@ -44,15 +44,26 @@ import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 import net.bubbaland.megaciv.messages.UndoPurchaseMessage;
 
+/**
+ * Panel providing UI for civilization information and purchases. Displays summary information and AST progression for
+ * each civilization. Allows sorting of table by AST, AST progression, population, cities, or victory points. Control to
+ * open purchase dialog for each civilization. Context menus to undo purchases and show/edit civilization information.
+ * Tooltips provide additional information.
+ * 
+ * @author Walter Kolczynski
+ *
+ */
 public class AstTablePanel extends BubbaPanel {
 
 	private static final long serialVersionUID = -1197287409680075891L;
 
+	// Column names
 	private enum Column {
 		BUY, CIV, POPULATION, CITIES, TECHS, VP, AST01, AST02, AST03, AST04, AST05, AST06, AST07, AST08, AST09, AST10,
 		AST11, AST12, AST13, AST14, AST15, AST16
 	}
 
+	// Map relating column names to the appropriate sort method
 	private static final HashMap<Column, Civilization.SortOption>	sortHash	=
 			new HashMap<Column, Civilization.SortOption>() {
 																							private static final long serialVersionUID =
@@ -81,6 +92,11 @@ public class AstTablePanel extends BubbaPanel {
 	private static final ImageIcon									DOWN_ARROW	=
 			new ImageIcon(BubbaPanel.class.getResource("images/downArrow.png"));
 
+
+	/**
+	 * A filler image to fill the space when there is no game data.
+	 * 
+	 */
 	private static BufferedImage									FILLER_IMAGE;
 	static {
 		try {
@@ -90,23 +106,39 @@ public class AstTablePanel extends BubbaPanel {
 		}
 	}
 
-	private HashMap<Integer, CivRow>	civRows;
+	// Panel with column headers
 	private Header						header;
+	// Mapping between the row number and the panel holding civilization UI for that row
+	private HashMap<Integer, CivRow>	civRows;
+	// Panel with an image to fill space when there is no game data
 	private FillerPanel					fillerPanel;
 
+	// Label groups restricted to using the same font size
 	private final LinkedLabelGroup		civNameGroup, statGroup, astGroup;
 
+	// Client with game data responsible for communication with server
 	private final GameClient			client;
 
+	// Default sizes
 	private HashMap<Column, Integer>	width;
 	private HashMap<Column, Float>		fontSize;
 	private int							rowHeight;
 
+	// Master GUI controller
 	private final GuiController			controller;
 
+	// Fields specifying the current sort order
 	private Civilization.SortOption		sortOption;
 	private Civilization.SortDirection	sortDirection;
 
+	/**
+	 * Create a new AST Table panel.
+	 * 
+	 * @param client
+	 *            Client with game data handling communication to game server.
+	 * @param controller
+	 *            Master GUI controller for this panel.
+	 */
 	public AstTablePanel(GameClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
 		this.client = client;
@@ -119,6 +151,7 @@ public class AstTablePanel extends BubbaPanel {
 		this.statGroup = new LinkedLabelGroup();
 		this.astGroup = new LinkedLabelGroup();
 
+		// When the panel is resized, rescale fonts
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				resizeFonts();
@@ -131,33 +164,50 @@ public class AstTablePanel extends BubbaPanel {
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
 
+		// Add header panel
 		this.header = new Header();
 
+		// Add filler panel
+		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
+		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.gridwidth = Column.values().length;
 		this.fillerPanel = new FillerPanel();
 		this.add(this.fillerPanel, constraints);
 
+		// Load and apply properties
 		loadProperties();
 
 		this.updateGui(true);
 	}
 
+	/**
+	 * Rescale the fonts in each label group based on current label size.
+	 */
 	public void resizeFonts() {
 		this.civNameGroup.resizeFonts();
 		this.statGroup.resizeFonts();
 		this.astGroup.resizeFonts();
 	}
 
+	/**
+	 * Add or remove panels to match the current number of civilizations.
+	 * 
+	 * @param civNames
+	 *            A list of civilization names currently in play.
+	 */
 	public synchronized void redoRows(ArrayList<Civilization.Name> civNames) {
 		if (this.civRows != null) {
-			for (CivRow row : this.civRows.values()) {
-				row.remove();
-			}
+			// Remove existing panels
+			this.civRows.values().forEach(row -> row.remove());
+			this.remove(this.fillerPanel);
 		}
-		this.remove(this.fillerPanel);
 
+		// Create a new panel for each civilization
 		this.civRows = new HashMap<Integer, CivRow>();
 		for (Civilization.Name name : civNames) {
 			int rowNumber = civNames.indexOf(name) + 1;
@@ -675,10 +725,12 @@ public class AstTablePanel extends BubbaPanel {
 			if (width != this.getWidth()) {
 				this.width = this.getWidth();
 				double scale = ( width + 0.0 ) / FILLER_IMAGE.getWidth();
+				client.log(width + " " + FILLER_IMAGE.getWidth() + " " + scale);
 				this.scaledImage = FILLER_IMAGE.getScaledInstance(width, (int) ( FILLER_IMAGE.getHeight() * scale ),
 						Image.SCALE_SMOOTH);
+				client.log(this.scaledImage.getWidth(this) + " " + this.scaledImage.getHeight(this));
 			}
-			g.drawImage(scaledImage, 0, 0, this);
+			g.drawImage(this.scaledImage, 0, 0, this);
 		}
 
 	}
