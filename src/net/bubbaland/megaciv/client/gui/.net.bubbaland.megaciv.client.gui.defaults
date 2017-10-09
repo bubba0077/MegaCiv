@@ -4,7 +4,7 @@ StatusBar.Height=12
 StatusBar.FontSize=12.0
 
 OpenWindows=MegaCiv
-Window.MegaCiv.OpenTabs=AST, Trade
+Window.MegaCiv.OpenTabs=AST
 
 Tab.FontSize=16.0
 
