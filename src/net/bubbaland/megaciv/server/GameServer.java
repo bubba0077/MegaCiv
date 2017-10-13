@@ -146,7 +146,7 @@ public class GameServer extends Server implements StopwatchListener {
 				Civilization civ = this.game.getCivilization(name);
 				ArrayList<Technology> newTechs = ( (TechPurchaseMessage) message ).getTechs();
 				for (Technology newTech : newTechs) {
-					civ.addTech(newTech, this.game.getTurn());
+					civ.addTech(newTech, this.game.getCurrentRound());
 				}
 				civ.setPurchased(true);
 				this.log(name + " bought the following technologies: " + newTechs + " (via " + user + ")");
@@ -156,7 +156,7 @@ public class GameServer extends Server implements StopwatchListener {
 			case "UndoPurchaseMessage": {
 				Civilization.Name name = ( (UndoPurchaseMessage) message ).getCivName();
 				Civilization civ = this.game.getCivilization(name);
-				int currentRound = this.game.getTurn();
+				int currentRound = this.game.getCurrentRound();
 				ArrayList<Technology> undoneTechs = civ.undoTechPurchase(currentRound);
 				civ.setPurchased(false);
 				this.log(name + " undid the following technology purchases from this round: " + undoneTechs + " (via "
@@ -169,7 +169,7 @@ public class GameServer extends Server implements StopwatchListener {
 				for (Civilization.Name name : advanceAst.keySet()) {
 					this.game.getCivilization(name).changeAst(advanceAst.get(name));
 				}
-				this.game.nextTurn();
+				this.game.nextRound();
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
 				this.broadcastMessage(new GameDataMessage(this.game));
 				break;

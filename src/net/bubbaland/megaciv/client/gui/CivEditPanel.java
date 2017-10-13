@@ -328,7 +328,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		}
 
 		public void updateGui() {
-			String text = String.format("%03d", civ.getVP());
+			String text = String.format("%03d", civ.getVP(CivEditPanel.this.client.getGame().getCivilizations()));
 			if (civ.getCurrentAge() == Age.LATE_IRON
 					&& civ.onlyLateIron(CivEditPanel.this.client.getGame().getCivilizations())) {
 				text = "*" + text;
@@ -496,7 +496,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					String techName = source.getName();
 					Technology tech = Technology.valueOf(techName);
 					if (source.isSelected()) {
-						CivEditPanel.this.civ.addTech(tech, client.getGame().getTurn());
+						CivEditPanel.this.civ.addTech(tech, client.getGame().getCurrentRound());
 					} else {
 						CivEditPanel.this.civ.removeTech(tech);
 					}

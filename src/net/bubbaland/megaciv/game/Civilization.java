@@ -109,7 +109,6 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		public String toString() {
 			return WordUtils.capitalizeFully(( this.name() + " Age" ).replace("_", " "));
 		}
-
 	}
 
 	/**
@@ -123,7 +122,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * Enumeration of directions for sorting a list of civilizations.
 	 */
 	public static enum SortDirection {
-		ASCENDING, DESCENDING;
+		DESCENDING, ASCENDING;
 	}
 
 	/**
@@ -778,7 +777,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByVP(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new VpComparator());
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -796,7 +795,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByCities(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CityComparator());
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -814,7 +813,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByMovement(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new MovementComparator());
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -853,7 +852,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs);
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -870,7 +869,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new CensusComparator());
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -888,7 +887,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs, SortDirection direction) {
 		Collections.sort(civs, new AstPositionComparator());
-		if (direction == SortDirection.DESCENDING) {
+		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
 		}
 		return civs;
@@ -904,13 +903,22 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
+	 * Get the number of victory points from all sources.
+	 * 
+	 * @return The number of victory points.
+	 */
+	public int getVP(ArrayList<Civilization> allCivs) {
+		int lateIronPoints = this.onlyLateIron(allCivs) ? Game.VP_FROM_ONLY_LATEIRON : 0;
+		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech() + lateIronPoints;
+	}
+
+	/**
 	 * Get the number of victory points from all sources except the Late Iron Age bonus.
 	 * 
 	 * @return The number of victory points.
 	 */
 	public int getVP() {
 		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech();
-		// TODO Need to add adjustment for Late Iron Age only bonus
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package net.bubbaland.megaciv.client.gui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.math.BigInteger;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -24,9 +26,9 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 	private final JButton		censusButton, cityButton, astButton;
 
-	LinkedLabelGroup			turnGroup, turnNumberGroup;
+	LinkedLabelGroup			turnGroup, turnNumberGroup, gameOverGroup;
 
-	private final JLabel		turnLabel, turnNumberLabel;
+	private final JLabel		turnLabel, turnNumberLabel, gameOverLabel;
 
 	public ControlsPanel(GuiClient client, GuiController controller) {
 		super(controller, new GridBagLayout());
@@ -73,11 +75,19 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 		constraints.gridx = 3;
 		constraints.gridy = 1;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridheight = 1;
 		this.turnNumberLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
 		this.turnNumberGroup = new LinkedLabelGroup();
 		this.turnNumberGroup.addLabel(this.turnNumberLabel);
+
+		constraints.gridx = 4;
+		constraints.gridy = 0;
+		constraints.weighty = 1.0;
+		constraints.gridheight = 2;
+		this.gameOverLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.gameOverGroup = new LinkedLabelGroup();
+		this.gameOverGroup.addLabel(this.gameOverLabel);
 
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
@@ -89,15 +99,28 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	public void resizeFonts() {
 		this.turnGroup.resizeFonts();
 		this.turnNumberGroup.resizeFonts();
+		this.gameOverGroup.resizeFonts();
 	}
 
 	public void updateGui() {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
-		// TODO Auto-generated method stub
 		Game game = this.client.getGame();
+		String gameOverText = "";
 		if (game != null) {
-			this.turnNumberLabel.setText(this.client.getGame().getTurn() + "");
+			this.turnNumberLabel.setText(this.client.getGame().getCurrentRound() + "");
+			if (game.isGameOver()) {
+				gameOverText = "Game Over!";
+			} else if (game.isLastTurn()) {
+				gameOverText = "Last Turn!";
+			} else {
+				gameOverText = "";
+			}
 		}
+		boolean controlsOn = game != null && !game.isGameOver() ? true : false;
+		this.astButton.setEnabled(controlsOn);
+		this.censusButton.setEnabled(controlsOn);
+		this.cityButton.setEnabled(controlsOn);
+		this.gameOverLabel.setText(gameOverText);
 		this.validate();
 		this.resizeFonts();
 	}
@@ -121,6 +144,10 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		BubbaPanel.setLabelProperties(this.turnNumberLabel, width,
 				Integer.parseInt(props.getProperty("ControlPanel.Turn.Bottom.Height")), null, null,
 				Float.parseFloat(props.getProperty("ControlPanel.Turn.Bottom.FontSize")));
+		BubbaPanel.setLabelProperties(this.gameOverLabel,
+				Integer.parseInt(props.getProperty("ControlPanel.GameOver.Width")), height,
+				new Color(new BigInteger(props.getProperty("ControlPanel.GameOver.ForegroundColor"), 16).intValue()),
+				null, Float.parseFloat(props.getProperty("ControlPanel.GameOver.FontSize")));
 	}
 
 	@Override

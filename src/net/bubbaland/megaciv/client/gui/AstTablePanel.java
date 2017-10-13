@@ -40,7 +40,6 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.messages.AdvanceAstMessage;
 import net.bubbaland.megaciv.messages.UndoPurchaseMessage;
@@ -124,6 +123,7 @@ public class AstTablePanel extends BubbaPanel {
 	private HashMap<Column, Integer>	width;
 	private HashMap<Column, Float>		fontSize;
 	private int							rowHeight;
+	private boolean						isGameOver;
 
 	// Master GUI controller
 	private final GuiController			controller;
@@ -145,8 +145,9 @@ public class AstTablePanel extends BubbaPanel {
 		this.client = client;
 		this.controller = controller;
 		this.sortOption = Civilization.SortOption.AST;
-		this.sortDirection = Civilization.SortDirection.ASCENDING;
+		this.sortDirection = Civilization.SortDirection.DESCENDING;
 		this.civRows = null;
+		this.isGameOver = false;
 
 		this.civNameGroup = new LinkedLabelGroup();
 		this.statGroup = new LinkedLabelGroup();
@@ -234,6 +235,13 @@ public class AstTablePanel extends BubbaPanel {
 		if (this.civRows == null || game.getNCivilizations() != this.civRows.size()) {
 			this.redoRows(game.getCivilizationNames());
 		}
+
+		if (!isGameOver && game.isGameOver()) {
+			this.sortOption = Civilization.SortOption.VP;
+			this.sortDirection = Civilization.SortDirection.DESCENDING;
+		}
+
+		this.isGameOver = game.isGameOver();
 
 		// Sort civilization based on the current sort method
 		ArrayList<Civilization> sortedCivs =
@@ -393,10 +401,10 @@ public class AstTablePanel extends BubbaPanel {
 				JLabel label = this.colLabels.get(col);
 				if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
 					switch (AstTablePanel.this.sortDirection) {
-						case ASCENDING:
+						case DESCENDING:
 							label.setIcon(DOWN_ARROW);
 							break;
-						case DESCENDING:
+						case ASCENDING:
 							label.setIcon(UP_ARROW);
 							break;
 					}
@@ -438,11 +446,11 @@ public class AstTablePanel extends BubbaPanel {
 			if (AstTablePanel.sortHash.get(col) == AstTablePanel.this.sortOption) {
 				// If the current sort column is clicked, reverse the sort order
 				switch (AstTablePanel.this.sortDirection) {
-					case ASCENDING:
-						AstTablePanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
-						break;
 					case DESCENDING:
 						AstTablePanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+						break;
+					case ASCENDING:
+						AstTablePanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
 						break;
 				}
 			} else {
@@ -450,7 +458,7 @@ public class AstTablePanel extends BubbaPanel {
 				Civilization.SortOption newSort = AstTablePanel.sortHash.get(col);
 				if (newSort != null) {
 					AstTablePanel.this.sortOption = AstTablePanel.sortHash.get(col);
-					AstTablePanel.this.sortDirection = Civilization.SortDirection.ASCENDING;
+					AstTablePanel.this.sortDirection = Civilization.SortDirection.DESCENDING;
 				}
 			}
 			AstTablePanel.this.updateGui();
@@ -663,15 +671,12 @@ public class AstTablePanel extends BubbaPanel {
 						component.setToolTipText(civ.getTechBreakdownString());
 						break;
 					case VP:
-						if (civ.getCurrentAge() == Age.LATE_IRON && civ.onlyLateIron(allCivs)) {
-							text = "*" + String.format("%1$3d", civ.getVP());
-						} else {
-							text = String.format("%1$3d", civ.getVP());
-						}
+						text = String.format("%1$3d", civ.getVP(allCivs));
 						component.setToolTipText(civ.getVpBreakdownString());
 						break;
 					case BUY:
-						this.buyButton.setEnabled(!civ.hasPurchased());
+						this.buyButton
+								.setEnabled(!civ.hasPurchased() && !AstTablePanel.this.client.getGame().isGameOver());
 						continue;
 					default:
 						int astStep = Integer.parseInt(col.toString().substring(3));

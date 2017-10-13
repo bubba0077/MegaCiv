@@ -162,11 +162,11 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		});
 	}
 
-	/**
-	 * Play audio alerts at the appropriate times.
-	 */
 	@Override
 	public void tic(int deciseconds) {
+		/**
+		 * Play audio alerts at the appropriate times.
+		 */
 		switch (deciseconds) {
 			case 10:
 			case 20:

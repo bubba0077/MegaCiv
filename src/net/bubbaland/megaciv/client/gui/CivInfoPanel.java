@@ -251,7 +251,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 			this.cityLabel.setText(civ.getCityCount() + "");
 			this.techLabel.setText(String.format("%02d", civ.getTechs().size()));
 
-			String text = String.format("%03d", civ.getVP());
+			String text = String.format("%03d", civ.getVP(CivInfoPanel.this.client.getGame().getCivilizations()));
 			if (civ.getCurrentAge() == Age.LATE_IRON
 					&& civ.onlyLateIron(CivInfoPanel.this.client.getGame().getCivilizations())) {
 				text = "*" + text;

@@ -45,7 +45,7 @@ public class CensusDialog extends BubbaDialogPanel {
 
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		ArrayList<Civilization.Name> civNames = Civilization.sortByToName(this.client.getGame().getCivilizations(),
-				Civilization.SortOption.AST, Civilization.SortDirection.ASCENDING);
+				Civilization.SortOption.AST, Civilization.SortDirection.DESCENDING);
 		for (Civilization.Name name : civNames) {
 			CivPanel panel = new CivPanel(controller, name);
 			constraints.gridx = name.ordinal() % N_COLUMNS;

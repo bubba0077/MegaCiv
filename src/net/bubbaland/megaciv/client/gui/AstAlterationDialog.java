@@ -187,7 +187,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 					civFontSize);
 			this.add(this.advanceCheckbox, constraints);
 			// Check the box if civilization meets all requirements
-			this.advanceCheckbox.setSelected(civ.passAstRequirements(civ.getCurrentAge()));
+			this.advanceCheckbox.setSelected(civ.passAstRequirements(civ.getNextStepAge()));
 
 			// Display regress checkbox
 			constraints.gridx = 0;

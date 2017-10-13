@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,11 +40,12 @@ import net.bubbaland.megaciv.game.Civilization.SortDirection;
  */
 public class Game implements Serializable {
 
-	private static final long	serialVersionUID	= 3617165171580835437L;
+	private static final long	serialVersionUID		= 3617165171580835437L;
 
-	public static final int		VP_PER_AST_STEP		= 5;
-	public static final int		MAX_CITIES			= 9;
-	public static final int		MAX_POPULATION		= 55;
+	public static final int		VP_PER_AST_STEP			= 5;
+	public static final int		VP_FROM_ONLY_LATEIRON	= 5;
+	public static final int		MAX_CITIES				= 9;
+	public static final int		MAX_POPULATION			= 55;
 
 	public static enum Difficulty {
 		BASIC, EXPERT
@@ -77,9 +79,7 @@ public class Game implements Serializable {
 
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
-		for (Civilization civ : this.civs.values()) {
-			civ.setDifficulty(difficulty);
-		}
+		this.civs.forEach(civ -> civ.setDifficulty(difficulty));
 	}
 
 	public Difficulty getDifficulty() {
@@ -87,27 +87,29 @@ public class Game implements Serializable {
 	}
 
 	@JsonProperty("civs")
-	private HashMap<Civilization.Name, Civilization>	civs;
+	private ArrayList<Civilization>	civs;
 
-	@JsonProperty("turnNumber")
-	private int											turnNumber;
+	@JsonProperty("currentRound")
+	private int						currentRound;
+
+	@JsonProperty("lastRound")
+	private int						lastRound;
 
 	@JsonProperty("region")
-	private Region										region;
+	private Region					region;
 
 	public Game() {
-		this.civs = new HashMap<Civilization.Name, Civilization>();
-		this.turnNumber = 1;
-		this.setDifficulty(Difficulty.BASIC);
+		this(null, new ArrayList<Civilization>(), null, 1, Integer.MAX_VALUE);
 	}
 
 	@JsonCreator
-	public Game(@JsonProperty("region") Region region,
-			@JsonProperty("civs") HashMap<Civilization.Name, Civilization> civs,
-			@JsonProperty("turnNumber") int turnNumber, @JsonProperty("difficulty") Difficulty difficulty) {
+	public Game(@JsonProperty("region") Region region, @JsonProperty("civs") ArrayList<Civilization> civs,
+			@JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("currentRound") int currentRound,
+			@JsonProperty("lastRound") int lastRound) {
 		this.region = region;
 		this.civs = civs;
-		this.turnNumber = turnNumber;
+		this.currentRound = currentRound;
+		this.lastRound = lastRound;
 		this.difficulty = difficulty;
 	}
 
@@ -123,37 +125,43 @@ public class Game implements Serializable {
 		return TRADE_GOODS.get(this.civs.size()).get(this.region);
 	}
 
-	public void nextTurn() {
-		this.turnNumber++;
-		for (Civilization civ : this.civs.values()) {
-			civ.setPurchased(false);
-		}
+	public boolean isGameOver() {
+		return this.currentRound > this.lastRound;
 	}
 
-	public int getTurn() {
-		return this.turnNumber;
+	public boolean isLastTurn() {
+		return this.currentRound == this.lastRound;
+	}
+
+	public void nextRound() {
+		if (this.civs.stream().anyMatch(civ -> civ.getCurrentAge() == Age.LATE_IRON)
+				&& this.lastRound > this.currentRound) {
+			this.lastRound = this.difficulty == Difficulty.EXPERT ? this.currentRound + 1 : this.currentRound;
+		}
+		this.currentRound++;
+		this.civs.forEach(civ -> civ.setPurchased(false));
+	}
+
+	public int getCurrentRound() {
+		return Math.min(this.currentRound, this.lastRound);
 	}
 
 	public void addCivilization(Civilization.Name name) {
 		Civilization civ = new Civilization(name, difficulty);
-		this.civs.put(name, civ);
+		this.civs.add(civ);
 	}
 
 	public void assignStartCredits() {
 		int credit = SMALL_GAME_CREDITS.get(this.civs.size());
-		for (Civilization civ : this.civs.values()) {
-			civ.setSmallGameCredits(credit);
-		}
+		this.civs.forEach(civ -> civ.setSmallGameCredits(credit));
 	}
 
 	public void retireCivilization(Civilization.Name name) {
-		this.civs.remove(name);
+		this.civs.removeIf(civ -> civ.getName().equals(name));
 	}
 
-	public void addCivilization(ArrayList<Civilization.Name> names) {
-		for (Civilization.Name name : names) {
-			this.addCivilization(name);
-		}
+	public synchronized void addCivilization(ArrayList<Civilization.Name> names) {
+		names.forEach(name -> this.addCivilization(name));
 	}
 
 	public int lastAstStep() {
@@ -167,7 +175,7 @@ public class Game implements Serializable {
 	}
 
 	public ArrayList<Civilization> getCivilizations() {
-		return new ArrayList<Civilization>(this.civs.values());
+		return new ArrayList<Civilization>(this.civs);
 	}
 
 	public int getNCivilizations() {
@@ -175,21 +183,23 @@ public class Game implements Serializable {
 	}
 
 	public ArrayList<Civilization.Name> getCivilizationNames() {
-		return new ArrayList<Civilization.Name>(this.civs.keySet());
+		return new ArrayList<Civilization.Name>(
+				this.civs.stream().map(civ -> civ.getName()).collect(Collectors.toList()));
 	}
 
 	public Civilization getCivilization(Civilization.Name name) {
-		return this.civs.get(name);
+		return this.civs.stream().filter(civ -> civ.getName().equals(name)).findAny().orElse(null);
 	}
 
-	public void setCivilization(Civilization civ) {
-		this.civs.put(civ.getName(), civ);
+	public synchronized void setCivilization(Civilization newCiv) {
+		this.civs.removeIf(civ -> civ.getName().equals(newCiv.getName()));
+		this.civs.add(newCiv);
 	}
 
 	public String toString() {
 		String s = "Game Data:\n";
 		s = s + "AST Difficulty: " + this.difficulty + "\n";
-		for (Civilization civ : Civilization.sortByAst(this.getCivilizations(), SortDirection.ASCENDING)) {
+		for (Civilization civ : Civilization.sortByAst(this.getCivilizations(), SortDirection.DESCENDING)) {
 			s = s + civ.toFullString() + "\n\n";
 		}
 		return s;
@@ -254,16 +264,12 @@ public class Game implements Serializable {
 
 			AST_TABLE.put(name, new AstTableData(astRank, region, hash));
 
-			FOREGROUND_COLORS
-					.put(name,
-							new Color(new BigInteger(
-									civElement.getElementsByTagName("Foreground").item(0).getTextContent(), 16)
-											.intValue()));
-			BACKGROUND_COLORS
-					.put(name,
-							new Color(new BigInteger(
-									civElement.getElementsByTagName("Background").item(0).getTextContent(), 16)
-											.intValue()));
+			FOREGROUND_COLORS.put(name,
+					new Color(new BigInteger(civElement.getElementsByTagName("Foreground").item(0).getTextContent(), 16)
+							.intValue()));
+			BACKGROUND_COLORS.put(name,
+					new Color(new BigInteger(civElement.getElementsByTagName("Background").item(0).getTextContent(), 16)
+							.intValue()));
 		}
 
 

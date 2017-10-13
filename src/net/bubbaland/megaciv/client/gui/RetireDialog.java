@@ -29,7 +29,7 @@ public class RetireDialog extends BubbaDialogPanel {
 
 		Game game = this.client.getGame();
 		ArrayList<Civilization.Name> civNames = Civilization.sortByToName(game.getCivilizations(),
-				Civilization.SortOption.AST, Civilization.SortDirection.ASCENDING);
+				Civilization.SortOption.AST, Civilization.SortDirection.DESCENDING);
 		Civilization.Name[] civNameArray = new Civilization.Name[civNames.size()];
 		civNameArray = civNames.toArray(civNameArray);
 
@@ -79,7 +79,7 @@ public class RetireDialog extends BubbaDialogPanel {
 
 			Game game = this.client.getGame();
 			ArrayList<Civilization.Name> civNames = Civilization.sortByToName(game.getCivilizations(),
-					Civilization.SortOption.AST, Civilization.SortDirection.ASCENDING);
+					Civilization.SortOption.AST, Civilization.SortDirection.DESCENDING);
 			Civilization.Name[] civNameArray = new Civilization.Name[civNames.size()];
 			civNameArray = civNames.toArray(civNameArray);
 
