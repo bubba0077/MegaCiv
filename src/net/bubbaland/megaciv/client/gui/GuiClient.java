@@ -131,10 +131,8 @@ public class GuiClient extends GameClient implements StopwatchListener {
 
 				int selectedTab = pane.getSelectedIndex();
 
-				for (String tabName : newTabs) {
-					// Add the tab to the tabbed pane
-					frame.addTab(tabName);
-				}
+				newTabs.stream().forEachOrdered(tabName -> frame.addTab(tabName));
+
 				pane.setSelectedIndex(selectedTab);
 
 				frame.setCursor(Cursor.getDefaultCursor());
