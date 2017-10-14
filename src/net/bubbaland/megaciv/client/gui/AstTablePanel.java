@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -105,6 +106,10 @@ public class AstTablePanel extends BubbaPanel {
 			exception.printStackTrace();
 		}
 	}
+
+	private static Icon					X_ICON	=
+			new ImageIcon(new ImageIcon(GuiClient.class.getResource("images/x.png")).getImage().getScaledInstance(20,
+					20, Image.SCALE_SMOOTH));
 
 	// Panel with column headers
 	private Header						header;
@@ -651,6 +656,7 @@ public class AstTablePanel extends BubbaPanel {
 			for (Column col : EnumSet.allOf(Column.class)) {
 				JComponent component = this.components.get(col);
 				String text = "";
+				Icon icon = null;
 				Color foregroundColor = Game.FOREGROUND_COLORS.get(name);
 				Color backgroundColor = Game.BACKGROUND_COLORS.get(name);
 				switch (col) {
@@ -695,17 +701,17 @@ public class AstTablePanel extends BubbaPanel {
 							if (!civ.passAstRequirements(age) && ( civ.passAstRequirements(civ.getAge(astStep - 1))
 									|| ( astStep - civ.getAstPosition() ) == 1 )) {
 								foregroundColor = AstTablePanel.this.controller.getAstForegroundColor(age);
-								text = " ! ";
+								text = "";
+								icon = X_ICON;
 							}
 							component.setToolTipText(civ.astRequirementString(age, true));
 						}
 						component.setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
 						component.getParent().setVisible(astStep <= AstTablePanel.this.client.getGame().lastAstStep());
 						component.setName(civ.toString() + " " + astStep);
-						// System.out.println(civ.toString() + " " + astStep + " " + component.isVisible());
-
 				}
 				JLabel label = (JLabel) component;
+				label.setIcon(icon);
 				label.setText(text);
 				label.setForeground(foregroundColor);
 				label.setBackground(backgroundColor);
