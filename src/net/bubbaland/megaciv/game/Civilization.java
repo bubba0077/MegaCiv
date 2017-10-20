@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -1189,10 +1190,6 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public final static class techCostComparator implements Comparator<Technology> {
 		private Civilization civ;
 
-		public techCostComparator() {
-			this.civ = null;
-		}
-
 		public techCostComparator(Civilization civ) {
 			this.civ = civ;
 		}
@@ -1208,10 +1205,6 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	public final static class totalTechCostComparator implements Comparator<List<Technology>> {
 		private Civilization civ;
-
-		public totalTechCostComparator() {
-			this.civ = null;
-		}
 
 		public totalTechCostComparator(Civilization civ) {
 			this.civ = civ;
@@ -1323,6 +1316,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				.sorted(new Technology.techCostComparator()).limit(maxL2).collect(Collectors.toList());
 		List<Technology> l3Techs = availableTechs.stream().filter(t -> t.getVP() == 6)
 				.sorted(new Technology.techCostComparator()).limit(maxL3).collect(Collectors.toList());
+
 		/*
 		 * Always include Anatomy and Library if available as they are special cases that change the total cost
 		 */
@@ -1352,7 +1346,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 								vp - ( nL3 * 6 + nL2 * 3 ), nL2, nL3))));
 
 		List<Technology> optimalList = list.stream().filter(l -> l != null)
-				.collect(Collectors.minBy(new totalTechCostComparator())).orElse(null);
+				.collect(Collectors.minBy(new totalTechCostComparator(this))).orElse(null);
 
 		return optimalList;
 	}
@@ -1377,13 +1371,13 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		int maxCost = availableTechs.parallelStream().mapToInt(t -> this.getCost(t)).max().orElse(Integer.MAX_VALUE);
 		long startTime = System.nanoTime();
 		for (int vp = ( budget / maxCost ) * 6 + 1; vp <= availableTechs.size(); vp++) {
-			// long loopStartTime = System.nanoTime();
-			// System.out.println("Trying " + vp + " VP");
+			long loopStartTime = System.nanoTime();
+			System.out.println("Trying " + vp + " VP");
 			List<Technology> candidate = this.getOptimalTechsWorthNVp(vp, availableTechs);
-			// System.out.println(
-			// "Candidate: " + Arrays.toString(candidate.toArray()) + " Cost: " + this.getTotalCost(candidate));
-			// long loopEndTime = System.nanoTime();
-			// System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
+			System.out.println(
+					"Candidate: " + Arrays.toString(candidate.toArray()) + " Cost: " + this.getTotalCost(candidate));
+			long loopEndTime = System.nanoTime();
+			System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
 
 			if (this.getTotalCost(candidate) <= budget) {
 				optimalTechs = candidate;
@@ -1415,8 +1409,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            Number of tier-three technologies to use
 	 * @return Lowest-cost combination of technologies
 	 */
-	private static ArrayList<Technology> getOptimalTechByCombinations(List<Technology> l1Techs,
-			List<Technology> l2Techs, List<Technology> l3Techs, int nL1, int nL2, int nL3) {
+	private ArrayList<Technology> getOptimalTechByCombinations(List<Technology> l1Techs, List<Technology> l2Techs,
+			List<Technology> l3Techs, int nL1, int nL2, int nL3) {
 		List<List<Technology>> l1List = Combinations(l1Techs, nL1).collect(Collectors.toList());
 		List<List<Technology>> l2List = Combinations(l2Techs, nL2).collect(Collectors.toList());
 		List<List<Technology>> l3List = Combinations(l3Techs, nL3).collect(Collectors.toList());
@@ -1431,7 +1425,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					return list;
 				});
 			});
-		}) ).filter(l -> l != null).collect(Collectors.minBy(new totalTechCostComparator())).orElse(null);
+		}) ).filter(l -> l != null).collect(Collectors.minBy(new totalTechCostComparator(this))).orElse(null);
 	}
 
 	/**
