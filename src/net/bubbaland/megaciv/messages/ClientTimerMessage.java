@@ -3,6 +3,8 @@ package net.bubbaland.megaciv.messages;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import net.bubbaland.megaciv.game.GameEvent;
+
 public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 
 	@JsonProperty("action")
@@ -19,6 +21,7 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	public ClientTimerMessage(@JsonProperty("action") StopwatchEvent eventType,
 			@JsonProperty("eventTime") long timerStart, @JsonProperty("timerLength") int timerLength,
 			@JsonProperty("lastDeciseconds") int lastDeciseconds) {
+		super(GameEvent.EventType.STOPWATCH);
 		this.eventType = eventType;
 		this.timerLength = timerLength;
 		this.eventTime = timerStart;
@@ -43,5 +46,11 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	@Override
 	public int getLastEventTic() {
 		return this.lastDeciseconds;
+	}
+
+	@Override
+	public String toString() {
+		// TODO
+		return null;
 	}
 }

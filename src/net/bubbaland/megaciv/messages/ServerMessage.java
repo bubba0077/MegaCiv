@@ -24,14 +24,14 @@ public abstract class ServerMessage {
 
 	public static class MessageEncoder implements Encoder.Text<ServerMessage> {
 		@Override
-		public void init(final EndpointConfig config) {
-		}
+		public void init(final EndpointConfig config) {}
 
 		@Override
 		public String encode(final ServerMessage message) throws EncodeException {
 			// System.out.println("Encoding ServerMessage with command " + message.command);
 			final StringWriter writer = new StringWriter();
 			final ObjectMapper mapper = new ObjectMapper();
+			mapper.findAndRegisterModules();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -46,21 +46,20 @@ public abstract class ServerMessage {
 		}
 
 		@Override
-		public void destroy() {
-		}
+		public void destroy() {}
 	}
 
 	public static class MessageDecoder implements Decoder.Text<ServerMessage> {
 
 		@Override
-		public void init(final EndpointConfig config) {
-		}
+		public void init(final EndpointConfig config) {}
 
 		@Override
 		public ServerMessage decode(final String str) throws DecodeException {
 			// System.out.println("Decoding ServerMessage");
 			final ObjectMapper mapper = new ObjectMapper();
 			// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.findAndRegisterModules();
 			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			ServerMessage message = null;
@@ -81,8 +80,7 @@ public abstract class ServerMessage {
 
 
 		@Override
-		public void destroy() {
-		}
+		public void destroy() {}
 	}
 
 }

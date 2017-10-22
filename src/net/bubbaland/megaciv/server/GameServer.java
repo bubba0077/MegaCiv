@@ -1,8 +1,7 @@
 package net.bubbaland.megaciv.server;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import javax.websocket.DeploymentException;
@@ -14,6 +13,7 @@ import org.glassfish.tyrus.server.Server;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Game.Difficulty;
+import net.bubbaland.megaciv.game.GameEvent;
 import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.StopwatchListener;
 import net.bubbaland.megaciv.game.Technology;
@@ -38,10 +38,6 @@ public class GameServer extends Server implements StopwatchListener {
 	private final int									serverPort;
 
 	private Hashtable<Session, ClientMessageReceiver>	sessionList;
-
-	// Date format to use inside backup files
-	static public final SimpleDateFormat				stringDateFormat	=
-			new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
 
 	public GameServer(String serverUrl, int serverPort) {
 		this.serverPort = serverPort;
@@ -94,6 +90,7 @@ public class GameServer extends Server implements StopwatchListener {
 		String messageType = message.getClass().getSimpleName();
 		User user = this.sessionList.get(session).getUser();
 		user.updateActivity();
+		GameEvent event = new GameEvent(message.getEventType(), user, message.toString());
 		switch (messageType) {
 			case "ClientTimerMessage":
 				this.stopwatch.remoteEvent((ClientTimerMessage) message, 0);
@@ -112,25 +109,26 @@ public class GameServer extends Server implements StopwatchListener {
 				this.game.setDifficulty(difficulty);
 				Civilization.Region region = ( (NewGameMessage) message ).getRegion();
 				this.game.setRegion(region);
+
 				this.log(user + " created new " + WordUtils.capitalizeFully(difficulty.toString())
 						+ " game with the following civilizations: " + startingCivs);
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
-			case "AssignPlayerMessage": {
-				Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
-				String player = ( (AssignPlayerMessage) message ).getPlayer();
-				civ.setPlayer(player);
-				this.log(user + "assigned " + civ.getName() + " to " + player);
-				this.broadcastMessage(new GameDataMessage(this.game));
-				break;
-			}
+			// case "AssignPlayerMessage": {
+			// Civilization civ = this.game.getCivilization(( (AssignPlayerMessage) message ).getCivilizationName());
+			// String player = ( (AssignPlayerMessage) message ).getPlayer();
+			// civ.setPlayer(player);
+			// this.log(user + "assigned " + civ.getName() + " to " + player);
+			// // this.broadcastMessage(new GameDataMessage(this.game));
+			// break;
+			// }
 			case "CensusMessage":
 				HashMap<Civilization.Name, Integer> census = ( (CensusMessage) message ).getCensus();
 				for (Civilization.Name name : census.keySet()) {
 					this.log(name + " " + census.get(name) + " " + this.game.getCivilization(name));
 					this.game.getCivilization(name).setPopulation(census.get(name));
 				}
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				this.log("Census reported by " + user + ": " + census);
 				break;
 			case "CityUpdateMessage":
@@ -138,7 +136,7 @@ public class GameServer extends Server implements StopwatchListener {
 				for (Civilization.Name name : cityCount.keySet()) {
 					this.game.getCivilization(name).setCityCount(cityCount.get(name));
 				}
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				this.log("City counts updated by " + user + ": " + cityCount);
 				break;
 			case "TechPurchaseMessage": {
@@ -150,7 +148,7 @@ public class GameServer extends Server implements StopwatchListener {
 				}
 				civ.setPurchased(true);
 				this.log(name + " bought the following technologies: " + newTechs + " (via " + user + ")");
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			}
 			case "UndoPurchaseMessage": {
@@ -161,7 +159,7 @@ public class GameServer extends Server implements StopwatchListener {
 				civ.setPurchased(false);
 				this.log(name + " undid the following technology purchases from this round: " + undoneTechs + " (via "
 						+ user + ")");
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			}
 			case "AdvanceAstMessage":
@@ -171,7 +169,7 @@ public class GameServer extends Server implements StopwatchListener {
 				}
 				this.game.nextRound();
 				this.log("Ast advances triggered by " + user + ": " + advanceAst);
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "AdditionalCreditMessage": {
 				ArrayList<Technology.Type> credits = ( (AdditionalCreditMessage) message ).getCredits();
@@ -181,19 +179,19 @@ public class GameServer extends Server implements StopwatchListener {
 				civ.addTypeCredits(tech, credits);
 				this.log("Additional credits add to " + name.toString() + " by " + user + " for tech " + tech + ": "
 						+ credits);
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			}
 			case "LoadGameMessage":
 				this.game = ( (LoadGameMessage) message ).getGame();
 				this.log("Game loaded from save by " + user);
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "RetireMessage":
 				Civilization.Name name = ( (RetireMessage) message ).getCivName();
 				this.game.retireCivilization(name);
 				this.log(name.toString() + " has retired!");
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "CivEditMessage":
 				Civilization civ = ( (CivEditMessage) message ).getCivilization();
@@ -201,7 +199,7 @@ public class GameServer extends Server implements StopwatchListener {
 				this.game.setCivilization(civ);
 				this.log("Civilization edited by " + user + ":\n" + "Before Edit: " + oldCiv.toFullString() + "\n"
 						+ "After Edit: " + civ.toFullString());
-				this.broadcastMessage(new GameDataMessage(this.game));
+				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;
 			case "SetUserMessage":
 				User newUser = ( (SetUserMessage) message ).getUser();
@@ -210,7 +208,17 @@ public class GameServer extends Server implements StopwatchListener {
 				break;
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
+				return;
 		}
+		if (game != null) {
+			this.game.logEvent(event);
+		}
+		if (event.toString() != null) {
+			this.log(event.toString());
+		} else {
+			System.out.println("toString not yet defined for " + event.getType());
+		}
+		this.broadcastMessage(new GameDataMessage(this.game));
 		this.broadcastMessage(new UserListMessage(this.getUserList()));
 	}
 
@@ -226,8 +234,8 @@ public class GameServer extends Server implements StopwatchListener {
 	 *            The message
 	 */
 	public void log(String message) {
-		final Date date = new Date();
-		System.out.println(stringDateFormat.format(date) + ": " + message);
+		final LocalDateTime date = LocalDateTime.now();
+		System.out.println(GameEvent.dateFormat.format(date) + ": " + message);
 	}
 
 	void sendGame(Session session) {

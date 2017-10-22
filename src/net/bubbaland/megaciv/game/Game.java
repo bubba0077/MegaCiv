@@ -98,19 +98,31 @@ public class Game implements Serializable {
 	@JsonProperty("region")
 	private Region					region;
 
+	@JsonProperty("gameLog")
+	private ArrayList<GameEvent>	gameLog;
+
 	public Game() {
-		this(null, new ArrayList<Civilization>(), null, 1, Integer.MAX_VALUE);
+		this(null, new ArrayList<Civilization>(), null, 1, Integer.MAX_VALUE, new ArrayList<GameEvent>());
 	}
 
 	@JsonCreator
 	public Game(@JsonProperty("region") Region region, @JsonProperty("civs") ArrayList<Civilization> civs,
 			@JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("currentRound") int currentRound,
-			@JsonProperty("lastRound") int lastRound) {
+			@JsonProperty("lastRound") int lastRound, @JsonProperty("gameLog") ArrayList<GameEvent> gameLog) {
 		this.region = region;
 		this.civs = civs;
 		this.currentRound = currentRound;
 		this.lastRound = lastRound;
 		this.difficulty = difficulty;
+		this.gameLog = gameLog;
+	}
+
+	public ArrayList<GameEvent> getLog() {
+		return this.gameLog;
+	}
+
+	public void logEvent(GameEvent event) {
+		this.gameLog.add(event);
 	}
 
 	public void setRegion(Region region) {
@@ -435,4 +447,3 @@ public class Game implements Serializable {
 		}
 	}
 }
-

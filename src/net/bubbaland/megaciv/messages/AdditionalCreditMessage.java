@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.Civilization;
+import net.bubbaland.megaciv.game.GameEvent;
 import net.bubbaland.megaciv.game.Technology;
 
 public class AdditionalCreditMessage extends ClientMessage {
@@ -19,6 +20,7 @@ public class AdditionalCreditMessage extends ClientMessage {
 	@JsonCreator
 	public AdditionalCreditMessage(@JsonProperty("civName") Civilization.Name civName,
 			@JsonProperty("tech") Technology tech, @JsonProperty("credits") ArrayList<Technology.Type> credits) {
+		super(GameEvent.EventType.TECH_PURCHASE);
 		this.civName = civName;
 		this.tech = tech;
 		this.credits = credits;
@@ -40,6 +42,12 @@ public class AdditionalCreditMessage extends ClientMessage {
 	 */
 	public ArrayList<Technology.Type> getCredits() {
 		return this.credits;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

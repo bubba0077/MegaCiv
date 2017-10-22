@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game.Difficulty;
+import net.bubbaland.megaciv.game.GameEvent;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,7 +25,7 @@ public class NewGameMessage extends ClientMessage {
 			@JsonProperty("civNames") HashMap<Civilization.Name, String> newCivNames,
 			@JsonProperty("Difficulty") final Difficulty difficulty,
 			@JsonProperty("useCredits") final boolean useCredits) {
-		super();
+		super(GameEvent.EventType.GAME_START);
 		this.region = region;
 		this.civNames = newCivNames;
 		this.difficulty = difficulty;
@@ -45,5 +46,11 @@ public class NewGameMessage extends ClientMessage {
 
 	public boolean useCredits() {
 		return this.useCredits;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

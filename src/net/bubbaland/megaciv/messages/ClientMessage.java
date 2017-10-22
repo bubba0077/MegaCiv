@@ -10,6 +10,8 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -18,21 +20,26 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.bubbaland.megaciv.game.GameEvent;
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public abstract class ClientMessage {
 
-	protected static JsonFactory jsonFactory = new JsonFactory();
+	protected static JsonFactory	jsonFactory	= new JsonFactory();
+
+	@JsonProperty("type")
+	protected GameEvent.EventType	type;
 
 	public static class MessageEncoder implements Encoder.Text<ClientMessage> {
 		@Override
-		public void init(final EndpointConfig config) {
-		}
+		public void init(final EndpointConfig config) {}
 
 		@Override
 		public String encode(final ClientMessage message) throws EncodeException {
 			// System.out.println("Encoding ClientMessage with command " + message.command);
 			final StringWriter writer = new StringWriter();
 			final ObjectMapper mapper = new ObjectMapper();
+			mapper.findAndRegisterModules();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -47,20 +54,19 @@ public abstract class ClientMessage {
 		}
 
 		@Override
-		public void destroy() {
-		}
+		public void destroy() {}
 	}
 
 	public static class MessageDecoder implements Decoder.Text<ClientMessage> {
 
 		@Override
-		public void init(final EndpointConfig config) {
-		}
+		public void init(final EndpointConfig config) {}
 
 		@Override
 		public ClientMessage decode(final String str) throws DecodeException {
 			// System.out.println("Decoding ClientMessage");
 			final ObjectMapper mapper = new ObjectMapper();
+			mapper.findAndRegisterModules();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -82,8 +88,18 @@ public abstract class ClientMessage {
 
 
 		@Override
-		public void destroy() {
-		}
+		public void destroy() {}
 	}
+
+	@JsonCreator
+	protected ClientMessage(@JsonProperty("type") GameEvent.EventType type) {
+		this.type = type;
+	}
+
+	public GameEvent.EventType getEventType() {
+		return this.type;
+	}
+
+	public abstract String toString();
 
 }
