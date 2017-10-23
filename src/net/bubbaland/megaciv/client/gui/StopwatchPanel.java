@@ -11,6 +11,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -112,8 +114,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.clockLabelGroup.resizeFonts();
 	}
 
-	public void tic(int deciseconds) {
-		this.updateGui(deciseconds);
+	public void tic(Duration timeRemaining) {
+		this.updateGui(timeRemaining);
 	}
 
 	public void watchStarted() {
@@ -141,11 +143,9 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.updateGui(this.client.getStopwatch().getTicsRemaining());
 	}
 
-	public void updateGui(int deciseconds) {
-		int min = deciseconds / 600;
-		double sec = Math.max(( deciseconds - ( 600 * min ) ) * 0.1, 0.0);
-		this.clockLabel.setText(String.format("%02d", min) + ":" + String.format("%04.1f", sec));
-		if (deciseconds < 150) {
+	public void updateGui(Duration timeRemaining) {
+		this.clockLabel.setText(Stopwatch.formatTimer(timeRemaining));
+		if (timeRemaining.minus(Duration.ofSeconds(30)).isNegative()) {
 			this.clockLabel.setForeground(Color.RED);
 		} else {
 			this.clockLabel.setForeground(Color.WHITE);
@@ -155,7 +155,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		long eventTime = event.getWhen() + this.client.getSntpClient().getOffset();
+		Instant eventTime = Instant.ofEpochMilli(event.getWhen()).plus(this.client.getSntpClient().getOffset());
+
 		Stopwatch stopwatch = this.client.getStopwatch();
 		switch (event.getActionCommand()) {
 			case "Set":
@@ -215,10 +216,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			Properties props = this.controller.getProperties();
 			float fontSize = Float.parseFloat(props.getProperty("Stopwatch.Set.FontSize"));
 
-			int timerLength = StopwatchPanel.this.client.getStopwatch().getTimerLength();
+			Duration timerLength = StopwatchPanel.this.client.getStopwatch().getTimerLength();
 
-			int currentMin = timerLength / 60;
-			int currentSec = timerLength - ( 60 * currentMin );
+			int currentMin = (int) timerLength.toMinutes();
+			int currentSec = (int) timerLength.minus(Duration.ofMinutes(currentMin)).getSeconds();
 
 			this.minSpinner = new JSpinner(new SpinnerNumberModel(currentMin, 0, 59, 1));
 			this.minSpinner.setFont(this.minSpinner.getFont().deriveFont(fontSize));
@@ -247,16 +248,18 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		}
 
 		public void windowClosed(WindowEvent event) {
-			long now = System.currentTimeMillis() + client.getSntpClient().getOffset();
+			// long now = System.currentTimeMillis() + client.getSntpClient().getOffset();
+			Instant now = Instant.now().plus(client.getSntpClient().getOffset());
 			super.windowClosed(event);
 
 			// If the OK button was pressed, open the question
 			final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 			if (option == JOptionPane.OK_OPTION) {
+				Duration length = Duration.ofMinutes((int) this.minSpinner.getValue())
+						.plus(Duration.ofSeconds((int) this.secSpinner.getValue()));
 				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.SET, now,
-						(int) this.minSpinner.getValue() * 60 + (int) this.secSpinner.getValue(),
-						StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
+						length, StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
 			}
 		}
 

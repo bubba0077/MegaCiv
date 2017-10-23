@@ -3,6 +3,7 @@ package net.bubbaland.sntp;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,8 +15,8 @@ public class SntpClient {
 	/**
 	 * @return the offset
 	 */
-	public long getOffset() {
-		return (long) this.offset;
+	public Duration getOffset() {
+		return this.offset != null ? this.offset : Duration.ZERO;
 	}
 
 	// Weight of the most recent packet on the offset
@@ -26,7 +27,7 @@ public class SntpClient {
 	private String			host;
 
 	// offset = server - client
-	private double			offset;
+	private Duration		offset;
 	private Timer			timer;
 
 	public SntpClient(String host, int port, int pollInterval) {
@@ -34,7 +35,7 @@ public class SntpClient {
 		this.host = new String(host);
 		this.pollInterval = pollInterval;
 
-		this.offset = -1;
+		this.offset = null;
 		this.timer = null;
 	}
 
@@ -105,11 +106,13 @@ public class SntpClient {
 						/ 2;
 
 		// System clock offset in millis
-		long newOffset = (long) ( t * 1000 );
-		if (this.offset == -1) {
+		Duration newOffset = Duration.ofNanos((long) ( t * 1000000000 ));
+		if (this.offset == null) {
 			this.offset = newOffset;
 		} else {
-			this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
+			this.offset = newOffset.dividedBy((long) ( 1.0 / avgWeight ))
+					.plus(this.offset.dividedBy((long) ( 1.0 / ( 1 - avgWeight ) )));
+			// this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
 		}
 
 		// System.out.println("Average Offset: " + this.offset + " ms");

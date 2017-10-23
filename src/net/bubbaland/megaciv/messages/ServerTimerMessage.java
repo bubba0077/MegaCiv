@@ -1,5 +1,8 @@
 package net.bubbaland.megaciv.messages;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,35 +11,35 @@ public class ServerTimerMessage extends ServerMessage implements TimerMessage {
 	@JsonProperty("action")
 	private final StopwatchEvent	eventType;
 	@JsonProperty("eventTime")
-	private final long				eventTime;
-	@JsonProperty("lastDeciseconds")
-	private final int				lastDeciseconds;
+	private final Instant			eventTime;
+	@JsonProperty("timeRemaining")
+	private final Duration			timeRemaining;
 	@JsonProperty("timerLength")
-	private final int				timerLength;
+	private final Duration			timerLength;
 
 	@JsonCreator
 	public ServerTimerMessage(@JsonProperty("action") StopwatchEvent eventType,
-			@JsonProperty("eventTime") long timerStart, @JsonProperty("timerLength") int timerLength,
-			@JsonProperty("lastDeciseconds") int lastDeciseconds) {
+			@JsonProperty("eventTime") Instant eventTime, @JsonProperty("timerLength") Duration timerLength,
+			@JsonProperty("timeRemaining") Duration timeRemaining) {
 		this.eventType = eventType;
+		this.eventTime = eventTime;
 		this.timerLength = timerLength;
-		this.eventTime = timerStart;
-		this.lastDeciseconds = lastDeciseconds;
+		this.timeRemaining = timeRemaining;
 	}
 
 	public StopwatchEvent getEvent() {
 		return this.eventType;
 	}
 
-	public int getTimerLength() {
+	public Duration getTimerLength() {
 		return this.timerLength;
 	}
 
-	public long getEventTime() {
+	public Instant getEventTime() {
 		return this.eventTime;
 	}
 
-	public int getLastEventTic() {
-		return this.lastDeciseconds;
+	public Duration getLastEventTic() {
+		return this.timeRemaining;
 	}
 }

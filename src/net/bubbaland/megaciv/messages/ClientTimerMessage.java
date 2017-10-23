@@ -1,5 +1,8 @@
 package net.bubbaland.megaciv.messages;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,22 +13,22 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	@JsonProperty("action")
 	private final StopwatchEvent	eventType;
 	@JsonProperty("timerLength")
-	private final int				timerLength;
-	@JsonProperty("lastDeciseconds")
-	private final int				lastDeciseconds;
+	private final Duration			timerLength;
+	@JsonProperty("timeRemaining")
+	private final Duration			timeRemaining;
 	// Timer start in server time
 	@JsonProperty("eventTime")
-	private final long				eventTime;
+	private final Instant			eventTime;
 
 	@JsonCreator
 	public ClientTimerMessage(@JsonProperty("action") StopwatchEvent eventType,
-			@JsonProperty("eventTime") long timerStart, @JsonProperty("timerLength") int timerLength,
-			@JsonProperty("lastDeciseconds") int lastDeciseconds) {
+			@JsonProperty("eventTime") Instant timerStart, @JsonProperty("timerLength") Duration timerLength,
+			@JsonProperty("timeRemaining") Duration timeRemaining) {
 		super(GameEvent.EventType.STOPWATCH);
 		this.eventType = eventType;
 		this.timerLength = timerLength;
 		this.eventTime = timerStart;
-		this.lastDeciseconds = lastDeciseconds;
+		this.timeRemaining = timeRemaining;
 	}
 
 	@Override
@@ -34,18 +37,18 @@ public class ClientTimerMessage extends ClientMessage implements TimerMessage {
 	}
 
 	@Override
-	public int getTimerLength() {
+	public Duration getTimerLength() {
 		return this.timerLength;
 	}
 
 	@Override
-	public long getEventTime() {
+	public Instant getEventTime() {
 		return this.eventTime;
 	}
 
 	@Override
-	public int getLastEventTic() {
-		return this.lastDeciseconds;
+	public Duration getLastEventTic() {
+		return this.timeRemaining;
 	}
 
 	@Override

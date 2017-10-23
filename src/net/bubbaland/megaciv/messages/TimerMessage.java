@@ -1,5 +1,8 @@
 package net.bubbaland.megaciv.messages;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public interface TimerMessage {
 
 	public enum StopwatchEvent {
@@ -8,9 +11,9 @@ public interface TimerMessage {
 
 	public StopwatchEvent getEvent();
 
-	public int getTimerLength();
+	public Duration getTimerLength();
 
-	public long getEventTime();
+	public Instant getEventTime();
 
-	public int getLastEventTic();
+	public Duration getLastEventTic();
 }

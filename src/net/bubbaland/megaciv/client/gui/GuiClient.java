@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Cursor;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -161,21 +162,21 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	}
 
 	@Override
-	public void tic(int deciseconds) {
+	public void tic(Duration timeRemaining) {
 		/**
 		 * Play audio alerts at the appropriate times.
 		 */
-		switch (deciseconds) {
-			case 10:
-			case 20:
-			case 30:
-			case 40:
-			case 50:
-			case 150:
+		switch ((int) timeRemaining.getSeconds()) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 15:
 				BEEP.setFramePosition(0);
 				BEEP.start();
 				break;
-			case 600:
+			case 60:
 				ONE_MINUTE.setFramePosition(0);
 				ONE_MINUTE.start();
 				break;

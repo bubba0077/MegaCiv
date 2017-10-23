@@ -1,5 +1,7 @@
 package net.bubbaland.megaciv.game;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,10 +10,10 @@ import net.bubbaland.megaciv.messages.TimerMessage;
 import net.bubbaland.megaciv.messages.TimerMessage.StopwatchEvent;
 
 public class Stopwatch {
-	private int									timerLength;
-	private volatile long						lastEventTime;
-	private volatile int						lastEventTic;
-	private volatile int						tics;
+	private Duration							timerLength;
+	private volatile Instant					lastEventTime;
+	private volatile Duration					lastEventTic;
+	private volatile Duration					tics;
 	private Timer								timer;
 	private boolean								isRunning;
 
@@ -22,20 +24,25 @@ public class Stopwatch {
 	}
 
 	public Stopwatch(int seconds) {
+		this(Duration.ofSeconds(seconds));
+	}
+
+	public Stopwatch(Duration timerLength) {
 		this.listeners = new ArrayList<StopwatchListener>();
 		this.timer = null;
-		this.timerLength = seconds;
-		this.tics = this.timerLength * 10;
-		this.lastEventTime = -1;
+		this.timerLength = timerLength;
+		this.tics = Duration.from(this.timerLength);
+		this.lastEventTime = Instant.now();
 		this.lastEventTic = this.tics;
 		this.isRunning = false;
 	}
 
-	public synchronized void startOffset(long eventTime) {
+	public synchronized void startOffset(Instant eventTime) {
 		this.timer = new Timer();
 		this.lastEventTime = eventTime;
 		this.lastEventTic = this.tics;
-		this.tics = this.tics - (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
+		this.tics = this.tics.minus(Duration.between(eventTime, Instant.now()));
+		// this.tics - (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
 		this.timer.scheduleAtFixedRate(new TicTok(), 0, 100);
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStarted();
@@ -53,14 +60,15 @@ public class Stopwatch {
 		this.isRunning = true;
 	}
 
-	public synchronized void stopOffset(long eventTime) {
+	public synchronized void stopOffset(Instant eventTime) {
 		if (this.timer != null) {
 			this.timer.cancel();
 		}
 		this.timer = null;
 		this.lastEventTime = eventTime;
 		this.lastEventTic = this.tics;
-		this.tics = this.tics + (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
+		this.tics = this.tics.plus(Duration.between(eventTime, Instant.now()));
+		// this.tics = this.tics + (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStopped();
 		}
@@ -80,16 +88,16 @@ public class Stopwatch {
 	}
 
 	public synchronized void reset() {
-		this.reset(System.currentTimeMillis());
+		this.reset(Instant.now());
 	}
 
-	public synchronized void reset(long eventTime) {
+	public synchronized void reset(Instant eventTime) {
 		if (this.timer != null) {
 			this.timer.cancel();
 		}
 		this.timer = null;
 		this.lastEventTime = eventTime;
-		this.tics = this.timerLength * 10;
+		this.tics = Duration.from(this.timerLength);
 		this.lastEventTic = this.tics;
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchReset();
@@ -97,25 +105,25 @@ public class Stopwatch {
 		this.isRunning = false;
 	}
 
-	public int getLastEventTic() {
+	public Duration getLastEventTic() {
 		return this.lastEventTic;
 	}
 
-	public synchronized void setTics(int tic) {
+	public synchronized void setTics(Duration tic) {
 		this.tics = tic;
 		this.lastEventTic = tic;
 	}
 
-	public synchronized void setTimer(int seconds) {
-		this.setTimer(System.currentTimeMillis(), seconds);
+	public synchronized void setTimer(Duration timerLength) {
+		this.setTimer(Instant.now(), timerLength);
 	}
 
-	public synchronized void setTimer(long eventTime, int seconds) {
+	public synchronized void setTimer(Instant eventTime, Duration timerLength) {
 		if (this.timer != null) {
 			this.timer.cancel();
 		}
 		this.timer = null;
-		this.timerLength = seconds;
+		this.timerLength = timerLength;
 		this.reset(eventTime);
 	}
 
@@ -132,15 +140,15 @@ public class Stopwatch {
 		this.listeners.remove(listener);
 	}
 
-	public int getTimerLength() {
+	public Duration getTimerLength() {
 		return this.timerLength;
 	}
 
-	public int getTicsRemaining() {
+	public Duration getTicsRemaining() {
 		return this.tics;
 	}
 
-	public long getLastEventTime() {
+	public Instant getLastEventTime() {
 		return this.lastEventTime;
 	}
 
@@ -148,9 +156,10 @@ public class Stopwatch {
 		return this.isRunning;
 	}
 
-	public synchronized void remoteEvent(TimerMessage message, long offset) {
+	public synchronized void remoteEvent(TimerMessage message, Duration offset) {
 		StopwatchEvent eventType = message.getEvent();
-		long eventTime = message.getEventTime() - offset;
+		System.out.println(message + " " + message.getEventTime() + " " + offset);
+		Instant eventTime = message.getEventTime().minus(offset);
 		if (this.timerLength != message.getTimerLength()) {
 			this.timerLength = message.getTimerLength();
 		}
@@ -180,13 +189,20 @@ public class Stopwatch {
 		// System.out.println(" Last Event Tic: " + message.getLastEventTic());
 	}
 
+	public static String formatTimer(Duration timeRemaining) {
+		int min = (int) timeRemaining.toMinutes();
+		int sec = (int) timeRemaining.minus(Duration.ofMinutes(min)).getSeconds();
+		int tenths = (int) timeRemaining.minus(Duration.ofMinutes(min)).minus(Duration.ofSeconds(sec)).toMillis() / 100;
+		return String.format("%02d", min) + ":" + String.format("%02d", sec) + "." + tenths;
+	}
+
 	private class TicTok extends TimerTask {
 		@Override
 		public void run() {
-			Stopwatch.this.tics--;
-			if (Stopwatch.this.tics <= 0) {
+			Stopwatch.this.tics = Stopwatch.this.tics.minusMillis(100);
+			if (Stopwatch.this.tics.isZero() || Stopwatch.this.tics.isNegative()) {
 				Stopwatch.this.timer.cancel();
-				Stopwatch.this.tics = 0;
+				Stopwatch.this.tics = Duration.ZERO;
 			}
 			for (StopwatchListener listener : Stopwatch.this.listeners) {
 				listener.tic(Stopwatch.this.tics);

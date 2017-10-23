@@ -1,5 +1,7 @@
 package net.bubbaland.megaciv.server;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +95,7 @@ public class GameServer extends Server implements StopwatchListener {
 		GameEvent event = new GameEvent(message.getEventType(), user, message.toString());
 		switch (messageType) {
 			case "ClientTimerMessage":
-				this.stopwatch.remoteEvent((ClientTimerMessage) message, 0);
+				this.stopwatch.remoteEvent((ClientTimerMessage) message, Duration.ZERO);
 				break;
 			case "NewGameMessage":
 				this.game = new Game();
@@ -243,9 +245,9 @@ public class GameServer extends Server implements StopwatchListener {
 	}
 
 	void sendClock(Session session) {
-		long lastEventTime = this.stopwatch.getLastEventTime();
-		int timerLength = this.stopwatch.getTimerLength();
-		int lastDeciseconds = this.stopwatch.getLastEventTic();
+		Instant lastEventTime = this.stopwatch.getLastEventTime();
+		Duration timerLength = this.stopwatch.getTimerLength();
+		Duration lastDeciseconds = this.stopwatch.getLastEventTic();
 		this.sendMessage(session,
 				new ServerTimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
 		this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, lastEventTime,
@@ -274,8 +276,8 @@ public class GameServer extends Server implements StopwatchListener {
 		}
 	}
 
-	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, long eventTime, int timerLength,
-			int lastDeciseconds) {
+	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, Instant eventTime, Duration timerLength,
+			Duration lastDeciseconds) {
 		for (Session session : this.sessionList.keySet()) {
 			this.sendMessage(session, new ServerTimerMessage(action, eventTime, timerLength, lastDeciseconds));
 		}
@@ -298,7 +300,7 @@ public class GameServer extends Server implements StopwatchListener {
 	}
 
 	@Override
-	public void tic(int deciseconds) {}
+	public void tic(Duration tics) {}
 
 	@Override
 	public void watchStarted() {
