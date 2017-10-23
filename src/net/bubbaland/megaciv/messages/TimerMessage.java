@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.GameEvent;
+import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.GameEvent.EventType;
 
 public class TimerMessage implements ClientMessage, ServerMessage {
@@ -52,8 +53,8 @@ public class TimerMessage implements ClientMessage, ServerMessage {
 
 	@Override
 	public String toString() {
-		// TODO
-		return null;
+		return "Stopwatch " + this.eventType + " at " + GameEvent.dateFormat.format(this.eventTime) + " with "
+				+ Stopwatch.formatTimer(this.timeRemaining) + " remaining";
 	}
 
 	@Override

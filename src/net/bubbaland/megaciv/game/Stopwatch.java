@@ -158,7 +158,6 @@ public class Stopwatch {
 
 	public synchronized void remoteEvent(TimerMessage message, Duration offset) {
 		StopwatchEvent eventType = message.getEvent();
-		System.out.println(message + " " + message.getEventTime() + " " + offset);
 		Instant eventTime = message.getEventTime().minus(offset);
 		if (this.timerLength != message.getTimerLength()) {
 			this.timerLength = message.getTimerLength();
@@ -175,9 +174,6 @@ public class Stopwatch {
 				break;
 			case RESET:
 				this.reset(eventTime);
-				break;
-			case SET_LAST_TIC:
-				this.setTics(message.getLastEventTic());
 				break;
 			default:
 				break;

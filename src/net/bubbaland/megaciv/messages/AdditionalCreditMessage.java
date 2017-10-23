@@ -1,6 +1,8 @@
 package net.bubbaland.megaciv.messages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,8 +48,8 @@ public class AdditionalCreditMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Additional credits for " + this.civName.toString() + " provided by " + this.tech + " set to: "
+				+ Arrays.toString(credits.toArray());
 	}
 
 	@Override

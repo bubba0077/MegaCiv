@@ -29,8 +29,7 @@ public class AdvanceAstMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "AST Advancement: " + this.advanceAst;
 	}
 
 	@Override

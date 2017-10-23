@@ -34,8 +34,7 @@ public class TechPurchaseMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return civName.toString() + " purchased the following technologies: " + newTechs.toString();
 	}
 
 	@Override

@@ -23,8 +23,7 @@ public class UndoPurchaseMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return civName.toString() + " undid purchase for this round";
 	}
 
 	@Override

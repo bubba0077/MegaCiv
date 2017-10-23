@@ -21,8 +21,7 @@ public class CivEditMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Civ " + civ.getName() + " edited: " + civ.toFullString();
 	}
 
 	@Override

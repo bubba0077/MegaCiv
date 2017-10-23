@@ -70,7 +70,7 @@ public class GameEvent {
 
 	public String toString() {
 		// TODO
-		return "[" + dateFormat.format(this.timestamp) + "] " + user.getUserName() + ": " + message;
+		return "[" + dateFormat.format(this.timestamp) + " " + user.getUserName() + "]: " + message;
 	}
 
 }

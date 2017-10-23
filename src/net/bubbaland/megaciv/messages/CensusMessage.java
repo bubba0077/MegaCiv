@@ -1,8 +1,6 @@
 package net.bubbaland.megaciv.messages;
 
 import java.util.HashMap;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,9 +23,9 @@ public class CensusMessage implements ClientMessage {
 	}
 
 	public String toString() {
-		String s = "New Census:<BR>";
-		s = s + census.keySet().stream().map(civName -> civName.toString() + ": " + census.get(civName) + "</br>")
-				.collect(Collectors.joining());
+		String s = "New Census: " + census.toString();
+		// s = s + census.keySet().stream().map(civName -> civName.toString() + ": " + census.get(civName) + "</br>")
+		// .collect(Collectors.joining());
 		return s;
 	}
 

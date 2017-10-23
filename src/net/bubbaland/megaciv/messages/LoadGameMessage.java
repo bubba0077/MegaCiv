@@ -26,8 +26,7 @@ public class LoadGameMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Game loaded from file:\n" + game.toString();
 	}
 
 	@Override

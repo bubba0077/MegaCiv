@@ -21,8 +21,7 @@ public class RetireMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return name.toString() + " retired";
 	}
 
 	@Override

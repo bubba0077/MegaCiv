@@ -19,4 +19,5 @@ public class GameDataMessage implements ServerMessage {
 		return this.game;
 	}
 
+
 }

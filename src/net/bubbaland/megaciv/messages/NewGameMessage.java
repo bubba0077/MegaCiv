@@ -50,8 +50,8 @@ public class NewGameMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "New game started with " + this.civNames.size() + " civilizations in " + this.region + " region at "
+				+ this.difficulty + " difficulty: " + this.civNames.toString();
 	}
 
 	@Override

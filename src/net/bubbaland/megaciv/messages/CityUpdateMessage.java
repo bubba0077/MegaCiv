@@ -25,8 +25,7 @@ public class CityUpdateMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "City Count: " + cityCount.toString();
 	}
 
 	@Override

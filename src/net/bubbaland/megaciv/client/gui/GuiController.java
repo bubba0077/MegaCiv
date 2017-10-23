@@ -91,7 +91,7 @@ public class GuiController extends BubbaGuiController {
 						String[] tabs =
 								GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
 										.replaceAll("[\\[\\]]", "").split(", ");
-						System.out.println(tabs);
+						// System.out.println(tabs);
 						new MegaCivFrame(GuiController.this.client, GuiController.this).addTabs(tabs);
 					}
 				});
