@@ -46,7 +46,7 @@ public class GameServer extends Server implements StopwatchListener {
 		ClientMessageReceiver.registerServer(this);
 		this.sntpServer = new SntpServer(serverPort + 1);
 		this.sessionList = new Hashtable<Session, ClientMessageReceiver>();
-		this.stopwatch = new Stopwatch();
+		this.stopwatch = new Stopwatch(Duration.ofMinutes(5));
 		this.stopwatch.addStopwatchListener(this);
 	}
 
@@ -235,14 +235,15 @@ public class GameServer extends Server implements StopwatchListener {
 	void sendClock(Session session) {
 		Instant lastEventTime = this.stopwatch.getLastEventTime();
 		Duration timerLength = this.stopwatch.getTimerLength();
-		Duration lastDeciseconds = this.stopwatch.getLastEventTic();
-		this.sendMessage(session,
-				new TimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
-		this.sendMessage(session, new TimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, lastEventTime, timerLength,
-				lastDeciseconds));
+		Duration timeRemaining = this.stopwatch.getTimeRemaining();
+		Duration lastEventTimeRemaining = this.stopwatch.getLastEventTic();
+		this.sendMessage(session, new TimerMessage(TimerMessage.StopwatchEvent.SET, timerLength, lastEventTime,
+				lastEventTimeRemaining, timeRemaining));
+		this.sendMessage(session, new TimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, timerLength, lastEventTime,
+				lastEventTimeRemaining, timeRemaining));
 		if (this.stopwatch.isRunning()) {
-			this.sendMessage(session,
-					new TimerMessage(TimerMessage.StopwatchEvent.START, lastEventTime, timerLength, lastDeciseconds));
+			this.sendMessage(session, new TimerMessage(TimerMessage.StopwatchEvent.START, timerLength, lastEventTime,
+					lastEventTimeRemaining, timeRemaining));
 		}
 	}
 
@@ -265,9 +266,9 @@ public class GameServer extends Server implements StopwatchListener {
 	}
 
 	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, Instant eventTime, Duration timerLength,
-			Duration lastDeciseconds) {
+			Duration timeRemaining, Duration lastDeciseconds) {
 		for (Session session : this.sessionList.keySet()) {
-			this.sendMessage(session, new TimerMessage(action, eventTime, timerLength, lastDeciseconds));
+			this.sendMessage(session, new TimerMessage(action, timerLength, eventTime, lastDeciseconds, timeRemaining));
 		}
 	}
 
@@ -293,19 +294,19 @@ public class GameServer extends Server implements StopwatchListener {
 	@Override
 	public void watchStarted() {
 		this.broadcastTimeMessage(StopwatchEvent.START, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic(), this.stopwatch.getTimeRemaining());
 	}
 
 	@Override
 	public void watchStopped() {
 		this.broadcastTimeMessage(StopwatchEvent.STOP, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic(), this.stopwatch.getTimeRemaining());
 	}
 
 	@Override
 	public void watchReset() {
 		this.broadcastTimeMessage(StopwatchEvent.RESET, this.stopwatch.getLastEventTime(),
-				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic());
+				this.stopwatch.getTimerLength(), this.stopwatch.getLastEventTic(), this.stopwatch.getTimeRemaining());
 	}
 
 }

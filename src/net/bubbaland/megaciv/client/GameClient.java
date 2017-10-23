@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,10 +40,10 @@ import net.bubbaland.sntp.SntpClient;
 public class GameClient implements Runnable {
 
 	// Frequency (in secs) of synchronization of time with server
-	private final static int			SNTP_POLL_INTERVAL			= 30000;
+	private final static Duration		SNTP_POLL_INTERVAL		= Duration.ofMinutes(5);
 
 	// Default trade timer length (in secs)
-	private final static int			STARTING_TIMER_LENGTH_SEC	= 300;
+	private final static Duration		STARTING_TIMER_LENGTH	= Duration.ofMinutes(5);
 
 	// Format for log timestamps
 	private SimpleDateFormat			timestampFormat;
@@ -83,7 +84,7 @@ public class GameClient implements Runnable {
 		this.userList = new ArrayList<User>();
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
-		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH_SEC);
+		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH);
 
 		this.uri = URI.create(serverUrl);
 		this.sntpClient = new SntpClient(this.uri.getHost(), this.uri.getPort() + 1, SNTP_POLL_INTERVAL);

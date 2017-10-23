@@ -23,14 +23,14 @@ public class SntpClient {
 	private static double	avgWeight	= 0.5;
 
 	private int				port;
-	private int				pollInterval;
+	private Duration		pollInterval;
 	private String			host;
 
 	// offset = server - client
 	private Duration		offset;
 	private Timer			timer;
 
-	public SntpClient(String host, int port, int pollInterval) {
+	public SntpClient(String host, int port, Duration pollInterval) {
 		this.port = port;
 		this.host = new String(host);
 		this.pollInterval = pollInterval;
@@ -51,7 +51,7 @@ public class SntpClient {
 					exception.printStackTrace();
 				}
 			}
-		}, 0, this.pollInterval);
+		}, 0, this.pollInterval.getSeconds());
 	}
 
 	public void stop() {
@@ -119,12 +119,12 @@ public class SntpClient {
 	}
 
 
-	public int getPollInteval() {
+	public Duration getPollInteval() {
 		return pollInterval;
 	}
 
 
-	public void setPollInteval(int pollInteval) {
+	public void setPollInteval(Duration pollInteval) {
 		this.pollInterval = pollInteval;
 	}
 

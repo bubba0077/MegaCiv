@@ -139,7 +139,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	public void updateGui() {
-		this.updateGui(this.client.getStopwatch().getTicsRemaining());
+		this.updateGui(this.client.getStopwatch().getTimeRemaining());
 	}
 
 	public void updateGui(Duration timeRemaining) {
@@ -162,16 +162,17 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
-				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.START, eventTime,
-						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.START, stopwatch.getTimerLength(),
+						eventTime, stopwatch.getLastEventTic(), stopwatch.getTimeRemaining()));
 				break;
 			case "Stop":
-				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.STOP, eventTime,
-						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.STOP, stopwatch.getTimerLength(),
+						eventTime, stopwatch.getLastEventTic(), stopwatch.getTimeRemaining()));
 				break;
 			case "Reset":
-				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.RESET, eventTime,
-						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
+				stopwatch.reset(eventTime);
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.RESET, stopwatch.getTimerLength(),
+						eventTime, stopwatch.getLastEventTic(), stopwatch.getTimeRemaining()));
 				break;
 		}
 	}
@@ -257,8 +258,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			if (option == JOptionPane.OK_OPTION) {
 				Duration length = Duration.ofMinutes((int) this.minSpinner.getValue())
 						.plus(Duration.ofSeconds((int) this.secSpinner.getValue()));
-				StopwatchPanel.this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.SET, now, length,
-						StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
+				Stopwatch stopwatch = StopwatchPanel.this.client.getStopwatch();
+				stopwatch.setTics(length);
+				StopwatchPanel.this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.SET, length, now,
+						stopwatch.getLastEventTic(), stopwatch.getTimeRemaining()));
 			}
 		}
 

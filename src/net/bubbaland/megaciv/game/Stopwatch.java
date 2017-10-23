@@ -12,38 +12,32 @@ import net.bubbaland.megaciv.messages.TimerMessage.StopwatchEvent;
 public class Stopwatch {
 	private Duration							timerLength;
 	private volatile Instant					lastEventTime;
-	private volatile Duration					lastEventTic;
-	private volatile Duration					tics;
+	private volatile Duration					lastTimeRemaining;
+	private volatile Duration					timeRemaining;
 	private Timer								timer;
 	private boolean								isRunning;
 
+	// Resolution of the underlying timer in milliseconds
+	private static final int					TIMER_RESOLUTION	= 50;
+
 	private final ArrayList<StopwatchListener>	listeners;
-
-	public Stopwatch() {
-		this(300);
-	}
-
-	public Stopwatch(int seconds) {
-		this(Duration.ofSeconds(seconds));
-	}
 
 	public Stopwatch(Duration timerLength) {
 		this.listeners = new ArrayList<StopwatchListener>();
 		this.timer = null;
 		this.timerLength = timerLength;
-		this.tics = Duration.from(this.timerLength);
+		this.timeRemaining = Duration.from(this.timerLength);
 		this.lastEventTime = Instant.now();
-		this.lastEventTic = this.tics;
+		this.lastTimeRemaining = this.timeRemaining;
 		this.isRunning = false;
 	}
 
 	public synchronized void startOffset(Instant eventTime) {
 		this.timer = new Timer();
 		this.lastEventTime = eventTime;
-		this.lastEventTic = this.tics;
-		this.tics = this.tics.minus(Duration.between(eventTime, Instant.now()));
-		// this.tics - (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
-		this.timer.scheduleAtFixedRate(new TicTok(), 0, 100);
+		this.lastTimeRemaining = this.timeRemaining;
+		this.timeRemaining = this.timeRemaining.minus(Duration.between(eventTime, Instant.now()));
+		this.timer.scheduleAtFixedRate(new TicTok(), 0, TIMER_RESOLUTION);
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStarted();
 		}
@@ -51,13 +45,7 @@ public class Stopwatch {
 	}
 
 	public synchronized void start() {
-		this.lastEventTic = this.tics;
-		this.timer = new Timer();
-		this.timer.scheduleAtFixedRate(new TicTok(), 0, 100);
-		for (StopwatchListener listener : this.listeners) {
-			listener.watchStarted();
-		}
-		this.isRunning = true;
+		this.startOffset(Instant.now());
 	}
 
 	public synchronized void stopOffset(Instant eventTime) {
@@ -66,9 +54,8 @@ public class Stopwatch {
 		}
 		this.timer = null;
 		this.lastEventTime = eventTime;
-		this.lastEventTic = this.tics;
-		this.tics = this.tics.plus(Duration.between(eventTime, Instant.now()));
-		// this.tics = this.tics + (int) ( ( System.currentTimeMillis() - eventTime ) / 100 );
+		this.lastTimeRemaining = this.timeRemaining;
+		this.timeRemaining = this.timeRemaining.plus(Duration.between(eventTime, Instant.now()));
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchStopped();
 		}
@@ -76,15 +63,7 @@ public class Stopwatch {
 	}
 
 	public synchronized void stop() {
-		if (this.timer != null) {
-			this.timer.cancel();
-		}
-		this.timer = null;
-		this.lastEventTic = this.tics;
-		for (StopwatchListener listener : this.listeners) {
-			listener.watchStopped();
-		}
-		this.isRunning = false;
+		this.stopOffset(Instant.now());
 	}
 
 	public synchronized void reset() {
@@ -97,8 +76,8 @@ public class Stopwatch {
 		}
 		this.timer = null;
 		this.lastEventTime = eventTime;
-		this.tics = Duration.from(this.timerLength);
-		this.lastEventTic = this.tics;
+		this.timeRemaining = Duration.from(this.timerLength);
+		this.lastTimeRemaining = this.timeRemaining;
 		for (StopwatchListener listener : this.listeners) {
 			listener.watchReset();
 		}
@@ -106,12 +85,12 @@ public class Stopwatch {
 	}
 
 	public Duration getLastEventTic() {
-		return this.lastEventTic;
+		return this.lastTimeRemaining;
 	}
 
 	public synchronized void setTics(Duration tic) {
-		this.tics = tic;
-		this.lastEventTic = tic;
+		this.timeRemaining = tic;
+		this.lastTimeRemaining = tic;
 	}
 
 	public synchronized void setTimer(Duration timerLength) {
@@ -144,8 +123,8 @@ public class Stopwatch {
 		return this.timerLength;
 	}
 
-	public Duration getTicsRemaining() {
-		return this.tics;
+	public Duration getTimeRemaining() {
+		return this.timeRemaining;
 	}
 
 	public Instant getLastEventTime() {
@@ -175,6 +154,9 @@ public class Stopwatch {
 			case RESET:
 				this.reset(eventTime);
 				break;
+			case SET_LAST_TIC:
+				this.setTics(message.getLastEventTimeRemaining());
+				break;
 			default:
 				break;
 		}
@@ -195,13 +177,13 @@ public class Stopwatch {
 	private class TicTok extends TimerTask {
 		@Override
 		public void run() {
-			Stopwatch.this.tics = Stopwatch.this.tics.minusMillis(100);
-			if (Stopwatch.this.tics.isZero() || Stopwatch.this.tics.isNegative()) {
+			Stopwatch.this.timeRemaining = Stopwatch.this.timeRemaining.minusMillis(TIMER_RESOLUTION);
+			if (Stopwatch.this.timeRemaining.isZero() || Stopwatch.this.timeRemaining.isNegative()) {
 				Stopwatch.this.timer.cancel();
-				Stopwatch.this.tics = Duration.ZERO;
+				Stopwatch.this.timeRemaining = Duration.ZERO;
 			}
 			for (StopwatchListener listener : Stopwatch.this.listeners) {
-				listener.tic(Stopwatch.this.tics);
+				listener.tic(Stopwatch.this.timeRemaining);
 			}
 		}
 	}
