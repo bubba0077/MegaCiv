@@ -7,15 +7,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.GameEvent;
+import net.bubbaland.megaciv.game.GameEvent.EventType;
 
-public class CityUpdateMessage extends ClientMessage {
+public class CityUpdateMessage implements ClientMessage {
 
 	@JsonProperty("cityCount")
 	private HashMap<Civilization.Name, Integer> cityCount;
 
 	@JsonCreator
 	public CityUpdateMessage(@JsonProperty("cityCount") HashMap<Civilization.Name, Integer> cityCount) {
-		super(GameEvent.EventType.CITY_COUNT);
 		this.cityCount = cityCount;
 	}
 
@@ -27,5 +27,10 @@ public class CityUpdateMessage extends ClientMessage {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EventType getEventType() {
+		return GameEvent.EventType.CITY_COUNT;
 	}
 }

@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.GameEvent;
+import net.bubbaland.megaciv.game.GameEvent.EventType;
 
-public class UndoPurchaseMessage extends ClientMessage {
+public class UndoPurchaseMessage implements ClientMessage {
 
 	@JsonProperty("civName")
 	private final Civilization.Name civName;
 
 	@JsonCreator
 	public UndoPurchaseMessage(@JsonProperty("civName") Civilization.Name civName) {
-		super(GameEvent.EventType.TECH_PURCHASE);
 		this.civName = civName;
 	}
 
@@ -25,5 +25,10 @@ public class UndoPurchaseMessage extends ClientMessage {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EventType getEventType() {
+		return GameEvent.EventType.TECH_PURCHASE;
 	}
 }

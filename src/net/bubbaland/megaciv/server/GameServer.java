@@ -94,8 +94,8 @@ public class GameServer extends Server implements StopwatchListener {
 		user.updateActivity();
 		GameEvent event = new GameEvent(message.getEventType(), user, message.toString());
 		switch (messageType) {
-			case "ClientTimerMessage":
-				this.stopwatch.remoteEvent((ClientTimerMessage) message, Duration.ZERO);
+			case "TimerMessage":
+				this.stopwatch.remoteEvent((TimerMessage) message, Duration.ZERO);
 				break;
 			case "NewGameMessage":
 				this.game = new Game();
@@ -249,12 +249,12 @@ public class GameServer extends Server implements StopwatchListener {
 		Duration timerLength = this.stopwatch.getTimerLength();
 		Duration lastDeciseconds = this.stopwatch.getLastEventTic();
 		this.sendMessage(session,
-				new ServerTimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
-		this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, lastEventTime,
-				timerLength, lastDeciseconds));
+				new TimerMessage(TimerMessage.StopwatchEvent.SET, lastEventTime, timerLength, lastDeciseconds));
+		this.sendMessage(session, new TimerMessage(TimerMessage.StopwatchEvent.SET_LAST_TIC, lastEventTime, timerLength,
+				lastDeciseconds));
 		if (this.stopwatch.isRunning()) {
-			this.sendMessage(session, new ServerTimerMessage(TimerMessage.StopwatchEvent.START, lastEventTime,
-					timerLength, lastDeciseconds));
+			this.sendMessage(session,
+					new TimerMessage(TimerMessage.StopwatchEvent.START, lastEventTime, timerLength, lastDeciseconds));
 		}
 	}
 
@@ -279,7 +279,7 @@ public class GameServer extends Server implements StopwatchListener {
 	private void broadcastTimeMessage(TimerMessage.StopwatchEvent action, Instant eventTime, Duration timerLength,
 			Duration lastDeciseconds) {
 		for (Session session : this.sessionList.keySet()) {
-			this.sendMessage(session, new ServerTimerMessage(action, eventTime, timerLength, lastDeciseconds));
+			this.sendMessage(session, new TimerMessage(action, eventTime, timerLength, lastDeciseconds));
 		}
 	}
 

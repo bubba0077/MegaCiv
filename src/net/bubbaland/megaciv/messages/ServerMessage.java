@@ -17,10 +17,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public abstract class ServerMessage {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
+public interface ServerMessage {
 
-	protected static JsonFactory jsonFactory = new JsonFactory();
+	static JsonFactory jsonFactory = new JsonFactory();
 
 	public static class MessageEncoder implements Encoder.Text<ServerMessage> {
 		@Override

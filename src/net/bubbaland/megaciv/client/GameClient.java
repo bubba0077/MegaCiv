@@ -221,8 +221,8 @@ public class GameClient implements Runnable {
 			case "UserListMessage": // Received an updated user list
 				this.userList = ( (UserListMessage) message ).getUserList();
 				break;
-			case "ServerTimerMessage": // Received a timer synchronization message
-				this.stopwatch.remoteEvent((ServerTimerMessage) message, this.sntpClient.getOffset());
+			case "TimerMessage": // Received a timer synchronization message
+				this.stopwatch.remoteEvent((TimerMessage) message, this.sntpClient.getOffset());
 				break;
 			default:
 		}

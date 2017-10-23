@@ -8,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.bubbaland.megaciv.game.Civilization.AstChange;
 import net.bubbaland.megaciv.game.Civilization.Name;
 import net.bubbaland.megaciv.game.GameEvent;
+import net.bubbaland.megaciv.game.GameEvent.EventType;
 
-public class AdvanceAstMessage extends ClientMessage {
+public class AdvanceAstMessage implements ClientMessage {
 
 	@JsonProperty("advanceAst")
 	private final HashMap<Name, AstChange> advanceAst;
@@ -23,7 +24,6 @@ public class AdvanceAstMessage extends ClientMessage {
 
 	@JsonCreator
 	public AdvanceAstMessage(@JsonProperty("advanceAst") final HashMap<Name, AstChange> advanceAst) {
-		super(GameEvent.EventType.AST);
 		this.advanceAst = advanceAst;
 	}
 
@@ -31,6 +31,11 @@ public class AdvanceAstMessage extends ClientMessage {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EventType getEventType() {
+		return GameEvent.EventType.AST;
 	}
 
 

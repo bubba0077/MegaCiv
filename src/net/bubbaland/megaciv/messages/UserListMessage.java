@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.User;
 
-public class UserListMessage extends ServerMessage {
+public class UserListMessage implements ServerMessage {
 
 	@JsonProperty("userList")
 	private final ArrayList<User> userList;

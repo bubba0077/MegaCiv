@@ -30,7 +30,6 @@ import net.bubbaland.gui.LinkedLabelGroup;
 import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.StopwatchListener;
-import net.bubbaland.megaciv.messages.ClientTimerMessage;
 import net.bubbaland.megaciv.messages.TimerMessage;
 
 public class StopwatchPanel extends BubbaPanel implements ActionListener, StopwatchListener {
@@ -163,15 +162,15 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 				new SetTimerDialog(this.controller);
 				break;
 			case "Run":
-				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.START, eventTime,
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.START, eventTime,
 						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 			case "Stop":
-				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.STOP, eventTime,
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.STOP, eventTime,
 						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 			case "Reset":
-				this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.RESET, eventTime,
+				this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.RESET, eventTime,
 						stopwatch.getTimerLength(), stopwatch.getLastEventTic()));
 				break;
 		}
@@ -258,8 +257,8 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			if (option == JOptionPane.OK_OPTION) {
 				Duration length = Duration.ofMinutes((int) this.minSpinner.getValue())
 						.plus(Duration.ofSeconds((int) this.secSpinner.getValue()));
-				StopwatchPanel.this.client.sendMessage(new ClientTimerMessage(TimerMessage.StopwatchEvent.SET, now,
-						length, StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
+				StopwatchPanel.this.client.sendMessage(new TimerMessage(TimerMessage.StopwatchEvent.SET, now, length,
+						StopwatchPanel.this.client.getStopwatch().getLastEventTic()));
 			}
 		}
 

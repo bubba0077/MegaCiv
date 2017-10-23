@@ -10,8 +10,6 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -22,13 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.bubbaland.megaciv.game.GameEvent;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public abstract class ClientMessage {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
+public interface ClientMessage {
 
-	protected static JsonFactory	jsonFactory	= new JsonFactory();
-
-	@JsonProperty("type")
-	protected GameEvent.EventType	type;
+	static JsonFactory jsonFactory = new JsonFactory();
 
 	public static class MessageEncoder implements Encoder.Text<ClientMessage> {
 		@Override
@@ -91,14 +86,7 @@ public abstract class ClientMessage {
 		public void destroy() {}
 	}
 
-	@JsonCreator
-	protected ClientMessage(@JsonProperty("type") GameEvent.EventType type) {
-		this.type = type;
-	}
-
-	public GameEvent.EventType getEventType() {
-		return this.type;
-	}
+	public abstract GameEvent.EventType getEventType();
 
 	public abstract String toString();
 

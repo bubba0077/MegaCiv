@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.bubbaland.megaciv.game.Game;
 
-public class GameDataMessage extends ServerMessage {
+public class GameDataMessage implements ServerMessage {
 
 	@JsonProperty("game")
 	private final Game game;

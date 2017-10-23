@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.GameEvent;
+import net.bubbaland.megaciv.game.GameEvent.EventType;
 import net.bubbaland.megaciv.game.User;
 
-public class SetUserMessage extends ClientMessage {
+public class SetUserMessage implements ClientMessage {
 
 	@JsonProperty("user")
 	private User user;
 
 	@JsonCreator
 	public SetUserMessage(@JsonProperty("user") User user) {
-		super(GameEvent.EventType.USER_CONNECT);
 		this.user = user;
 	}
 
@@ -25,6 +25,11 @@ public class SetUserMessage extends ClientMessage {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EventType getEventType() {
+		return GameEvent.EventType.USER_CONNECT;
 	}
 
 }
