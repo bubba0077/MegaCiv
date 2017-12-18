@@ -72,7 +72,7 @@ public class CityUpdateDialog extends BubbaDialogPanel {
 				int newPop = panel.getCityCount();
 				cityCount.put(name, newPop);
 			}
-			this.client.log("Sending new ceity count: " + cityCount);
+			this.client.log("Sending new city count: " + cityCount);
 			this.client.sendMessage(new CityUpdateMessage(cityCount));
 		}
 	}
