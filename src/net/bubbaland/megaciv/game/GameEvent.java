@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GameEvent {
 
 	public enum EventType {
-		USER_CONNECT, GAME_START, CENSUS, CITY_COUNT, STOPWATCH, AST, TECH_PURCHASE, CIV_EDIT
+		USER_CONNECT, GAME_START, CENSUS, CITY_COUNT, STOPWATCH, AST, TECH_PURCHASE, CIV_EDIT, KEEPALIVE
 	};
 
 	@JsonProperty("type")

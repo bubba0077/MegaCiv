@@ -190,10 +190,8 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	@Override
 	public void watchStarted() {}
 
-
 	@Override
 	public void watchStopped() {}
-
 
 	@Override
 	public void watchReset() {}

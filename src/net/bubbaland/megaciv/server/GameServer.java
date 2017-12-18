@@ -200,6 +200,8 @@ public class GameServer extends Server implements StopwatchListener {
 				this.sessionList.get(session).setUser(newUser);
 				// this.log(user.getUserName() + " changed name to " + newUser.getUserName());
 				break;
+			case "KeepAlive":
+				break;
 			default:
 				this.log("ERROR: Unknown Message Type Received!");
 				return;

@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,15 +21,17 @@ public class SntpClient {
 	}
 
 	// Weight of the most recent packet on the offset
-	private static double	avgWeight	= 0.5;
+	private static double					avgWeight	= 0.5;
 
-	private int				port;
-	private Duration		pollInterval;
-	private String			host;
+	private int								port;
+	private Duration						pollInterval;
+	private String							host;
 
 	// offset = server - client
-	private Duration		offset;
-	private Timer			timer;
+	private Duration						offset;
+	private Timer							timer;
+
+	private final ArrayList<SntpListener>	listeners;
 
 	public SntpClient(String host, int port, Duration pollInterval) {
 		this.port = port;
@@ -37,6 +40,8 @@ public class SntpClient {
 
 		this.offset = null;
 		this.timer = null;
+
+		this.listeners = new ArrayList<SntpListener>(0);
 	}
 
 	public void start() {
@@ -48,8 +53,9 @@ public class SntpClient {
 					SntpClient.this.sync();
 				} catch (Exception exception) {
 					System.out.println("Error communicating with SNTP server");
-					exception.printStackTrace();
+					SntpClient.this.onError();
 				}
+				SntpClient.this.onSync();
 			}
 		}, 0, this.pollInterval.getSeconds());
 	}
@@ -118,14 +124,28 @@ public class SntpClient {
 		// System.out.println("Average Offset: " + this.offset + " ms");
 	}
 
-
 	public Duration getPollInteval() {
 		return pollInterval;
 	}
 
-
 	public void setPollInteval(Duration pollInteval) {
 		this.pollInterval = pollInteval;
+	}
+
+	public void onError() {
+		this.listeners.parallelStream().forEach(l -> l.onSntpError());
+	}
+
+	public void onSync() {
+		this.listeners.parallelStream().forEach(l -> l.onSntpSync());
+	}
+
+	public void addSntpListener(SntpListener newListener) {
+		this.listeners.add(newListener);
+	}
+
+	public void removeSntpListener(SntpListener oldListener) {
+		this.listeners.remove(oldListener);
 	}
 
 }

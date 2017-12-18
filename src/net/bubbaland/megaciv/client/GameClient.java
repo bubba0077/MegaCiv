@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.SwingWorker;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.DeploymentException;
@@ -28,6 +27,7 @@ import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.*;
 import net.bubbaland.sntp.SntpClient;
+import net.bubbaland.sntp.SntpListener;
 
 /**
  * MegaCivilization game client that handles communication with the game server and updates game data as necessary.
@@ -37,7 +37,7 @@ import net.bubbaland.sntp.SntpClient;
  */
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
-public class GameClient implements Runnable {
+public class GameClient implements Runnable, SntpListener {
 
 	// Frequency (in secs) of synchronization of time with server
 	private final static Duration		SNTP_POLL_INTERVAL		= Duration.ofMinutes(5);
@@ -85,7 +85,6 @@ public class GameClient implements Runnable {
 		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH);
-
 		this.uri = URI.create(serverUrl);
 		this.sntpClient = new SntpClient(this.uri.getHost(), this.uri.getPort() + 1, SNTP_POLL_INTERVAL);
 	}
@@ -334,6 +333,14 @@ public class GameClient implements Runnable {
 		return this.userList.stream().filter(user -> user.compareTo(this.user) != 0)
 				.anyMatch(user -> userName.equals(user.getUserName()));
 	}
+
+	@Override
+	public void onSntpError() {
+		this.sendMessage(new KeepAliveMessage());
+	}
+
+	@Override
+	public void onSntpSync() {}
 
 
 }
