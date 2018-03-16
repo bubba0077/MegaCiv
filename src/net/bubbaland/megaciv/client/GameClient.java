@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.SwingWorker;
@@ -54,8 +55,6 @@ public class GameClient implements Runnable, SntpListener {
 	// Create an SNTP client to synchronize timing with server
 	private final SntpClient			sntpClient;
 
-	private boolean						isConnected;
-
 	// Game data; updated by server when necessary
 	private volatile Game				game;
 
@@ -82,11 +81,11 @@ public class GameClient implements Runnable, SntpListener {
 		this.game = null;
 		this.user = new User();
 		this.userList = new ArrayList<User>();
-		this.isConnected = false;
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH);
 		this.uri = URI.create(serverUrl);
 		this.sntpClient = new SntpClient(this.uri.getHost(), this.uri.getPort() + 1, SNTP_POLL_INTERVAL);
+		this.sntpClient.addSntpListener(this);
 	}
 
 	/**
@@ -96,7 +95,6 @@ public class GameClient implements Runnable, SntpListener {
 	public void connectionClosed() {
 		this.session = null;
 		this.log("Connection closed!");
-		this.isConnected = false;
 	}
 
 	/**
@@ -159,7 +157,7 @@ public class GameClient implements Runnable, SntpListener {
 	 * @return A boolean specifying whether client is connected to server.
 	 */
 	public boolean isConnected() {
-		return this.isConnected;
+		return this.session.isOpen();
 	}
 
 	/**
@@ -240,7 +238,6 @@ public class GameClient implements Runnable, SntpListener {
 	public void onOpen(Session session, EndpointConfig config) {
 		this.session = session;
 		this.log("Now connected to " + session.getRequestURI());
-		this.isConnected = true;
 		if (this.user.getUserName().equals("")) {
 			this.user.setUserName(session.getId().substring(0, 7));
 		}
@@ -283,7 +280,7 @@ public class GameClient implements Runnable, SntpListener {
 	 * Send a message to the server. Most messages are updates to the game state based on user input.
 	 *
 	 * @param session
-	 *            The session connected to the server.
+	 *            The session connected to the server
 	 * @param message
 	 *            The message to be delivered.
 	 */
@@ -291,6 +288,9 @@ public class GameClient implements Runnable, SntpListener {
 		( new SwingWorker<Void, Void>() {
 			@Override
 			public Void doInBackground() {
+				if (!GameClient.this.isConnected()) {
+					GameClient.this.run();
+				}
 				GameClient.this.session.getAsyncRemote().sendObject(message);
 				return null;
 			}
@@ -335,12 +335,14 @@ public class GameClient implements Runnable, SntpListener {
 	}
 
 	@Override
-	public void onSntpError() {
+	public void onSntpError(Instant when) {
+		this.log("SNTP error at " + when.toString());
 		this.sendMessage(new KeepAliveMessage());
 	}
 
 	@Override
-	public void onSntpSync() {}
-
+	public void onSntpSync(Instant when) {
+		this.log("SNTP Sync at " + when.toString());
+	}
 
 }

@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,11 +54,11 @@ public class SntpClient {
 					SntpClient.this.sync();
 				} catch (Exception exception) {
 					System.out.println("Error communicating with SNTP server");
-					SntpClient.this.onError();
+					SntpClient.this.onError(Instant.now());
 				}
-				SntpClient.this.onSync();
+				SntpClient.this.onSync(Instant.now());
 			}
-		}, 0, this.pollInterval.getSeconds());
+		}, 0, this.pollInterval.toMillis());
 	}
 
 	public void stop() {
@@ -132,12 +133,12 @@ public class SntpClient {
 		this.pollInterval = pollInteval;
 	}
 
-	public void onError() {
-		this.listeners.parallelStream().forEach(l -> l.onSntpError());
+	public void onError(Instant when) {
+		this.listeners.parallelStream().forEach(l -> l.onSntpError(when));
 	}
 
-	public void onSync() {
-		this.listeners.parallelStream().forEach(l -> l.onSntpSync());
+	public void onSync(Instant when) {
+		this.listeners.parallelStream().forEach(l -> l.onSntpSync(when));
 	}
 
 	public void addSntpListener(SntpListener newListener) {
