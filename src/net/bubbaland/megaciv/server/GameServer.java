@@ -1,5 +1,10 @@
 package net.bubbaland.megaciv.server;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -7,8 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.websocket.DeploymentException;
@@ -280,6 +289,35 @@ public class GameServer extends Server implements StopwatchListener {
 
 	public static void main(String args[]) {
 		GameServer server = null;
+		if (System.console() == null && !GraphicsEnvironment.isHeadless()) {
+			System.out.println("Redirecting");
+			JFrame frame = new JFrame();
+			JPanel panel = new JPanel(new GridLayout());
+			frame.add(panel);
+			JTextArea outputArea = new JTextArea(40, 50);
+			outputArea.setEditable(false);
+			JScrollPane scrollPane = new JScrollPane(outputArea);
+
+			panel.add(scrollPane);
+
+			PrintStream output = new PrintStream(new OutputStream() {
+				@Override
+				public void write(int arg0) throws IOException {
+					// redirects data to the text area
+					outputArea.append(String.valueOf((char) arg0));
+					// scrolls the text area to the end of data
+					outputArea.setCaretPosition(outputArea.getDocument().getLength());
+				}
+			});
+
+			frame.pack();
+			frame.setVisible(true);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+			System.setOut(output);
+			System.setErr(output);
+			System.out.println("System.out and System.err redirected here");
+		}
 		if (args.length > 1) {
 			server = new GameServer(args[0], Integer.parseInt(args[1]));
 		} else {
