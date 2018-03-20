@@ -7,6 +7,10 @@ import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.ToolTipManager;
@@ -145,7 +149,11 @@ public class GuiController extends BubbaGuiController {
 		if (args.length > 0) {
 			serverURL = args[0];
 		} else {
-			serverURL = "ws://localhost:1200";
+			JTextField hostname = new JTextField("localhost");
+			JSpinner port = new JSpinner(new SpinnerNumberModel(1100, 0, 65535, 1));
+			Object[] message = { "Hostname:", hostname, "Port:", port };
+			JOptionPane.showMessageDialog(null, message, "Server Configuration", JOptionPane.PLAIN_MESSAGE);
+			serverURL = "ws://" + hostname.getText() + ":" + (int) port.getValue();
 		}
 		new GuiController(serverURL);
 	}
