@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.websocket.DeploymentException;
 import javax.websocket.Session;
 
@@ -31,7 +36,6 @@ public class GameServer extends Server implements StopwatchListener {
 
 	private Server										server;
 	private SntpServer									sntpServer;
-
 
 	private Stopwatch									stopwatch;
 
@@ -279,7 +283,11 @@ public class GameServer extends Server implements StopwatchListener {
 		if (args.length > 1) {
 			server = new GameServer(args[0], Integer.parseInt(args[1]));
 		} else {
-			server = new GameServer("localhost", 1200);
+			JTextField hostname = new JTextField("localhost");
+			JSpinner port = new JSpinner(new SpinnerNumberModel(1100, 0, 65535, 1));
+			Object[] message = { "Hostname:", hostname, "Port:", port };
+			JOptionPane.showMessageDialog(null, message, "Server Configuration", JOptionPane.PLAIN_MESSAGE);
+			server = new GameServer(hostname.getText(), (int) port.getValue());
 		}
 		try {
 			server.start();
