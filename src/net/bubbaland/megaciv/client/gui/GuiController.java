@@ -150,7 +150,7 @@ public class GuiController extends BubbaGuiController {
 			serverURL = args[0];
 		} else {
 			JTextField hostname = new JTextField("localhost");
-			JSpinner port = new JSpinner(new SpinnerNumberModel(1100, 0, 65535, 1));
+			JSpinner port = new JSpinner(new SpinnerNumberModel(1099, 0, 65535, 1));
 			Object[] message = { "Hostname:", hostname, "Port:", port };
 			JOptionPane.showMessageDialog(null, message, "Server Configuration", JOptionPane.PLAIN_MESSAGE);
 			serverURL = "ws://" + hostname.getText() + ":" + (int) port.getValue();
