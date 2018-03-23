@@ -20,8 +20,14 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.client.ClientManager;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Stopwatch;
@@ -168,9 +174,12 @@ public class GameClient implements Runnable, SntpListener {
 	 */
 	public void loadGame(File file) {
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.findAndRegisterModules();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
 		try {
-			this.sendMessage(new LoadGameMessage(mapper.readValue(file, Game.class)));
+			Game game = mapper.readValue(file, Game.class);
+			this.sendMessage(new LoadGameMessage(game));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -269,8 +278,14 @@ public class GameClient implements Runnable, SntpListener {
 	 */
 	public void saveGame(File file) {
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.findAndRegisterModules();
+		mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 		try {
-			mapper.writeValue(file, this.game);
+			writer.writeValue(file, game);
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}

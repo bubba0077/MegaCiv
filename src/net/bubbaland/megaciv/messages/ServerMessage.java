@@ -33,7 +33,7 @@ public interface ServerMessage {
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.findAndRegisterModules();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
+			mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			JsonGenerator jsonGen;
 			try {
@@ -60,7 +60,7 @@ public interface ServerMessage {
 			final ObjectMapper mapper = new ObjectMapper();
 			// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.findAndRegisterModules();
-			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
+			mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			ServerMessage message = null;
 			try {

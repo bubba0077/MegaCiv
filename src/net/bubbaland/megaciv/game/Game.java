@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.Civilization.Age;
@@ -51,21 +52,30 @@ public class Game implements Serializable {
 		BASIC, EXPERT
 	}
 
+
+	@JsonIgnore
 	private final static String																			CIV_CONSTANTS_FILENAME	=
 			"Civ_Constants.xml";
 
+	@JsonIgnore
 	public final static HashMap<Integer, Integer>														SMALL_GAME_CREDITS		=
 			new HashMap<Integer, Integer>();
+	@JsonIgnore
 	public final static HashMap<Civilization.Name, Color>												BACKGROUND_COLORS		=
 			new HashMap<Civilization.Name, Color>();
+	@JsonIgnore
 	public final static HashMap<Civilization.Name, Color>												FOREGROUND_COLORS		=
 			new HashMap<Civilization.Name, Color>();
+	@JsonIgnore
 	public final static HashMap<Civilization.Name, Civilization.AstTableData>							AST_TABLE				=
 			new HashMap<Civilization.Name, AstTableData>();
+	@JsonIgnore
 	public final static HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>	DEFAULT_STARTING_CIVS	=
 			new HashMap<Integer, HashMap<Civilization.Region, ArrayList<Civilization.Name>>>();
+	@JsonIgnore
 	public final static HashMap<Difficulty, HashMap<Civilization.Age, Civilization.AstRequirements>>	AGE_REQUIREMENTS		=
 			new HashMap<Difficulty, HashMap<Civilization.Age, AstRequirements>>();;
+	@JsonIgnore
 	private final static HashMap<Integer, HashMap<Civilization.Region, TradeCardSet>>					TRADE_GOODS				=
 			new HashMap<Integer, HashMap<Civilization.Region, TradeCardSet>>();
 

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import net.bubbaland.megaciv.game.GameEvent;
 
@@ -35,8 +36,8 @@ public interface ClientMessage {
 			final StringWriter writer = new StringWriter();
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.findAndRegisterModules();
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			JsonGenerator jsonGen;
 			try {
@@ -63,7 +64,7 @@ public interface ClientMessage {
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.findAndRegisterModules();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.setVisibilityChecker(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
+			mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 			ClientMessage message = null;
 			try {
