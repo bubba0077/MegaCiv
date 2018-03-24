@@ -40,13 +40,12 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	static {
 		try {
 			ONE_MINUTE = AudioSystem.getClip();
-			ONE_MINUTE.open(AudioSystem
-					.getAudioInputStream(StopwatchPanel.class.getResource("audio/one_minute_remaining.wav")));
-
+			ONE_MINUTE.open(
+					AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/one_minute_remaining.wav")));
 			BEEP = AudioSystem.getClip();
-			BEEP.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/beep.wav")));
+			BEEP.open(AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/beep.wav")));
 			TIME_UP = AudioSystem.getClip();
-			TIME_UP.open(AudioSystem.getAudioInputStream(StopwatchPanel.class.getResource("audio/time_up.wav")));
+			TIME_UP.open(AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/time_up.wav")));
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException exception) {
 			System.out.println("Unable to load audio clips in GuiClient!");
 		}
@@ -166,17 +165,19 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		/**
 		 * Play audio alerts at the appropriate times.
 		 */
-		switch ((int) timeRemaining.getSeconds()) {
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 15:
+		int remainingMillisecs = (int) timeRemaining.toMillis();
+		switch (remainingMillisecs) {
+			case 1000:
+			case 2000:
+			case 3000:
+			case 4000:
+			case 5000:
+			case 15000:
+			case 30000:
 				BEEP.setFramePosition(0);
 				BEEP.start();
 				break;
-			case 60:
+			case 60000:
 				ONE_MINUTE.setFramePosition(0);
 				ONE_MINUTE.start();
 				break;

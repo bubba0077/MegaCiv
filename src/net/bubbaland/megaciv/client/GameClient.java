@@ -229,7 +229,7 @@ public class GameClient implements Runnable, SntpListener {
 				this.userList = ( (UserListMessage) message ).getUserList();
 				break;
 			case "TimerMessage": // Received a timer synchronization message
-				this.stopwatch.remoteEvent((TimerMessage) message, this.sntpClient.getOffset());
+				this.stopwatch.remoteEvent((StopwatchMessage) message);
 				break;
 			default:
 		}
@@ -358,6 +358,7 @@ public class GameClient implements Runnable, SntpListener {
 	@Override
 	public void onSntpSync(Instant when) {
 		this.log("SNTP Sync at " + when.toString());
+		this.stopwatch.setServerOffset(this.sntpClient.getOffset());
 	}
 
 }

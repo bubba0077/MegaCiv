@@ -6,16 +6,14 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.bubbaland.megaciv.messages.TimerMessage;
-import net.bubbaland.megaciv.messages.TimerMessage.StopwatchEvent;
+import net.bubbaland.megaciv.messages.StopwatchMessage;
 
 public class Stopwatch {
 	private Duration							timerLength;
-	private volatile Instant					lastEventTime;
+	private volatile Instant					startTime;
 	private volatile Duration					lastTimeRemaining;
-	private volatile Duration					timeRemaining;
 	private Timer								timer;
-	private boolean								isRunning;
+	private Duration							offset;
 
 	// Resolution of the underlying timer in milliseconds
 	private static final int					TIMER_RESOLUTION	= 50;
@@ -26,145 +24,190 @@ public class Stopwatch {
 		this.listeners = new ArrayList<StopwatchListener>();
 		this.timer = null;
 		this.timerLength = timerLength;
-		this.timeRemaining = Duration.from(this.timerLength);
-		this.lastEventTime = Instant.now();
-		this.lastTimeRemaining = this.timeRemaining;
-		this.isRunning = false;
+		this.startTime = Instant.now();
+		this.lastTimeRemaining = this.timerLength;
+		this.offset = Duration.ZERO;
 	}
 
-	public synchronized void startOffset(Instant eventTime) {
+	/**
+	 * Set the stopwatch as started at the given time
+	 * 
+	 * @param eventTime
+	 *            Time stopwatch started
+	 */
+	private synchronized void start(Instant eventTime) {
+		this.startTime = eventTime;
 		this.timer = new Timer();
-		this.lastEventTime = eventTime;
-		this.lastTimeRemaining = this.timeRemaining;
-		this.timeRemaining = this.timeRemaining.minus(Duration.between(eventTime, Instant.now()));
 		this.timer.scheduleAtFixedRate(new TicTok(), 0, TIMER_RESOLUTION);
-		for (StopwatchListener listener : this.listeners) {
-			listener.watchStarted();
-		}
-		this.isRunning = true;
+		this.listeners.parallelStream().forEach(l -> l.watchStarted());
 	}
 
-	public synchronized void start() {
-		this.startOffset(Instant.now());
-	}
-
-	public synchronized void stopOffset(Instant eventTime) {
+	/**
+	 * Set the stopwatch as stopped
+	 * 
+	 * @param eventTime
+	 *            Time when the stopwatch was stopped on server
+	 */
+	private synchronized void stop() {
 		if (this.timer != null) {
 			this.timer.cancel();
 		}
 		this.timer = null;
-		this.lastEventTime = eventTime;
-		this.lastTimeRemaining = this.timeRemaining;
-		this.timeRemaining = this.timeRemaining.plus(Duration.between(eventTime, Instant.now()));
-		for (StopwatchListener listener : this.listeners) {
-			listener.watchStopped();
-		}
-		this.isRunning = false;
+		this.listeners.parallelStream().forEach(l -> l.watchStopped());
 	}
 
-	public synchronized void stop() {
-		this.stopOffset(Instant.now());
-	}
-
-	public synchronized void reset() {
-		this.reset(Instant.now());
-	}
-
-	public synchronized void reset(Instant eventTime) {
-		if (this.timer != null) {
-			this.timer.cancel();
-		}
-		this.timer = null;
-		this.lastEventTime = eventTime;
-		this.timeRemaining = Duration.from(this.timerLength);
-		this.lastTimeRemaining = this.timeRemaining;
-		for (StopwatchListener listener : this.listeners) {
-			listener.watchReset();
-		}
-		this.isRunning = false;
-	}
-
-	public Duration getLastEventTic() {
-		return this.lastTimeRemaining;
-	}
-
-	public synchronized void setTics(Duration tic) {
-		this.timeRemaining = tic;
-		this.lastTimeRemaining = tic;
-	}
-
+	/**
+	 * Reset the stopwatch to the specific length
+	 * 
+	 * @param timerLength
+	 *            Length of time for the stopwatch
+	 */
 	public synchronized void setTimer(Duration timerLength) {
-		this.setTimer(Instant.now(), timerLength);
-	}
-
-	public synchronized void setTimer(Instant eventTime, Duration timerLength) {
-		if (this.timer != null) {
-			this.timer.cancel();
-		}
-		this.timer = null;
 		this.timerLength = timerLength;
-		this.reset(eventTime);
+		this.lastTimeRemaining = this.timerLength;
+		this.stop();
 	}
 
+	/**
+	 * Add a listener to act on stopwatch events.
+	 * 
+	 * @param listener
+	 *            The listener to add
+	 */
 	public synchronized void addStopwatchListener(StopwatchListener listener) {
 		this.listeners.add(listener);
-		if (isRunning) {
+		if (this.isRunning()) {
 			listener.watchStarted();
 		} else {
 			listener.watchStopped();
 		}
 	}
 
+	/**
+	 * Remove a listener of stopwatch events.
+	 * 
+	 * @param listener
+	 *            The listener to remove
+	 */
 	public synchronized void removeStopwatchListener(StopwatchListener listener) {
 		this.listeners.remove(listener);
 	}
 
+	/**
+	 * Get the length of the timer.
+	 * 
+	 * @return The timer length
+	 */
 	public Duration getTimerLength() {
 		return this.timerLength;
 	}
 
-	public Duration getTimeRemaining() {
-		return this.timeRemaining;
-	}
-
-	public Instant getLastEventTime() {
-		return this.lastEventTime;
-	}
-
-	public boolean isRunning() {
-		return this.isRunning;
-	}
-
-	public synchronized void remoteEvent(TimerMessage message, Duration offset) {
-		StopwatchEvent eventType = message.getEvent();
-		Instant eventTime = message.getEventTime().minus(offset);
-		if (this.timerLength != message.getTimerLength()) {
-			this.timerLength = message.getTimerLength();
+	/**
+	 * Get the time remaining on the timer at the time specified.
+	 * 
+	 * @param eventTime
+	 *            The time when we want to know the time left on the timer.
+	 * @return The time left on the timer at the specified time.
+	 */
+	public Duration getTimeRemaining(Instant eventTime) {
+		eventTime = eventTime.plus(this.offset);
+		if (this.isRunning()) {
+			// Time remaining is the difference between the start time and the event time
+			return this.timerLength.minus(Duration.between(this.startTime, eventTime));
+		} else {
+			// Time remaining is what was remaining when the timer stopped or was reset
+			return this.lastTimeRemaining;
 		}
+	}
+
+	/**
+	 * Get when the timer started
+	 * 
+	 * @return
+	 */
+	public Instant getStartTime() {
+		return this.startTime;
+	}
+
+	/**
+	 * Find out if the stopwatch is currently running.
+	 * 
+	 * @return Whether the stopwatch is currently running
+	 */
+	public boolean isRunning() {
+		return this.timer != null;
+	}
+
+	/**
+	 * Create a timer message to synchronize stopwatch events
+	 * 
+	 * @param eventType
+	 *            Type of stopwatch event to generate a message for
+	 * @param eventTime
+	 *            Time the event occured
+	 * @return A timer message of the desired stopwatch event with all of the necessary values set
+	 */
+	public StopwatchMessage generateTimerMessage(Stopwatch.StopwatchEvent eventType, Instant eventTime) {
+		eventTime = eventTime.plus(this.offset); // Convert the event time into server time
 		switch (eventType) {
 			case START:
-				this.startOffset(eventTime);
+				// Fake the start time if the clock was restarted with some time already elapsed
+				Duration alreadyElapsed = this.timerLength.minus(this.lastTimeRemaining);
+				eventTime = eventTime.minus(alreadyElapsed);
+				this.lastTimeRemaining = this.timerLength;
+				// return new TimerMessage(eventType, this.timerLength, eventTime, this.timerLength);
 				break;
 			case STOP:
-				this.stopOffset(eventTime);
+				this.lastTimeRemaining = this.getTimeRemaining(eventTime);
+				// eventTime = null;
+				// return new TimerMessage(eventType, this.timerLength, null, this.getTimeRemaining(eventTime));
 				break;
 			case SET:
-				this.setTimer(eventTime, message.getTimerLength());
+				this.lastTimeRemaining = this.timerLength;
+				// eventTime = null;
+				// return new TimerMessage(eventType, this.timerLength, null, this.timerLength);
 				break;
-			case RESET:
-				this.reset(eventTime);
+			default:
+				return null;
+		}
+		// System.out.println("Stopwatch event message generated for " + eventTime);
+		return new StopwatchMessage(eventType, this.timerLength, eventTime, this.lastTimeRemaining);
+	}
+
+	/**
+	 * Synchronize this stopwatch to the information provided in a timer message.
+	 * 
+	 * @param message
+	 *            Timer message with which to synchronize
+	 */
+	public synchronized void remoteEvent(StopwatchMessage message) {
+		Stopwatch.StopwatchEvent eventType = message.getEvent();
+		Instant eventTime = message.getEventTime().minus(this.offset); // Convert the event time into local time
+		this.timerLength = message.getTimerLength();
+		switch (eventType) {
+			case START:
+				this.start(eventTime);
 				break;
-			case SET_LAST_TIC:
-				this.setTics(message.getLastEventTimeRemaining());
+			case STOP:
+				this.lastTimeRemaining = message.getLastEventTimeRemaining();
+				this.stop();
+				break;
+			case SET:
+				this.setTimer(message.getTimerLength());
 				break;
 			default:
 				break;
 		}
 		// System.out.println("Remote event " + eventType.toString() + " processed");
-		// System.out.println(" Server Time: " + new Date(message.getEventTime()));
-		// System.out.println(" Local Time: " + new Date(eventTime));
-		// System.out.println(" Now: " + new Date(System.currentTimeMillis()));
+		// System.out.println(" Server Time: " + message.getEventTime());
+		// System.out.println(" Local Time: " + eventTime);
+		// System.out.println(" Now: " + Instant.now());
 		// System.out.println(" Last Event Tic: " + message.getLastEventTic());
+	}
+
+	public void setServerOffset(Duration offset) {
+		this.offset = offset;
+		// System.out.println("Offset set: " + formatTimer(offset));
 	}
 
 	public static String formatTimer(Duration timeRemaining) {
@@ -177,15 +220,21 @@ public class Stopwatch {
 	private class TicTok extends TimerTask {
 		@Override
 		public void run() {
-			Stopwatch.this.timeRemaining = Stopwatch.this.timeRemaining.minusMillis(TIMER_RESOLUTION);
-			if (Stopwatch.this.timeRemaining.isZero() || Stopwatch.this.timeRemaining.isNegative()) {
-				Stopwatch.this.timer.cancel();
-				Stopwatch.this.timeRemaining = Duration.ZERO;
+			Instant now = Instant.now();
+			Duration timeRemaining = Stopwatch.this.getTimeRemaining(now);
+			Duration roundedTimeRemaining = timeRemaining.plus(Duration.ofMillis((long) ( 0.5 * TIMER_RESOLUTION
+					- ( ( timeRemaining.toMillis() + 0.5 * TIMER_RESOLUTION ) % TIMER_RESOLUTION ) )));
+
+			if (timeRemaining.isZero() || timeRemaining.isNegative()) {
+				Stopwatch.this.stop();
+				Stopwatch.this.lastTimeRemaining = Duration.ZERO;
 			}
-			for (StopwatchListener listener : Stopwatch.this.listeners) {
-				listener.tic(Stopwatch.this.timeRemaining);
-			}
+			Stopwatch.this.listeners.parallelStream().forEach(l -> l.tic(roundedTimeRemaining));
 		}
+	}
+
+	public enum StopwatchEvent {
+		START, STOP, SET
 	}
 
 }

@@ -9,44 +9,36 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.bubbaland.megaciv.game.GameEvent;
-import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.GameEvent.EventType;
+import net.bubbaland.megaciv.game.Stopwatch;
 
-public class TimerMessage implements ClientMessage, ServerMessage {
+public class StopwatchMessage implements ClientMessage, ServerMessage {
 
 	// Date format to use
 	static public final DateTimeFormatter dateFormat =
 			DateTimeFormatter.ofPattern("yyyy MMM dd hh:mm:ss.SSS").withZone(ZoneId.systemDefault());
 
-	public enum StopwatchEvent {
-		START, STOP, RESET, SET, SET_LAST_TIC
-	};
-
 	@JsonProperty("action")
-	private final StopwatchEvent	eventType;
+	private final Stopwatch.StopwatchEvent	eventType;
 	@JsonProperty("timerLength")
 	private final Duration			timerLength;
 	@JsonProperty("lastEventTimeRemaining")
 	private final Duration			lastEventTimeRemaining;
-	@JsonProperty("timeRemaining")
-	private final Duration			timeRemaining;
 	// Timer start in server time
 	@JsonProperty("eventTime")
 	private final Instant			eventTime;
 
 	@JsonCreator
-	public TimerMessage(@JsonProperty("action") StopwatchEvent eventType,
+	public StopwatchMessage(@JsonProperty("action") Stopwatch.StopwatchEvent eventType,
 			@JsonProperty("timerLength") Duration timerLength, @JsonProperty("eventTime") Instant lastEventTime,
-			@JsonProperty("lastEventTimeRemaining") Duration lastEventTimeRemaining,
-			@JsonProperty("timeRemaining") Duration timeRemaining) {
+			@JsonProperty("lastEventTimeRemaining") Duration lastEventTimeRemaining) {
 		this.eventType = eventType;
 		this.timerLength = timerLength;
 		this.eventTime = lastEventTime;
-		this.timeRemaining = timeRemaining;
 		this.lastEventTimeRemaining = lastEventTimeRemaining;
 	}
 
-	public StopwatchEvent getEvent() {
+	public Stopwatch.StopwatchEvent getEvent() {
 		return eventType;
 	}
 
@@ -58,18 +50,13 @@ public class TimerMessage implements ClientMessage, ServerMessage {
 		return this.eventTime;
 	}
 
-	public Duration getTimeRemaining() {
-		return this.timeRemaining;
-	}
-
 	public Duration getLastEventTimeRemaining() {
 		return this.lastEventTimeRemaining;
 	}
 
 	@Override
 	public String toString() {
-		return "Stopwatch " + this.eventType + " at " + TimerMessage.dateFormat.format(this.eventTime) + " with "
-				+ Stopwatch.formatTimer(this.timeRemaining) + " remaining";
+		return "Stopwatch " + this.eventType + " at " + StopwatchMessage.dateFormat.format(this.eventTime);
 	}
 
 	@Override
