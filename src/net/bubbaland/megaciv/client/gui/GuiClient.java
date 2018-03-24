@@ -155,7 +155,9 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				GuiClient.this.gui.setStatusBarText(message);
+				if (GuiClient.this.gui != null) {
+					GuiClient.this.gui.setStatusBarText(message);
+				}
 			}
 		});
 	}
