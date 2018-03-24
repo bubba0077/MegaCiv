@@ -2,8 +2,6 @@ package net.bubbaland.gui;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.Point;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -44,8 +42,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 * @param initialTabs
 	 *            Tabs to open initially
 	 */
-	public BubbaDragDropTabFrame(BubbaGuiController gui, String[] initialTabs) {
-		this(gui);
+	public BubbaDragDropTabFrame(BubbaGuiController controller, String[] initialTabs) {
+		this(controller);
 		this.addTabs(initialTabs);
 		this.tabbedPane.setSelectedIndex(0);
 		this.tabbedPane.addChangeListener(this);
@@ -59,6 +57,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 
 		// Create drag & drop tabbed pane
 		this.tabbedPane = new BubbaDnDTabbedPane(controller, this);
+		this.tabbedPane.addChangeListener(this);
 		this.tabbedPane.setName("Tabbed Pane");
 		this.tabbedPane.setDoubleBuffered(true);
 
@@ -79,16 +78,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		this.loadProperties();
 	}
 
-	public BubbaDragDropTabFrame deriveNewFrame(DropTargetDropEvent a_event, Point location) {
-		BubbaDragDropTabFrame newFrame = new BubbaDragDropTabFrame(this.controller);
-		newFrame.tabbedPane.convertTab(newFrame.tabbedPane.getTabTransferData(a_event),
-				newFrame.tabbedPane.getTargetTabIndex(a_event.getLocation()));
-		newFrame.tabbedPane.setSelectedIndex(0);
-		newFrame.pack();
-		newFrame.setLocation(location);
-		newFrame.tabbedPane.addChangeListener(this);
-		newFrame.setCursor(null);
-		return newFrame;
+	public BubbaDragDropTabFrame deriveNewFrame() {
+		return new BubbaDragDropTabFrame(this.controller);
 	}
 
 	public void addTab(String tabName) {

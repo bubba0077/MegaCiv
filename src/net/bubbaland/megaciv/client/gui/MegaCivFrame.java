@@ -107,6 +107,11 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 	}
 
 	@Override
+	public MegaCivFrame deriveNewFrame() {
+		return new MegaCivFrame(this.client, this.controller);
+	}
+
+	@Override
 	protected void initTabInfoHash() {
 		super.initTabInfoHash();
 		this.tabInformationHash.put("AST",

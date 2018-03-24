@@ -162,7 +162,13 @@ public class TearAwayTab extends JWindow {
 		@Override
 		public void drop(DropTargetDropEvent a_event) {
 			TearAwayTab.this.detach();
-			TearAwayTab.this.sourceFrame.deriveNewFrame(a_event, TearAwayTab.this.getLocation());
+			BubbaDragDropTabFrame newFrame = TearAwayTab.this.sourceFrame.deriveNewFrame();
+			newFrame.tabbedPane.convertTab(newFrame.tabbedPane.getTabTransferData(a_event),
+					newFrame.tabbedPane.getTargetTabIndex(a_event.getLocation()));
+			newFrame.tabbedPane.setSelectedIndex(0);
+			newFrame.pack();
+			newFrame.setLocation(TearAwayTab.this.getLocation());
+			newFrame.setCursor(null);
 			a_event.dropComplete(true);
 		}
 
