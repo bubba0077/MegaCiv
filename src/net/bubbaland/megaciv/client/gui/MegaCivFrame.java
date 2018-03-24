@@ -69,6 +69,13 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 
 		gameMenu.addSeparator();
 
+		menuItem = new JMenuItem("Retire a Player");
+		menuItem.setActionCommand("Retire");
+		menuItem.addActionListener(this);
+		gameMenu.add(menuItem);
+
+		gameMenu.addSeparator();
+
 		menuItem = new JMenuItem("Change User Name");
 		menuItem.setActionCommand("Change Name");
 		menuItem.addActionListener(this);
@@ -76,11 +83,6 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 
 		menuItem = new JMenuItem("Load Defaults");
 		menuItem.setActionCommand("Load Defaults");
-		menuItem.addActionListener(this);
-		gameMenu.add(menuItem);
-
-		menuItem = new JMenuItem("Retire a Player");
-		menuItem.setActionCommand("Retire");
 		menuItem.addActionListener(this);
 		gameMenu.add(menuItem);
 
