@@ -228,10 +228,11 @@ public class GameClient implements Runnable, SntpListener {
 			case "UserListMessage": // Received an updated user list
 				this.userList = ( (UserListMessage) message ).getUserList();
 				break;
-			case "TimerMessage": // Received a timer synchronization message
+			case "StopwatchMessage": // Received a timer synchronization message
 				this.stopwatch.remoteEvent((StopwatchMessage) message);
 				break;
 			default:
+				this.log("ERROR: Unknown message type received: " + message.getClass().getSimpleName());
 		}
 	}
 

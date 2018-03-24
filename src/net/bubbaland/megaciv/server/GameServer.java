@@ -103,7 +103,7 @@ public class GameServer extends Server {
 		user.updateActivity();
 		GameEvent event = new GameEvent(message.getEventType(), user, message.toString());
 		switch (messageType) {
-			case "TimerMessage":
+			case "StopwatchMessage":
 				this.stopwatch.remoteEvent((StopwatchMessage) message);
 				this.broadcastMessage((StopwatchMessage) message);
 				break;
@@ -211,10 +211,10 @@ public class GameServer extends Server {
 				this.sessionList.get(session).setUser(newUser);
 				// this.log(user.getUserName() + " changed name to " + newUser.getUserName());
 				break;
-			case "KeepAlive":
+			case "KeepAliveMessage":
 				break;
 			default:
-				this.log("ERROR: Unknown Message Type Received!");
+				this.log("ERROR: Unknown message type received: " + message.getClass().getSimpleName());
 				return;
 		}
 		if (game != null) {
@@ -267,9 +267,7 @@ public class GameServer extends Server {
 	}
 
 	private void broadcastMessage(ServerMessage message) {
-		for (Session session : this.sessionList.keySet()) {
-			this.sendMessage(session, message);
-		}
+		this.sessionList.keySet().parallelStream().forEach(session -> this.sendMessage(session, message));
 	}
 
 	public static void main(String args[]) {
