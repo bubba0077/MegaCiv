@@ -55,7 +55,7 @@ public class GameServer extends Server {
 		this.serverPort = serverPort;
 		this.server = new Server(serverUrl, serverPort, "/", null, ClientMessageReceiver.class);
 		ClientMessageReceiver.registerServer(this);
-		this.sntpServer = new SntpServer(serverPort + 1);
+		this.sntpServer = new SntpServer(123);
 		this.sessionList = new Hashtable<Session, ClientMessageReceiver>();
 		this.stopwatch = new Stopwatch(Duration.ofMinutes(5));
 	}

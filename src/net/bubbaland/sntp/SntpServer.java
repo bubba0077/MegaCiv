@@ -27,7 +27,7 @@ public class SntpServer {
 			response.setRefId("LOCL".getBytes());
 			buffer = response.toByteArray();
 
-			System.out.println("SNTP Server started!");
+			System.out.println("SNTP Server started on port " + port + "!");
 			packet = new DatagramPacket(buffer, buffer.length);
 			socket = new DatagramSocket(port);
 

@@ -90,7 +90,7 @@ public class GameClient implements Runnable, SntpListener {
 		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 		this.stopwatch = new Stopwatch(GameClient.STARTING_TIMER_LENGTH);
 		this.uri = URI.create(serverUrl);
-		this.sntpClient = new SntpClient(this.uri.getHost(), this.uri.getPort() + 1, SNTP_POLL_INTERVAL);
+		this.sntpClient = new SntpClient(this.uri.getHost(), 123, SNTP_POLL_INTERVAL);
 		this.sntpClient.addSntpListener(this);
 	}
 

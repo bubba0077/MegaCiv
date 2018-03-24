@@ -43,20 +43,15 @@ public class SntpClient {
 		this.timer = null;
 
 		this.listeners = new ArrayList<SntpListener>(0);
+
+		System.out.println("SNTP client configured to synchronize with  " + this.host + ":" + this.port);
 	}
 
 	public void start() {
 		this.timer = new Timer();
-
 		this.timer.schedule(new TimerTask() {
 			public void run() {
-				try {
-					SntpClient.this.sync();
-				} catch (Exception exception) {
-					System.out.println("Error communicating with SNTP server");
-					SntpClient.this.onError(Instant.now());
-				}
-				SntpClient.this.onSync(Instant.now());
+				SntpClient.this.sync();
 			}
 		}, 0, this.pollInterval.toMillis());
 	}
@@ -66,63 +61,69 @@ public class SntpClient {
 		this.timer = null;
 	}
 
-	public void sync() throws Exception {
-		if (port <= 0 || host == null) {
-			throw new IllegalArgumentException("Invalid parameters!");
+	public void sync() {
+		try {
+			if (port <= 0 || host == null) {
+				throw new IllegalArgumentException("Invalid parameters!");
+			}
+
+			final DatagramSocket socket = new DatagramSocket();
+			socket.setSoTimeout(10000);
+			final InetAddress hostAddr = InetAddress.getByName(host);
+
+			// Create request
+			SntpMessage req = new SntpMessage();
+			req.setVersion((byte) 4);
+			req.setMode((byte) 3); // client
+			req.setStratum((byte) 3);
+			req.setRefId("LOCL".getBytes());
+			req.setXmtTime(NtpTimestamp.now()); // returns as originate timestamp
+			final byte[] buffer = req.toByteArray();
+			req = null;
+
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, hostAddr, port);
+			socket.send(packet);
+
+			packet = new DatagramPacket(buffer, buffer.length);
+			socket.receive(packet);
+
+			// Set the time response arrived
+			final NtpTimestamp destTime = NtpTimestamp.now();
+
+			SntpMessage resp = new SntpMessage(packet.getData());
+			socket.close();
+
+			// Timestamp Name ID When Generated
+			// ------------------------------------------------------------
+			// Originate Timestamp T1 time request sent by client
+			// Receive Timestamp T2 time request received by server
+			// Transmit Timestamp T3 time reply sent by server
+			// Destination Timestamp T4 time reply received by client
+			//
+			// The roundtrip delay d, and system clock offset t are defined as:
+			//
+			// d = (T4 - T1) - (T3 - T2) t = ((T2 - T1) + (T3 - T4)) / 2
+
+			double t = ( ( resp.getRecTime().value - resp.getOrgTime().value )
+					+ ( resp.getXmtTime().value - destTime.value ) ) / 2;
+
+			// System clock offset in millis
+			Duration newOffset = Duration.ofNanos((long) ( t * 1000000000 ));
+			if (this.offset == null) {
+				this.offset = newOffset;
+			} else {
+				this.offset = newOffset.dividedBy((long) ( 1.0 / avgWeight ))
+						.plus(this.offset.dividedBy((long) ( 1.0 / ( 1 - avgWeight ) )));
+				// this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
+			}
+
+			// System.out.println("Average Offset: " + this.offset + " ms");
+			SntpClient.this.onSync(Instant.now());
+		} catch (Exception e) {
+			System.out.println("Error communicating with SNTP server");
+			SntpClient.this.onError(Instant.now());
+			return;
 		}
-
-		final DatagramSocket socket = new DatagramSocket();
-		socket.setSoTimeout(10000);
-		final InetAddress hostAddr = InetAddress.getByName(host);
-
-		// Create request
-		SntpMessage req = new SntpMessage();
-		req.setVersion((byte) 4);
-		req.setMode((byte) 3); // client
-		req.setStratum((byte) 3);
-		req.setRefId("LOCL".getBytes());
-		req.setXmtTime(NtpTimestamp.now()); // returns as originate timestamp
-		final byte[] buffer = req.toByteArray();
-		req = null;
-
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, hostAddr, port);
-		socket.send(packet);
-
-		packet = new DatagramPacket(buffer, buffer.length);
-		socket.receive(packet);
-
-		// Set the time response arrived
-		final NtpTimestamp destTime = NtpTimestamp.now();
-
-		SntpMessage resp = new SntpMessage(packet.getData());
-		socket.close();
-
-		// Timestamp Name ID When Generated
-		// ------------------------------------------------------------
-		// Originate Timestamp T1 time request sent by client
-		// Receive Timestamp T2 time request received by server
-		// Transmit Timestamp T3 time reply sent by server
-		// Destination Timestamp T4 time reply received by client
-		//
-		// The roundtrip delay d, and system clock offset t are defined as:
-		//
-		// d = (T4 - T1) - (T3 - T2) t = ((T2 - T1) + (T3 - T4)) / 2
-
-		double t =
-				( ( resp.getRecTime().value - resp.getOrgTime().value ) + ( resp.getXmtTime().value - destTime.value ) )
-						/ 2;
-
-		// System clock offset in millis
-		Duration newOffset = Duration.ofNanos((long) ( t * 1000000000 ));
-		if (this.offset == null) {
-			this.offset = newOffset;
-		} else {
-			this.offset = newOffset.dividedBy((long) ( 1.0 / avgWeight ))
-					.plus(this.offset.dividedBy((long) ( 1.0 / ( 1 - avgWeight ) )));
-			// this.offset = ( 1 - avgWeight ) * this.offset + avgWeight * newOffset;
-		}
-
-		// System.out.println("Average Offset: " + this.offset + " ms");
 	}
 
 	public Duration getPollInteval() {
