@@ -39,12 +39,12 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	private static Clip			ONE_MINUTE, BEEP, TIME_UP;
 	static {
 		try {
-			ONE_MINUTE = AudioSystem.getClip();
+			ONE_MINUTE = AudioSystem.getClip(null);
 			ONE_MINUTE.open(
 					AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/one_minute_remaining.wav")));
-			BEEP = AudioSystem.getClip();
+			BEEP = AudioSystem.getClip(null);
 			BEEP.open(AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/beep.wav")));
-			TIME_UP = AudioSystem.getClip();
+			TIME_UP = AudioSystem.getClip(null);
 			TIME_UP.open(AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/time_up.wav")));
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException exception) {
 			System.out.println("Unable to load audio clips in GuiClient!");
