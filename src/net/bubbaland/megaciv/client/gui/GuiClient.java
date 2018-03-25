@@ -1,10 +1,13 @@
 package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +17,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -36,6 +41,9 @@ public class GuiClient extends GameClient implements StopwatchListener {
 
 	private final GuiController	gui;
 
+	// File name of font
+	final static private String	FONT_FILENAME	= "/net/bubbaland/megaciv/client/gui/fonts/tahoma.ttf";
+
 	private static Clip			ONE_MINUTE, BEEP, TIME_UP;
 	static {
 		try {
@@ -48,6 +56,21 @@ public class GuiClient extends GameClient implements StopwatchListener {
 			TIME_UP.open(AudioSystem.getAudioInputStream(GuiClient.class.getResource("audio/time_up.wav")));
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException exception) {
 			System.out.println("Unable to load audio clips in GuiClient!");
+		}
+
+		// Change default font on all objects
+		Enumeration<Object> keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if (value instanceof FontUIResource) {
+				try {
+					Font font = Font.createFont(Font.TRUETYPE_FONT, GuiClient.class.getResourceAsStream(FONT_FILENAME));
+					UIManager.put(key, new FontUIResource(font.deriveFont(12.0f)));
+				} catch (FontFormatException | IOException exception) {
+					exception.printStackTrace();
+				}
+			}
 		}
 	}
 
