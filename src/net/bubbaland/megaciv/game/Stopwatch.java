@@ -110,7 +110,6 @@ public class Stopwatch {
 	 * @return The time left on the timer at the specified time.
 	 */
 	public Duration getTimeRemaining(Instant eventTime) {
-		eventTime = eventTime.plus(this.offset);
 		if (this.isRunning()) {
 			// Time remaining is the difference between the start time and the event time
 			return this.timerLength.minus(Duration.between(this.startTime, eventTime));
@@ -148,7 +147,6 @@ public class Stopwatch {
 	 * @return A timer message of the desired stopwatch event with all of the necessary values set
 	 */
 	public StopwatchMessage generateTimerMessage(Stopwatch.StopwatchEvent eventType, Instant eventTime) {
-		eventTime = eventTime.plus(this.offset); // Convert the event time into server time
 		switch (eventType) {
 			case START:
 				// Fake the start time if the clock was restarted with some time already elapsed
@@ -170,6 +168,7 @@ public class Stopwatch {
 			default:
 				return null;
 		}
+		eventTime = eventTime.plus(this.offset); // Convert the event time into server time
 		// System.out.println("Stopwatch event message generated for " + eventTime);
 		return new StopwatchMessage(eventType, this.timerLength, eventTime, this.lastTimeRemaining);
 	}
