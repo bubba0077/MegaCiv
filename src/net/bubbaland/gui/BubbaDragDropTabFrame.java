@@ -194,19 +194,16 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	public void updateGui() {
 		super.updateGui();
 
-		// Propagate update to tabs
+		// Propagate update to current tab
 		while (this.tabbedPane == null) {
 			System.out.println(this.getClass().getSimpleName() + "Can't update null tabbedPane!");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {}
 		}
-		for (final String tabName : this.tabbedPane.getTabNames()) {
-			final int index = this.tabbedPane.indexOfTab(tabName);
-			final Component component = this.tabbedPane.getComponentAt(index);
-			if (component instanceof BubbaMainPanel) {
-				( (BubbaMainPanel) this.tabbedPane.getComponentAt(index) ).updateGui();
-			}
+		Component tab = this.tabbedPane.getSelectedComponent();
+		if (tab instanceof BubbaMainPanel) {
+			( (BubbaMainPanel) tab ).updateGui();
 		}
 	}
 
@@ -267,6 +264,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 				} else {
 					this.setVisible(true);
 				}
+				this.updateGui();
 				break;
 			default:
 				this.controller.setStatusBarText("Unknown state change registered in TriviaFrame");
