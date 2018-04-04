@@ -163,6 +163,9 @@ public class GameClient implements Runnable, SntpListener {
 	 * @return A boolean specifying whether client is connected to server.
 	 */
 	public boolean isConnected() {
+		if (this.session == null) {
+			return false;
+		}
 		return this.session.isOpen();
 	}
 
