@@ -927,8 +927,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		s = s + "<table cellpadding='1' cellspacing='1'><tr><td align='right'>1 VP (&lt;100)</td><td>"
 				+ this.getTechCountByVP(1) + "</td></tr>";
 		s = s + "<tr><td>3 VP (&gt;100)</td><td align='right'>" + this.getTechCountByVP(3) + "</td></tr>";
-		s = s + "<tr><td>6 VP (&gt;200)</td><td align='right'>" + this.getTechCountByVP(6)
-				+ "</td></tr></table></html>";
+		s = s + "<tr><td>6 VP (&gt;200)</td><td align='right'>" + this.getTechCountByVP(6) + "</td></tr>";
+		s = s + "</table></html>";
 		return s;
 	}
 
@@ -942,7 +942,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		s = s + "<table cellpadding='1' cellspacing='1'><tr><td>AST</td><td align='right'>"
 				+ this.astPosition * Game.VP_PER_AST_STEP + "</td></tr>";
 		s = s + "<tr><td>Tech</td><td align='right'>" + this.getVPfromTech() + "</td></tr>";
-		s = s + "<tr><td>Cities</td><td align='right'>" + this.getCityCount() + "</td></tr></table></html>";
+		s = s + "<tr><td>Cities</td><td align='right'>" + this.getCityCount() + "</td></tr>";
+		if (this.lateIronBonus) {
+			s = s + "<tr><td>Bonus</td><td align='right'>5</td></tr>";
+		}
+		s = s + "</table></html>";
 		return s;
 	}
 
