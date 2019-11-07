@@ -157,6 +157,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	@JsonProperty("techs")
 	private HashMap<Technology, Integer>							techs;
 
+	@JsonProperty("lateIronBonus")
+	private boolean													lateIronBonus;
+
 	/**
 	 * Some advances ({@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD Written Record}) provide
 	 * additional credits that are chosen by the player. This HashMap tracks the additional credits chosen. In order to
@@ -229,7 +232,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				});
 			}
-		}, 0, difficulty, false);
+		}, 0, difficulty, false, false);
 	}
 
 	/**
@@ -262,7 +265,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			@JsonProperty("smallGameCredits") HashMap<Technology.Type, Integer> scenarioCredits,
 			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
 			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty,
-			@JsonProperty("hasPurchased") boolean hasPurchased) {
+			@JsonProperty("hasPurchased") boolean hasPurchased, @JsonProperty("lateIronBonus") boolean lateIronBonus) {
 		this.name = name;
 		this.player = player;
 		this.population = population;
@@ -273,6 +276,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.smallGameCredits = scenarioCredits;
 		this.hasPurchased = hasPurchased;
 		this.difficulty = difficulty;
+		this.lateIronBonus = lateIronBonus;
 	}
 
 	/**
@@ -598,7 +602,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				};
 		return new Civilization(this.name, this.player, this.population, this.nCities, techs, smallGameCredits,
-				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased);
+				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased, this.lateIronBonus);
 	}
 
 	/**
@@ -904,22 +908,13 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
-	 * Get the number of victory points from all sources.
-	 * 
-	 * @return The number of victory points.
-	 */
-	public int getVP(ArrayList<Civilization> allCivs) {
-		int lateIronPoints = this.onlyLateIron(allCivs) ? Game.VP_FROM_ONLY_LATEIRON : 0;
-		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech() + lateIronPoints;
-	}
-
-	/**
 	 * Get the number of victory points from all sources except the Late Iron Age bonus.
 	 * 
 	 * @return The number of victory points.
 	 */
 	public int getVP() {
-		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech();
+		int pointsFromBonus = this.lateIronBonus ? 5 : 0;
+		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech() + pointsFromBonus;
 	}
 
 	/**
@@ -1221,22 +1216,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	}
 
 	/**
-	 * Determine whether this civilization is the only one in the late iron age.
 	 * 
-	 * @param civs
-	 *            Array of all civilizations in game
-	 * @return Whether this civilization is the only one in the late iron age.
 	 */
-	public boolean onlyLateIron(ArrayList<Civilization> civs) {
-		if (this.getCurrentAge() != Age.LATE_IRON) {
-			return false;
-		}
-		for (Civilization civ : civs) {
-			if (!civ.equals(this) && civ.getCurrentAge() == Age.LATE_IRON) {
-				return false;
-			}
-		}
-		return true;
+	public void setLateIronBonus(boolean lateIronBonus) {
+		this.lateIronBonus = lateIronBonus;
 	}
 
 	/**

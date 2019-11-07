@@ -328,11 +328,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		}
 
 		public void updateGui() {
-			String text = String.format("%03d", civ.getVP(CivEditPanel.this.client.getGame().getCivilizations()));
-			if (civ.getCurrentAge() == Age.LATE_IRON
-					&& civ.onlyLateIron(CivEditPanel.this.client.getGame().getCivilizations())) {
-				text = "*" + text;
-			}
+			String text = String.format("%03d", civ.getVP());
 			this.vpLabel.setText(text);
 
 			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {

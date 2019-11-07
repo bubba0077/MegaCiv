@@ -677,7 +677,7 @@ public class AstTablePanel extends BubbaPanel {
 						component.setToolTipText(civ.getTechBreakdownString());
 						break;
 					case VP:
-						text = String.format("%1$3d", civ.getVP(allCivs));
+						text = String.format("%1$3d", civ.getVP());
 						component.setToolTipText(civ.getVpBreakdownString());
 						break;
 					case BUY:

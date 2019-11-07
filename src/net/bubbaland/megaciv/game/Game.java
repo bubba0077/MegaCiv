@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -156,9 +155,18 @@ public class Game implements Serializable {
 	}
 
 	public void nextRound() {
-		if (this.civs.stream().anyMatch(civ -> civ.getCurrentAge() == Age.LATE_IRON)
-				&& this.lastRound > this.currentRound) {
-			this.lastRound = this.difficulty == Difficulty.EXPERT ? this.currentRound + 1 : this.currentRound;
+		int nLateIron = (int) this.civs.stream().filter(civ -> civ.getCurrentAge() == Age.LATE_IRON).count();
+		if (nLateIron > 0 && !this.isLastTurn()) {
+			if (this.difficulty == Difficulty.BASIC) {
+				this.lastRound = this.currentRound;
+			} else {
+				this.lastRound = this.currentRound + 1;
+				if (nLateIron == 1) {
+					this.civs.stream().filter(civ -> civ.getCurrentAge() == Age.LATE_IRON)
+							.forEach(civ -> civ.setLateIronBonus(true));
+				}
+
+			}
 		}
 		this.currentRound++;
 		this.civs.forEach(civ -> civ.setPurchased(false));
