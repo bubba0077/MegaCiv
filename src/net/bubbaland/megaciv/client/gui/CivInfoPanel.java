@@ -20,7 +20,6 @@ import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
-import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Technology.Type;
 
 public class CivInfoPanel extends BubbaMainPanel {

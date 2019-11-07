@@ -33,7 +33,6 @@ import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
-import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.messages.CivEditMessage;
 
