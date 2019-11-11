@@ -13,7 +13,7 @@ public class UndoPurchaseMessage implements ClientMessage {
 	private final Civilization.Name civName;
 
 	@JsonCreator
-	public UndoPurchaseMessage(@JsonProperty("civName") Civilization.Name civName) {
+	public UndoPurchaseMessage(@JsonProperty("civName") final Civilization.Name civName) {
 		this.civName = civName;
 	}
 
@@ -23,7 +23,7 @@ public class UndoPurchaseMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return civName.toString() + " undid purchase for this round";
+		return this.civName.toString() + " undid purchase for this round";
 	}
 
 	@Override

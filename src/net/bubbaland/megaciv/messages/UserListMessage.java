@@ -13,7 +13,7 @@ public class UserListMessage implements ServerMessage {
 	private final ArrayList<User> userList;
 
 	@JsonCreator
-	public UserListMessage(@JsonProperty("userList") ArrayList<User> userList) {
+	public UserListMessage(@JsonProperty("userList") final ArrayList<User> userList) {
 		this.userList = userList;
 	}
 

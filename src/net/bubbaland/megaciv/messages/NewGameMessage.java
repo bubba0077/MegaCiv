@@ -2,13 +2,13 @@ package net.bubbaland.megaciv.messages;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game.Difficulty;
 import net.bubbaland.megaciv.game.GameEvent;
 import net.bubbaland.megaciv.game.GameEvent.EventType;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NewGameMessage implements ClientMessage {
 
@@ -22,8 +22,8 @@ public class NewGameMessage implements ClientMessage {
 	private final boolean								useCredits;
 
 	@JsonCreator
-	public NewGameMessage(@JsonProperty("Region") Civilization.Region region,
-			@JsonProperty("civNames") HashMap<Civilization.Name, String> newCivNames,
+	public NewGameMessage(@JsonProperty("Region") final Civilization.Region region,
+			@JsonProperty("civNames") final HashMap<Civilization.Name, String> newCivNames,
 			@JsonProperty("Difficulty") final Difficulty difficulty,
 			@JsonProperty("useCredits") final boolean useCredits) {
 		this.region = region;

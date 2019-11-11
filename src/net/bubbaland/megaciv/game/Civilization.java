@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.text.WordUtils;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,7 +23,7 @@ import net.bubbaland.megaciv.game.Game.Difficulty;
 
 /**
  * Class for specifying the data object for a single civilization.
- * 
+ *
  * @author Walter Kolczynski
  *
  */
@@ -44,21 +45,21 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			private static final long serialVersionUID = -4960803070653152009L;
 
 			{
-				for (Civilization.Name name : EnumSet.allOf(Name.class)) {
-					add(name.toString());
+				for (final Civilization.Name name : EnumSet.allOf(Name.class)) {
+					this.add(name.toString());
 				}
 			}
 		};
 
 		/**
 		 * Determine whether a civilization name is associated with a given string.
-		 * 
+		 *
 		 * @param s
 		 *            The possible civilization name.
 		 * @return Whether s is a civilization name.
 		 */
-		public static boolean contains(String s) {
-			for (String s1 : strings) {
+		public static boolean contains(final String s) {
+			for (final String s1 : strings) {
 				if (s1.equalsIgnoreCase(s)) {
 					return true;
 				}
@@ -96,7 +97,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 		/**
 		 * Method providing the next age in the sequence.
-		 * 
+		 *
 		 * @return The next age in sequence.
 		 */
 		public Age nextAge() {
@@ -130,7 +131,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * The civilization name
 	 */
 	@JsonProperty("name")
-	private Name													name;
+	private final Name												name;
 	/**
 	 * The name of the player controlling this civilization.
 	 */
@@ -155,7 +156,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A list of the advances the civilization has purchased.
 	 */
 	@JsonProperty("techs")
-	private HashMap<Technology, Integer>							techs;
+	private final HashMap<Technology, Integer>						techs;
 
 	@JsonProperty("lateIronBonus")
 	private boolean													lateIronBonus;
@@ -176,7 +177,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	// each
 
 	@JsonProperty("smallGameCredits")
-	private HashMap<Technology.Type, Integer>						smallGameCredits;
+	private final HashMap<Technology.Type, Integer>					smallGameCredits;
 
 	/**
 	 * The current difficulty of the game. This property really belongs to the Game, but Civilization needs it to
@@ -194,41 +195,41 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * The primary constructor for creating a civilization. Values are initialized to their start-of-game values.
-	 * 
+	 *
 	 * @param name
 	 *            The civilization name.
 	 * @param difficulty
 	 *            The current difficulty of the game.
 	 */
-	public Civilization(Name name, Difficulty difficulty) {
+	public Civilization(final Name name, final Difficulty difficulty) {
 
 		this(name, null, 1, 0, new HashMap<Technology, Integer>(), new HashMap<Technology.Type, Integer>() {
 			private static final long serialVersionUID = -8494150522727469271L;
 			{
-				for (Technology.Type type : Technology.Type.values()) {
-					put(type, 0);
+				for (final Technology.Type type : Technology.Type.values()) {
+					this.put(type, 0);
 				}
 			}
 		}, new HashMap<Technology, ArrayList<Technology.Type>>() {
 			private static final long serialVersionUID = 6611228131955386821L;
 
 			{
-				put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
+				this.put(Technology.WRITTEN_RECORD, new ArrayList<Technology.Type>() {
 					private static final long serialVersionUID = 3890391732659207236L;
 
 					{
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
 					}
 				});
-				put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
+				this.put(Technology.MONUMENT, new ArrayList<Technology.Type>() {
 					private static final long serialVersionUID = 3890391732659207236L;
 
 					{
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
-						add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
+						this.add(Technology.Type.SCIENCE);
 					}
 				});
 			}
@@ -238,7 +239,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * An internal constructor that specifies all fields. This constructor is used to recreate the object from the JSON,
 	 * as well as in the {@link #clone() clone} method.
-	 * 
+	 *
 	 * @param name
 	 *            The civilization name.
 	 * @param player
@@ -259,13 +260,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            Has the civilization purchased advances in the current round?
 	 */
 	@JsonCreator
-	private Civilization(@JsonProperty("name") Name name, @JsonProperty("player") String player,
-			@JsonProperty("population") int population, @JsonProperty("nCities") int nCities,
-			@JsonProperty("techs") HashMap<Technology, Integer> techs,
-			@JsonProperty("smallGameCredits") HashMap<Technology.Type, Integer> scenarioCredits,
-			@JsonProperty("typeCredits") HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
-			@JsonProperty("astPosition") int astPosition, @JsonProperty("difficulty") Difficulty difficulty,
-			@JsonProperty("hasPurchased") boolean hasPurchased, @JsonProperty("lateIronBonus") boolean lateIronBonus) {
+	private Civilization(@JsonProperty("name") final Name name, @JsonProperty("player") final String player,
+			@JsonProperty("population") final int population, @JsonProperty("nCities") final int nCities,
+			@JsonProperty("techs") final HashMap<Technology, Integer> techs,
+			@JsonProperty("smallGameCredits") final HashMap<Technology.Type, Integer> scenarioCredits,
+			@JsonProperty("typeCredits") final HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
+			@JsonProperty("astPosition") final int astPosition, @JsonProperty("difficulty") final Difficulty difficulty,
+			@JsonProperty("hasPurchased") final boolean hasPurchased,
+			@JsonProperty("lateIronBonus") final boolean lateIronBonus) {
 		this.name = name;
 		this.player = player;
 		this.population = population;
@@ -281,7 +283,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the civilization name.
-	 * 
+	 *
 	 * @return The civilization name.
 	 */
 	public Name getName() {
@@ -294,7 +296,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 */
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -304,11 +306,11 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Modify the current AST position based on the specified change.
-	 * 
+	 *
 	 * @param change
 	 *            The type of AST change to make.
 	 */
-	public void changeAst(AstChange change) {
+	public void changeAst(final AstChange change) {
 		switch (change) {
 			case REGRESS:
 				this.astPosition--;
@@ -323,14 +325,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the Age of the civilization at a specified AST position.
-	 * 
+	 *
 	 * @param astStep
 	 *            The AST position
 	 * @return The Age of this civilization at specified position.
 	 */
-	public Age getAge(int astStep) {
+	public Age getAge(final int astStep) {
 		Age age = Age.STONE;
-		for (Age a : EnumSet.allOf(Age.class)) {
+		for (final Age a : EnumSet.allOf(Age.class)) {
 			if (astStep >= this.getAgeStart(a)) {
 				age = a;
 			} else {
@@ -342,7 +344,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the current Age of the civilization.
-	 * 
+	 *
 	 * @return The current Age.
 	 */
 	public Age getCurrentAge() {
@@ -351,7 +353,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the Age of the next AST step. This is used to determine whether a civilization advances.
-	 * 
+	 *
 	 * @return
 	 */
 	public Age getNextStepAge() {
@@ -360,26 +362,26 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the number of advances the civilization owns worth the specified victory point value.
-	 * 
+	 *
 	 * @param vp
 	 *            The victory point amount.
 	 * @return The number of advances the civilization owns worth the specified VP.
 	 */
-	private int getTechCountByVP(int vp) {
+	private int getTechCountByVP(final int vp) {
 		return (int) this.techs.keySet().parallelStream().filter(t -> t.getVP() == vp).count();
 	}
 
 	/**
 	 * Determine whether this civilization satisfied the requirements for advancing through the given Age.
-	 * 
+	 *
 	 * @param age
 	 *            The specified Age.
 	 * @return boolean indicating whether this civilization satisfied the requirements for advancing through the given
 	 *         Age.
 	 */
-	public boolean passAstRequirements(Age age) {
-		AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
-		int cityCount =
+	public boolean passAstRequirements(final Age age) {
+		final AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
+		final int cityCount =
 				this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this.getCityCount();
 		return cityCount >= reqs.getMinCities() && this.techs.size() >= reqs.getMinAdvances()
 				&& this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs()
@@ -392,15 +394,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * Create a string listing all of the AST requirements for the given age, color-coded by whether the civilization
 	 * currently meets each requirement. Requirements in green are currently satisfied; requirements in red are
 	 * currently not satisfied.
-	 * 
+	 *
 	 * @param age
 	 *            The specified Age.
 	 * @param printAgeName
 	 *            TODO
 	 * @return A string representation of the given age's requirements.
 	 */
-	public String astRequirementString(Age age, boolean printAgeName) {
-		AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
+	public String astRequirementString(final Age age, final boolean printAgeName) {
+		final AstRequirements reqs = Game.AGE_REQUIREMENTS.get(this.difficulty).get(age);
 		String s = "<html>";
 		if (printAgeName) {
 			s = s + age.toString() + "<BR/>";
@@ -410,47 +412,47 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			return s;
 		}
 		if (reqs.getMinCities() > 0) {
-			int cityCount = this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount() + 1 : this
-					.getCityCount();
-			String colorName = cityCount >= reqs.getMinCities() ? "green" : "red";
-			String iconName = cityCount >= reqs.getMinCities() ? "check" : "x";
+			final int cityCount = this.techs.containsKey(Technology.WONDER_OF_THE_WORLD) ? this.getCityCount()
+					+ 1 : this.getCityCount();
+			final String colorName = cityCount >= reqs.getMinCities() ? "green" : "red";
+			final String iconName = cityCount >= reqs.getMinCities() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinCities() + " Cities</span><BR/>";
 		}
 		if (reqs.getMinAdvances() > 0) {
-			String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
-			String iconName = this.techs.size() >= reqs.getMinAdvances() ? "check" : "x";
+			final String colorName = this.techs.size() >= reqs.getMinAdvances() ? "green" : "red";
+			final String iconName = this.techs.size() >= reqs.getMinAdvances() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinAdvances() + " Advances</span><BR/>";
 		}
 		if (reqs.getMinTechVP() > 0) {
-			String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
-			String iconName = this.getVPfromTech() >= reqs.getMinTechVP() ? "check" : "x";
+			final String colorName = this.getVPfromTech() >= reqs.getMinTechVP() ? "green" : "red";
+			final String iconName = this.getVPfromTech() >= reqs.getMinTechVP() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinTechVP() + " VP from Advances</span><BR/>";
 		}
 		if (reqs.getMinLevelOneTechs() > 0) {
-			String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
-			String iconName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "check" : "x";
+			final String colorName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "green" : "red";
+			final String iconName = this.getTechCountByVP(1) >= reqs.getMinLevelOneTechs() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinLevelOneTechs() + " Advances < 100</span><BR/>";
 		}
 		if (reqs.getMinLevelTwoPlusTechs() > 0) {
-			String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
+			final String colorName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "green" : "red";
-			String iconName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
+			final String iconName = this.getTechCountByVP(3) + this.getTechCountByVP(6) >= reqs
 					.getMinLevelTwoPlusTechs() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinLevelTwoPlusTechs() + " Advances > 100</span><BR/>";
 		}
 		if (reqs.getMinLevelThreeTechs() > 0) {
-			String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
-			String iconName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "check" : "x";
+			final String colorName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "green" : "red";
+			final String iconName = this.getTechCountByVP(6) >= reqs.getMinLevelThreeTechs() ? "check" : "x";
 			s = s + "<img height=\"10\" width=\"10\" align=\"bottom\" src=\""
 					+ GuiClient.class.getResource("images/" + iconName + ".png") + "\"> <span color='" + colorName
 					+ "'>&nbsp;" + reqs.getMinLevelThreeTechs() + " Advances > 200</span><BR/>";
@@ -461,28 +463,28 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the AST step on which the specified Age begins for this civilization.
-	 * 
+	 *
 	 * @param age
 	 *            The specified Age.
 	 * @return The first AST step of the given Age.
 	 */
-	public int getAgeStart(Civilization.Age age) {
+	public int getAgeStart(final Civilization.Age age) {
 		return Game.AST_TABLE.get(this.getName()).getAgeStart(age, this.difficulty);
 	}
 
 	/**
 	 * Set the current game difficulty.
-	 * 
+	 *
 	 * @param difficulty
 	 *            The new game difficulty.
 	 */
-	public void setDifficulty(Difficulty difficulty) {
+	public void setDifficulty(final Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 
 	/**
 	 * Get the current population.
-	 * 
+	 *
 	 * @return The current population.
 	 */
 	public int getPopulation() {
@@ -491,23 +493,23 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Set the current population.
-	 * 
+	 *
 	 * @param population
 	 *            The new population.
 	 */
-	public void setPopulation(int population) {
+	public void setPopulation(final int population) {
 		this.population = population;
 	}
 
-	public void setSmallGameCredits(int credit) {
-		for (Technology.Type type : Technology.Type.values()) {
+	public void setSmallGameCredits(final int credit) {
+		for (final Technology.Type type : Technology.Type.values()) {
 			this.smallGameCredits.put(type, credit);
 		}
 	}
 
 	/**
 	 * Get the current number of cities.
-	 * 
+	 *
 	 * @return The current number of cities.
 	 */
 	public int getCityCount() {
@@ -516,42 +518,42 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Set the current number of cities.
-	 * 
+	 *
 	 * @param nCities
 	 *            The new number of cities.
 	 */
-	public void setCityCount(int nCities) {
+	public void setCityCount(final int nCities) {
 		this.nCities = nCities;
 	}
 
 	/**
 	 * Add (purchase) a new advance to this civilization.
-	 * 
+	 *
 	 * @param newTech
 	 *            The new advance.
 	 * @param round
 	 *            TODO
 	 */
-	public void addTech(Technology newTech, int round) {
+	public void addTech(final Technology newTech, final int round) {
 		this.techs.put(newTech, round);
 	}
 
 	/**
 	 * Removes all technologies that were purchased in the given round. This allows the undo of technology purchases.
-	 * 
+	 *
 	 * @param currentRound
 	 *            the current round number to undo.
-	 * 
+	 *
 	 */
-	public ArrayList<Technology> undoTechPurchase(int currentRound) {
-		ArrayList<Technology> undoneTechs = new ArrayList<Technology>();
-		for (Technology tech : Civilization.this.techs.keySet()) {
-			Integer round = Civilization.this.techs.get(tech);
+	public ArrayList<Technology> undoTechPurchase(final int currentRound) {
+		final ArrayList<Technology> undoneTechs = new ArrayList<Technology>();
+		for (final Technology tech : Civilization.this.techs.keySet()) {
+			final Integer round = Civilization.this.techs.get(tech);
 			if (round == currentRound) {
 				undoneTechs.add(tech);
 			}
 		}
-		for (Technology tech : undoneTechs) {
+		for (final Technology tech : undoneTechs) {
 			this.techs.remove(tech);
 		}
 		return undoneTechs;
@@ -559,17 +561,17 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Set whether this civilization has purchased advances yet this turn.
-	 * 
+	 *
 	 * @param hasPurchased
 	 *            boolean specifying whether advances have been purchased this turn.
 	 */
-	public void setPurchased(boolean hasPurchased) {
+	public void setPurchased(final boolean hasPurchased) {
 		this.hasPurchased = hasPurchased;
 	}
 
 	/**
 	 * Get whether this civilization has purchased advances yet this turn.
-	 * 
+	 *
 	 * @return boolean specifying whether advances have been purchased this turn.
 	 */
 	public boolean hasPurchased() {
@@ -579,35 +581,36 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * Get a copy of this Civilization object. This is used to create a copy of Civilization data while editing to allow
 	 * for reversion to the previous state.
-	 * 
+	 *
 	 * @return A deep copy of this Civilization.
 	 */
+	@Override
 	public Civilization clone() {
-		HashMap<Technology, Integer> techs = new HashMap<Technology, Integer>() {
+		final HashMap<Technology, Integer> techs = new HashMap<Technology, Integer>() {
 			private static final long serialVersionUID = 577732084086917712L;
 
 			{
-				for (Technology tech : Civilization.this.techs.keySet()) {
-					put(tech, Civilization.this.techs.get(tech));
+				for (final Technology tech : Civilization.this.techs.keySet()) {
+					this.put(tech, Civilization.this.techs.get(tech));
 				}
 			}
 		};
-		HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits =
+		final HashMap<Technology, ArrayList<Technology.Type>> extraTypeCredits =
 				new HashMap<Technology, ArrayList<Technology.Type>>() {
 					private static final long serialVersionUID = 1L;
 					{
-						for (Technology tech : Civilization.this.typeCredits.keySet()) {
-							put(tech, Civilization.this.typeCredits.get(tech));
+						for (final Technology tech : Civilization.this.typeCredits.keySet()) {
+							this.put(tech, Civilization.this.typeCredits.get(tech));
 						}
 					}
 				};
-		return new Civilization(this.name, this.player, this.population, this.nCities, techs, smallGameCredits,
+		return new Civilization(this.name, this.player, this.population, this.nCities, techs, this.smallGameCredits,
 				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased, this.lateIronBonus);
 	}
 
 	/**
 	 * Get a list of the advances owned by this civilization
-	 * 
+	 *
 	 * @return A list of advances owned by this civilization.
 	 */
 	public ArrayList<Technology> getTechs() {
@@ -616,18 +619,18 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Determine whether this civilization owns an advance.
-	 * 
+	 *
 	 * @param tech
 	 *            The specified advance.
 	 * @return Whether this civilization owns the given advance.
 	 */
-	public boolean hasTech(Technology tech) {
+	public boolean hasTech(final Technology tech) {
 		return this.techs.containsKey(tech);
 	}
 
 	/**
 	 * Get the player playing this civilization.
-	 * 
+	 *
 	 * @return The player name.
 	 */
 	public String getPlayer() {
@@ -636,23 +639,23 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Set the player playing this civilization.
-	 * 
+	 *
 	 * @param player
 	 *            The new player name.
 	 */
-	public void setPlayer(String player) {
+	public void setPlayer(final String player) {
 		this.player = player;
 	}
 
 	/**
 	 * Get the current cost for this civilization to purchase an advance. This includes all credits from previously
 	 * purchased advance cards.
-	 * 
+	 *
 	 * @param tech
 	 *            The specified advance
 	 * @return The cost for this civilization to purchase the given advance.
 	 */
-	public int getCost(Technology tech) {
+	public int getCost(final Technology tech) {
 		int cost = tech.getBaseCost();
 
 		// Reduce the cost by the maximum type discount.
@@ -669,12 +672,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * Get the number of credits towards the specified advance Type. This includes credits from all purchased advances,
 	 * including additional credits chosen for {@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD
 	 * Written Record}.
-	 * 
+	 *
 	 * @param type
 	 *            The specified type.
 	 * @return The number of credits for the specified type.
 	 */
-	public int getTypeCredit(Technology.Type type) {
+	public int getTypeCredit(final Technology.Type type) {
 		// Start with game-start credits
 		int credit = this.smallGameCredits.get(type);
 
@@ -691,31 +694,31 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * Get a list of the chosen credits for advances that provide additional credits ({@link Technology#MONUMENT
 	 * Monument} and {@link Technology#WRITTEN_RECORD Written Record}).
-	 * 
+	 *
 	 * @param tech
 	 *            The specified advance.
 	 * @return A list of the type credits chosen (worth 5 each).
 	 */
-	public ArrayList<Technology.Type> getTypeCredits(Technology tech) {
+	public ArrayList<Technology.Type> getTypeCredits(final Technology tech) {
 		return this.typeCredits.get(tech);
 	}
 
 	/**
 	 * Set the additional type credits for advances that provide additional credits ({@link Technology#MONUMENT
 	 * Monument} and {@link Technology#WRITTEN_RECORD Written Record}).
-	 * 
+	 *
 	 * @param tech
 	 *            The specified advance.
 	 * @param newCredits
 	 *            A list of the type credits chosen (worth 5 each).
 	 */
-	public void addTypeCredits(Technology tech, ArrayList<Technology.Type> newCredits) {
+	public void addTypeCredits(final Technology tech, final ArrayList<Technology.Type> newCredits) {
 		this.typeCredits.put(tech, newCredits);
 	}
 
 	/**
 	 * Get the current AST position.
-	 * 
+	 *
 	 * @return The current AST position.
 	 */
 	public int getAstPosition() {
@@ -724,17 +727,17 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Set the current AST position.
-	 * 
+	 *
 	 * @param newAstPosition
 	 *            The new AST position.
 	 */
-	public void setAstPosition(int newAstPosition) {
+	public void setAstPosition(final int newAstPosition) {
 		this.astPosition = newAstPosition;
 	}
 
 	/**
 	 * Get the AST rank of this civilization.
-	 * 
+	 *
 	 * @return The AST rank.
 	 */
 	public int getAst() {
@@ -743,7 +746,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort the specified list of civilizations using the specified sort method and direction.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param sort
@@ -752,8 +755,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortBy(ArrayList<Civilization> civs, Civilization.SortOption sort,
-			SortDirection direction) {
+	public static ArrayList<Civilization> sortBy(final ArrayList<Civilization> civs, final Civilization.SortOption sort,
+			final SortDirection direction) {
 		switch (sort) {
 			case AST:
 				return sortByAst(civs, direction);
@@ -773,14 +776,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort a list of civilizations based on the number of victory points. Ties are broken based on AST.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByVP(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByVP(final ArrayList<Civilization> civs, final SortDirection direction) {
 		Collections.sort(civs, new VpComparator());
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -791,14 +794,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * Sort a list of civilizations based on the number of cities. Ties are broken based on AST rank. This sort is used
 	 * for handing out trade cards.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByCities(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByCities(final ArrayList<Civilization> civs,
+			final SortDirection direction) {
 		Collections.sort(civs, new CityComparator());
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -809,14 +813,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	/**
 	 * Sort a list of civilizations based on the movement order. This is usually census order, but may be modified by
 	 * the advance {@link Technology#MILITARY Military}.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByMovement(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByMovement(final ArrayList<Civilization> civs,
+			final SortDirection direction) {
 		Collections.sort(civs, new MovementComparator());
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -826,7 +831,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort a list of civilizations, then convert to a list of only the civilization names.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param sort
@@ -835,12 +840,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            The desired sort direction.
 	 * @return
 	 */
-	public static ArrayList<Civilization.Name> sortByToName(ArrayList<Civilization> civs, Civilization.SortOption sort,
-			SortDirection direction) {
-		ArrayList<Civilization> sortedCivs = sortBy(civs, sort, direction);
+	public static ArrayList<Civilization.Name> sortByToName(final ArrayList<Civilization> civs,
+			final Civilization.SortOption sort, final SortDirection direction) {
+		final ArrayList<Civilization> sortedCivs = sortBy(civs, sort, direction);
 
-		ArrayList<Civilization.Name> sortedNames = new ArrayList<Civilization.Name>();
-		for (Civilization civ : sortedCivs) {
+		final ArrayList<Civilization.Name> sortedNames = new ArrayList<Civilization.Name>();
+		for (final Civilization civ : sortedCivs) {
 			sortedNames.add(civ.getName());
 		}
 		return sortedNames;
@@ -848,14 +853,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort a list of civilizations based on the AST [rank].
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByAst(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByAst(final ArrayList<Civilization> civs, final SortDirection direction) {
 		Collections.sort(civs);
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -865,14 +870,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort a list of civilizations based on the census. Ties are broken by AST rank.
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByCensus(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByCensus(final ArrayList<Civilization> civs,
+			final SortDirection direction) {
 		Collections.sort(civs, new CensusComparator());
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -883,14 +889,15 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Sort a list of civilizations based on their AST position (number of steps advanced).
-	 * 
+	 *
 	 * @param civs
 	 *            List of civilizations to be sorted.
 	 * @param direction
 	 *            The desired sort direction.
 	 * @return A sorted list of civilizations.
 	 */
-	public static ArrayList<Civilization> sortByAstPosition(ArrayList<Civilization> civs, SortDirection direction) {
+	public static ArrayList<Civilization> sortByAstPosition(final ArrayList<Civilization> civs,
+			final SortDirection direction) {
 		Collections.sort(civs, new AstPositionComparator());
 		if (direction == SortDirection.ASCENDING) {
 			Collections.reverse(civs);
@@ -900,7 +907,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the number of victory points of owned advances.
-	 * 
+	 *
 	 * @return The number of victory points.
 	 */
 	public int getVPfromTech() {
@@ -909,17 +916,17 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Get the number of victory points from all sources except the Late Iron Age bonus.
-	 * 
+	 *
 	 * @return The number of victory points.
 	 */
 	public int getVP() {
-		int pointsFromBonus = this.lateIronBonus ? 5 : 0;
-		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + getVPfromTech() + pointsFromBonus;
+		final int pointsFromBonus = this.lateIronBonus ? 5 : 0;
+		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + this.getVPfromTech() + pointsFromBonus;
 	}
 
 	/**
 	 * Create a string that lists the number of advances owned at each of the three tiers.
-	 * 
+	 *
 	 * @return A string specifying the number of advances owned in each tier.
 	 */
 	public String getTechBreakdownString() {
@@ -934,7 +941,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Create a string that lists the number of victory points provided from each source (AST, advances, Cities).
-	 * 
+	 *
 	 * @return A string specifying the number of victory points from each source.
 	 */
 	public String getVpBreakdownString() {
@@ -952,7 +959,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Create a string that includes much of the current state of the Civilization. Used mostly for development.
-	 * 
+	 *
 	 * @return A string including much of the current state of this Civliization.
 	 */
 	public String toFullString() {
@@ -969,7 +976,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A comparator for comparing two civilizations by census.
 	 */
 	private final static class CensusComparator implements Comparator<Civilization> {
-		public int compare(Civilization civ1, Civilization civ2) {
+		@Override
+		public int compare(final Civilization civ1, final Civilization civ2) {
 			int result = -Integer.compare(civ1.getPopulation(), civ2.getPopulation());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
@@ -982,7 +990,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A comparator for comparing two civilizations by number of victory points.
 	 */
 	private final static class VpComparator implements Comparator<Civilization> {
-		public int compare(Civilization civ1, Civilization civ2) {
+		@Override
+		public int compare(final Civilization civ1, final Civilization civ2) {
 			int result = -Integer.compare(civ1.getVP(), civ2.getVP());
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
@@ -995,7 +1004,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A comparator for comparing two civilizations by number of cities.
 	 */
 	private final static class CityComparator implements Comparator<Civilization> {
-		public int compare(Civilization civ1, Civilization civ2) {
+		@Override
+		public int compare(final Civilization civ1, final Civilization civ2) {
 			int result = -Integer.compare(civ1.getCityCount(), civ2.getCityCount());
 			if (result == 0) {
 				result = -civ1.compareTo(civ2);
@@ -1008,7 +1018,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A comparator for comparing two civilizations by AST position.
 	 */
 	private final static class AstPositionComparator implements Comparator<Civilization> {
-		public int compare(Civilization civ1, Civilization civ2) {
+		@Override
+		public int compare(final Civilization civ1, final Civilization civ2) {
 			int result = -Integer.compare(civ1.astPosition, civ2.astPosition);
 			if (result == 0) {
 				result = civ1.compareTo(civ2);
@@ -1021,9 +1032,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 * A comparator for comparing two civilizations by which moves first.
 	 */
 	private final static class MovementComparator implements Comparator<Civilization> {
-		public int compare(Civilization civ1, Civilization civ2) {
-			boolean civ1Military = civ1.hasTech(Technology.MILITARY);
-			boolean civ2Military = civ2.hasTech(Technology.MILITARY);
+		@Override
+		public int compare(final Civilization civ1, final Civilization civ2) {
+			final boolean civ1Military = civ1.hasTech(Technology.MILITARY);
+			final boolean civ2Military = civ2.hasTech(Technology.MILITARY);
 
 			if (civ1Military ^ civ2Military) {
 				return civ1Military ? 1 : -1;
@@ -1035,12 +1047,12 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(Civilization otherCiv) {
-		int result = this.name.compareTo(otherCiv.name);
+	public int compareTo(final Civilization otherCiv) {
+		final int result = this.name.compareTo(otherCiv.name);
 		return result;
 	}
 
@@ -1152,7 +1164,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 		@JsonCreator
 		public AstTableData(@JsonProperty("astRank") final int astRank, @JsonProperty("region") final Region region,
-				@JsonProperty("subTable") HashMap<Game.Difficulty, HashMap<Age, Integer>> subTable) {
+				@JsonProperty("subTable") final HashMap<Game.Difficulty, HashMap<Age, Integer>> subTable) {
 			this.astRank = astRank;
 			this.region = region;
 			this.subTable = subTable;
@@ -1174,84 +1186,86 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 		/**
 		 * Get the AST step on which the specified age begins.
-		 * 
+		 *
 		 * @param age
 		 *            The specified age.
 		 * @param difficulty
 		 *            The game difficulty.
 		 * @return The first AST step of the specified age.
 		 */
-		public int getAgeStart(Age age, Difficulty difficulty) {
+		public int getAgeStart(final Age age, final Difficulty difficulty) {
 			return this.subTable.get(difficulty).get(age).intValue();
 		}
 	}
 
 	public final static class techCostComparator implements Comparator<Technology> {
-		private Civilization civ;
+		private final Civilization civ;
 
-		public techCostComparator(Civilization civ) {
+		public techCostComparator(final Civilization civ) {
 			this.civ = civ;
 		}
 
-		public int compare(Technology list1, Technology list2) {
-			if (civ == null) {
+		@Override
+		public int compare(final Technology list1, final Technology list2) {
+			if (this.civ == null) {
 				return Integer.compare(list1.getBaseCost(), list2.getBaseCost());
 			} else {
-				return Integer.compare(civ.getCost(list1), civ.getCost(list2));
+				return Integer.compare(this.civ.getCost(list1), this.civ.getCost(list2));
 			}
 		}
 	}
 
 	public final static class totalTechCostComparator implements Comparator<List<Technology>> {
-		private Civilization civ;
+		private final Civilization civ;
 
-		public totalTechCostComparator(Civilization civ) {
+		public totalTechCostComparator(final Civilization civ) {
 			this.civ = civ;
 		}
 
-		public int compare(List<Technology> list1, List<Technology> list2) {
-			if (civ == null) {
+		@Override
+		public int compare(final List<Technology> list1, final List<Technology> list2) {
+			if (this.civ == null) {
 				return Integer.compare(list1.stream().mapToInt(t -> t.getBaseCost()).sum(),
 						list2.stream().mapToInt(t -> t.getBaseCost()).sum());
 			} else {
-				return Integer.compare(civ.getTotalCost(list1), civ.getTotalCost(list2));
+				return Integer.compare(this.civ.getTotalCost(list1), this.civ.getTotalCost(list2));
 			}
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	public void setLateIronBonus(boolean lateIronBonus) {
+	public void setLateIronBonus(final boolean lateIronBonus) {
 		this.lateIronBonus = lateIronBonus;
 	}
 
 	/**
 	 * Remove a technological advance from this civilization.
-	 * 
+	 *
 	 * @param tech
 	 */
-	public void removeTech(Technology tech) {
+	public void removeTech(final Technology tech) {
 		this.techs.remove(tech);
 	}
 
 	/**
 	 * Determines the cost to purchase all technologies in a given list
-	 * 
+	 *
 	 * @param techList
 	 *            List of technologies to purchase
 	 * @return Total cost to purchase all technologies in list, applying all appropriate discounts
 	 */
-	public int getTotalCost(List<Technology> techList) {
+	public int getTotalCost(final List<Technology> techList) {
 
-		ArrayList<Technology> techCopy = new ArrayList<Technology>(techList);
+		final ArrayList<Technology> techCopy = new ArrayList<Technology>(techList);
 
 		/*
 		 * If Anatomy is in the list, remove the most expensive tier 1 technology from the list so its cost is not
 		 * included in the title (it is free).
 		 */
 		if (techList.contains(Technology.ANATOMY)) {
-			Technology freeTech = techList.parallelStream().filter(t -> t.getBaseCost() < 100)
+			final Technology freeTech = techList.parallelStream().filter(t -> t.getBaseCost() < 100)
 					.collect(Collectors.maxBy(new techCostComparator(this))).orElse(null);
 			if (freeTech != null) {
 				techCopy.remove(freeTech);
@@ -1260,7 +1274,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 		/**
 		 * If Library is in the list, determine the discount, which may not exceed the price of one other tech or 40.
-		 * 
+		 *
 		 */
 		int discount = 0;
 		if (techList.contains(Technology.LIBRARY)) {
@@ -1273,35 +1287,35 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		 * Add up the cost of all technologies (except the free one for Anatomy, if applicable) and then reduce the cost
 		 * by the Library discount (if applicable)
 		 */
-		int cost = techCopy.stream().mapToInt(t -> this.getCost(t)).sum() - discount;
+		final int cost = techCopy.stream().mapToInt(t -> this.getCost(t)).sum() - discount;
 
 		return cost;
 	}
 
 	/**
 	 * Get the lowest cost list of techs that are worth a given number of VP total
-	 * 
+	 *
 	 * @param vp
 	 *            Number of total VP for the techs
 	 * @param availableTechs
 	 *            Techs available to purchase
 	 * @return Lowest cost list of techs that are worth vp
 	 */
-	private List<Technology> getOptimalTechsWorthNVp(int vp, ArrayList<Technology> availableTechs) {
-		ArrayList<List<Technology>> list = new ArrayList<List<Technology>>();
+	private List<Technology> getOptimalTechsWorthNVp(final int vp, final ArrayList<Technology> availableTechs) {
+		final ArrayList<List<Technology>> list = new ArrayList<List<Technology>>();
 
-		int maxL3 = vp / 6;
-		int maxL2 = vp / 3;
-		int maxL1 = vp;
+		final int maxL3 = vp / 6;
+		final int maxL2 = vp / 3;
+		final int maxL1 = vp;
 
 		/*
 		 * We will never need more techs than the maximum number for each level, so only consider those
 		 */
-		List<Technology> l1Techs = availableTechs.stream().filter(t -> t.getVP() == 1)
+		final List<Technology> l1Techs = availableTechs.stream().filter(t -> t.getVP() == 1)
 				.sorted(new Technology.techCostComparator()).limit(maxL1).collect(Collectors.toList());
-		List<Technology> l2Techs = availableTechs.stream().filter(t -> t.getVP() == 3)
+		final List<Technology> l2Techs = availableTechs.stream().filter(t -> t.getVP() == 3)
 				.sorted(new Technology.techCostComparator()).limit(maxL2).collect(Collectors.toList());
-		List<Technology> l3Techs = availableTechs.stream().filter(t -> t.getVP() == 6)
+		final List<Technology> l3Techs = availableTechs.stream().filter(t -> t.getVP() == 6)
 				.sorted(new Technology.techCostComparator()).limit(maxL3).collect(Collectors.toList());
 
 		/*
@@ -1325,14 +1339,14 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		 * (0,2,6)
 		 * (0,1,9)
 		 * (0,0,12)
-		 * 
+		 *
 		 */
 		IntStream.rangeClosed(0, vp / 6)
 				.forEach(nL3 -> IntStream.rangeClosed(0, ( vp - nL3 * 6 ) / 3)
-						.forEach(nL2 -> list.add(getOptimalTechByCombinations(l1Techs, l2Techs, l3Techs,
+						.forEach(nL2 -> list.add(this.getOptimalTechByCombinations(l1Techs, l2Techs, l3Techs,
 								vp - ( nL3 * 6 + nL2 * 3 ), nL2, nL3))));
 
-		List<Technology> optimalList = list.stream().filter(l -> l != null)
+		final List<Technology> optimalList = list.stream().filter(l -> l != null)
 				.collect(Collectors.minBy(new totalTechCostComparator(this))).orElse(null);
 
 		return optimalList;
@@ -1340,30 +1354,31 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Returns the optimal tech purchase, in terms of maximizing VP, for a given budget.
-	 * 
+	 *
 	 * Note: While the return will always have the lowest cost for the max VP possible, purchases including Anatomy (and
 	 * less often Library) may be sub-optimal in the sense that the "free" tier-one technology taken may not be the most
 	 * expensive available.
-	 * 
+	 *
 	 * @param budget
 	 *            Amount of money available to spend
 	 * @return List of technologies worth the most VP at the lowest cost
 	 */
-	public List<Technology> getOptimalTechs(int budget) {
-		ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
+	public List<Technology> getOptimalTechs(final int budget) {
+		final ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
 		availableTechs.removeAll(this.getTechs());
 
 		List<Technology> optimalTechs = new ArrayList<Technology>();
 
-		int maxCost = availableTechs.parallelStream().mapToInt(t -> this.getCost(t)).max().orElse(Integer.MAX_VALUE);
-		long startTime = System.nanoTime();
+		final int maxCost =
+				availableTechs.parallelStream().mapToInt(t -> this.getCost(t)).max().orElse(Integer.MAX_VALUE);
+		final long startTime = System.nanoTime();
 		for (int vp = ( budget / maxCost ) * 6 + 1; vp <= availableTechs.size(); vp++) {
-			long loopStartTime = System.nanoTime();
+			final long loopStartTime = System.nanoTime();
 			System.out.println("Trying " + vp + " VP");
-			List<Technology> candidate = this.getOptimalTechsWorthNVp(vp, availableTechs);
+			final List<Technology> candidate = this.getOptimalTechsWorthNVp(vp, availableTechs);
 			System.out.println(
 					"Candidate: " + Arrays.toString(candidate.toArray()) + " Cost: " + this.getTotalCost(candidate));
-			long loopEndTime = System.nanoTime();
+			final long loopEndTime = System.nanoTime();
 			System.out.println("Loop time: " + ( loopEndTime - loopStartTime ) / 1000000000.0 + " s");
 
 			if (this.getTotalCost(candidate) <= budget) {
@@ -1373,7 +1388,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				break;
 			}
 		}
-		long endTime = System.nanoTime();
+		final long endTime = System.nanoTime();
 		System.out.println("Optimal purchase found in " + ( endTime - startTime ) / 1000000000.0 + " s");
 
 		return optimalTechs;
@@ -1381,7 +1396,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 	/**
 	 * Returns the minimum cost technology list for all possible combinations of list provided
-	 * 
+	 *
 	 * @param l1Techs
 	 *            List of tier-one technologies
 	 * @param l2Techs
@@ -1396,33 +1411,34 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            Number of tier-three technologies to use
 	 * @return Lowest-cost combination of technologies
 	 */
-	private ArrayList<Technology> getOptimalTechByCombinations(List<Technology> l1Techs, List<Technology> l2Techs,
-			List<Technology> l3Techs, int nL1, int nL2, int nL3) {
-		List<List<Technology>> l1List = Combinations(l1Techs, nL1).collect(Collectors.toList());
-		List<List<Technology>> l2List = Combinations(l2Techs, nL2).collect(Collectors.toList());
-		List<List<Technology>> l3List = Combinations(l3Techs, nL3).collect(Collectors.toList());
+	private ArrayList<Technology> getOptimalTechByCombinations(final List<Technology> l1Techs,
+			final List<Technology> l2Techs, final List<Technology> l3Techs, final int nL1, final int nL2,
+			final int nL3) {
+		final List<List<Technology>> l1List = Combinations(l1Techs, nL1).collect(Collectors.toList());
+		final List<List<Technology>> l2List = Combinations(l2Techs, nL2).collect(Collectors.toList());
+		final List<List<Technology>> l3List = Combinations(l3Techs, nL3).collect(Collectors.toList());
 
-		return ( (Stream<ArrayList<Technology>>) l1List.parallelStream().flatMap(l1t -> {
+		return l1List.parallelStream().flatMap(l1t -> {
 			return l2List.parallelStream().flatMap(l2t -> {
 				return l3List.parallelStream().map(l3t -> {
-					ArrayList<Technology> list = new ArrayList<Technology>();
+					final ArrayList<Technology> list = new ArrayList<Technology>();
 					list.addAll(l1t);
 					list.addAll(l2t);
 					list.addAll(l3t);
 					return list;
 				});
 			});
-		}) ).filter(l -> l != null).collect(Collectors.minBy(new totalTechCostComparator(this))).orElse(null);
+		}).filter(l -> l != null).collect(Collectors.minBy(new totalTechCostComparator(this))).orElse(null);
 	}
 
 	/**
 	 * Copied from https://stackoverflow.com/questions/28515516/enumeration-combinations-of-k-elements-using-java-8
-	 * 
+	 *
 	 * @param l
 	 * @param size
 	 * @return
 	 */
-	private static <E> Stream<List<E>> Combinations(List<E> l, int size) {
+	private static <E> Stream<List<E>> Combinations(final List<E> l, final int size) {
 		if (size == 0) {
 			return Stream.of(Collections.emptyList());
 		} else {
@@ -1431,8 +1447,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		}
 	}
 
-	private static <E> List<E> pipe(E head, List<E> tail) {
-		List<E> newList = new ArrayList<>(tail);
+	private static <E> List<E> pipe(final E head, final List<E> tail) {
+		final List<E> newList = new ArrayList<>(tail);
 		newList.add(0, head);
 		return newList;
 	}

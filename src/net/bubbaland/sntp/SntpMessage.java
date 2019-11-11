@@ -39,7 +39,7 @@ public class SntpMessage {
 	 * @param version
 	 *            the version to set
 	 */
-	public void setVersion(byte version) {
+	public void setVersion(final byte version) {
 		this.version = version;
 	}
 
@@ -47,7 +47,7 @@ public class SntpMessage {
 	 * @param mode
 	 *            the mode to set
 	 */
-	public void setMode(byte mode) {
+	public void setMode(final byte mode) {
 		this.mode = mode;
 	}
 
@@ -55,7 +55,7 @@ public class SntpMessage {
 	 * @param stratum
 	 *            the stratum to set
 	 */
-	public void setStratum(byte stratum) {
+	public void setStratum(final byte stratum) {
 		this.stratum = stratum;
 	}
 
@@ -63,13 +63,13 @@ public class SntpMessage {
 	 * @param refId
 	 *            the refId to set
 	 */
-	public void setRefId(byte[] refId) {}
+	public void setRefId(final byte[] refId) {}
 
 	/**
 	 * @param xmtTime
 	 *            the xmtTime to set
 	 */
-	public void setXmtTime(NtpTimestamp xmtTime) {
+	public void setXmtTime(final NtpTimestamp xmtTime) {
 		this.xmtTime = xmtTime;
 	}
 
@@ -89,7 +89,7 @@ public class SntpMessage {
 	 * @param leap
 	 *            the leap to set
 	 */
-	public void setLeap(byte leap) {
+	public void setLeap(final byte leap) {
 		this.leap = leap;
 	}
 
@@ -97,7 +97,7 @@ public class SntpMessage {
 	 * @param poll
 	 *            the poll to set
 	 */
-	public void setPoll(byte poll) {
+	public void setPoll(final byte poll) {
 		this.poll = poll;
 	}
 
@@ -105,7 +105,7 @@ public class SntpMessage {
 	 * @param precision
 	 *            the precision to set
 	 */
-	public void setPrecision(byte precision) {
+	public void setPrecision(final byte precision) {
 		this.precision = precision;
 	}
 
@@ -113,19 +113,19 @@ public class SntpMessage {
 	 * @param delay
 	 *            the delay to set
 	 */
-	public void setDelay(double delay) {}
+	public void setDelay(final double delay) {}
 
 	/**
 	 * @param dispersion
 	 *            the dispersion to set
 	 */
-	public void setDispersion(double dispersion) {}
+	public void setDispersion(final double dispersion) {}
 
 	/**
 	 * @param refTime
 	 *            the refTime to set
 	 */
-	public void setRefTime(NtpTimestamp refTime) {
+	public void setRefTime(final NtpTimestamp refTime) {
 		this.refTime = refTime;
 	}
 
@@ -133,7 +133,7 @@ public class SntpMessage {
 	 * @param orgTime
 	 *            the orgTime to set
 	 */
-	public void setOrgTime(NtpTimestamp orgTime) {
+	public void setOrgTime(final NtpTimestamp orgTime) {
 		this.orgTime = orgTime;
 	}
 
@@ -141,7 +141,7 @@ public class SntpMessage {
 	 * @param recTime
 	 *            the recTime to set
 	 */
-	public void setRecTime(NtpTimestamp recTime) {
+	public void setRecTime(final NtpTimestamp recTime) {
 		this.recTime = recTime;
 	}
 
@@ -149,7 +149,7 @@ public class SntpMessage {
 	 * @param dstTime
 	 *            the dstTime to set
 	 */
-	public void setDstTime(NtpTimestamp dstTime) {}
+	public void setDstTime(final NtpTimestamp dstTime) {}
 
 	/** Reference Timestamp (NTP format). */
 	@SuppressWarnings("unused")
@@ -189,49 +189,62 @@ public class SntpMessage {
 
 	}
 
-	public SntpMessage(byte[] data) {
-		leap = (byte) ( data[0] >> 6 );
-		version = (byte) ( ( data[0] & 0x38 ) >> 3 );
-		mode = (byte) ( data[0] & 0x07 );
-		stratum = data[1];
-		poll = data[2];
-		precision = data[3];
-		refTime = new NtpTimestamp(Arrays.copyOfRange(data, 16, 24));
-		orgTime = new NtpTimestamp(Arrays.copyOfRange(data, 24, 32));
-		recTime = new NtpTimestamp(Arrays.copyOfRange(data, 32, 40));
-		xmtTime = new NtpTimestamp(Arrays.copyOfRange(data, 40, 48));
+	public SntpMessage(final byte[] data) {
+		this.leap = (byte) ( data[0] >> 6 );
+		this.version = (byte) ( ( data[0] & 0x38 ) >> 3 );
+		this.mode = (byte) ( data[0] & 0x07 );
+		this.stratum = data[1];
+		this.poll = data[2];
+		this.precision = data[3];
+		this.refTime = new NtpTimestamp(Arrays.copyOfRange(data, 16, 24));
+		this.orgTime = new NtpTimestamp(Arrays.copyOfRange(data, 24, 32));
+		this.recTime = new NtpTimestamp(Arrays.copyOfRange(data, 32, 40));
+		this.xmtTime = new NtpTimestamp(Arrays.copyOfRange(data, 40, 48));
 	}
 
 	public byte[] toByteArray() {
-		byte[] message = new byte[48];
+		final byte[] message = new byte[48];
 
-		message[0] = (byte) ( leap << 6 | version << 3 | mode );
-		message[1] = stratum;
-		message[2] = poll;
-		message[3] = precision;
+		message[0] = (byte) ( this.leap << 6 | this.version << 3 | this.mode );
+		message[1] = this.stratum;
+		message[2] = this.poll;
+		message[3] = this.precision;
 
 		byte[] bOrigin = null;
 		byte[] bRecv = null;
 		byte[] bTrans = null;
 
-		if (orgTime != null) bOrigin = orgTime.toByteArray();
-		if (recTime != null) bRecv = recTime.toByteArray();
-		if (xmtTime != null) bTrans = xmtTime.toByteArray();
+		if (this.orgTime != null) {
+			bOrigin = this.orgTime.toByteArray();
+		}
+		if (this.recTime != null) {
+			bRecv = this.recTime.toByteArray();
+		}
+		if (this.xmtTime != null) {
+			bTrans = this.xmtTime.toByteArray();
+		}
 
 		for (int i = 0; i < 8; i++) {
 			message[24 + i] = message[32 + i] = message[32 + i] = 0;
 
-			if (bOrigin != null) message[24 + i] = bOrigin[i];
-			if (bRecv != null) message[32 + i] = bRecv[i];
-			if (bTrans != null) message[40 + i] = bTrans[i];
+			if (bOrigin != null) {
+				message[24 + i] = bOrigin[i];
+			}
+			if (bRecv != null) {
+				message[32 + i] = bRecv[i];
+			}
+			if (bTrans != null) {
+				message[40 + i] = bTrans[i];
+			}
 		}
 
 		return message;
 	}
 
+	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("SNTP Message(").append(version).append(")");
+		final StringBuilder sb = new StringBuilder();
+		sb.append("SNTP Message(").append(this.version).append(")");
 		// TODO
 		return sb.toString();
 	}

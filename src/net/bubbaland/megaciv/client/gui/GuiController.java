@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.ToolTipManager;
 
-import net.bubbaland.gui.*;
+import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.User;
 
@@ -32,13 +32,13 @@ public class GuiController extends BubbaGuiController {
 
 	private HashMap<Civilization.Age, Color>	astForegroundColors, astBackgroundColors;
 
-	public GuiController(String serverUrl) {
+	public GuiController(final String serverUrl) {
 		super(DEFAULTS_FILENAME, SETTINGS_FILENAME, SETTINGS_VERSION);
 		this.client = new GuiClient(serverUrl, this);
 		this.client.run();
 
 		while (!this.client.isConnected()) {
-			setStatusBarText("Awaiting connection...");
+			this.setStatusBarText("Awaiting connection...");
 			try {
 				Thread.sleep(50);
 			} catch (final InterruptedException exception) {
@@ -47,27 +47,17 @@ public class GuiController extends BubbaGuiController {
 			}
 		}
 
-		String userName = this.properties.getProperty("UserName");
+		final String userName = this.properties.getProperty("UserName");
 		if (userName == null) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					new UserDialog(GuiController.this, GuiController.this.client, true);
-				}
-			});
+			SwingUtilities.invokeLater(() -> new UserDialog(GuiController.this, GuiController.this.client, true));
 		} else {
-			User user = this.client.getUser();
+			final User user = this.client.getUser();
 			user.setUserName(userName);
 			this.client.setUser(user);
 		}
 
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					GuiController.this.updateGui();
-				}
-			});
+			SwingUtilities.invokeAndWait(() -> GuiController.this.updateGui());
 		} catch (InvocationTargetException | InterruptedException exception) {
 			exception.printStackTrace();
 		}
@@ -78,44 +68,46 @@ public class GuiController extends BubbaGuiController {
 
 	}
 
-	public void createFrame(String frameName) {
+	@Override
+	public void createFrame(final String frameName) {
 		new SwingWorker<Void, Void>() {
+			@Override
 			public Void doInBackground() {
 				while (GuiController.this.client == null) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException exception) {}
+					} catch (final InterruptedException exception) {}
 				}
 				return null;
 			}
 
+			@Override
 			public void done() {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						String[] tabs =
-								GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
-										.replaceAll("[\\[\\]]", "").split(", ");
-						// System.out.println(tabs);
-						new MegaCivFrame(GuiController.this.client, GuiController.this).addTabs(tabs);
-					}
+				SwingUtilities.invokeLater(() -> {
+					final String[] tabs =
+							GuiController.this.properties.getProperty("Window." + frameName + ".OpenTabs", "[AST]")
+									.replaceAll("[\\[\\]]", "").split(", ");
+					// System.out.println(tabs);
+					new MegaCivFrame(GuiController.this.client, GuiController.this).addTabs(tabs);
 				});
 			}
 		}.execute();
 	}
 
-	public Color getAstForegroundColor(Civilization.Age age) {
+	public Color getAstForegroundColor(final Civilization.Age age) {
 		return this.astForegroundColors.get(age);
 	}
 
-	public Color getAstBackgroundColor(Civilization.Age age) {
+	public Color getAstBackgroundColor(final Civilization.Age age) {
 		return this.astBackgroundColors.get(age);
 	}
 
-	public void loadProperties(File file) {
+	@Override
+	public void loadProperties(final File file) {
 		super.loadProperties(file);
 		this.astForegroundColors = new HashMap<Civilization.Age, Color>();
 		this.astBackgroundColors = new HashMap<Civilization.Age, Color>();
-		for (Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
+		for (final Civilization.Age age : EnumSet.allOf(Civilization.Age.class)) {
 			this.astForegroundColors.put(age, new Color(
 					new BigInteger(this.getProperties().getProperty("AstTable." + age.name() + ".ForegroundColor"), 16)
 							.intValue()));
@@ -129,14 +121,16 @@ public class GuiController extends BubbaGuiController {
 	/**
 	 * Add the current window contents to properties, then save the properties to the settings file and exit.
 	 */
+	@Override
 	public void endProgram() {
 		this.saveProperties();
 		System.exit(0);
 	}
 
+	@Override
 	public void saveProperties() {
 		super.saveProperties();
-		String userName = this.client.getUser().getUserName();
+		final String userName = this.client.getUser().getUserName();
 		if (userName != null && this.client.getSession() != null
 				&& !userName.equals(this.client.getSession().getId().substring(0, 7))) {
 			this.properties.setProperty("UserName", this.client.getUser().getUserName());
@@ -144,20 +138,21 @@ public class GuiController extends BubbaGuiController {
 		this.savePropertyFile();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		final String serverURL;
 		if (args.length > 0) {
 			serverURL = args[0];
 		} else {
-			JTextField hostname = new JTextField("localhost");
-			JSpinner port = new JSpinner(new SpinnerNumberModel(1099, 0, 65535, 1));
-			Object[] message = { "Hostname:", hostname, "Port:", port };
+			final JTextField hostname = new JTextField("localhost");
+			final JSpinner port = new JSpinner(new SpinnerNumberModel(1099, 0, 65535, 1));
+			final Object[] message = { "Hostname:", hostname, "Port:", port };
 			JOptionPane.showMessageDialog(null, message, "Server Configuration", JOptionPane.PLAIN_MESSAGE);
 			serverURL = "ws://" + hostname.getText() + ":" + (int) port.getValue();
 		}
 		new GuiController(serverURL);
 	}
 
+	@Override
 	public void updateGui() {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
 		super.updateGui();

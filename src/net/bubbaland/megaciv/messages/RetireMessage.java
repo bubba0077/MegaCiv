@@ -11,7 +11,7 @@ public class RetireMessage implements ClientMessage {
 	@JsonProperty("name")
 	private final Civilization.Name name;
 
-	public RetireMessage(@JsonProperty("name") Civilization.Name name) {
+	public RetireMessage(@JsonProperty("name") final Civilization.Name name) {
 		this.name = name;
 	}
 
@@ -21,7 +21,7 @@ public class RetireMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return name.toString() + " retired";
+		return this.name.toString() + " retired";
 	}
 
 	@Override

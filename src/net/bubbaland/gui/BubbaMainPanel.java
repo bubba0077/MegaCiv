@@ -22,12 +22,12 @@ public abstract class BubbaMainPanel extends BubbaPanel {
 	 * @param frame
 	 *            TODO
 	 */
-	public BubbaMainPanel(BubbaGuiController controller, BubbaFrame frame) {
+	public BubbaMainPanel(final BubbaGuiController controller, final BubbaFrame frame) {
 		super(controller, new GridBagLayout());
 		this.frame = frame;
 	}
 
-	public void changeFrame(BubbaFrame newFrame) {
+	public void changeFrame(final BubbaFrame newFrame) {
 		this.frame = newFrame;
 	}
 

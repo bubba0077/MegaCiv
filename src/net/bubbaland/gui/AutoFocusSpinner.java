@@ -10,15 +10,15 @@ import javax.swing.SwingUtilities;
 /**
  * Creates a spinner that automatically selects all of the text when the spinner receives focus. This allows for easier
  * data entry when components are being navigated by tabbing.
- * 
+ *
  * @author Walter Kolczynski
- * 
+ *
  */
 
 public class AutoFocusSpinner extends JSpinner {
 	private static final long serialVersionUID = -7900543713955610434L;
 
-	public AutoFocusSpinner(SpinnerModel model) {
+	public AutoFocusSpinner(final SpinnerModel model) {
 		super(model);
 
 		// Add an anonymous focus listener that will select all of the text when this gets focus
@@ -26,22 +26,15 @@ public class AutoFocusSpinner extends JSpinner {
 				.addFocusListener(new FocusListener() {
 
 					@Override
-					public void focusGained(FocusEvent e) {
-						SwingUtilities.invokeLater(new Runnable() {
-
-							@Override
-							public void run() {
-								( (JSpinner.DefaultEditor) AutoFocusSpinner.this.getEditor() ).getTextField()
-										.selectAll();
-							}
-
-						});
+					public void focusGained(final FocusEvent e) {
+						SwingUtilities.invokeLater(() -> ( (JSpinner.DefaultEditor) AutoFocusSpinner.this.getEditor() )
+								.getTextField().selectAll());
 					}
 
 					@Override
-					public void focusLost(FocusEvent e) {
+					public void focusLost(final FocusEvent e) {
 
-			}
+					}
 
 				});
 	}

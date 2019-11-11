@@ -34,7 +34,8 @@ import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.StopwatchListener;
-import net.bubbaland.megaciv.messages.*;
+import net.bubbaland.megaciv.messages.ClientMessage;
+import net.bubbaland.megaciv.messages.ServerMessage;
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GuiClient extends GameClient implements StopwatchListener {
@@ -59,13 +60,14 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		}
 
 		// Change default font on all objects
-		Enumeration<Object> keys = UIManager.getDefaults().keys();
+		final Enumeration<Object> keys = UIManager.getDefaults().keys();
 		while (keys.hasMoreElements()) {
-			Object key = keys.nextElement();
-			Object value = UIManager.get(key);
+			final Object key = keys.nextElement();
+			final Object value = UIManager.get(key);
 			if (value instanceof FontUIResource) {
 				try {
-					Font font = Font.createFont(Font.TRUETYPE_FONT, GuiClient.class.getResourceAsStream(FONT_FILENAME));
+					final Font font =
+							Font.createFont(Font.TRUETYPE_FONT, GuiClient.class.getResourceAsStream(FONT_FILENAME));
 					UIManager.put(key, new FontUIResource(font.deriveFont(12.0f)));
 				} catch (FontFormatException | IOException exception) {
 					exception.printStackTrace();
@@ -74,35 +76,38 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		}
 	}
 
-	public GuiClient(final String serverURL, GuiController gui) {
+	public GuiClient(final String serverURL, final GuiController gui) {
 		super(serverURL);
 		this.gui = gui;
 		this.getStopwatch().addStopwatchListener(this);
 	}
 
+	@Override
 	@OnClose
 	public void connectionClosed() {
 		super.connectionClosed();
 		new DisconnectedDialog(this.gui, this);
 	}
 
+	@Override
 	@OnOpen
-	public void onOpen(Session session, EndpointConfig config) {
+	public void onOpen(final Session session, final EndpointConfig config) {
 		super.onOpen(session, config);
 	}
 
+	@Override
 	@OnMessage
-	public void onMessage(ServerMessage message, Session session) {
-		Game game = this.getGame();
-		ArrayList<Civilization.Name> civNamesBefore =
+	public void onMessage(final ServerMessage message, final Session session) {
+		final Game game = this.getGame();
+		final ArrayList<Civilization.Name> civNamesBefore =
 				( game != null ) ? game.getCivilizationNames() : new ArrayList<Civilization.Name>();
 		super.onMessage(message, session);
 
 
 		GuiClient.this.gui.updateGui();
-		ArrayList<Civilization.Name> civNamesAfter = ( GuiClient.this.getGame() != null ) ? GuiClient.this.getGame()
-				.getCivilizationNames() : new ArrayList<Civilization.Name>();
-		boolean civNamesIdentical =
+		final ArrayList<Civilization.Name> civNamesAfter = ( GuiClient.this.getGame() != null ) ? GuiClient.this
+				.getGame().getCivilizationNames() : new ArrayList<Civilization.Name>();
+		final boolean civNamesIdentical =
 				civNamesBefore.containsAll(civNamesAfter) && civNamesAfter.containsAll(civNamesBefore);
 
 		/**
@@ -110,6 +115,7 @@ public class GuiClient extends GameClient implements StopwatchListener {
 		 */
 		if (!civNamesIdentical) {
 			( new SwingWorker<Void, Void>() {
+				@Override
 				public Void doInBackground() {
 					while (GuiClient.this.getUser().getUserName() == null || GuiClient.this.getUser().getUserName()
 							.equals(GuiClient.this.getSession().getId().substring(0, 7))) {
@@ -123,6 +129,7 @@ public class GuiClient extends GameClient implements StopwatchListener {
 					return null;
 				}
 
+				@Override
 				public void done() {
 					GuiClient.this.updateTabs();
 				}
@@ -131,35 +138,32 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	}
 
 	private void updateTabs() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+		SwingUtilities.invokeLater(() -> {
 
-				BubbaDragDropTabFrame frame = (BubbaDragDropTabFrame) GuiClient.this.gui.getFirstWindow();
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				BubbaDnDTabbedPane pane = frame.getTabbedPane();
+			final BubbaDragDropTabFrame frame = (BubbaDragDropTabFrame) GuiClient.this.gui.getFirstWindow();
+			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			final BubbaDnDTabbedPane pane = frame.getTabbedPane();
 
-				List<String> allTabs = frame.getTabNames().stream().filter(tabName -> !tabName.startsWith("*"))
-						.collect(Collectors.toList());
+			final List<String> allTabs = frame.getTabNames().stream().filter(tabName1 -> !tabName1.startsWith("*"))
+					.collect(Collectors.toList());
 
-				List<String> newTabs = frame.getTabNames().stream()
-						.filter(tabName -> !tabName.startsWith("*") && pane.indexOfTab(tabName) == -1)
-						.collect(Collectors.toList());
+			final List<String> newTabs = frame.getTabNames().stream()
+					.filter(tabName2 -> !tabName2.startsWith("*") && pane.indexOfTab(tabName2) == -1)
+					.collect(Collectors.toList());
 
-				Arrays.stream(pane.getTabNames()).filter(tabName -> !( allTabs.contains(tabName) ))
-						.forEach(tabName -> pane.remove(pane.indexOfTab(tabName)));
-				;
+			Arrays.stream(pane.getTabNames()).filter(tabName3 -> !( allTabs.contains(tabName3) ))
+					.forEach(tabName4 -> pane.remove(pane.indexOfTab(tabName4)));
+			;
 
-				newTabs.sort(new TabComparator());
+			newTabs.sort(new TabComparator());
 
-				int selectedTab = pane.getSelectedIndex();
+			final int selectedTab = pane.getSelectedIndex();
 
-				newTabs.stream().forEachOrdered(tabName -> frame.addTab(tabName));
+			newTabs.stream().forEachOrdered(tabName5 -> frame.addTab(tabName5));
 
-				pane.setSelectedIndex(selectedTab);
+			pane.setSelectedIndex(selectedTab);
 
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
+			frame.setCursor(Cursor.getDefaultCursor());
 		});
 	}
 
@@ -168,29 +172,28 @@ public class GuiClient extends GameClient implements StopwatchListener {
 	 *
 	 * @param session
 	 */
+	@Override
 	@OnError
-	public void onError(Session session, Throwable throwable) {
+	public void onError(final Session session, final Throwable throwable) {
 		super.onError(session, throwable);
 	}
 
-	public void log(String message) {
+	@Override
+	public void log(final String message) {
 		super.log(message);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (GuiClient.this.gui != null) {
-					GuiClient.this.gui.setStatusBarText(message);
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (GuiClient.this.gui != null) {
+				GuiClient.this.gui.setStatusBarText(message);
 			}
 		});
 	}
 
 	@Override
-	public void tic(Duration timeRemaining) {
+	public void tic(final Duration timeRemaining) {
 		/**
 		 * Play audio alerts at the appropriate times.
 		 */
-		int remainingMillisecs = (int) timeRemaining.toMillis();
+		final int remainingMillisecs = (int) timeRemaining.toMillis();
 		switch (remainingMillisecs) {
 			case 1000:
 			case 2000:

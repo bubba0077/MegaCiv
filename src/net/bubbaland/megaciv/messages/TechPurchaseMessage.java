@@ -18,8 +18,8 @@ public class TechPurchaseMessage implements ClientMessage {
 	private final ArrayList<Technology>	newTechs;
 
 	@JsonCreator
-	public TechPurchaseMessage(@JsonProperty("civName") Civilization.Name civName,
-			@JsonProperty("newTechs") ArrayList<Technology> newTechs) {
+	public TechPurchaseMessage(@JsonProperty("civName") final Civilization.Name civName,
+			@JsonProperty("newTechs") final ArrayList<Technology> newTechs) {
 		this.civName = civName;
 		this.newTechs = newTechs;
 	}
@@ -34,7 +34,7 @@ public class TechPurchaseMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return civName.toString() + " purchased the following technologies: " + newTechs.toString();
+		return this.civName.toString() + " purchased the following technologies: " + this.newTechs.toString();
 	}
 
 	@Override

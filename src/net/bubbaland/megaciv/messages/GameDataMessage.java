@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.bubbaland.megaciv.game.Game;
 
 public class GameDataMessage implements ServerMessage {
@@ -10,7 +11,7 @@ public class GameDataMessage implements ServerMessage {
 	private final Game game;
 
 	@JsonCreator
-	public GameDataMessage(@JsonProperty("game") Game game) {
+	public GameDataMessage(@JsonProperty("game") final Game game) {
 		super();
 		this.game = game;
 	}

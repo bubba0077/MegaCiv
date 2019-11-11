@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -34,7 +35,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 	private final StatPanel			statPanel;
 	private final TechPanel			techPanel;
 
-	public CivInfoPanel(GuiClient client, GuiController controller, MegaCivFrame frame, Civilization.Name name) {
+	public CivInfoPanel(final GuiClient client, final GuiController controller, final MegaCivFrame frame,
+			final Civilization.Name name) {
 		super(controller, frame);
 		this.client = client;
 		this.name = name;
@@ -82,32 +84,33 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.civNameLabel = this.enclosedLabelFactory("", constraints, JLabel.LEFT, JLabel.BOTTOM);
+			this.civNameLabel = this.enclosedLabelFactory("", constraints, SwingConstants.LEFT, SwingConstants.BOTTOM);
 			constraints.weightx = 0.0;
 
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			this.ageLabel = this.enclosedLabelFactory("", constraints, JLabel.RIGHT, JLabel.BOTTOM);
+			this.ageLabel = this.enclosedLabelFactory("", constraints, SwingConstants.RIGHT, SwingConstants.BOTTOM);
 		}
 
 		public void updateGui() {
-			Game game = CivInfoPanel.this.client.getGame();
+			final Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
 			}
-			Civilization civ = game.getCivilization(name);
+			final Civilization civ = game.getCivilization(CivInfoPanel.this.name);
 
-			this.civNameLabel.setText(WordUtils.capitalizeFully(name.toString()) + " (" + civ.getPlayer() + ")");
+			this.civNameLabel.setText(
+					WordUtils.capitalizeFully(CivInfoPanel.this.name.toString()) + " (" + civ.getPlayer() + ")");
 			this.ageLabel.setText(civ.getCurrentAge().toString() + " (" + civ.getAstPosition() + ")");
 		}
 
 		public void loadProperties() {
-			Properties prop = CivInfoPanel.this.controller.getProperties();
+			final Properties prop = CivInfoPanel.this.controller.getProperties();
 
-			Color foreground = Game.FOREGROUND_COLORS.get(name);
-			Color background = Game.BACKGROUND_COLORS.get(name);
+			final Color foreground = Game.FOREGROUND_COLORS.get(CivInfoPanel.this.name);
+			final Color background = Game.BACKGROUND_COLORS.get(CivInfoPanel.this.name);
 
-			int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Header.Height"));
+			final int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Header.Height"));
 
 			BubbaPanel.setLabelProperties(this.civNameLabel,
 					Integer.parseInt(prop.getProperty("CivInfoPanel.CivName.Width")), height, foreground, background,
@@ -142,42 +145,45 @@ public class CivInfoPanel extends BubbaMainPanel {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridheight = 1;
-			this.cityLabel0 = this.enclosedLabelFactory("Cities", constraints, JLabel.CENTER, JLabel.TOP);
+			this.cityLabel0 =
+					this.enclosedLabelFactory("Cities", constraints, SwingConstants.CENTER, SwingConstants.TOP);
 
 			constraints.gridx = 0;
 			constraints.gridy = 1;
 			constraints.gridheight = 3;
-			this.cityLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+			this.cityLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			constraints.gridheight = 1;
-			this.populationLabel0 = this.enclosedLabelFactory("Pop", constraints, JLabel.CENTER, JLabel.TOP);
+			this.populationLabel0 =
+					this.enclosedLabelFactory("Pop", constraints, SwingConstants.CENTER, SwingConstants.TOP);
 
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			constraints.gridheight = 3;
-			this.populationLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+			this.populationLabel =
+					this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 
 			constraints.gridx = 2;
 			constraints.gridy = 0;
 			constraints.gridheight = 1;
-			this.techLabel0 = this.enclosedLabelFactory("Adv", constraints, JLabel.CENTER, JLabel.TOP);
+			this.techLabel0 = this.enclosedLabelFactory("Adv", constraints, SwingConstants.CENTER, SwingConstants.TOP);
 
 			constraints.gridx = 2;
 			constraints.gridy = 1;
 			constraints.gridheight = 3;
-			this.techLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+			this.techLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 
 			constraints.gridx = 3;
 			constraints.gridy = 0;
 			constraints.gridheight = 1;
-			this.vpLabel0 = this.enclosedLabelFactory("VP", constraints, JLabel.CENTER, JLabel.TOP);
+			this.vpLabel0 = this.enclosedLabelFactory("VP", constraints, SwingConstants.CENTER, SwingConstants.TOP);
 
 			constraints.gridx = 3;
 			constraints.gridy = 1;
 			constraints.gridheight = 3;
-			this.vpLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+			this.vpLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 
 			// constraints.gridx = 4;
 			// constraints.gridy = 0;
@@ -223,41 +229,43 @@ public class CivInfoPanel extends BubbaMainPanel {
 			constraints.gridheight = 3;
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;
-			this.creditLabel0 = this.enclosedLabelFactory("Credits:", constraints, JLabel.RIGHT, JLabel.CENTER);
+			this.creditLabel0 =
+					this.enclosedLabelFactory("Credits:", constraints, SwingConstants.RIGHT, SwingConstants.CENTER);
 
 			this.creditLabelsTop = new HashMap<Technology.Type, JLabel>();
 			this.creditLabels = new HashMap<Technology.Type, JLabel>();
-			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				constraints.gridx = 5 + type.ordinal();
 				constraints.gridy = 0;
 				constraints.gridheight = 1;
 				this.creditLabelsTop.put(type, this.enclosedLabelFactory(WordUtils.capitalizeFully(type.toString()),
-						constraints, JLabel.CENTER, JLabel.TOP));
+						constraints, SwingConstants.CENTER, SwingConstants.TOP));
 				constraints.gridheight = 3;
 				constraints.gridy = 1;
-				this.creditLabels.put(type, this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER));
+				this.creditLabels.put(type,
+						this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER));
 			}
 		}
 
 		public void updateGui() {
-			Game game = CivInfoPanel.this.client.getGame();
+			final Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
 			}
-			Civilization civ = game.getCivilization(name);
+			final Civilization civ = game.getCivilization(CivInfoPanel.this.name);
 
 			this.populationLabel.setText(String.format("%02d", civ.getPopulation()));
 			this.cityLabel.setText(civ.getCityCount() + "");
 			this.techLabel.setText(String.format("%02d", civ.getTechs().size()));
 
-			String text = String.format("%03d", civ.getVP());
+			final String text = String.format("%03d", civ.getVP());
 			this.vpLabel.setText(text);
 
 			// this.techDetailL1Label.setText(civ.getTechCountByVP(1) + "");
 			// this.techDetailL2Label.setText(civ.getTechCountByVP(3) + "");
 			// this.techDetailL3Label.setText(civ.getTechCountByVP(6) + "");
 
-			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				this.creditLabels.get(type).setText(civ.getTypeCredit(type) + "");
 			}
 
@@ -265,24 +273,24 @@ public class CivInfoPanel extends BubbaMainPanel {
 		}
 
 		public void loadProperties() {
-			Properties props = CivInfoPanel.this.controller.getProperties();
+			final Properties props = CivInfoPanel.this.controller.getProperties();
 
-			Color foreground =
+			final Color foreground =
 					new Color(new BigInteger(props.getProperty("CivInfoPanel.Stat.Foreground"), 16).intValue());
-			Color background =
+			final Color background =
 					new Color(new BigInteger(props.getProperty("CivInfoPanel.Stat.Background"), 16).intValue());
 
-			int heightTop = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Top.Height"));
-			int heightBottom = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Bottom.Height"));
+			final int heightTop = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Top.Height"));
+			final int heightBottom = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Bottom.Height"));
 
 			// int techLeftWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Left.Width"));
 			// int techRightWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Stat.Tech.Right.Width"));
-			int creditWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Credit.Width"));
+			final int creditWidth = Integer.parseInt(props.getProperty("CivInfoPanel.Credit.Width"));
 
 			// float techFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Stat.Tech.FontSize"));
 
-			float creditFontSizeTop = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.Top.FontSize"));
-			float creditFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.FontSize"));
+			final float creditFontSizeTop = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.Top.FontSize"));
+			final float creditFontSize = Float.parseFloat(props.getProperty("CivInfoPanel.Credit.FontSize"));
 
 			this.setBackground(background);
 
@@ -344,7 +352,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 					Integer.parseInt(props.getProperty("CivInfoPanel.Credit0.Width")), heightBottom, foreground,
 					background, Float.parseFloat(props.getProperty("CivInfoPanel.Credit0.FontSize")));
 
-			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				BubbaPanel.setLabelProperties(this.creditLabelsTop.get(type), creditWidth, heightTop, type.getColor(),
 						background, creditFontSizeTop);
 				BubbaPanel.setLabelProperties(this.creditLabels.get(type), creditWidth, heightBottom, type.getColor(),
@@ -373,19 +381,20 @@ public class CivInfoPanel extends BubbaMainPanel {
 
 			this.techLabels = new HashMap<Technology, JLabel>();
 
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				constraints.gridx = 0 + tech.ordinal() / N_ROWS;
-				constraints.gridy = 0 + tech.ordinal() % N_ROWS;
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
+				constraints.gridx = 0 + tech.ordinal() / this.N_ROWS;
+				constraints.gridy = 0 + tech.ordinal() % this.N_ROWS;
 
 				String techString = "<html>" + tech.getName() + " (" + tech.getBaseCost() + ")";
-				for (Type type : tech.getTypes()) {
+				for (final Type type : tech.getTypes()) {
 					techString = techString + " <img height=\"20\" width=\"20\" align=\"bottom\" src=\""
 							+ GuiClient.class.getResource("images/" + type.toString() + ".png") + "\" alt=\""
 							+ type.toString() + "\">";
 				}
 				techString = techString + "</html>";
 
-				JLabel label = this.enclosedLabelFactory(techString, constraints, JLabel.LEFT, JLabel.CENTER);
+				final JLabel label =
+						this.enclosedLabelFactory(techString, constraints, SwingConstants.LEFT, SwingConstants.CENTER);
 				label.setToolTipText("<html><img src=\""
 						+ GuiClient.class.getResource("images/advances/" + tech.toString() + ".png") + "\"></html>");
 				this.techLabels.put(tech, label);
@@ -394,16 +403,16 @@ public class CivInfoPanel extends BubbaMainPanel {
 		}
 
 		public void updateGui() {
-			Game game = CivInfoPanel.this.client.getGame();
+			final Game game = CivInfoPanel.this.client.getGame();
 			if (game == null) {
 				return;
 			}
-			Civilization civ = game.getCivilization(name);
+			final Civilization civ = game.getCivilization(CivInfoPanel.this.name);
 
-			ArrayList<Technology> ownedTechs = civ.getTechs();
+			final ArrayList<Technology> ownedTechs = civ.getTechs();
 
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
+				final Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
 				this.techLabels.get(tech).setForeground(color);
 			}
 
@@ -411,21 +420,21 @@ public class CivInfoPanel extends BubbaMainPanel {
 		}
 
 		public void loadProperties() {
-			Properties prop = CivInfoPanel.this.controller.getProperties();
+			final Properties prop = CivInfoPanel.this.controller.getProperties();
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Unowned"), 16).intValue());
-			Color background =
+			final Color background =
 					new Color(new BigInteger(prop.getProperty("CivInfoPanel.Tech.Background"), 16).intValue());
 
-			int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Height"));
-			int width = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Width"));
+			final int height = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Height"));
+			final int width = Integer.parseInt(prop.getProperty("CivInfoPanel.Tech.Width"));
 
-			float fontSize = Float.parseFloat(prop.getProperty("CivInfoPanel.Tech.FontSize"));
+			final float fontSize = Float.parseFloat(prop.getProperty("CivInfoPanel.Tech.FontSize"));
 
 			this.setBackground(background);
 
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
 				BubbaPanel.setLabelProperties(this.techLabels.get(tech), width, height, this.unownedColor, background,
 						fontSize);
 			}
@@ -436,7 +445,7 @@ public class CivInfoPanel extends BubbaMainPanel {
 	@Override
 	public void updateGui() {
 		if (!this.client.getGame().getCivilizationNames().contains(this.name)) {
-			BubbaDnDTabbedPane pane = this.frame.getTabbedPane();
+			final BubbaDnDTabbedPane pane = this.frame.getTabbedPane();
 			pane.removeTabAt(pane.indexOfComponent(this));
 			return;
 		}
@@ -445,8 +454,8 @@ public class CivInfoPanel extends BubbaMainPanel {
 		this.statPanel.updateGui();
 		this.techPanel.updateGui();
 
-		BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
-		int index = tabbedPane.indexOfComponent(this);
+		final BubbaDnDTabbedPane tabbedPane = this.frame.getTabbedPane();
+		final int index = tabbedPane.indexOfComponent(this);
 
 		this.frame.getTabbedPane().setForegroundAt(index, Game.FOREGROUND_COLORS.get(this.name));
 		this.frame.getTabbedPane().setBackgroundAt(index, Game.BACKGROUND_COLORS.get(this.name));

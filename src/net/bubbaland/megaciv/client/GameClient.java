@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.SwingWorker;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.DeploymentException;
@@ -21,8 +22,8 @@ import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,15 +33,22 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.User;
-import net.bubbaland.megaciv.messages.*;
+import net.bubbaland.megaciv.messages.ClientMessage;
+import net.bubbaland.megaciv.messages.GameDataMessage;
+import net.bubbaland.megaciv.messages.KeepAliveMessage;
+import net.bubbaland.megaciv.messages.LoadGameMessage;
+import net.bubbaland.megaciv.messages.ServerMessage;
+import net.bubbaland.megaciv.messages.SetUserMessage;
+import net.bubbaland.megaciv.messages.StopwatchMessage;
+import net.bubbaland.megaciv.messages.UserListMessage;
 import net.bubbaland.sntp.SntpClient;
 import net.bubbaland.sntp.SntpListener;
 
 /**
  * MegaCivilization game client that handles communication with the game server and updates game data as necessary.
- * 
+ *
  * @author Walter Kolczynski
- * 
+ *
  */
 
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
@@ -78,7 +86,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Create a new client that connects to the specified server
-	 * 
+	 *
 	 * @param serverUrl
 	 *            URL of game server
 	 */
@@ -105,7 +113,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get game data. Game data is updated by server when necessary.
-	 * 
+	 *
 	 * @return The Game data.
 	 */
 	public Game getGame() {
@@ -114,7 +122,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get the currently open session.
-	 * 
+	 *
 	 * @return The currently open session.
 	 */
 	public Session getSession() {
@@ -123,7 +131,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get the SNTP client (for time synchronization).
-	 * 
+	 *
 	 * @return The client's SNTP client.
 	 */
 	public SntpClient getSntpClient() {
@@ -132,7 +140,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get the trading timer.
-	 * 
+	 *
 	 * @return The client's trade timer.
 	 */
 	public Stopwatch getStopwatch() {
@@ -141,7 +149,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get this client's user data.
-	 * 
+	 *
 	 * @return The current user.
 	 */
 	public User getUser() {
@@ -150,7 +158,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get list of users connected to server. This is updated by server as necessary.
-	 * 
+	 *
 	 * @return A list of the connected users
 	 */
 	public ArrayList<User> getUserList() {
@@ -159,7 +167,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Find out if the client is connected to the server.
-	 * 
+	 *
 	 * @return A boolean specifying whether client is connected to server.
 	 */
 	public boolean isConnected() {
@@ -171,19 +179,19 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Load game save data from file and send to server.
-	 * 
+	 *
 	 * @param file
 	 *            File containing save data.
 	 */
-	public void loadGame(File file) {
-		ObjectMapper mapper = new ObjectMapper();
+	public void loadGame(final File file) {
+		final ObjectMapper mapper = new ObjectMapper();
 		mapper.findAndRegisterModules();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
 		try {
-			Game game = mapper.readValue(file, Game.class);
+			final Game game = mapper.readValue(file, Game.class);
 			this.sendMessage(new LoadGameMessage(game));
-		} catch (IOException exception) {
+		} catch (final IOException exception) {
 			exception.printStackTrace();
 		}
 	}
@@ -194,8 +202,8 @@ public class GameClient implements Runnable, SntpListener {
 	 * @param message
 	 *            Message to log.
 	 */
-	public void log(String message) {
-		final String timestamp = timestampFormat.format(new Date());
+	public void log(final String message) {
+		final String timestamp = this.timestampFormat.format(new Date());
 		// Print message to console
 		System.out.println(timestamp + " " + message);
 	}
@@ -207,7 +215,7 @@ public class GameClient implements Runnable, SntpListener {
 	 *            The session that caused the error.
 	 */
 	@OnError
-	public void onError(Session session, Throwable throwable) {
+	public void onError(final Session session, final Throwable throwable) {
 		this.log("Error receiving message from " + session.getRequestURI());
 		throwable.printStackTrace();
 	}
@@ -221,8 +229,8 @@ public class GameClient implements Runnable, SntpListener {
 	 *            The session that received the message.
 	 */
 	@OnMessage
-	public void onMessage(ServerMessage message, Session session) {
-		String messageType = message.getClass().getSimpleName();
+	public void onMessage(final ServerMessage message, final Session session) {
+		final String messageType = message.getClass().getSimpleName();
 		switch (messageType) {
 			case "GameDataMessage": // Received updated game data
 				this.game = ( (GameDataMessage) message ).getGame();
@@ -248,7 +256,7 @@ public class GameClient implements Runnable, SntpListener {
 	 *            The configuration used to configure this endpoint.
 	 */
 	@OnOpen
-	public void onOpen(Session session, EndpointConfig config) {
+	public void onOpen(final Session session, final EndpointConfig config) {
 		this.session = session;
 		this.log("Now connected to " + session.getRequestURI());
 		if (this.user.getUserName().equals("")) {
@@ -261,7 +269,7 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Run the client by connecting to the server.
-	 * 
+	 *
 	 */
 	@Override
 	public void run() {
@@ -276,21 +284,21 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Save current game data to a file.
-	 * 
+	 *
 	 * @param file
 	 *            A file to save game data in.
 	 */
-	public void saveGame(File file) {
-		ObjectMapper mapper = new ObjectMapper();
+	public void saveGame(final File file) {
+		final ObjectMapper mapper = new ObjectMapper();
 		mapper.findAndRegisterModules();
 		mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		mapper.setVisibility(mapper.getVisibilityChecker().with(JsonAutoDetect.Visibility.NONE));
 		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+		final ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 		try {
-			writer.writeValue(file, game);
-		} catch (IOException exception) {
+			writer.writeValue(file, this.game);
+		} catch (final IOException exception) {
 			exception.printStackTrace();
 		}
 	}
@@ -323,44 +331,44 @@ public class GameClient implements Runnable, SntpListener {
 
 	/**
 	 * Get the date-time format to be used for log timestamps.
-	 * 
+	 *
 	 * @param timestampFormat
 	 *            The date-time format to be used for log timestamps.
 	 */
-	protected void setTimestampFormat(SimpleDateFormat timestampFormat) {
+	protected void setTimestampFormat(final SimpleDateFormat timestampFormat) {
 		this.timestampFormat = timestampFormat;
 	}
 
 	/**
 	 * Set user data for this client.
-	 * 
+	 *
 	 * @param user
 	 *            The new user data.
 	 */
-	public void setUser(User user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 
 	/**
 	 * Determine whether a user name is already present in the server user list.
-	 * 
+	 *
 	 * @param userName
 	 *            User name to check.
 	 * @return A boolean specifying whether this is a duplicate user name.
 	 */
-	public boolean userNameExists(String userName) {
+	public boolean userNameExists(final String userName) {
 		return this.userList.stream().filter(user -> user.compareTo(this.user) != 0)
 				.anyMatch(user -> userName.equals(user.getUserName()));
 	}
 
 	@Override
-	public void onSntpError(Instant when) {
+	public void onSntpError(final Instant when) {
 		this.log("SNTP error at " + when.toString());
 		this.sendMessage(new KeepAliveMessage());
 	}
 
 	@Override
-	public void onSntpSync(Instant when) {
+	public void onSntpSync(final Instant when) {
 		this.log("SNTP Sync at " + when.toString());
 		this.stopwatch.setServerOffset(this.sntpClient.getOffset());
 	}

@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+
 import net.bubbaland.megaciv.game.Technology;
 import net.bubbaland.megaciv.game.Technology.Type;
 
@@ -23,26 +24,26 @@ public class TechnologyTypeComboBox extends JComboBox<Technology.Type> implement
 		this.finishInit();
 	}
 
-	public TechnologyTypeComboBox(ComboBoxModel<Type> aModel) {
+	public TechnologyTypeComboBox(final ComboBoxModel<Type> aModel) {
 		super(aModel);
 		this.finishInit();
 	}
 
-	public TechnologyTypeComboBox(Type[] items) {
+	public TechnologyTypeComboBox(final Type[] items) {
 		super(items);
 		this.finishInit();
 	}
 
-	public TechnologyTypeComboBox(Vector<Type> items) {
+	public TechnologyTypeComboBox(final Vector<Type> items) {
 		super(items);
 		this.finishInit();
 	}
 
 	private void finishInit() {
 		this.setRenderer(new TechnologyTypeCellRenderer(this.getRenderer()));
-		Type selected = ( (Type) this.getSelectedItem() );
-		Color foreground = selected.getTextColor();
-		Color background = selected.getColor();
+		final Type selected = ( (Type) this.getSelectedItem() );
+		final Color foreground = selected.getTextColor();
+		final Color background = selected.getColor();
 
 		this.addActionListener(this);
 
@@ -52,10 +53,10 @@ public class TechnologyTypeComboBox extends JComboBox<Technology.Type> implement
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		Type selected = ( (Type) this.getSelectedItem() );
-		Color foreground = selected.getTextColor();
-		Color background = selected.getColor();
+	public void actionPerformed(final ActionEvent event) {
+		final Type selected = ( (Type) this.getSelectedItem() );
+		final Color foreground = selected.getTextColor();
+		final Color background = selected.getColor();
 
 		this.setForeground(foreground);
 		this.setBackground(background);
@@ -64,18 +65,18 @@ public class TechnologyTypeComboBox extends JComboBox<Technology.Type> implement
 	private class TechnologyTypeCellRenderer implements ListCellRenderer<Technology.Type> {
 		private final ListCellRenderer<? super Technology.Type> internal;
 
-		public TechnologyTypeCellRenderer(ListCellRenderer<? super Technology.Type> listCellRenderer) {
+		public TechnologyTypeCellRenderer(final ListCellRenderer<? super Technology.Type> listCellRenderer) {
 			this.internal = listCellRenderer;
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends Technology.Type> list, Technology.Type value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			final Component renderer = this.internal.getListCellRendererComponent(list, value, index, isSelected,
-					cellHasFocus);
+		public Component getListCellRendererComponent(final JList<? extends Technology.Type> list,
+				final Technology.Type value, final int index, final boolean isSelected, final boolean cellHasFocus) {
+			final Component renderer =
+					this.internal.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (renderer instanceof JLabel) {
-				Color foreground = value.getTextColor();
-				Color background = value.getColor();
+				final Color foreground = value.getTextColor();
+				final Color background = value.getColor();
 				if (isSelected) {
 					( (JLabel) renderer ).setForeground(background);
 					( (JLabel) renderer ).setBackground(foreground);

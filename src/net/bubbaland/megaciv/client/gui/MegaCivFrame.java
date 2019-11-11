@@ -1,15 +1,11 @@
 package net.bubbaland.megaciv.client.gui;
 
-import java.awt.Point;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -19,11 +15,8 @@ import javax.swing.JMenuItem;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.BubbaDragDropTabFrame;
-import net.bubbaland.gui.BubbaGuiController;
 import net.bubbaland.megaciv.game.Civilization;
-import net.bubbaland.megaciv.game.Game;
 
-@SuppressWarnings("unused")
 public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListener {
 
 	private static final long	serialVersionUID	= -8995125745966985308L;
@@ -31,7 +24,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 	private final GuiController	controller;
 	private final GuiClient		client;
 
-	protected MegaCivFrame(GuiClient client, GuiController controller) {
+	protected MegaCivFrame(final GuiClient client, final GuiController controller) {
 		super(controller);
 		this.setSaveTabs(false);
 		this.client = client;
@@ -94,12 +87,12 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 
 	@Override
 	public ArrayList<String> getTabNames() {
-		ArrayList<String> tabNames = super.getTabNames();
-		ArrayList<Civilization.Name> civNames =
+		final ArrayList<String> tabNames = super.getTabNames();
+		final ArrayList<Civilization.Name> civNames =
 				( this.client.getGame() == null ) ? new ArrayList<Civilization.Name>() : this.client.getGame()
 						.getCivilizationNames();
-		for (Iterator<String> iterator = tabNames.iterator(); iterator.hasNext();) {
-			String tabName = iterator.next();
+		for (final Iterator<String> iterator = tabNames.iterator(); iterator.hasNext();) {
+			final String tabName = iterator.next();
 			if (Civilization.Name.contains(tabName)
 					&& !civNames.contains(Civilization.Name.valueOf(tabName.toUpperCase()))) {
 				iterator.remove();
@@ -124,7 +117,7 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 				new TabInformation("Tab listing trade cards", TradeCardPanel.class,
 						new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class },
 						new Object[] { this.client, this.controller, this }));
-		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+		for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			this.tabInformationHash.put(WordUtils.capitalizeFully(name.toString()),
 					new TabInformation(name.toString() + " Information", CivInfoPanel.class,
 							new Class<?>[] { GuiClient.class, GuiController.class, MegaCivFrame.class,
@@ -133,28 +126,29 @@ public class MegaCivFrame extends BubbaDragDropTabFrame implements ActionListene
 		}
 	}
 
+	@Override
 	public void updateGui() {
 		super.updateGui();
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		String command = event.getActionCommand();
+	public void actionPerformed(final ActionEvent event) {
+		final String command = event.getActionCommand();
 		switch (command) {
 			case "New Game":
 				new NewGameDialog(this.client, this.controller);
 				break;
 			case "Save Game": {
-				JFileChooser chooser = new JFileChooser();
-				int returnVal = chooser.showOpenDialog(this);
+				final JFileChooser chooser = new JFileChooser();
+				final int returnVal = chooser.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					this.client.saveGame(chooser.getSelectedFile());
 				}
 				break;
 			}
 			case "Load Save": {
-				JFileChooser chooser = new JFileChooser();
-				int returnVal = chooser.showOpenDialog(this);
+				final JFileChooser chooser = new JFileChooser();
+				final int returnVal = chooser.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					this.client.loadGame(chooser.getSelectedFile());
 				}

@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -44,7 +46,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 	private final GameClient		client;
 
-	public StopwatchPanel(GameClient client, GuiController controller) {
+	public StopwatchPanel(final GameClient client, final GuiController controller) {
 		super(controller, new GridBagLayout());
 
 		this.client = client;
@@ -78,12 +80,13 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridheight = 3;
-		this.clockLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.clockLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 		this.clockLabelGroup = new LinkedLabelGroup();
 		this.clockLabelGroup.addLabel(this.clockLabel);
 
 		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) {
+			@Override
+			public void componentResized(final ComponentEvent e) {
 				StopwatchPanel.this.resized();
 			}
 		});
@@ -105,17 +108,19 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	private void resized() {
-		JPanel panel = (JPanel) this.clockLabel.getParent();
-		int height = panel.getHeight();
-		int width = (int) ( height * ASPECT_RATIO );
+		final JPanel panel = (JPanel) this.clockLabel.getParent();
+		final int height = panel.getHeight();
+		final int width = (int) ( height * ASPECT_RATIO );
 		panel.setPreferredSize(new Dimension(width, height));
 		this.clockLabelGroup.resizeFonts();
 	}
 
-	public void tic(Duration timeRemaining) {
+	@Override
+	public void tic(final Duration timeRemaining) {
 		this.updateGui(timeRemaining);
 	}
 
+	@Override
 	public void watchStarted() {
 		this.runButton.setSelected(false);
 		this.runButton.setForeground(Color.WHITE);
@@ -124,6 +129,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.runButton.setActionCommand("Stop");
 	}
 
+	@Override
 	public void watchStopped() {
 		this.runButton.setSelected(false);
 		this.runButton.setForeground(Color.BLACK);
@@ -132,6 +138,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.runButton.setActionCommand("Run");
 	}
 
+	@Override
 	public void watchReset() {
 		this.watchStopped();
 		this.updateGui();
@@ -141,7 +148,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 		this.updateGui(this.client.getStopwatch().getTimeRemaining(Instant.now()));
 	}
 
-	public void updateGui(Duration timeRemaining) {
+	public void updateGui(final Duration timeRemaining) {
 		this.clockLabel.setText(Stopwatch.formatTimer(timeRemaining));
 		if (timeRemaining.minus(Duration.ofSeconds(30)).isNegative()) {
 			this.clockLabel.setForeground(Color.RED);
@@ -152,10 +159,10 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		Instant eventTime = Instant.ofEpochMilli(event.getWhen());
+	public void actionPerformed(final ActionEvent event) {
+		final Instant eventTime = Instant.ofEpochMilli(event.getWhen());
 
-		Stopwatch stopwatch = this.client.getStopwatch();
+		final Stopwatch stopwatch = this.client.getStopwatch();
 		switch (event.getActionCommand()) {
 			case "Set":
 				new SetTimerDialog(this.controller);
@@ -174,22 +181,22 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 	}
 
 	public void loadProperties() {
-		Properties props = this.controller.getProperties();
+		final Properties props = this.controller.getProperties();
 
-		Color foreground =
+		final Color foreground =
 				new Color(new BigInteger(props.getProperty("Stopwatch.Clock.ForegroundColor"), 16).intValue());
-		Color background =
+		final Color background =
 				new Color(new BigInteger(props.getProperty("Stopwatch.Clock.BackgroundColor"), 16).intValue());
 
-		int buttonWidth = Integer.parseInt(props.getProperty("Stopwatch.Button.Width"));
-		int buttonHeight = Integer.parseInt(props.getProperty("Stopwatch.Button.Height"));
+		final int buttonWidth = Integer.parseInt(props.getProperty("Stopwatch.Button.Width"));
+		final int buttonHeight = Integer.parseInt(props.getProperty("Stopwatch.Button.Height"));
 
-		int runWidth = Integer.parseInt(props.getProperty("Stopwatch.Run.Width"));
+		final int runWidth = Integer.parseInt(props.getProperty("Stopwatch.Run.Width"));
 
-		int clockHeight = Integer.parseInt(props.getProperty("Stopwatch.Clock.Height"));
+		final int clockHeight = Integer.parseInt(props.getProperty("Stopwatch.Clock.Height"));
 
-		float buttonFontSize = Float.parseFloat(props.getProperty("Stopwatch.Button.FontSize"));
-		float runFontSize = Float.parseFloat(props.getProperty("Stopwatch.Run.FontSize"));
+		final float buttonFontSize = Float.parseFloat(props.getProperty("Stopwatch.Button.FontSize"));
+		final float runFontSize = Float.parseFloat(props.getProperty("Stopwatch.Run.FontSize"));
 
 		BubbaPanel.setButtonProperties(this.resetButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
 		BubbaPanel.setButtonProperties(this.setButton, buttonWidth, buttonHeight, null, null, buttonFontSize);
@@ -206,16 +213,16 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 
 		private final JSpinner		minSpinner, secSpinner;
 
-		public SetTimerDialog(BubbaGuiController controller) {
+		public SetTimerDialog(final BubbaGuiController controller) {
 			super(controller);
 
-			Properties props = this.controller.getProperties();
-			float fontSize = Float.parseFloat(props.getProperty("Stopwatch.Set.FontSize"));
+			final Properties props = this.controller.getProperties();
+			final float fontSize = Float.parseFloat(props.getProperty("Stopwatch.Set.FontSize"));
 
-			Duration timerLength = StopwatchPanel.this.client.getStopwatch().getTimerLength();
+			final Duration timerLength = StopwatchPanel.this.client.getStopwatch().getTimerLength();
 
-			int currentMin = (int) timerLength.toMinutes();
-			int currentSec = (int) timerLength.minus(Duration.ofMinutes(currentMin)).getSeconds();
+			final int currentMin = (int) timerLength.toMinutes();
+			final int currentSec = (int) timerLength.minus(Duration.ofMinutes(currentMin)).getSeconds();
 
 			this.minSpinner = new JSpinner(new SpinnerNumberModel(currentMin, 0, 59, 1));
 			this.minSpinner.setFont(this.minSpinner.getFont().deriveFont(fontSize));
@@ -231,7 +238,7 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			this.add(this.minSpinner, constraints);
 
 			constraints.gridx = 1;
-			JLabel label = new JLabel(":");
+			final JLabel label = new JLabel(":");
 			label.setFont(label.getFont().deriveFont(fontSize));
 			this.add(label, constraints);
 
@@ -243,18 +250,19 @@ public class StopwatchPanel extends BubbaPanel implements ActionListener, Stopwa
 			this.dialog.setVisible(true);
 		}
 
-		public void windowClosed(WindowEvent event) {
+		@Override
+		public void windowClosed(final WindowEvent event) {
 			// long now = System.currentTimeMillis() + client.getSntpClient().getOffset();
-			Instant now = Instant.now();
+			final Instant now = Instant.now();
 			super.windowClosed(event);
 
 			// If the OK button was pressed, open the question
 			final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 			if (option == JOptionPane.OK_OPTION) {
-				Duration length = Duration.ofMinutes((int) this.minSpinner.getValue())
+				final Duration length = Duration.ofMinutes((int) this.minSpinner.getValue())
 						.plus(Duration.ofSeconds((int) this.secSpinner.getValue()));
-				Stopwatch stopwatch = StopwatchPanel.this.client.getStopwatch();
+				final Stopwatch stopwatch = StopwatchPanel.this.client.getStopwatch();
 				stopwatch.setTimer(length);
 				StopwatchPanel.this.client
 						.sendMessage(stopwatch.generateTimerMessage(Stopwatch.StopwatchEvent.SET, now));

@@ -18,9 +18,9 @@ import javax.swing.SwingUtilities;
 
 /**
  * GUI controller to coordinate multiple frames and provide access to saved properties.
- * 
- * 
- * 
+ *
+ *
+ *
  * @author Walter Kolczynski
  *
  */
@@ -39,14 +39,15 @@ public abstract class BubbaGuiController {
 	// File name to store window positions
 	protected final String					settingsFilename;
 
-	protected BubbaGuiController(String defaultsFilename, String settingsFilename, String settingsVersion) {
+	protected BubbaGuiController(final String defaultsFilename, final String settingsFilename,
+			final String settingsVersion) {
 		this.defaultsFilename = defaultsFilename;
 		this.settingsFilename = settingsFilename;
 
 		this.properties = new Properties();
 		this.windowList = new ArrayList<BubbaFrame>();
 
-		timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
+		this.timestampFormat = new SimpleDateFormat("[yyyy MMM dd HH:mm:ss]");
 
 		/**
 		 * Default properties
@@ -62,22 +63,19 @@ public abstract class BubbaGuiController {
 		/**
 		 * If the version doesn't match, reload defaults
 		 */
-		final String version = properties.getProperty("SettingsVersion");
+		final String version = this.properties.getProperty("SettingsVersion");
 		if (version == null || !version.equals(settingsVersion)) {
 			System.out.println(this.getClass().getSimpleName() + "Using defaults");
-			loadDefaults();
-			properties.setProperty("SettingsVersion", settingsVersion);
+			this.loadDefaults();
+			this.properties.setProperty("SettingsVersion", settingsVersion);
 		}
 
 		// Set timestamp format
-		timestampFormat = new SimpleDateFormat(properties.getProperty("TimestampFormat"));
+		this.timestampFormat = new SimpleDateFormat(this.properties.getProperty("TimestampFormat"));
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				for (String frameName : BubbaGuiController.this.properties.getProperty("OpenWindows").split(",")) {
-					BubbaGuiController.this.createFrame(frameName);
-				}
+		SwingUtilities.invokeLater(() -> {
+			for (final String frameName : BubbaGuiController.this.properties.getProperty("OpenWindows").split(",")) {
+				BubbaGuiController.this.createFrame(frameName);
 			}
 		});
 	}
@@ -90,15 +88,15 @@ public abstract class BubbaGuiController {
 	 */
 	public void loadDefaults() {
 		this.setStatusBarText("Loading defaults");
-		properties.clear();
-		final InputStream defaults = this.getClass().getResourceAsStream(defaultsFilename);
+		this.properties.clear();
+		final InputStream defaults = this.getClass().getResourceAsStream(this.defaultsFilename);
 		try {
-			properties.load(defaults);
+			this.properties.load(defaults);
 		} catch (final IOException e) {
 			System.out.println(this.getClass().getSimpleName() + "Couldn't load default properties file, aborting!");
 			System.exit(-1);
 		}
-		BubbaDialogPanel.loadProperties(properties);
+		BubbaDialogPanel.loadProperties(this.properties);
 
 		for (final BubbaFrame frame : this.windowList) {
 			frame.loadProperties();
@@ -108,7 +106,7 @@ public abstract class BubbaGuiController {
 	public void loadProperties(final File file) {
 		try {
 			final BufferedReader fileBuffer = new BufferedReader(new FileReader(file));
-			properties.load(fileBuffer);
+			this.properties.load(fileBuffer);
 		} catch (final IOException e) {
 			System.out.println(this.getClass().getSimpleName() + "Couldn't load properties file, may not exist yet.");
 		}
@@ -121,10 +119,10 @@ public abstract class BubbaGuiController {
 	 * Save the current properties to the settings file.
 	 */
 	protected void savePropertyFile() {
-		final File file = new File(System.getProperty("user.home") + "/" + settingsFilename);
+		final File file = new File(System.getProperty("user.home") + "/" + this.settingsFilename);
 		try {
 			final BufferedWriter outfileBuffer = new BufferedWriter(new FileWriter(file));
-			properties.store(outfileBuffer, "MegaCiv");
+			this.properties.store(outfileBuffer, "MegaCiv");
 			outfileBuffer.close();
 		} catch (final IOException e) {
 			System.out.println(this.getClass().getSimpleName() + "Error saving properties.");
@@ -139,7 +137,7 @@ public abstract class BubbaGuiController {
 	 *            The window whose size and position is to be saved
 	 *
 	 */
-	public void savePositionAndSize(Window window) {
+	public void savePositionAndSize(final Window window) {
 		final Rectangle r = window.getBounds();
 		final int x = (int) r.getX();
 		final int y = (int) r.getY();
@@ -148,10 +146,10 @@ public abstract class BubbaGuiController {
 
 		final String frameID = window.getName();
 
-		properties.setProperty(frameID + ".X", x + "");
-		properties.setProperty(frameID + ".Y", y + "");
-		properties.setProperty(frameID + ".Width", width + "");
-		properties.setProperty(frameID + ".Height", height + "");
+		this.properties.setProperty(frameID + ".X", x + "");
+		this.properties.setProperty(frameID + ".Y", y + "");
+		this.properties.setProperty(frameID + ".Width", width + "");
+		this.properties.setProperty(frameID + ".Height", height + "");
 	}
 
 	/**
@@ -161,15 +159,15 @@ public abstract class BubbaGuiController {
 	 *            The window whose size and position is to be saved
 	 *
 	 */
-	public void savePosition(Window window) {
+	public void savePosition(final Window window) {
 		final Rectangle r = window.getBounds();
 		final int x = (int) r.getX();
 		final int y = (int) r.getY();
 
 		final String frameID = window.getName();
 
-		properties.setProperty(frameID + ".X", x + "");
-		properties.setProperty(frameID + ".Y", y + "");
+		this.properties.setProperty(frameID + ".X", x + "");
+		this.properties.setProperty(frameID + ".Y", y + "");
 	}
 
 	/**
@@ -199,7 +197,7 @@ public abstract class BubbaGuiController {
 	 * @param frame
 	 *            The window to track
 	 */
-	public void registerWindow(BubbaFrame frame) {
+	public void registerWindow(final BubbaFrame frame) {
 		this.windowList.add(frame);
 	}
 
@@ -209,7 +207,7 @@ public abstract class BubbaGuiController {
 	 * @param frame
 	 *            The window to stop tracking
 	 */
-	public void unregisterWindow(BubbaFrame frame) {
+	public void unregisterWindow(final BubbaFrame frame) {
 		this.windowList.remove(frame);
 		if (this.windowList.size() == 0) {
 			this.endProgram();
@@ -222,8 +220,8 @@ public abstract class BubbaGuiController {
 	 * @param message
 	 *            Message to log
 	 */
-	public void setStatusBarText(String message) {
-		final String timestamp = timestampFormat.format(new Date());
+	public void setStatusBarText(final String message) {
+		final String timestamp = this.timestampFormat.format(new Date());
 		for (final BubbaFrame frame : this.windowList) {
 			// Display message in status bar
 			frame.setStatusBarMessage(timestamp + " " + message);
@@ -247,19 +245,19 @@ public abstract class BubbaGuiController {
 	}
 
 	public void saveProperties() {
-		ArrayList<String> windowNames = new ArrayList<String>() {
+		final ArrayList<String> windowNames = new ArrayList<String>() {
 			private static final long serialVersionUID = 6362800947141566082L;
 
 			{
-				for (BubbaFrame window : BubbaGuiController.this.windowList) {
-					add(window.getTitle());
+				for (final BubbaFrame window : BubbaGuiController.this.windowList) {
+					this.add(window.getTitle());
 					BubbaGuiController.this.setStatusBarText(window.getTitle());
 				}
 			}
 		};
 		this.properties.setProperty("OpenWindows", String.join(", ", windowNames));
 
-		for (BubbaFrame window : this.windowList) {
+		for (final BubbaFrame window : this.windowList) {
 			window.saveProperties();
 			this.savePositionAndSize(window);
 		}
@@ -269,12 +267,7 @@ public abstract class BubbaGuiController {
 
 	public void updateGui() {
 		for (final BubbaFrame frame : this.windowList) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					frame.updateGui();
-				}
-			});
+			SwingUtilities.invokeLater(() -> frame.updateGui());
 		}
 	}
 

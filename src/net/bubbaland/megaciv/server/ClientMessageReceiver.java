@@ -8,13 +8,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import net.bubbaland.megaciv.*;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.ClientMessage;
 import net.bubbaland.megaciv.messages.ServerMessage;
-import net.bubbaland.sntp.SntpClient;
 
-@SuppressWarnings("unused")
 @ServerEndpoint(decoders = { ClientMessage.MessageDecoder.class }, encoders = {
 		ServerMessage.MessageEncoder.class }, value = "/")
 public class ClientMessageReceiver {
@@ -26,7 +23,7 @@ public class ClientMessageReceiver {
 		this.user = new User();
 	}
 
-	static void registerServer(GameServer server) {
+	static void registerServer(final GameServer server) {
 		ClientMessageReceiver.server = server;
 	}
 
@@ -34,7 +31,7 @@ public class ClientMessageReceiver {
 		return this.user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 
@@ -45,7 +42,7 @@ public class ClientMessageReceiver {
 	 * @param config
 	 */
 	@OnOpen
-	public void onOpen(Session session, EndpointConfig config) {
+	public void onOpen(final Session session, final EndpointConfig config) {
 		ClientMessageReceiver.server.log("User " + session.getId() + " connected");
 		this.user.setUserName("User " + session.getId());
 		ClientMessageReceiver.server.addSession(session, this);
@@ -60,7 +57,7 @@ public class ClientMessageReceiver {
 	 * @param session
 	 */
 	@OnMessage
-	public void onMessage(ClientMessage message, Session session) {
+	public void onMessage(final ClientMessage message, final Session session) {
 		server.processIncomingMessage(message, session);
 	}
 
@@ -70,7 +67,7 @@ public class ClientMessageReceiver {
 	 * @param session
 	 */
 	@OnError
-	public void onError(Session session, Throwable throwable) {
+	public void onError(final Session session, final Throwable throwable) {
 		if (server == null) {
 			System.out.println("Server still null!");
 		}
@@ -83,7 +80,7 @@ public class ClientMessageReceiver {
 	 * @param session
 	 */
 	@OnClose
-	public void onClose(Session session) {
+	public void onClose(final Session session) {
 		server.removeSession(session);
 	}
 

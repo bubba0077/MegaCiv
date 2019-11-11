@@ -10,6 +10,7 @@ public class KeepAliveMessage implements ClientMessage {
 		return GameEvent.EventType.KEEPALIVE;
 	}
 
+	@Override
 	public String toString() {
 		return "Keep-Alive Message";
 	}

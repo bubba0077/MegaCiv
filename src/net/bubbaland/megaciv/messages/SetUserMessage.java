@@ -10,10 +10,10 @@ import net.bubbaland.megaciv.game.User;
 public class SetUserMessage implements ClientMessage {
 
 	@JsonProperty("user")
-	private User user;
+	private final User user;
 
 	@JsonCreator
-	public SetUserMessage(@JsonProperty("user") User user) {
+	public SetUserMessage(@JsonProperty("user") final User user) {
 		this.user = user;
 	}
 

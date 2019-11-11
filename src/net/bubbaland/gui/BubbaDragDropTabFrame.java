@@ -2,8 +2,6 @@ package net.bubbaland.gui;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import javax.swing.event.ChangeListener;
 public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long					serialVersionUID	= -8926818996029674620L;
 
@@ -30,7 +28,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 * @param saveTabs
 	 *            the saveTabs to set
 	 */
-	protected void setSaveTabs(boolean saveTabs) {
+	protected void setSaveTabs(final boolean saveTabs) {
 		this.saveTabs = saveTabs;
 	}
 
@@ -42,7 +40,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 * @param initialTabs
 	 *            Tabs to open initially
 	 */
-	public BubbaDragDropTabFrame(BubbaGuiController controller, String[] initialTabs) {
+	public BubbaDragDropTabFrame(final BubbaGuiController controller, final String[] initialTabs) {
 		this(controller);
 		this.addTabs(initialTabs);
 		this.tabbedPane.setSelectedIndex(0);
@@ -50,7 +48,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		this.loadPosition();
 	}
 
-	public BubbaDragDropTabFrame(BubbaGuiController controller) {
+	public BubbaDragDropTabFrame(final BubbaGuiController controller) {
 		super(controller);
 		this.initTabInfoHash();
 		this.saveTabs = true;
@@ -82,10 +80,10 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		return new BubbaDragDropTabFrame(this.controller);
 	}
 
-	public void addTab(String tabName) {
+	public void addTab(final String tabName) {
 		try {
 			// Remove (#) from tab name duplicates
-			BubbaMainPanel newTab = this.tabFactory(tabName.replaceFirst(" \\([0-9]*\\)", ""));
+			final BubbaMainPanel newTab = this.tabFactory(tabName.replaceFirst(" \\([0-9]*\\)", ""));
 			this.tabbedPane.addTab(tabName, newTab);
 			this.tabbedPane.setSelectedComponent(newTab);
 		} catch (IllegalArgumentException | SecurityException exception) {
@@ -93,7 +91,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 	}
 
-	public void addTabs(String[] tabs) {
+	public void addTabs(final String[] tabs) {
 		for (final String tabName : tabs) {
 			this.addTab(tabName);
 		}
@@ -122,22 +120,22 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	 *            The tab name
 	 * @return The description associated with the tab name
 	 */
-	public String getTabDescription(String tabName) {
-		if (tabInformationHash.get(tabName) == null) {
+	public String getTabDescription(final String tabName) {
+		if (this.tabInformationHash.get(tabName) == null) {
 			return "";
 		}
-		return tabInformationHash.get(tabName).getTabDescription();
+		return this.tabInformationHash.get(tabName).getTabDescription();
 	}
 
 	/**
 	 * Creates a new tab that contains a BubbaMainPanel and returns the panel.
-	 * 
+	 *
 	 * @param tabType
-	 * 
+	 *
 	 * @return
 	 */
-	private BubbaMainPanel tabFactory(String tabType) {
-		TabInformation tabInfo = this.tabInformationHash.get(tabType);
+	private BubbaMainPanel tabFactory(final String tabType) {
+		final TabInformation tabInfo = this.tabInformationHash.get(tabType);
 		try {
 			return tabInfo.getTabClass().getConstructor(tabInfo.getArgumentClasses())
 					.newInstance(tabInfo.getArguments());
@@ -165,8 +163,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		private final Object[]				arguments;
 
 		@SuppressWarnings("unchecked")
-		public TabInformation(String tabDescription, Class<? extends BubbaMainPanel> tabClass,
-				Class<?>[] argumentClasses, Object[] arguments) {
+		public TabInformation(final String tabDescription, final Class<? extends BubbaMainPanel> tabClass,
+				final Class<?>[] argumentClasses, final Object[] arguments) {
 			this.tabClass = (Class<BubbaMainPanel>) tabClass;
 			this.tabDescription = tabDescription;
 			this.argumentClasses = argumentClasses;
@@ -182,14 +180,15 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 
 		public Class<BubbaMainPanel> getTabClass() {
-			return tabClass;
+			return this.tabClass;
 		}
 
 		public String getTabDescription() {
-			return tabDescription;
+			return this.tabDescription;
 		}
 	}
 
+	@Override
 	public void updateGui() {
 		super.updateGui();
 
@@ -199,7 +198,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 
 		// Propagate update to current tab
-		Component tab = this.tabbedPane.getSelectedComponent();
+		final Component tab = this.tabbedPane.getSelectedComponent();
 		if (tab instanceof BubbaMainPanel) {
 			( (BubbaMainPanel) tab ).updateGui();
 		}
@@ -208,6 +207,7 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	/**
 	 * Load all of the properties from the client and apply them.
 	 */
+	@Override
 	public void loadProperties() {
 		super.loadProperties();
 
@@ -228,18 +228,19 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 	/**
 	 * Save properties.
 	 */
+	@Override
 	public void saveProperties() {
 		super.saveProperties();
 		final String id = this.getTitle();
 		if (this.saveTabs) {
 			this.controller.getProperties().setProperty("Window." + id + ".OpenTabs",
-					String.join(", ", ( (BubbaDragDropTabFrame) this ).tabbedPane.getTabNames()));
+					String.join(", ", this.tabbedPane.getTabNames()));
 		}
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent e) {
-		String name = ( (Component) e.getSource() ).getName();
+	public void stateChanged(final ChangeEvent e) {
+		final String name = ( (Component) e.getSource() ).getName();
 
 		switch (name) {
 			case "Tabbed Pane":
@@ -247,14 +248,11 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 					// If there are no tabs left, hide the frame
 					this.setVisible(false);
 					// Wait 100 ms to see if the tab is added back, then close if there are still no tabs
-					final Timer timer = new Timer(100, new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							if (!BubbaDragDropTabFrame.this.isVisible()) {
-								BubbaDnDTabbedPane.unregisterTabbedPane(BubbaDragDropTabFrame.this.tabbedPane);
-								BubbaDragDropTabFrame.this.controller.unregisterWindow(BubbaDragDropTabFrame.this);
-								BubbaDragDropTabFrame.this.dispose();
-							}
+					final Timer timer = new Timer(100, e1 -> {
+						if (!BubbaDragDropTabFrame.this.isVisible()) {
+							BubbaDnDTabbedPane.unregisterTabbedPane(BubbaDragDropTabFrame.this.tabbedPane);
+							BubbaDragDropTabFrame.this.controller.unregisterWindow(BubbaDragDropTabFrame.this);
+							BubbaDragDropTabFrame.this.dispose();
 						}
 					});
 					timer.setRepeats(false);
@@ -269,7 +267,8 @@ public class BubbaDragDropTabFrame extends BubbaFrame implements ChangeListener 
 		}
 	}
 
-	public void windowClosing(WindowEvent e) {
+	@Override
+	public void windowClosing(final WindowEvent e) {
 		super.windowClosing(e);
 	}
 

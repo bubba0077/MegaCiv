@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import net.bubbaland.gui.BubbaPanel;
 import net.bubbaland.gui.LinkedLabelGroup;
@@ -30,7 +31,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 	private final JLabel		turnLabel, turnNumberLabel, gameOverLabel;
 
-	public ControlsPanel(GuiClient client, GuiController controller) {
+	public ControlsPanel(final GuiClient client, final GuiController controller) {
 		super(controller, new GridBagLayout());
 		this.client = client;
 
@@ -69,15 +70,15 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		constraints.gridy = 0;
 		constraints.weighty = 0.0;
 		constraints.gridheight = 1;
-		this.turnLabel = this.enclosedLabelFactory("Turn", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.turnLabel = this.enclosedLabelFactory("Turn", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 		this.turnGroup = new LinkedLabelGroup(16.0, 16.0);
-		turnGroup.addLabel(this.turnLabel);
+		this.turnGroup.addLabel(this.turnLabel);
 
 		constraints.gridx = 3;
 		constraints.gridy = 1;
 		constraints.weighty = 0.0;
 		constraints.gridheight = 1;
-		this.turnNumberLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.turnNumberLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 		this.turnNumberGroup = new LinkedLabelGroup();
 		this.turnNumberGroup.addLabel(this.turnNumberLabel);
 
@@ -85,13 +86,14 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 		constraints.gridy = 0;
 		constraints.weighty = 1.0;
 		constraints.gridheight = 2;
-		this.gameOverLabel = this.enclosedLabelFactory("", constraints, JLabel.CENTER, JLabel.CENTER);
+		this.gameOverLabel = this.enclosedLabelFactory("", constraints, SwingConstants.CENTER, SwingConstants.CENTER);
 		this.gameOverGroup = new LinkedLabelGroup();
 		this.gameOverGroup.addLabel(this.gameOverLabel);
 
 		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) {
-				resizeFonts();
+			@Override
+			public void componentResized(final ComponentEvent e) {
+				ControlsPanel.this.resizeFonts();
 			}
 		});
 	}
@@ -104,7 +106,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 
 	public void updateGui() {
 		// this.client.log("Updating " + this.getClass().getSimpleName());
-		Game game = this.client.getGame();
+		final Game game = this.client.getGame();
 		String gameOverText = "";
 		if (game != null) {
 			this.turnNumberLabel.setText(this.client.getGame().getCurrentRound() + "");
@@ -116,7 +118,7 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 				gameOverText = "";
 			}
 		}
-		boolean controlsOn = game != null && !game.isGameOver() ? true : false;
+		final boolean controlsOn = game != null && !game.isGameOver() ? true : false;
 		this.astButton.setEnabled(controlsOn);
 		this.censusButton.setEnabled(controlsOn);
 		this.cityButton.setEnabled(controlsOn);
@@ -126,11 +128,11 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	}
 
 	public void loadProperties() {
-		Properties props = this.controller.getProperties();
+		final Properties props = this.controller.getProperties();
 
 		int width = Integer.parseInt(props.getProperty("ControlPanel.Width"));
-		int height = Integer.parseInt(props.getProperty("ControlPanel.Height"));
-		float fontSize = Float.parseFloat(props.getProperty("ControlPanel.FontSize"));
+		final int height = Integer.parseInt(props.getProperty("ControlPanel.Height"));
+		final float fontSize = Float.parseFloat(props.getProperty("ControlPanel.FontSize"));
 
 		BubbaPanel.setButtonProperties(this.censusButton, width, height, null, null, fontSize);
 		BubbaPanel.setButtonProperties(this.cityButton, width, height, null, null, fontSize);
@@ -151,11 +153,11 @@ public class ControlsPanel extends BubbaPanel implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (this.client.getGame() == null) {
 			return;
 		}
-		String command = e.getActionCommand();
+		final String command = e.getActionCommand();
 		switch (command) {
 			case "Take Census":
 				new CensusDialog(this.client, this.controller);

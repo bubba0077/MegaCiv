@@ -13,7 +13,7 @@ public class LoadGameMessage implements ClientMessage {
 	private final Game game;
 
 	@JsonCreator
-	public LoadGameMessage(@JsonProperty("game") Game game) {
+	public LoadGameMessage(@JsonProperty("game") final Game game) {
 		this.game = game;
 	}
 
@@ -26,7 +26,7 @@ public class LoadGameMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return "Game loaded from file:\n" + game.toString();
+		return "Game loaded from file:\n" + this.game.toString();
 	}
 
 	@Override

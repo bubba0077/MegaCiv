@@ -18,7 +18,6 @@ import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceDragEvent;
@@ -82,7 +81,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	private static final ImageIcon						addTabIcon			=
 			new ImageIcon(BubbaDnDTabbedPane.class.getResource("images/plus.png"));
 
-	public BubbaDnDTabbedPane(BubbaGuiController controller, BubbaDragDropTabFrame frame) {
+	public BubbaDnDTabbedPane(final BubbaGuiController controller, final BubbaDragDropTabFrame frame) {
 		super();
 		this.frame = frame;
 		this.controller = controller;
@@ -91,7 +90,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		registerTabbedPane(this);
 		final DragSourceListener dsl = new DragSourceListener() {
 			@Override
-			public void dragDropEnd(DragSourceDropEvent e) {
+			public void dragDropEnd(final DragSourceDropEvent e) {
 				BubbaDnDTabbedPane.this.m_isDrawRect = false;
 				BubbaDnDTabbedPane.this.m_lineRect.setRect(0, 0, 0, 0);
 
@@ -103,12 +102,12 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 			}
 
 			@Override
-			public void dragEnter(DragSourceDragEvent e) {
+			public void dragEnter(final DragSourceDragEvent e) {
 				e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
 			}
 
 			@Override
-			public void dragExit(DragSourceEvent e) {
+			public void dragExit(final DragSourceEvent e) {
 				BubbaDnDTabbedPane.this.m_lineRect.setRect(0, 0, 0, 0);
 				BubbaDnDTabbedPane.this.m_isDrawRect = false;
 				s_glassPane.setPoint(new Point(-1000, -1000));
@@ -116,38 +115,32 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 			}
 
 			@Override
-			public void dragOver(DragSourceDragEvent e) {}
+			public void dragOver(final DragSourceDragEvent e) {}
 
 			@Override
-			public void dropActionChanged(DragSourceDragEvent e) {}
+			public void dropActionChanged(final DragSourceDragEvent e) {}
 		};
 
-		final DragGestureListener dgl = new DragGestureListener() {
-			@Override
-			public void dragGestureRecognized(DragGestureEvent e) {
-				final Point tabPt = e.getDragOrigin();
-				final int dragTabIndex = BubbaDnDTabbedPane.this.indexAtLocation(tabPt.x, tabPt.y);
-				if (dragTabIndex < 0 || dragTabIndex == BubbaDnDTabbedPane.this.indexOfTab("+")) return;
+		final DragGestureListener dgl = e -> {
+			final Point tabPt = e.getDragOrigin();
+			final int dragTabIndex = BubbaDnDTabbedPane.this.indexAtLocation(tabPt.x, tabPt.y);
+			if (dragTabIndex < 0 || dragTabIndex == BubbaDnDTabbedPane.this.indexOfTab("+")) {
+				return;
+			}
 
-				BubbaDnDTabbedPane.this.initGlassPane(e.getComponent(), e.getDragOrigin(), dragTabIndex);
-				BubbaDnDTabbedPane.this.tearTab.attach(BubbaDnDTabbedPane.this, dragTabIndex);
-				try {
-					e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(BubbaDnDTabbedPane.this, dragTabIndex),
-							dsl);
-				} catch (final InvalidDnDOperationException idoe) {
-					idoe.printStackTrace();
-				}
+			BubbaDnDTabbedPane.this.initGlassPane(e.getComponent(), e.getDragOrigin(), dragTabIndex);
+			BubbaDnDTabbedPane.this.tearTab.attach(BubbaDnDTabbedPane.this, dragTabIndex);
+			try {
+				e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(BubbaDnDTabbedPane.this, dragTabIndex),
+						dsl);
+			} catch (final InvalidDnDOperationException idoe) {
+				idoe.printStackTrace();
 			}
 		};
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, new CDropTargetListener(), true);
 		new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, dgl);
-		this.m_acceptor = new TabAcceptor() {
-			@Override
-			public boolean isDropAcceptable(BubbaDnDTabbedPane a_component, int a_index) {
-				return true;
-			}
-		};
+		this.m_acceptor = (a_component, a_index) -> true;
 
 		/**
 		 * Build close menu
@@ -183,7 +176,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		final int tabIndex = Integer.parseInt(this.closeMenu.getName());
 		final String command = event.getActionCommand();
 		switch (command) {
@@ -211,7 +204,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		this.setEnabledAt(nTabs - 1, false);
 	}
 
-	public void addTab(String tabName, BubbaMainPanel panel) {
+	public void addTab(final String tabName, final BubbaMainPanel panel) {
 		super.addTab(tabName, panel);
 		if (panel instanceof ChangeListener) {
 			this.addChangeListener((ChangeListener) panel);
@@ -248,7 +241,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent event) {
+	public void mouseClicked(final MouseEvent event) {
 		final int addButtonIndex = this.indexOfComponent(this.blankPanel);
 		if (addButtonIndex > -1 && this.getBoundsAt(addButtonIndex).contains(event.getPoint())) {
 			new NewTabDialog(this.controller, this.frame);
@@ -256,19 +249,19 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(final MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(final MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(final MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(final MouseEvent e) {}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 
 		if (this.m_isDrawRect) {
@@ -278,16 +271,16 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		} // if
 	}
 
-	public void setAcceptor(TabAcceptor a_value) {
+	public void setAcceptor(final TabAcceptor a_value) {
 		this.m_acceptor = a_value;
 	}
 
-	public void setPaintGhost(boolean flag) {
+	public void setPaintGhost(final boolean flag) {
 		this.m_hasGhost = flag;
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent e) {
+	public void stateChanged(final ChangeEvent e) {
 		// Make sure the add button stays at the end
 		final int nTabs = this.getTabCount();
 		final int addButtonIndex = this.indexOfComponent(this.blankPanel);
@@ -300,11 +293,13 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 	}
 
-	void convertTab(TabTransferData a_data, int a_targetIndex) {
+	void convertTab(final TabTransferData a_data, int a_targetIndex) {
 
 		final BubbaDnDTabbedPane source = a_data.getTabbedPane();
 		final int sourceIndex = a_data.getTabIndex();
-		if (sourceIndex < 0) return;
+		if (sourceIndex < 0) {
+			return;
+		}
 		// Save the tab's component, title, and TabComponent.
 		final Component cmp = source.getComponentAt(sourceIndex);
 		final String str = source.getTitleAt(sourceIndex);
@@ -330,7 +325,9 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 			this.setSelectedComponent(cmp);
 			return;
 		}
-		if (a_targetIndex < 0 || sourceIndex == a_targetIndex) return;
+		if (a_targetIndex < 0 || sourceIndex == a_targetIndex) {
+			return;
+		}
 		if (a_targetIndex == this.getTabCount()) {
 			source.remove(sourceIndex);
 			this.addTab(str, cmp);
@@ -350,7 +347,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 
 	}
 
-	TabTransferData getTabTransferData(DropTargetDropEvent a_event) {
+	TabTransferData getTabTransferData(final DropTargetDropEvent a_event) {
 		try {
 			final TabTransferData data = (TabTransferData) a_event.getTransferable().getTransferData(this.FLAVOR);
 			return data;
@@ -368,12 +365,14 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	 *            point given in the drop site component's coordinate
 	 * @return returns potential index for drop.
 	 */
-	int getTargetTabIndex(Point a_point) {
+	int getTargetTabIndex(final Point a_point) {
 		final boolean isTopOrBottom =
 				this.getTabPlacement() == SwingConstants.TOP || this.getTabPlacement() == SwingConstants.BOTTOM;
 
 		// if the pane is empty, the target index is always zero.
-		if (this.getTabCount() == 0) return 0;
+		if (this.getTabCount() == 0) {
+			return 0;
+		}
 
 		for (int i = 0; i < this.getTabCount(); i++) {
 			final Rectangle r = this.getBoundsAt(i);
@@ -383,7 +382,9 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 				r.setRect(r.x, r.y - r.height / 2, r.width, r.height);
 			} // if-else
 
-			if (r.contains(a_point)) return i;
+			if (r.contains(a_point)) {
+				return i;
+			}
 		} // for
 
 		final Rectangle r = this.getBoundsAt(this.getTabCount() - 1);
@@ -398,7 +399,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		return r.contains(a_point) ? this.getTabCount() : -1;
 	}
 
-	private Point buildGhostLocation(Point a_location) {
+	private Point buildGhostLocation(final Point a_location) {
 		Point retval = new Point(a_location);
 
 		switch (this.getTabPlacement()) {
@@ -431,7 +432,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		return retval;
 	}
 
-	private TabTransferData getTabTransferData(DropTargetDragEvent a_event) {
+	private TabTransferData getTabTransferData(final DropTargetDragEvent a_event) {
 		try {
 			final TabTransferData data = (TabTransferData) a_event.getTransferable().getTransferData(this.FLAVOR);
 			return data;
@@ -440,7 +441,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		return null;
 	}
 
-	private void initGlassPane(Component c, Point tabPt, int a_tabIndex) {
+	private void initGlassPane(final Component c, final Point tabPt, final int a_tabIndex) {
 		this.getRootPane().setGlassPane(s_glassPane);
 		if (this.hasGhost()) {
 			final Rectangle rect = this.getBoundsAt(a_tabIndex);
@@ -455,7 +456,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		s_glassPane.setVisible(true);
 	}
 
-	private void initTargetLeftRightLine(int next, TabTransferData a_data) {
+	private void initTargetLeftRightLine(final int next, final TabTransferData a_data) {
 		if (next < 0) {
 			this.m_lineRect.setRect(0, 0, 0, 0);
 			this.m_isDrawRect = false;
@@ -485,7 +486,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 	}
 
-	private void initTargetTopBottomLine(int next, TabTransferData a_data) {
+	private void initTargetTopBottomLine(final int next, final TabTransferData a_data) {
 		if (next < 0) {
 			this.m_lineRect.setRect(0, 0, 0, 0);
 			this.m_isDrawRect = false;
@@ -523,14 +524,14 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		return BubbaDnDTabbedPane.tabbedPaneList;
 	}
 
-	public static void registerTabbedPane(BubbaDnDTabbedPane newPane) {
+	public static void registerTabbedPane(final BubbaDnDTabbedPane newPane) {
 		BubbaDnDTabbedPane.tabbedPaneList.add(newPane);
 		for (final ChangeListener listener : BubbaDnDTabbedPane.tabbedPaneListeners) {
 			newPane.addChangeListener(listener);
 		}
 	}
 
-	public static void unregisterTabbedPane(BubbaDnDTabbedPane pane) {
+	public static void unregisterTabbedPane(final BubbaDnDTabbedPane pane) {
 		BubbaDnDTabbedPane.tabbedPaneList.remove(pane);
 		for (final ChangeListener listener : BubbaDnDTabbedPane.tabbedPaneListeners) {
 			pane.removeChangeListener(listener);
@@ -538,7 +539,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	}
 
 
-	public static void registerTabbedPaneListener(ChangeListener listener) {
+	public static void registerTabbedPaneListener(final ChangeListener listener) {
 		BubbaDnDTabbedPane.tabbedPaneListeners.add(listener);
 		for (final BubbaDnDTabbedPane pane : BubbaDnDTabbedPane.tabbedPaneList) {
 			pane.addChangeListener(listener);
@@ -551,7 +552,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 
 	class CDropTargetListener implements DropTargetListener {
 		@Override
-		public void dragEnter(DropTargetDragEvent e) {
+		public void dragEnter(final DropTargetDragEvent e) {
 			if (this.isDragAcceptable(e)) {
 				e.acceptDrag(e.getDropAction());
 			} else {
@@ -560,7 +561,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 
 		@Override
-		public void dragExit(DropTargetEvent e) {
+		public void dragExit(final DropTargetEvent e) {
 			BubbaDnDTabbedPane.this.m_isDrawRect = false;
 		}
 
@@ -585,7 +586,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 
 		@Override
-		public void drop(DropTargetDropEvent a_event) {
+		public void drop(final DropTargetDropEvent a_event) {
 			if (this.isDropAcceptable(a_event)) {
 				BubbaDnDTabbedPane.this.convertTab(BubbaDnDTabbedPane.this.getTabTransferData(a_event),
 						BubbaDnDTabbedPane.this.getTargetTabIndex(a_event.getLocation()));
@@ -599,41 +600,57 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 
 		@Override
-		public void dropActionChanged(DropTargetDragEvent e) {}
+		public void dropActionChanged(final DropTargetDragEvent e) {}
 
-		public boolean isDragAcceptable(DropTargetDragEvent e) {
+		public boolean isDragAcceptable(final DropTargetDragEvent e) {
 			final Transferable t = e.getTransferable();
-			if (t == null) return false;
+			if (t == null) {
+				return false;
+			}
 
 			final DataFlavor[] flavor = e.getCurrentDataFlavors();
-			if (!t.isDataFlavorSupported(flavor[0])) return false;
+			if (!t.isDataFlavorSupported(flavor[0])) {
+				return false;
+			}
 
 			final TabTransferData data = BubbaDnDTabbedPane.this.getTabTransferData(e);
 
-			if (BubbaDnDTabbedPane.this == data.getTabbedPane() && data.getTabIndex() >= 0) return true;
+			if (BubbaDnDTabbedPane.this == data.getTabbedPane() && data.getTabIndex() >= 0) {
+				return true;
+			}
 
 			if (BubbaDnDTabbedPane.this != data.getTabbedPane()) {
-				if (BubbaDnDTabbedPane.this.m_acceptor != null) return BubbaDnDTabbedPane.this.m_acceptor
-						.isDropAcceptable(data.getTabbedPane(), data.getTabIndex());
+				if (BubbaDnDTabbedPane.this.m_acceptor != null) {
+					return BubbaDnDTabbedPane.this.m_acceptor.isDropAcceptable(data.getTabbedPane(),
+							data.getTabIndex());
+				}
 			} // if
 
 			return false;
 		}
 
-		public boolean isDropAcceptable(DropTargetDropEvent e) {
+		public boolean isDropAcceptable(final DropTargetDropEvent e) {
 			final Transferable t = e.getTransferable();
-			if (t == null) return false;
+			if (t == null) {
+				return false;
+			}
 
 			final DataFlavor[] flavor = e.getCurrentDataFlavors();
-			if (!t.isDataFlavorSupported(flavor[0])) return false;
+			if (!t.isDataFlavorSupported(flavor[0])) {
+				return false;
+			}
 
 			final TabTransferData data = BubbaDnDTabbedPane.this.getTabTransferData(e);
 
-			if (BubbaDnDTabbedPane.this == data.getTabbedPane() && data.getTabIndex() >= 0) return true;
+			if (BubbaDnDTabbedPane.this == data.getTabbedPane() && data.getTabIndex() >= 0) {
+				return true;
+			}
 
 			if (BubbaDnDTabbedPane.this != data.getTabbedPane()) {
-				if (BubbaDnDTabbedPane.this.m_acceptor != null) return BubbaDnDTabbedPane.this.m_acceptor
-						.isDropAcceptable(data.getTabbedPane(), data.getTabIndex());
+				if (BubbaDnDTabbedPane.this.m_acceptor != null) {
+					return BubbaDnDTabbedPane.this.m_acceptor.isDropAcceptable(data.getTabbedPane(),
+							data.getTabIndex());
+				}
 			} // if
 			return false;
 		}
@@ -642,12 +659,12 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 	class TabTransferable implements Transferable {
 		private TabTransferData m_data = null;
 
-		public TabTransferable(BubbaDnDTabbedPane a_tabbedPane, int a_tabIndex) {
+		public TabTransferable(final BubbaDnDTabbedPane a_tabbedPane, final int a_tabIndex) {
 			this.m_data = new TabTransferData(BubbaDnDTabbedPane.this, a_tabIndex);
 		}
 
 		@Override
-		public Object getTransferData(DataFlavor flavor) {
+		public Object getTransferData(final DataFlavor flavor) {
 			return this.m_data;
 		}
 
@@ -659,7 +676,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 		}
 
 		@Override
-		public boolean isDataFlavorSupported(DataFlavor flavor) {
+		public boolean isDataFlavorSupported(final DataFlavor flavor) {
 			return flavor.getHumanPresentableName().equals(NAME);
 		}
 	}
@@ -670,7 +687,7 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 
 		public TabTransferData() {}
 
-		public TabTransferData(BubbaDnDTabbedPane a_tabbedPane, int a_tabIndex) {
+		public TabTransferData(final BubbaDnDTabbedPane a_tabbedPane, final int a_tabIndex) {
 			this.m_tabbedPane = a_tabbedPane;
 			this.m_tabIndex = a_tabIndex;
 		}
@@ -683,11 +700,11 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 			return this.m_tabIndex;
 		}
 
-		public void setTabbedPane(BubbaDnDTabbedPane pane) {
+		public void setTabbedPane(final BubbaDnDTabbedPane pane) {
 			this.m_tabbedPane = pane;
 		}
 
-		public void setTabIndex(int index) {
+		public void setTabIndex(final int index) {
 			this.m_tabIndex = index;
 		}
 	}
@@ -696,26 +713,26 @@ public class BubbaDnDTabbedPane extends JTabbedPane implements MouseListener, Ac
 
 		private final JPopupMenu menu;
 
-		public PopupListener(JPopupMenu menu) {
+		public PopupListener(final JPopupMenu menu) {
 			this.menu = menu;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(final MouseEvent e) {
 			this.checkForPopup(e);
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mousePressed(final MouseEvent e) {
 			this.checkForPopup(e);
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {
+		public void mouseReleased(final MouseEvent e) {
 			this.checkForPopup(e);
 		}
 
-		private void checkForPopup(MouseEvent event) {
+		private void checkForPopup(final MouseEvent event) {
 			final int clickedIndex = BubbaDnDTabbedPane.this.indexAtLocation(event.getX(), event.getY());
 			if (event.isPopupTrigger() && clickedIndex > -1
 					&& clickedIndex != BubbaDnDTabbedPane.this.getTabCount() - 1) {
@@ -743,20 +760,26 @@ class GhostGlassPane extends JPanel {
 	}
 
 	public int getGhostHeight() {
-		if (this.m_draggingGhost == null) return 0;
+		if (this.m_draggingGhost == null) {
+			return 0;
+		}
 
 		return this.m_draggingGhost.getHeight(this);
 	}
 
 	public int getGhostWidth() {
-		if (this.m_draggingGhost == null) return 0;
+		if (this.m_draggingGhost == null) {
+			return 0;
+		}
 
 		return this.m_draggingGhost.getWidth(this);
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		if (this.m_draggingGhost == null) return;
+	public void paintComponent(final Graphics g) {
+		if (this.m_draggingGhost == null) {
+			return;
+		}
 
 		final Graphics2D g2 = (Graphics2D) g;
 		g2.setComposite(this.m_composite);
@@ -764,11 +787,11 @@ class GhostGlassPane extends JPanel {
 		g2.drawImage(this.m_draggingGhost, (int) this.m_location.getX(), (int) this.m_location.getY(), null);
 	}
 
-	public void setImage(BufferedImage draggingGhost) {
+	public void setImage(final BufferedImage draggingGhost) {
 		this.m_draggingGhost = draggingGhost;
 	}
 
-	public void setPoint(Point a_location) {
+	public void setPoint(final Point a_location) {
 		this.m_location.x = a_location.x;
 		this.m_location.y = a_location.y;
 	}

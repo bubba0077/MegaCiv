@@ -3,6 +3,7 @@ package net.bubbaland.megaciv.game;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.StringTools;
@@ -14,12 +15,12 @@ public class TradeStack {
 	private ArrayList<TradeStack.Calamity>												calamities;
 	private final int																	stackNumber;
 
-	public TradeStack(int stackNumber) {
+	public TradeStack(final int stackNumber) {
 		this.stackNumber = stackNumber;
 		this.goods = new HashMap<TradeStack.TradeGood, HashMap<Civilization.Region, Integer>>();
 	}
 
-	public void addCard(TradeStack.TradeGood good, Civilization.Region region, int quantity) {
+	public void addCard(final TradeStack.TradeGood good, final Civilization.Region region, final int quantity) {
 		if (!this.goods.containsKey(good)) {
 			this.goods.put(good, new HashMap<Civilization.Region, Integer>());
 		}
@@ -27,7 +28,7 @@ public class TradeStack {
 		this.calamities = new ArrayList<Calamity>();
 	}
 
-	public void addCalamity(TradeStack.Calamity calamity) {
+	public void addCalamity(final TradeStack.Calamity calamity) {
 		this.calamities.add(calamity);
 	}
 
@@ -60,7 +61,7 @@ public class TradeStack {
 	private class CalamityComparator implements Comparator<Calamity> {
 
 		@Override
-		public int compare(Calamity arg0, Calamity arg1) {
+		public int compare(final Calamity arg0, final Calamity arg1) {
 			return Integer.compare(arg0.sortOrder(), arg1.sortOrder());
 		}
 
@@ -88,7 +89,7 @@ public class TradeStack {
 
 		private String html;
 
-		private MinorCalamity(String text) {
+		private MinorCalamity(final String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><BR/>";
 			s = s + "<i>Minor Calamity</i><BR/>";
 			s = s + StringTools.wrapHtml(text, MAX_HTML_WIDTH);
@@ -176,9 +177,9 @@ public class TradeStack {
 
 		private String html;
 
-		private MajorNontradableCalamity(String text) {
+		private MajorNontradableCalamity(final String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><BR/>";
-			s = s + "<i>Major Calamity — Non-Tradable</i><BR/>";
+			s = s + "<i>Major Calamity ï¿½ Non-Tradable</i><BR/>";
 			s = s + StringTools.wrapHtml(text, MAX_HTML_WIDTH);
 			s = s + "</html>";
 			this.html = s;
@@ -270,9 +271,9 @@ public class TradeStack {
 
 		private String html;
 
-		private MajorTradableCalamity(String text) {
+		private MajorTradableCalamity(final String text) {
 			String s = "<html><strong>" + this.toString() + "</strong><BR/>";
-			s = s + "<i>Major Calamity — Tradable</i><BR/>";
+			s = s + "<i>Major Calamity ï¿½ Tradable</i><BR/>";
 			s = s + StringTools.wrapHtml(text, MAX_HTML_WIDTH);
 			s = s + "</html>";
 			this.html = s;

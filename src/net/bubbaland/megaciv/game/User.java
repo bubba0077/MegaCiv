@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 public class User implements Serializable {
 
@@ -29,7 +29,8 @@ public class User implements Serializable {
 	}
 
 	@JsonCreator
-	public User(@JsonProperty("userName") String userName, @JsonProperty("lastActive") LocalDateTime lastActive) {
+	public User(@JsonProperty("userName") final String userName,
+			@JsonProperty("lastActive") final LocalDateTime lastActive) {
 		this.userName = userName;
 		this.lastActive = lastActive;
 	}
@@ -58,14 +59,15 @@ public class User implements Serializable {
 	 * @param user
 	 *            the user to set
 	 */
-	public void setUserName(String user) {
+	public void setUserName(final String user) {
 		this.userName = user;
 	}
 
-	public int compareTo(User otherUser) {
+	public int compareTo(final User otherUser) {
 		return this.getUserName().compareTo(otherUser.getUserName());
 	}
 
+	@Override
 	public String toString() {
 		return this.userName;
 	}

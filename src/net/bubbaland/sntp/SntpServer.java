@@ -13,49 +13,50 @@ public class SntpServer {
 	private SntpMessage		request;
 	private byte[]			buffer;
 
-	private int				port;
+	private final int		port;
 
 	private DatagramPacket	packet;
 	private DatagramSocket	socket;
 
 	public void run() {
 		try {
-			response = new SntpMessage();
-			response.setStratum((byte) 1);
-			response.setPrecision((byte) -6);
-			response.setDelay(0.0);
-			response.setRefId("LOCL".getBytes());
-			buffer = response.toByteArray();
+			this.response = new SntpMessage();
+			this.response.setStratum((byte) 1);
+			this.response.setPrecision((byte) -6);
+			this.response.setDelay(0.0);
+			this.response.setRefId("LOCL".getBytes());
+			this.buffer = this.response.toByteArray();
 
-			System.out.println("SNTP Server started on port " + port + "!");
-			packet = new DatagramPacket(buffer, buffer.length);
-			socket = new DatagramSocket(port);
+			System.out.println("SNTP Server started on port " + this.port + "!");
+			this.packet = new DatagramPacket(this.buffer, this.buffer.length);
+			this.socket = new DatagramSocket(this.port);
 
 			while (true) {
-				socket.receive(packet);
+				this.socket.receive(this.packet);
 
 				// System.out.println("SNTP Request from " + packet.getAddress() + ":" + packet.getPort());
 
-				buffer = packet.getData();
-				request = new SntpMessage(buffer);
+				this.buffer = this.packet.getData();
+				this.request = new SntpMessage(this.buffer);
 
-				response.setOrgTime(request.getXmtTime());
-				response.setRecTime(NtpTimestamp.now());
-				response.setXmtTime(NtpTimestamp.now());
+				this.response.setOrgTime(this.request.getXmtTime());
+				this.response.setRecTime(NtpTimestamp.now());
+				this.response.setXmtTime(NtpTimestamp.now());
 
-				buffer = response.toByteArray();
-				DatagramPacket resp = new DatagramPacket(buffer, buffer.length, packet.getAddress(), packet.getPort());
-				socket.send(resp);
+				this.buffer = this.response.toByteArray();
+				final DatagramPacket resp = new DatagramPacket(this.buffer, this.buffer.length,
+						this.packet.getAddress(), this.packet.getPort());
+				this.socket.send(resp);
 			}
 		}
 
-		catch (Exception e) {
+		catch (final Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 
-	public SntpServer(int port) {
+	public SntpServer(final int port) {
 		this.port = port;
 	}
 

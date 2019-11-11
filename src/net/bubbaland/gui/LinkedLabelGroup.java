@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 
 
 /**
- * 
- * 
+ *
+ *
  * Extended from font-resizing labels at http://java-sl.com/tip_adapt_label_font_size.html
- * 
+ *
  * @author Walter Kolczynski
  *
  */
@@ -35,7 +35,7 @@ public class LinkedLabelGroup {
 	 * @param padding
 	 *            the padding to set
 	 */
-	public void setPadding(int padding) {
+	public void setPadding(final int padding) {
 		this.padding = padding;
 	}
 
@@ -50,7 +50,7 @@ public class LinkedLabelGroup {
 	 * @param minFontSize
 	 *            the minFontSize to set
 	 */
-	public void setMinFontSize(float minFontSize) {
+	public void setMinFontSize(final float minFontSize) {
 		this.minFontSize = minFontSize;
 	}
 
@@ -65,7 +65,7 @@ public class LinkedLabelGroup {
 	 * @param maxFontSize
 	 *            the maxFontSize to set
 	 */
-	public void setMaxFontSize(float maxFontSize) {
+	public void setMaxFontSize(final float maxFontSize) {
 		this.maxFontSize = maxFontSize;
 	}
 
@@ -78,26 +78,26 @@ public class LinkedLabelGroup {
 		this(DEFAULT_MIN_FONTSIZE, DEFAULT_MAX_FONTSIZE, DEFAULT_PADDING);
 	}
 
-	public LinkedLabelGroup(int padding) {
+	public LinkedLabelGroup(final int padding) {
 		this(DEFAULT_MIN_FONTSIZE, DEFAULT_MAX_FONTSIZE, padding);
 	}
 
-	public LinkedLabelGroup(double minFontSize, double maxFontSize) {
+	public LinkedLabelGroup(final double minFontSize, final double maxFontSize) {
 		this(minFontSize, maxFontSize, DEFAULT_PADDING);
 	}
 
-	public LinkedLabelGroup(double minFontSize, double maxFontSize, int padding) {
+	public LinkedLabelGroup(final double minFontSize, final double maxFontSize, final int padding) {
 		this.group = new ArrayList<JLabel>();
 		this.minFontSize = minFontSize;
 		this.maxFontSize = maxFontSize;
 		this.padding = padding;
 	}
 
-	public void addLabel(JLabel label) {
+	public void addLabel(final JLabel label) {
 		this.group.add(label);
 	}
 
-	public void removeLabel(JLabel label) {
+	public void removeLabel(final JLabel label) {
 		if (this.group.contains(label)) {
 			this.group.remove(label);
 		}
@@ -105,17 +105,17 @@ public class LinkedLabelGroup {
 
 	public void resizeFonts() {
 		float fontSize = (float) this.maxFontSize;
-		for (JLabel label : this.group) {
-			Graphics g = label.getGraphics();
-			String text = label.getText();
-			Dimension bounds = label.getSize();
+		for (final JLabel label : this.group) {
+			final Graphics g = label.getGraphics();
+			final String text = label.getText();
+			final Dimension bounds = label.getSize();
 			if (g == null || !label.isVisible()) {
 				// System.out.println("Skipping: " + label.getName() + " " + text + " " + ( !label.isVisible() ));
 				continue;
 			}
-			Font font = label.getFont();
+			final Font font = label.getFont();
 
-			Rectangle r1 = new Rectangle();
+			final Rectangle r1 = new Rectangle();
 			r1.setSize(getTextSize(g, text, font.deriveFont(fontSize)));
 
 			// System.out.println(label.getName() + " " + text + ":" + r1 + " " + bounds);
@@ -126,27 +126,28 @@ public class LinkedLabelGroup {
 				r1.setSize(getTextSize(g, text, font.deriveFont(fontSize)));
 			}
 		}
-		for (JLabel label : this.group) {
+		for (final JLabel label : this.group) {
 			label.setFont(label.getFont().deriveFont(fontSize));
 		}
 	}
 
-	private static Dimension getTextSize(Graphics g, String text, Font font) {
-		Dimension size = new Dimension();
+	private static Dimension getTextSize(final Graphics g, final String text, final Font font) {
+		final Dimension size = new Dimension();
 		g.setFont(font);
-		FontMetrics fm = g.getFontMetrics(font);
+		final FontMetrics fm = g.getFontMetrics(font);
 		size.width = fm.stringWidth(text);
 		size.height = fm.getHeight();
 		return size;
 	}
 
+	@Override
 	public String toString() {
 		String s = "LinkedLabelGroup " + super.toString() + "\n";
 		s = s + "Minimum font size: " + this.minFontSize + "\n";
 		s = s + "Maximum font size: " + this.maxFontSize + "\n";
 		s = s + "Padding: " + this.padding + "\n";
 		s = s + "Contains these labels: \n";
-		for (JLabel label : this.group) {
+		for (final JLabel label : this.group) {
 			s = s + label.getName() + ": " + label.getText() + "\n";
 		}
 		return s;

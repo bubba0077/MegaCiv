@@ -27,13 +27,13 @@ public class GameEvent {
 	static public final DateTimeFormatter	dateFormat	=
 			DateTimeFormatter.ofPattern("yyyy MMM dd hh:mm:ss").withZone(ZoneId.systemDefault());
 
-	public GameEvent(EventType type, User user, String message) {
+	public GameEvent(final EventType type, final User user, final String message) {
 		this(Instant.now(), type, user, message);
 	}
 
 	@JsonCreator
-	private GameEvent(@JsonProperty("timestamp") Instant timestamp, @JsonProperty("type") EventType type,
-			@JsonProperty("user") User user, @JsonProperty("message") String message) {
+	private GameEvent(@JsonProperty("timestamp") final Instant timestamp, @JsonProperty("type") final EventType type,
+			@JsonProperty("user") final User user, @JsonProperty("message") final String message) {
 		this.timestamp = timestamp;
 		this.type = type;
 		this.user = user;
@@ -68,9 +68,10 @@ public class GameEvent {
 		return this.message;
 	}
 
+	@Override
 	public String toString() {
 		// TODO
-		return "[" + dateFormat.format(this.timestamp) + " " + user.getUserName() + "]: " + message;
+		return "[" + dateFormat.format(this.timestamp) + " " + this.user.getUserName() + "]: " + this.message;
 	}
 
 }

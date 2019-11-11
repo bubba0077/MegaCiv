@@ -2,14 +2,14 @@ package net.bubbaland.gui;
 
 public class StringTools {
 
-	public static String wrapHtml(String htmlString, int maxWidth) {
+	public static String wrapHtml(final String htmlString, final int maxWidth) {
 		// System.out.println("Input: " + htmlString);
 		String s = "";
-		for (String t : htmlString.split("<[Bb][Rr]/>")) {
+		for (final String t : htmlString.split("<[Bb][Rr]/>")) {
 			String currentWord = "";
 			int count = 0;
 			boolean inTag = false;
-			for (char c : t.toCharArray()) {
+			for (final char c : t.toCharArray()) {
 				currentWord = currentWord + c;
 				switch (c) {
 					case '<':
@@ -49,8 +49,8 @@ public class StringTools {
 		return s;
 	}
 
-	public static void main(String[] args) {
-		String test1 =
+	public static void main(final String[] args) {
+		final String test1 =
 				"The beneficiary selects 2 of your coastal cities and you select 1 coastal city from each of 2 other "
 						+ "players. All selected cities are replaced by pirate cities. The beneficiary may not be selected "
 						+ "as a secondary victim.<BR/>"

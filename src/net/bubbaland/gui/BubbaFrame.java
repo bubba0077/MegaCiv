@@ -2,7 +2,6 @@ package net.bubbaland.gui;
 
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
@@ -21,15 +20,12 @@ import javax.swing.MenuSelectionManager;
 import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 
-import net.bubbaland.megaciv.client.gui.MegaCivFrame;
-
 /**
  * Creates a top-level window for displaying the GUI.
  *
  * @author Walter Kolczynski
  *
  */
-@SuppressWarnings("unused")
 public class BubbaFrame extends JFrame implements WindowListener {
 
 	private static final long			serialVersionUID	= -3639363131235278472L;
@@ -39,7 +35,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 
 	protected final BubbaGuiController	controller;
 
-	private boolean						initComplete;
+	private final boolean				initComplete;
 
 	protected BubbaMainPanel			mainPanel;
 
@@ -51,7 +47,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 * @param controller
 	 *            The root GUI controller for this frame
 	 */
-	protected BubbaFrame(BubbaGuiController controller) {
+	protected BubbaFrame(final BubbaGuiController controller) {
 		super();
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -96,7 +92,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		 * Setup status bar at bottom
 		 */
 		// Create status bar
-		this.statusBar = mainPanel.enclosedLabelFactory("", 0, 0, this.getForeground(), this.getBackground(),
+		this.statusBar = this.mainPanel.enclosedLabelFactory("", 0, 0, this.getForeground(), this.getBackground(),
 				constraints, 0, SwingConstants.LEFT, SwingConstants.CENTER);
 
 		// Setup layout constraints
@@ -106,7 +102,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		constraints.weighty = 1.0;
 
 		// Add the panel to the frame and display the frame
-		this.add(mainPanel);
+		this.add(this.mainPanel);
 		this.setVisible(true);
 
 		// Load the properties
@@ -139,14 +135,14 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 * @param message
 	 *            Message to log
 	 */
-	public void setStatusBarMessage(String message) {
+	public void setStatusBarMessage(final String message) {
 		// Display message in status bar
 		this.statusBar.setText(message);
 		this.statusBar.setToolTipText(message);
 
 		String maxWidthText = "<html>";
-		Pattern regex = Pattern.compile("(.{1," + MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
-		Matcher matcher = regex.matcher(message);
+		final Pattern regex = Pattern.compile("(.{1," + this.MAX_HTML_WIDTH + "}(?:\\s|$))", Pattern.DOTALL);
+		final Matcher matcher = regex.matcher(message);
 		while (matcher.find()) {
 			maxWidthText = maxWidthText + matcher.group() + "<BR/>";
 		}
@@ -158,7 +154,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		while (!this.initComplete) {
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException exception) {}
+			} catch (final InterruptedException exception) {}
 		}
 		this.mainPanel.updateGui();
 	}
@@ -205,23 +201,23 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	 *            The property name
 	 * @return The property requested
 	 */
-	private String loadProperty(String id, String propertyName) {
+	private String loadProperty(final String id, final String propertyName) {
 		return this.controller.getProperties().getProperty(id + "." + propertyName,
 				this.controller.getProperties().getProperty(propertyName));
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {}
+	public void windowActivated(final WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent e) {}
+	public void windowClosed(final WindowEvent e) {}
 
 	/**
 	 * When one of the windows tries to close, save the properties and position of the window first. Then exit the
 	 * program if there are no open windows left.
 	 */
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public void windowClosing(final WindowEvent e) {
 		final Window window = e.getWindow();
 		// Save the window position
 		this.controller.savePositionAndSize(window);
@@ -232,16 +228,16 @@ public class BubbaFrame extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeactivated(final WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {}
+	public void windowDeiconified(final WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) {}
+	public void windowIconified(final WindowEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent e) {}
+	public void windowOpened(final WindowEvent e) {}
 
 	// Inner class that defines our special slider menu item
 	protected class SpinnerMenuItem extends JSpinner implements MenuElement {
@@ -252,7 +248,7 @@ public class BubbaFrame extends JFrame implements WindowListener {
 			super();
 		}
 
-		private SpinnerMenuItem(SpinnerModel model) {
+		private SpinnerMenuItem(final SpinnerModel model) {
 			super(model);
 		}
 
@@ -267,12 +263,13 @@ public class BubbaFrame extends JFrame implements WindowListener {
 		}
 
 		@Override
-		public void menuSelectionChanged(boolean isIncluded) {}
+		public void menuSelectionChanged(final boolean isIncluded) {}
 
 		@Override
-		public void processKeyEvent(KeyEvent e, MenuElement path[], MenuSelectionManager manager) {}
+		public void processKeyEvent(final KeyEvent e, final MenuElement path[], final MenuSelectionManager manager) {}
 
 		@Override
-		public void processMouseEvent(MouseEvent e, MenuElement path[], MenuSelectionManager manager) {}
+		public void processMouseEvent(final MouseEvent e, final MenuElement path[],
+				final MenuSelectionManager manager) {}
 	}
 }

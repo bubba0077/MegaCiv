@@ -23,7 +23,7 @@ import javax.swing.event.AncestorListener;
  *
  * Creates a new panel using the GridBagLayout manager. Also implements an AncestorListener to allow focus on an element
  * after the dialog is created.
- * 
+ *
  * @author Walter Kolczynski
  *
  */
@@ -37,7 +37,7 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 
 	protected BubbaDialog		dialog;
 
-	public BubbaDialogPanel(BubbaGuiController controller) {
+	public BubbaDialogPanel(final BubbaGuiController controller) {
 		super(controller, new GridBagLayout());
 	}
 
@@ -48,14 +48,14 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 	 * @param component
 	 *            The text are whose behavior we want to change
 	 */
-	public void addEnterOverride(JComponent component) {
+	public void addEnterOverride(final JComponent component) {
 		component.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Text Submit");
 		component.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"), "insert-break");
 		component.getActionMap().put("Text Submit", new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				BubbaDialogPanel.this.submitText();
 			}
 		});
@@ -71,66 +71,57 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 		try {
 			Thread.sleep(10);
 		} catch (final InterruptedException e) {}
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				final JComponent component = event.getComponent();
-				component.requestFocusInWindow();
-				component.removeAncestorListener(al);
-			}
+		SwingUtilities.invokeLater(() -> {
+			final JComponent component = event.getComponent();
+			component.requestFocusInWindow();
+			component.removeAncestorListener(al);
 		});
 
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent event) {}
+	public void ancestorMoved(final AncestorEvent event) {}
 
 	@Override
-	public void ancestorRemoved(AncestorEvent event) {}
+	public void ancestorRemoved(final AncestorEvent event) {}
 
 	@Override
-	public void focusGained(FocusEvent event) {
+	public void focusGained(final FocusEvent event) {
 		final JComponent source = (JComponent) event.getSource();
 		if (source instanceof JTextField) {
 			// try {
 			// Thread.sleep(10);
 			// } catch (InterruptedException e) { }
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					( (JTextField) source ).selectAll();
-				}
-			});
+			SwingUtilities.invokeLater(() -> ( (JTextField) source ).selectAll());
 
 		}
 	}
 
 	@Override
-	public void focusLost(FocusEvent e) {}
+	public void focusLost(final FocusEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent event) {}
+	public void windowOpened(final WindowEvent event) {}
 
 	@Override
-	public void windowClosing(WindowEvent event) {}
+	public void windowClosing(final WindowEvent event) {}
 
 	@Override
-	public void windowClosed(WindowEvent event) {
+	public void windowClosed(final WindowEvent event) {
 		this.dialog.removeWindowListener(this);
 	}
 
 	@Override
-	public void windowIconified(WindowEvent event) {}
+	public void windowIconified(final WindowEvent event) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent event) {}
+	public void windowDeiconified(final WindowEvent event) {}
 
 	@Override
-	public void windowActivated(WindowEvent event) {}
+	public void windowActivated(final WindowEvent event) {}
 
 	@Override
-	public void windowDeactivated(WindowEvent event) {}
+	public void windowDeactivated(final WindowEvent event) {}
 
 	/**
 	 * Tell the dialog to click the OK button on the option pane.
@@ -139,7 +130,7 @@ public abstract class BubbaDialogPanel extends BubbaPanel implements AncestorLis
 		this.dialog.clickOK();
 	}
 
-	public static void loadProperties(Properties properties) {
+	public static void loadProperties(final Properties properties) {
 		/**
 		 * Warning Color
 		 */

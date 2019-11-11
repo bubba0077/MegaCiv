@@ -25,26 +25,26 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 		this.finishInit();
 	}
 
-	public CivilizationComboBox(ComboBoxModel<Civilization.Name> aModel) {
+	public CivilizationComboBox(final ComboBoxModel<Civilization.Name> aModel) {
 		super(aModel);
 		this.finishInit();
 	}
 
-	public CivilizationComboBox(Civilization.Name[] items) {
+	public CivilizationComboBox(final Civilization.Name[] items) {
 		super(items);
 		this.finishInit();
 	}
 
-	public CivilizationComboBox(Vector<Civilization.Name> items) {
+	public CivilizationComboBox(final Vector<Civilization.Name> items) {
 		super(items);
 		this.finishInit();
 	}
 
 	private void finishInit() {
 		this.setRenderer(new CivilizationCellRenderer(this.getRenderer()));
-		Name selected = ( (Name) this.getSelectedItem() );
-		Color foreground = Game.FOREGROUND_COLORS.get(selected);
-		Color background = Game.BACKGROUND_COLORS.get(selected);
+		final Name selected = ( (Name) this.getSelectedItem() );
+		final Color foreground = Game.FOREGROUND_COLORS.get(selected);
+		final Color background = Game.BACKGROUND_COLORS.get(selected);
 
 		this.addActionListener(this);
 
@@ -54,10 +54,10 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		Name selected = ( (Name) this.getSelectedItem() );
-		Color foreground = Game.FOREGROUND_COLORS.get(selected);
-		Color background = Game.BACKGROUND_COLORS.get(selected);
+	public void actionPerformed(final ActionEvent event) {
+		final Name selected = ( (Name) this.getSelectedItem() );
+		final Color foreground = Game.FOREGROUND_COLORS.get(selected);
+		final Color background = Game.BACKGROUND_COLORS.get(selected);
 
 		this.setForeground(foreground);
 		this.setBackground(background);
@@ -66,18 +66,18 @@ public class CivilizationComboBox extends JComboBox<Civilization.Name> implement
 	private class CivilizationCellRenderer implements ListCellRenderer<Civilization.Name> {
 		private final ListCellRenderer<? super Name> internal;
 
-		public CivilizationCellRenderer(ListCellRenderer<? super Name> listCellRenderer) {
+		public CivilizationCellRenderer(final ListCellRenderer<? super Name> listCellRenderer) {
 			this.internal = listCellRenderer;
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends Name> list, Name value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			final Component renderer = this.internal.getListCellRendererComponent(list, value, index, isSelected,
-					cellHasFocus);
+		public Component getListCellRendererComponent(final JList<? extends Name> list, final Name value,
+				final int index, final boolean isSelected, final boolean cellHasFocus) {
+			final Component renderer =
+					this.internal.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (renderer instanceof JLabel) {
-				Color foreground = Game.FOREGROUND_COLORS.get(value);
-				Color background = Game.BACKGROUND_COLORS.get(value);
+				final Color foreground = Game.FOREGROUND_COLORS.get(value);
+				final Color background = Game.BACKGROUND_COLORS.get(value);
 				if (isSelected) {
 					( (JLabel) renderer ).setForeground(background);
 					( (JLabel) renderer ).setBackground(foreground);

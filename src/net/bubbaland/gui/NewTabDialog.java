@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Hashtable;
+
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -41,14 +42,14 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 	private final ArrayList<String>		tabNameSet;
 	private final String[]				tabNames;
 
-	public NewTabDialog(BubbaGuiController controller, BubbaDragDropTabFrame frame) {
+	public NewTabDialog(final BubbaGuiController controller, final BubbaDragDropTabFrame frame) {
 		super(controller);
 
 		this.parent = frame;
 
 		this.tabNameSet = this.parent.getTabNames();
 		this.tabNames = new String[this.tabNameSet.size()];
-		tabNameSet.toArray(this.tabNames);
+		this.tabNameSet.toArray(this.tabNames);
 		Arrays.sort(this.tabNames, new TabComparator());
 
 		// Set up layout constraints
@@ -71,8 +72,8 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.descriptionLabel = this.scrollableTextAreaFactory(this.parent.getTabDescription(tabNames[0]), 300, 200,
-				this.getForeground(), this.getBackground(), constraints, textAreaFontSize,
+		this.descriptionLabel = this.scrollableTextAreaFactory(this.parent.getTabDescription(this.tabNames[0]), 300,
+				200, this.getForeground(), this.getBackground(), constraints, textAreaFontSize,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.descriptionLabel.setEditable(false);
 
@@ -90,7 +91,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 	 * Selection in combo box changed, update the description.
 	 */
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(final ItemEvent e) {
 		final String tabName = (String) this.tabSelector.getSelectedItem();
 		final String description = this.parent.getTabDescription(tabName);
 		this.descriptionLabel.setText(description);
@@ -110,24 +111,26 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 			SORT_ORDER = new Hashtable<String, Integer>(0);
 			SORT_ORDER.put("AST", 0);
 			SORT_ORDER.put("Trade", 1);
-			for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+			for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 				SORT_ORDER.put(WordUtils.capitalizeFully(name.toString()), name.ordinal() + 1);
 			}
 		}
 
 		@Override
-		public int compare(String o1, String o2) {
+		public int compare(final String o1, final String o2) {
 			return SORT_ORDER.get(o1).compareTo(SORT_ORDER.get(o2));
 		}
 	}
 
 	@Override
-	public void windowClosed(WindowEvent event) {
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 		final BubbaDnDTabbedPane pane = this.parent.getTabbedPane();
 
 		// If a button was not pressed (option isn't a string), do nothing
-		if (!( this.dialog.getValue() instanceof String )) return;
+		if (!( this.dialog.getValue() instanceof String )) {
+			return;
+		}
 		final String option = (String) this.dialog.getValue();
 		// A list of tab names to add
 		final ArrayList<String> newTabs = new ArrayList<String>(0);
@@ -139,7 +142,7 @@ public class NewTabDialog extends BubbaDialogPanel implements ItemListener {
 			}
 			// Add all tabs that don't start with a * and are not already in the tabbed pane
 			case "Add All":
-				for (final String tabName : tabNameSet) {
+				for (final String tabName : this.tabNameSet) {
 					if (!tabName.startsWith("*") && pane.indexOfTab(tabName) == -1) {
 						newTabs.add(tabName);
 					}

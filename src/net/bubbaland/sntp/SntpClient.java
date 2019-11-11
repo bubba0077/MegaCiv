@@ -24,9 +24,9 @@ public class SntpClient {
 	// Weight of the most recent packet on the offset
 	private static double					avgWeight	= 0.5;
 
-	private int								port;
+	private final int						port;
 	private Duration						pollInterval;
-	private String							host;
+	private final String					host;
 
 	// offset = server - client
 	private Duration						offset;
@@ -34,7 +34,7 @@ public class SntpClient {
 
 	private final ArrayList<SntpListener>	listeners;
 
-	public SntpClient(String host, int port, Duration pollInterval) {
+	public SntpClient(final String host, final int port, final Duration pollInterval) {
 		this.port = port;
 		this.host = new String(host);
 		this.pollInterval = pollInterval;
@@ -50,6 +50,7 @@ public class SntpClient {
 	public void start() {
 		this.timer = new Timer();
 		this.timer.schedule(new TimerTask() {
+			@Override
 			public void run() {
 				SntpClient.this.sync();
 			}
@@ -63,13 +64,13 @@ public class SntpClient {
 
 	public void sync() {
 		try {
-			if (port <= 0 || host == null) {
+			if (this.port <= 0 || this.host == null) {
 				throw new IllegalArgumentException("Invalid parameters!");
 			}
 
 			final DatagramSocket socket = new DatagramSocket();
 			socket.setSoTimeout(10000);
-			final InetAddress hostAddr = InetAddress.getByName(host);
+			final InetAddress hostAddr = InetAddress.getByName(this.host);
 
 			// Create request
 			SntpMessage req = new SntpMessage();
@@ -81,7 +82,7 @@ public class SntpClient {
 			final byte[] buffer = req.toByteArray();
 			req = null;
 
-			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, hostAddr, port);
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, hostAddr, this.port);
 			socket.send(packet);
 
 			packet = new DatagramPacket(buffer, buffer.length);
@@ -90,7 +91,7 @@ public class SntpClient {
 			// Set the time response arrived
 			final NtpTimestamp destTime = NtpTimestamp.now();
 
-			SntpMessage resp = new SntpMessage(packet.getData());
+			final SntpMessage resp = new SntpMessage(packet.getData());
 			socket.close();
 
 			// Timestamp Name ID When Generated
@@ -104,11 +105,11 @@ public class SntpClient {
 			//
 			// d = (T4 - T1) - (T3 - T2) t = ((T2 - T1) + (T3 - T4)) / 2
 
-			double t = ( ( resp.getRecTime().value - resp.getOrgTime().value )
+			final double t = ( ( resp.getRecTime().value - resp.getOrgTime().value )
 					+ ( resp.getXmtTime().value - destTime.value ) ) / 2;
 
 			// System clock offset in millis
-			Duration newOffset = Duration.ofNanos((long) ( t * 1000000000 ));
+			final Duration newOffset = Duration.ofNanos((long) ( t * 1000000000 ));
 			if (this.offset == null) {
 				this.offset = newOffset;
 			} else {
@@ -119,7 +120,7 @@ public class SntpClient {
 
 			// System.out.println("Average Offset: " + this.offset + " ms");
 			SntpClient.this.onSync(Instant.now());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.out.println("Error communicating with SNTP server");
 			SntpClient.this.onError(Instant.now());
 			return;
@@ -127,26 +128,26 @@ public class SntpClient {
 	}
 
 	public Duration getPollInteval() {
-		return pollInterval;
+		return this.pollInterval;
 	}
 
-	public void setPollInteval(Duration pollInteval) {
+	public void setPollInteval(final Duration pollInteval) {
 		this.pollInterval = pollInteval;
 	}
 
-	public void onError(Instant when) {
+	public void onError(final Instant when) {
 		this.listeners.parallelStream().forEach(l -> l.onSntpError(when));
 	}
 
-	public void onSync(Instant when) {
+	public void onSync(final Instant when) {
 		this.listeners.parallelStream().forEach(l -> l.onSntpSync(when));
 	}
 
-	public void addSntpListener(SntpListener newListener) {
+	public void addSntpListener(final SntpListener newListener) {
 		this.listeners.add(newListener);
 	}
 
-	public void removeSntpListener(SntpListener oldListener) {
+	public void removeSntpListener(final SntpListener oldListener) {
 		this.listeners.remove(oldListener);
 	}
 

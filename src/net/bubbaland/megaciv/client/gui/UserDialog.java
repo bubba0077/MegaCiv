@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
 import net.bubbaland.gui.BubbaDialog;
 import net.bubbaland.gui.BubbaDialogPanel;
 import net.bubbaland.gui.BubbaGuiController;
@@ -33,11 +34,11 @@ public class UserDialog extends BubbaDialogPanel {
 	 *            the client
 	 * @param role
 	 */
-	public UserDialog(BubbaGuiController controller, GuiClient client) {
+	public UserDialog(final BubbaGuiController controller, final GuiClient client) {
 		this(controller, client, false);
 	}
 
-	public UserDialog(BubbaGuiController controller, GuiClient client, boolean modal) {
+	public UserDialog(final BubbaGuiController controller, final GuiClient client, final boolean modal) {
 		super(controller);
 
 		this.client = client;
@@ -81,7 +82,7 @@ public class UserDialog extends BubbaDialogPanel {
 	}
 
 	@Override
-	public void windowClosed(WindowEvent event) {
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 
 		// Set the user name to input value
@@ -112,7 +113,7 @@ public class UserDialog extends BubbaDialogPanel {
 			}
 
 			if (userName.toCharArray().length != 0) {
-				User user = UserDialog.this.client.getUser();
+				final User user = UserDialog.this.client.getUser();
 				user.setUserName(userName);
 				UserDialog.this.client.log("Changed user name to " + user.getUserName());
 				UserDialog.this.client.sendMessage(new SetUserMessage(user));

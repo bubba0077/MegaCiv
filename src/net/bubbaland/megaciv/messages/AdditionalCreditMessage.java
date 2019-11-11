@@ -21,8 +21,9 @@ public class AdditionalCreditMessage implements ClientMessage {
 	private final ArrayList<Technology.Type>	credits;
 
 	@JsonCreator
-	public AdditionalCreditMessage(@JsonProperty("civName") Civilization.Name civName,
-			@JsonProperty("tech") Technology tech, @JsonProperty("credits") ArrayList<Technology.Type> credits) {
+	public AdditionalCreditMessage(@JsonProperty("civName") final Civilization.Name civName,
+			@JsonProperty("tech") final Technology tech,
+			@JsonProperty("credits") final ArrayList<Technology.Type> credits) {
 		this.civName = civName;
 		this.tech = tech;
 		this.credits = credits;
@@ -49,7 +50,7 @@ public class AdditionalCreditMessage implements ClientMessage {
 	@Override
 	public String toString() {
 		return "Additional credits for " + this.civName.toString() + " provided by " + this.tech + " set to: "
-				+ Arrays.toString(credits.toArray());
+				+ Arrays.toString(this.credits.toArray());
 	}
 
 	@Override

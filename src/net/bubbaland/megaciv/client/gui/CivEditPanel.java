@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -48,7 +49,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 	private final StatPanel			statPanel;
 	private final TechPanel			techPanel;
 
-	public CivEditPanel(GameClient client, BubbaGuiController controller, Civilization.Name name) {
+	public CivEditPanel(final GameClient client, final BubbaGuiController controller, final Civilization.Name name) {
 		super(controller, new GridBagLayout());
 		this.frame = new JFrame();
 		this.client = client;
@@ -80,14 +81,14 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		constraints.gridy = 3;
 		constraints.gridx = 0;
 		constraints.gridwidth = 1;
-		JButton resetButton = new JButton("Reset");
+		final JButton resetButton = new JButton("Reset");
 		resetButton.setActionCommand("Reset");
 		resetButton.addActionListener(this);
 		this.add(resetButton, constraints);
 
 		constraints.gridy = 3;
 		constraints.gridx = 1;
-		JButton cancelButton = new JButton("Cancel");
+		final JButton cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand("Cancel");
 		cancelButton.addActionListener(this);
 		this.add(cancelButton, constraints);
@@ -95,7 +96,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		constraints.gridy = 3;
 		constraints.gridx = 2;
 		constraints.gridwidth = 1;
-		JButton okButton = new JButton("Set");
+		final JButton okButton = new JButton("Set");
 		okButton.setActionCommand("Set");
 		okButton.addActionListener(this);
 		this.add(okButton, constraints);
@@ -119,18 +120,18 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		public HeaderPanel() {
 			super(CivEditPanel.this.controller, new GridBagLayout());
 
-			Game game = CivEditPanel.this.client.getGame();
-			Civilization civ = game.getCivilization(CivEditPanel.this.name);
+			final Game game = CivEditPanel.this.client.getGame();
+			final Civilization civ = game.getCivilization(CivEditPanel.this.name);
 
-			Properties prop = CivEditPanel.this.controller.getProperties();
+			final Properties prop = CivEditPanel.this.controller.getProperties();
 
-			Color foreground = Game.FOREGROUND_COLORS.get(name);
-			Color background = Game.BACKGROUND_COLORS.get(name);
+			final Color foreground = Game.FOREGROUND_COLORS.get(CivEditPanel.this.name);
+			final Color background = Game.BACKGROUND_COLORS.get(CivEditPanel.this.name);
 
-			int height = Integer.parseInt(prop.getProperty("CivEditPanel.Header.Height"));
-			int playerWidth = Integer.parseInt(prop.getProperty("CivEditPanel.Player.Width"));
+			final int height = Integer.parseInt(prop.getProperty("CivEditPanel.Header.Height"));
+			final int playerWidth = Integer.parseInt(prop.getProperty("CivEditPanel.Player.Width"));
 
-			float astFontSize = Float.parseFloat(prop.getProperty("CivEditPanel.AstPosition.FontSize"));
+			final float astFontSize = Float.parseFloat(prop.getProperty("CivEditPanel.AstPosition.FontSize"));
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -140,10 +141,10 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridheight = 2;
-			this.enclosedLabelFactory(WordUtils.capitalizeFully(name.toString()),
+			this.enclosedLabelFactory(WordUtils.capitalizeFully(CivEditPanel.this.name.toString()),
 					Integer.parseInt(prop.getProperty("CivEditPanel.CivName.Width")), height, foreground, background,
-					constraints, Float.parseFloat(prop.getProperty("CivEditPanel.CivName.FontSize")), JLabel.LEFT,
-					JLabel.BOTTOM);
+					constraints, Float.parseFloat(prop.getProperty("CivEditPanel.CivName.FontSize")),
+					SwingConstants.LEFT, SwingConstants.BOTTOM);
 			constraints.weightx = 0.0;
 			constraints.gridheight = 1;
 
@@ -151,8 +152,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("Player", playerWidth,
 					Integer.parseInt(prop.getProperty("CivEditPanel.Player.Height0")), foreground, background,
-					constraints, Float.parseFloat(prop.getProperty("CivEditPanel.Player.FontSize0")), JLabel.CENTER,
-					JLabel.BOTTOM);
+					constraints, Float.parseFloat(prop.getProperty("CivEditPanel.Player.FontSize0")),
+					SwingConstants.CENTER, SwingConstants.BOTTOM);
 
 			constraints.gridy = 1;
 			this.playerTextField = new JTextField(civ.getPlayer());
@@ -166,7 +167,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("AST Position",
 					Integer.parseInt(prop.getProperty("CivEditPanel.AstPosition.Width")), height, foreground,
-					background, constraints, astFontSize, JLabel.RIGHT, JLabel.CENTER);
+					background, constraints, astFontSize, SwingConstants.RIGHT, SwingConstants.CENTER);
 
 			constraints.gridx = 3;
 			this.astPositionSpinner =
@@ -177,27 +178,27 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		}
 
 		public void reset() {
-			this.astPositionSpinner.setValue(civ.getAstPosition());
+			this.astPositionSpinner.setValue(CivEditPanel.this.civ.getAstPosition());
 		}
 
 		@Override
-		public void stateChanged(ChangeEvent event) {
+		public void stateChanged(final ChangeEvent event) {
 			CivEditPanel.this.civ.setAstPosition((int) this.astPositionSpinner.getValue());
 			CivEditPanel.this.updateGui();
 		}
 
 		@Override
-		public void changedUpdate(DocumentEvent arg0) {
+		public void changedUpdate(final DocumentEvent arg0) {
 			CivEditPanel.this.civ.setPlayer(this.playerTextField.getText());
 		}
 
 		@Override
-		public void insertUpdate(DocumentEvent arg0) {
+		public void insertUpdate(final DocumentEvent arg0) {
 			CivEditPanel.this.civ.setPlayer(this.playerTextField.getText());
 		}
 
 		@Override
-		public void removeUpdate(DocumentEvent arg0) {
+		public void removeUpdate(final DocumentEvent arg0) {
 			CivEditPanel.this.civ.setPlayer(this.playerTextField.getText());
 		}
 
@@ -215,20 +216,20 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		public StatPanel() {
 			super(CivEditPanel.this.controller, new GridBagLayout());
 
-			Properties props = CivEditPanel.this.controller.getProperties();
+			final Properties props = CivEditPanel.this.controller.getProperties();
 
-			Color foreground =
+			final Color foreground =
 					new Color(new BigInteger(props.getProperty("CivEditPanel.Stat.Foreground"), 16).intValue());
-			Color background =
+			final Color background =
 					new Color(new BigInteger(props.getProperty("CivEditPanel.Stat.Background"), 16).intValue());
 
-			int heightTop = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Top.Height"));
-			int heightBottom = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Bottom.Height"));
+			final int heightTop = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Top.Height"));
+			final int heightBottom = Integer.parseInt(props.getProperty("CivEditPanel.Stat.Bottom.Height"));
 
-			int creditWidth = Integer.parseInt(props.getProperty("CivEditPanel.Credit.Width"));
+			final int creditWidth = Integer.parseInt(props.getProperty("CivEditPanel.Credit.Width"));
 
-			float creditFontSizeTop = Float.parseFloat(props.getProperty("CivEditPanel.Credit.Top.FontSize"));
-			float creditFontSize = Float.parseFloat(props.getProperty("CivEditPanel.Credit.FontSize"));
+			final float creditFontSizeTop = Float.parseFloat(props.getProperty("CivEditPanel.Credit.Top.FontSize"));
+			final float creditFontSize = Float.parseFloat(props.getProperty("CivEditPanel.Credit.FontSize"));
 
 			this.setBackground(background);
 
@@ -241,12 +242,13 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("Pop", Integer.parseInt(props.getProperty("CivEditPanel.Population.Width")),
 					heightTop, foreground, background, constraints,
-					Float.parseFloat(props.getProperty("CivEditPanel.Population.Top.FontSize")), JLabel.CENTER,
-					JLabel.TOP);
+					Float.parseFloat(props.getProperty("CivEditPanel.Population.Top.FontSize")), SwingConstants.CENTER,
+					SwingConstants.TOP);
 
 			constraints.gridx = 1;
 			constraints.gridy = 1;
-			this.popSpinner = new JSpinner(new SpinnerNumberModel(civ.getPopulation(), 0, Game.MAX_POPULATION, 1));
+			this.popSpinner = new JSpinner(
+					new SpinnerNumberModel(CivEditPanel.this.civ.getPopulation(), 0, Game.MAX_POPULATION, 1));
 			this.popSpinner.setFont(this.popSpinner.getFont()
 					.deriveFont(Float.parseFloat(props.getProperty("CivEditPanel.Population.FontSize"))));
 			this.popSpinner.setPreferredSize(
@@ -259,11 +261,13 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("Cities", Integer.parseInt(props.getProperty("CivEditPanel.City.Width")),
 					heightTop, foreground, background, constraints,
-					Float.parseFloat(props.getProperty("CivEditPanel.City.Top.FontSize")), JLabel.CENTER, JLabel.TOP);
+					Float.parseFloat(props.getProperty("CivEditPanel.City.Top.FontSize")), SwingConstants.CENTER,
+					SwingConstants.TOP);
 
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			this.citySpinner = new JSpinner(new SpinnerNumberModel(civ.getCityCount(), 0, Game.MAX_CITIES, 1));
+			this.citySpinner =
+					new JSpinner(new SpinnerNumberModel(CivEditPanel.this.civ.getCityCount(), 0, Game.MAX_CITIES, 1));
 			this.citySpinner.setFont(this.citySpinner.getFont()
 					.deriveFont(Float.parseFloat(props.getProperty("CivEditPanel.City.FontSize"))));
 			this.citySpinner.setPreferredSize(
@@ -276,37 +280,40 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			constraints.gridy = 0;
 			this.enclosedLabelFactory("VP", Integer.parseInt(props.getProperty("CivEditPanel.VP.Width")), heightTop,
 					foreground, background, constraints,
-					Float.parseFloat(props.getProperty("CivEditPanel.VP.Top.FontSize")), JLabel.CENTER, JLabel.TOP);
+					Float.parseFloat(props.getProperty("CivEditPanel.VP.Top.FontSize")), SwingConstants.CENTER,
+					SwingConstants.TOP);
 
 			constraints.gridx = 2;
 			constraints.gridy = 1;
 			this.vpLabel = this.enclosedLabelFactory("", Integer.parseInt(props.getProperty("CivEditPanel.VP.Width")),
 					heightBottom, foreground, background, constraints,
-					Float.parseFloat(props.getProperty("CivEditPanel.VP.FontSize")), JLabel.CENTER, JLabel.CENTER);
+					Float.parseFloat(props.getProperty("CivEditPanel.VP.FontSize")), SwingConstants.CENTER,
+					SwingConstants.CENTER);
 
 			constraints.gridx = 3;
 			constraints.gridy = 1;
 			this.enclosedLabelFactory("Credits:", Integer.parseInt(props.getProperty("CivEditPanel.Credit0.Width")),
 					heightBottom, foreground, background, constraints,
-					Float.parseFloat(props.getProperty("CivEditPanel.Credit0.FontSize")), JLabel.RIGHT, JLabel.CENTER);
+					Float.parseFloat(props.getProperty("CivEditPanel.Credit0.FontSize")), SwingConstants.RIGHT,
+					SwingConstants.CENTER);
 
 			this.creditLabelsTop = new HashMap<Technology.Type, JLabel>();
 			this.creditLabels = new HashMap<Technology.Type, JLabel>();
-			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				constraints.gridx = 4 + type.ordinal();
 				constraints.gridy = 0;
 				this.creditLabelsTop.put(type,
 						this.enclosedLabelFactory(WordUtils.capitalizeFully(type.toString()), creditWidth, heightTop,
-								type.getColor(), background, constraints, creditFontSizeTop, JLabel.CENTER,
-								JLabel.TOP));
+								type.getColor(), background, constraints, creditFontSizeTop, SwingConstants.CENTER,
+								SwingConstants.TOP));
 				constraints.gridy = 1;
 				this.creditLabels.put(type, this.enclosedLabelFactory("", creditWidth, heightBottom, type.getColor(),
-						background, constraints, creditFontSize, JLabel.CENTER, JLabel.CENTER));
+						background, constraints, creditFontSize, SwingConstants.CENTER, SwingConstants.CENTER));
 			}
 		}
 
 		@Override
-		public void stateChanged(ChangeEvent event) {
+		public void stateChanged(final ChangeEvent event) {
 			final String sourceName = ( (Component) event.getSource() ).getName();
 			switch (sourceName) {
 				case "Population":
@@ -316,22 +323,22 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					CivEditPanel.this.civ.setCityCount((int) this.citySpinner.getValue());
 					break;
 				default:
-					client.log("Source not recognized in " + this.getClass().getSimpleName());
+					CivEditPanel.this.client.log("Source not recognized in " + this.getClass().getSimpleName());
 			}
 			CivEditPanel.this.updateGui();
 		}
 
 		public void reset() {
-			this.popSpinner.setValue(civ.getPopulation());
-			this.citySpinner.setValue(civ.getCityCount());
+			this.popSpinner.setValue(CivEditPanel.this.civ.getPopulation());
+			this.citySpinner.setValue(CivEditPanel.this.civ.getCityCount());
 		}
 
 		public void updateGui() {
-			String text = String.format("%03d", civ.getVP());
+			final String text = String.format("%03d", CivEditPanel.this.civ.getVP());
 			this.vpLabel.setText(text);
 
-			for (Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
-				this.creditLabels.get(type).setText(civ.getTypeCredit(type) + "");
+			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
+				this.creditLabels.get(type).setText(CivEditPanel.this.civ.getTypeCredit(type) + "");
 			}
 		}
 	}
@@ -351,11 +358,11 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		public TechPanel() {
 			super(CivEditPanel.this.controller, new GridBagLayout());
 
-			Properties prop = CivEditPanel.this.controller.getProperties();
+			final Properties prop = CivEditPanel.this.controller.getProperties();
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Unowned"), 16).intValue());
-			Color background =
+			final Color background =
 					new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
 
 			this.setBackground(background);
@@ -369,19 +376,19 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 			this.techCheckboxes = new HashMap<Technology, JCheckBox>();
 
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				constraints.gridx = ( 0 + tech.ordinal() / N_ROWS ) * constraints.gridwidth;
-				constraints.gridy = 0 + tech.ordinal() % N_ROWS;
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
+				constraints.gridx = ( 0 + tech.ordinal() / this.N_ROWS ) * constraints.gridwidth;
+				constraints.gridy = 0 + tech.ordinal() % this.N_ROWS;
 
 				String techString = "<html>" + tech.getName();
-				for (Type type : tech.getTypes()) {
+				for (final Type type : tech.getTypes()) {
 					techString = techString + " <img height=\"16\" width=\"16\" align=\"bottom\" src=\""
 							+ GuiClient.class.getResource("images/" + type.toString() + ".png") + "\" alt=\""
 							+ type.toString() + "\">";
 				}
 				techString = techString + "</html>";
 
-				JCheckBox checkbox = new JCheckBox(techString);
+				final JCheckBox checkbox = new JCheckBox(techString);
 				checkbox.setActionCommand("Tech");
 				checkbox.setName(tech.toString());
 				checkbox.addActionListener(this);
@@ -395,15 +402,15 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			this.writtenRecordComboboxes = new ArrayList<TechnologyTypeComboBox>();
 			constraints.gridx = 4;
 			constraints.gridwidth = 2;
-			constraints.gridy = N_ROWS;
-			this.writtenRecordLabel =
-					this.enclosedLabelFactory("Written Record Credits", constraints, JLabel.CENTER, JLabel.CENTER);
+			constraints.gridy = this.N_ROWS;
+			this.writtenRecordLabel = this.enclosedLabelFactory("Written Record Credits", constraints,
+					SwingConstants.CENTER, SwingConstants.CENTER);
 			constraints.gridwidth = 1;
 
-			constraints.gridy = N_ROWS + 1;
+			constraints.gridy = this.N_ROWS + 1;
 			for (int i = 0; i < 2; i++) {
 				constraints.gridx = 4 + i;
-				TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+				final TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
 				combobox.setActionCommand("Written Record Credit");
 				combobox.addActionListener(this);
 				this.add(combobox, constraints);
@@ -413,16 +420,16 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 			this.monumentComboboxes = new ArrayList<TechnologyTypeComboBox>();
 
 			constraints.gridx = 2;
-			constraints.gridy = N_ROWS;
+			constraints.gridy = this.N_ROWS;
 			constraints.gridwidth = 2;
-			this.monumentLabel =
-					this.enclosedLabelFactory("Monument Credits", constraints, JLabel.CENTER, JLabel.CENTER);
+			this.monumentLabel = this.enclosedLabelFactory("Monument Credits", constraints, SwingConstants.CENTER,
+					SwingConstants.CENTER);
 			constraints.gridwidth = 1;
 
 			for (int i = 0; i < 4; i++) {
 				constraints.gridx = 2 + i / 2;
-				constraints.gridy = N_ROWS + 1 + i % 2;
-				TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
+				constraints.gridy = this.N_ROWS + 1 + i % 2;
+				final TechnologyTypeComboBox combobox = new TechnologyTypeComboBox(Technology.Type.values());
 				combobox.setActionCommand("Monument Credit");
 				combobox.addActionListener(this);
 				this.add(combobox, constraints);
@@ -433,8 +440,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		}
 
 		public void reset() {
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				JCheckBox checkbox = this.techCheckboxes.get(tech);
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
+				final JCheckBox checkbox = this.techCheckboxes.get(tech);
 				checkbox.setSelected(CivEditPanel.this.civ.hasTech(tech));
 			}
 			ArrayList<Technology.Type> credits = CivEditPanel.this.civ.getTypeCredits(Technology.WRITTEN_RECORD);
@@ -453,56 +460,57 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 		}
 
 		public void updateGui() {
-			Properties prop = CivEditPanel.this.controller.getProperties();
+			final Properties prop = CivEditPanel.this.controller.getProperties();
 
 			this.ownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Owned"), 16).intValue());
 			this.unownedColor = new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Unowned"), 16).intValue());
-			Color background =
+			final Color background =
 					new Color(new BigInteger(prop.getProperty("CivEditPanel.Tech.Background"), 16).intValue());
 
-			int height = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Height"));
-			int width = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Width"));
+			final int height = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Height"));
+			final int width = Integer.parseInt(prop.getProperty("CivEditPanel.Tech.Width"));
 
-			float fontSize = Float.parseFloat(prop.getProperty("CivEditPanel.Tech.FontSize"));
+			final float fontSize = Float.parseFloat(prop.getProperty("CivEditPanel.Tech.FontSize"));
 
-			ArrayList<Technology> ownedTechs = civ.getTechs();
+			final ArrayList<Technology> ownedTechs = CivEditPanel.this.civ.getTechs();
 
-			for (Technology tech : EnumSet.allOf(Technology.class)) {
-				JCheckBox checkbox = this.techCheckboxes.get(tech);
-				Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
+			for (final Technology tech : EnumSet.allOf(Technology.class)) {
+				final JCheckBox checkbox = this.techCheckboxes.get(tech);
+				final Color color = ownedTechs.contains(tech) ? this.ownedColor : this.unownedColor;
 				BubbaPanel.setButtonProperties(checkbox, width, height, color, background, fontSize);
 			}
 
 			this.writtenRecordLabel.getParent().setEnabled(CivEditPanel.this.civ.hasTech(Technology.WRITTEN_RECORD));
-			for (TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
+			for (final TechnologyTypeComboBox combobox : this.writtenRecordComboboxes) {
 				combobox.setEnabled(CivEditPanel.this.civ.hasTech(Technology.WRITTEN_RECORD));
 			}
 			this.monumentLabel.getParent().setEnabled(CivEditPanel.this.civ.hasTech(Technology.MONUMENT));
-			for (TechnologyTypeComboBox combobox : this.monumentComboboxes) {
+			for (final TechnologyTypeComboBox combobox : this.monumentComboboxes) {
 				combobox.setEnabled(CivEditPanel.this.civ.hasTech(Technology.MONUMENT));
 			}
 		}
 
-		public void actionPerformed(ActionEvent event) {
-			String command = event.getActionCommand();
+		@Override
+		public void actionPerformed(final ActionEvent event) {
+			final String command = event.getActionCommand();
 			switch (command) {
 				case "Tech":
-					JCheckBox source = ( (JCheckBox) event.getSource() );
-					String techName = source.getName();
-					Technology tech = Technology.valueOf(techName);
+					final JCheckBox source = ( (JCheckBox) event.getSource() );
+					final String techName = source.getName();
+					final Technology tech = Technology.valueOf(techName);
 					if (source.isSelected()) {
-						CivEditPanel.this.civ.addTech(tech, client.getGame().getCurrentRound());
+						CivEditPanel.this.civ.addTech(tech, CivEditPanel.this.client.getGame().getCurrentRound());
 					} else {
 						CivEditPanel.this.civ.removeTech(tech);
 					}
 					break;
 				case "Written Record Credit": {
-					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+					final ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
 						private static final long serialVersionUID = -3048516348338206499L;
 
 						{
-							for (TechnologyTypeComboBox combobox : TechPanel.this.writtenRecordComboboxes) {
-								add((Type) combobox.getSelectedItem());
+							for (final TechnologyTypeComboBox combobox : TechPanel.this.writtenRecordComboboxes) {
+								this.add((Type) combobox.getSelectedItem());
 							}
 						}
 					};
@@ -510,12 +518,12 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 					break;
 				}
 				case "Monument Credit":
-					ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
+					final ArrayList<Technology.Type> credits = new ArrayList<Technology.Type>() {
 						private static final long serialVersionUID = 4142653378901436651L;
 
 						{
-							for (TechnologyTypeComboBox combobox : TechPanel.this.monumentComboboxes) {
-								add((Type) combobox.getSelectedItem());
+							for (final TechnologyTypeComboBox combobox : TechPanel.this.monumentComboboxes) {
+								this.add((Type) combobox.getSelectedItem());
 							}
 						}
 					};
@@ -529,8 +537,8 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		String command = event.getActionCommand();
+	public void actionPerformed(final ActionEvent event) {
+		final String command = event.getActionCommand();
 		switch (command) {
 			case "Reset":
 				this.reset();
@@ -558,7 +566,7 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent event) {
+	public void stateChanged(final ChangeEvent event) {
 		this.updateGui();
 	}
 

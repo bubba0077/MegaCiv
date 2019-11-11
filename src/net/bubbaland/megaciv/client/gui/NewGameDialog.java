@@ -25,6 +25,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -53,7 +54,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 	private final GameClient							client;
 
-	public NewGameDialog(GameClient client, GuiController controller) {
+	public NewGameDialog(final GameClient client, final GuiController controller) {
 		super(controller);
 		this.client = client;
 
@@ -63,13 +64,13 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		constraints.weightx = 3.0;
 		constraints.weighty = 0.0;
 
-		Properties props = controller.getProperties();
+		final Properties props = controller.getProperties();
 		float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Number.FontSize"));
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridheight = 1;
-		JLabel label = new JLabel("Number of civilizations:");
+		final JLabel label = new JLabel("Number of civilizations:");
 		label.setFont(label.getFont().deriveFont(fontSize));
 		this.add(label, constraints);
 
@@ -89,7 +90,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.add(this.useCreditsCheckbox, constraints);
 
 		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Option.FontSize"));
-		ButtonGroup regionGroup = new ButtonGroup();
+		final ButtonGroup regionGroup = new ButtonGroup();
 
 		constraints.gridx = 3;
 		constraints.gridy = 1;
@@ -111,7 +112,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		regionGroup.add(this.eastRadioButton);
 		regionGroup.add(this.westRadioButton);
 
-		ButtonGroup difficultyGroup = new ButtonGroup();
+		final ButtonGroup difficultyGroup = new ButtonGroup();
 
 		constraints.weightx = 1.0;
 		constraints.gridx = 3;
@@ -155,7 +156,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 6;
-		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
 		separator.setPreferredSize(new Dimension(10, 10));
 		this.add(separator, constraints);
 		constraints.gridwidth = 1;
@@ -164,10 +165,10 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		constraints.weightx = 0.5;
 		constraints.weighty = 1.0;
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
-		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+		for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
 			constraints.gridy = 4 + name.ordinal() / 2;
-			CivPanel panel = new CivPanel(controller, name);
+			final CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.put(name, panel);
 			this.add(panel, constraints);
 		}
@@ -206,9 +207,9 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	}
 
 	public void setDefaultCivs() {
-		int nCivs = (int) this.nCivSpinner.getValue();
+		final int nCivs = (int) this.nCivSpinner.getValue();
 
-		int startCredits = Game.SMALL_GAME_CREDITS.get(nCivs);
+		final int startCredits = Game.SMALL_GAME_CREDITS.get(nCivs);
 
 		this.useCreditsCheckbox.setText("Use start game credits (" + startCredits + ")");
 		this.useCreditsCheckbox.setEnabled(startCredits > 0);
@@ -216,27 +217,27 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.eastRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.EAST) != null);
 		this.westRadioButton.setEnabled(Game.DEFAULT_STARTING_CIVS.get(nCivs).get(Region.WEST) != null);
 
-		Region region = this.getRegion();
+		final Region region = this.getRegion();
 
-		ArrayList<Civilization.Name> startingCivs = Game.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
+		final ArrayList<Civilization.Name> startingCivs = Game.DEFAULT_STARTING_CIVS.get(nCivs).get(region);
 
-		for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
-			CivPanel panel = this.civPanels.get(name);
+		for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+			final CivPanel panel = this.civPanels.get(name);
 			panel.setSelected(startingCivs.contains(name));
 		}
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		String command = event.getActionCommand();
+	public void actionPerformed(final ActionEvent event) {
+		final String command = event.getActionCommand();
 		switch (command) {
 			case "East":
 			case "West":
 				this.setDefaultCivs();
 				break;
 			case "Custom":
-				boolean isCustom = ( (JToggleButton) event.getSource() ).isSelected();
-				for (Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
+				final boolean isCustom = ( (JToggleButton) event.getSource() ).isSelected();
+				for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 					this.civPanels.get(name).setEnabled(isCustom);
 				}
 				this.nCivSpinner.setEnabled(!isCustom);
@@ -247,15 +248,15 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 				}
 				break;
 			case "Randomize":
-				ArrayList<String> players = new ArrayList<String>();
-				for (CivPanel panel : this.civPanels.values()) {
+				final ArrayList<String> players = new ArrayList<String>();
+				for (final CivPanel panel : this.civPanels.values()) {
 					if (panel.isSelected()) {
 						players.add(panel.getPlayerName());
 					}
 				}
 				Collections.shuffle(players);
-				Iterator<String> iterator = players.iterator();
-				for (CivPanel panel : this.civPanels.values()) {
+				final Iterator<String> iterator = players.iterator();
+				for (final CivPanel panel : this.civPanels.values()) {
 					if (panel.isSelected()) {
 						panel.setPlayerName(iterator.next());
 					}
@@ -265,25 +266,26 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent event) {
+	public void stateChanged(final ChangeEvent event) {
 		this.setDefaultCivs();
 	}
 
-	public void windowClosed(WindowEvent event) {
+	@Override
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 
 		// If the OK button was pressed, open the question
 		final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 		if (option == JOptionPane.OK_OPTION) {
-			HashMap<Civilization.Name, String> startingCivs = new HashMap<Civilization.Name, String>();
-			for (CivPanel panel : this.civPanels.values()) {
+			final HashMap<Civilization.Name, String> startingCivs = new HashMap<Civilization.Name, String>();
+			for (final CivPanel panel : this.civPanels.values()) {
 				if (panel.isSelected()) {
-					Civilization.Name name = panel.getCivName();
+					final Civilization.Name name = panel.getCivName();
 					startingCivs.put(name, panel.getPlayerName());
 				}
 			}
-			Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
+			final Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
 			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty,
 					this.useCreditsCheckbox.isSelected()));
@@ -298,17 +300,17 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		private final JTextField		textField;
 		private final Civilization.Name	name;
 
-		public CivPanel(GuiController controller, Civilization.Name name) {
+		public CivPanel(final GuiController controller, final Civilization.Name name) {
 			super(controller, new GridBagLayout());
 			this.name = name;
 
-			Properties props = controller.getProperties();
-			int civHeight = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Height"));
-			int civWidth = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Width"));
-			float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Civ.FontSize"));
+			final Properties props = controller.getProperties();
+			final int civHeight = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Height"));
+			final int civWidth = Integer.parseInt(props.getProperty("NewGameDialog.Civ.Width"));
+			final float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Civ.FontSize"));
 
-			Color foreground = Game.FOREGROUND_COLORS.get(name);
-			Color background = Game.BACKGROUND_COLORS.get(name);
+			final Color foreground = Game.FOREGROUND_COLORS.get(name);
+			final Color background = Game.BACKGROUND_COLORS.get(name);
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -340,16 +342,17 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			return this.textField.getText();
 		}
 
-		public void setPlayerName(String player) {
+		public void setPlayerName(final String player) {
 			this.textField.setText(player);
 		}
 
-		public void setSelected(boolean selected) {
+		public void setSelected(final boolean selected) {
 			this.checkbox.setSelected(selected);
 			this.textField.setEnabled(selected);
 		}
 
-		public void setEnabled(boolean enabled) {
+		@Override
+		public void setEnabled(final boolean enabled) {
 			this.checkbox.setEnabled(enabled);
 		}
 
@@ -358,7 +361,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			this.setSelected(this.isSelected());
 		}
 

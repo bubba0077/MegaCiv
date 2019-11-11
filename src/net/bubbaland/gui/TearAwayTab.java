@@ -18,6 +18,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JRootPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
@@ -42,7 +43,7 @@ public class TearAwayTab extends JWindow {
 
 	private final BubbaDragDropTabFrame	sourceFrame;
 
-	public TearAwayTab(BubbaDragDropTabFrame sourceFrame) {
+	public TearAwayTab(final BubbaDragDropTabFrame sourceFrame) {
 		this.sourceFrame = sourceFrame;
 		this.glassPane = new GhostGlassPane();
 		this.add(this.glassPane);
@@ -51,7 +52,7 @@ public class TearAwayTab extends JWindow {
 			private Point lastPoint = MouseInfo.getPointerInfo().getLocation();
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				final Point point = MouseInfo.getPointerInfo().getLocation();
 				if (!point.equals(this.lastPoint)) {
 					TearAwayTab.this.center(point);
@@ -81,8 +82,10 @@ public class TearAwayTab extends JWindow {
 	 * @param tabIndex
 	 *            The position where this should be inserted
 	 */
-	public void attach(BubbaDnDTabbedPane tabbedPane, int tabIndex) {
-		if (this.isVisible()) return;
+	public void attach(final BubbaDnDTabbedPane tabbedPane, final int tabIndex) {
+		if (this.isVisible()) {
+			return;
+		}
 		// Get image of tab
 		final Rectangle rect = tabbedPane.getBoundsAt(tabIndex);
 		BufferedImage tabImage =
@@ -124,12 +127,12 @@ public class TearAwayTab extends JWindow {
 	 * @param location
 	 *            The new window location
 	 */
-	private void center(Point location) {
+	private void center(final Point location) {
 		final Point offsetLocation = location;
 		offsetLocation.setLocation(location.x - 10, location.y - 10);
 		TearAwayTab.this.setLocation(offsetLocation);
 		for (final BubbaDnDTabbedPane pane : BubbaDnDTabbedPane.getTabbedPanes()) {
-			JRootPane root = pane.getRootPane();
+			final JRootPane root = pane.getRootPane();
 			final Rectangle bounds = root.getBounds();
 			bounds.setLocation(root.getLocationOnScreen());
 			if (bounds.contains(location)) {
@@ -149,20 +152,20 @@ public class TearAwayTab extends JWindow {
 	private class EasyDropTarget implements DropTargetListener {
 
 		@Override
-		public void dragEnter(DropTargetDragEvent dtde) {
+		public void dragEnter(final DropTargetDragEvent dtde) {
 			dtde.acceptDrag(dtde.getDropAction());
 		}
 
 		@Override
-		public void dragExit(DropTargetEvent dte) {}
+		public void dragExit(final DropTargetEvent dte) {}
 
 		@Override
-		public void dragOver(DropTargetDragEvent dtde) {}
+		public void dragOver(final DropTargetDragEvent dtde) {}
 
 		@Override
-		public void drop(DropTargetDropEvent a_event) {
+		public void drop(final DropTargetDropEvent a_event) {
 			TearAwayTab.this.detach();
-			BubbaDragDropTabFrame newFrame = TearAwayTab.this.sourceFrame.deriveNewFrame();
+			final BubbaDragDropTabFrame newFrame = TearAwayTab.this.sourceFrame.deriveNewFrame();
 			newFrame.tabbedPane.convertTab(newFrame.tabbedPane.getTabTransferData(a_event),
 					newFrame.tabbedPane.getTargetTabIndex(a_event.getLocation()));
 			newFrame.tabbedPane.setSelectedIndex(0);
@@ -173,6 +176,6 @@ public class TearAwayTab extends JWindow {
 		}
 
 		@Override
-		public void dropActionChanged(DropTargetDragEvent dtde) {}
+		public void dropActionChanged(final DropTargetDragEvent dtde) {}
 	}
 }

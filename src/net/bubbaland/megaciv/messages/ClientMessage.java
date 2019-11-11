@@ -10,9 +10,9 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -89,6 +89,7 @@ public interface ClientMessage {
 
 	public abstract GameEvent.EventType getEventType();
 
+	@Override
 	public abstract String toString();
 
 }

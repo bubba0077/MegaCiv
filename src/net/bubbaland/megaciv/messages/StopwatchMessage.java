@@ -15,23 +15,24 @@ import net.bubbaland.megaciv.game.Stopwatch;
 public class StopwatchMessage implements ClientMessage, ServerMessage {
 
 	// Date format to use
-	static public final DateTimeFormatter dateFormat =
+	static public final DateTimeFormatter	dateFormat	=
 			DateTimeFormatter.ofPattern("yyyy MMM dd hh:mm:ss.SSS").withZone(ZoneId.systemDefault());
 
 	@JsonProperty("action")
 	private final Stopwatch.StopwatchEvent	eventType;
 	@JsonProperty("timerLength")
-	private final Duration			timerLength;
+	private final Duration					timerLength;
 	@JsonProperty("lastEventTimeRemaining")
-	private final Duration			lastEventTimeRemaining;
+	private final Duration					lastEventTimeRemaining;
 	// Timer start in server time
 	@JsonProperty("eventTime")
-	private final Instant			eventTime;
+	private final Instant					eventTime;
 
 	@JsonCreator
-	public StopwatchMessage(@JsonProperty("action") Stopwatch.StopwatchEvent eventType,
-			@JsonProperty("timerLength") Duration timerLength, @JsonProperty("eventTime") Instant lastEventTime,
-			@JsonProperty("lastEventTimeRemaining") Duration lastEventTimeRemaining) {
+	public StopwatchMessage(@JsonProperty("action") final Stopwatch.StopwatchEvent eventType,
+			@JsonProperty("timerLength") final Duration timerLength,
+			@JsonProperty("eventTime") final Instant lastEventTime,
+			@JsonProperty("lastEventTimeRemaining") final Duration lastEventTimeRemaining) {
 		this.eventType = eventType;
 		this.timerLength = timerLength;
 		this.eventTime = lastEventTime;
@@ -39,7 +40,7 @@ public class StopwatchMessage implements ClientMessage, ServerMessage {
 	}
 
 	public Stopwatch.StopwatchEvent getEvent() {
-		return eventType;
+		return this.eventType;
 	}
 
 	public Duration getTimerLength() {

@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.BorderFactory;
+import javax.swing.ScrollPaneConstants;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.bubbaland.gui.BubbaDialog;
@@ -32,7 +33,7 @@ import net.bubbaland.megaciv.messages.AdvanceAstMessage;
  * will automatically check the boxes for civilizations that satisfy all requirements to advance (or the regress box
  * when appropriate at advanced difficulty). User can manually change these if necessary and then apply the advance.
  * This will also increment the turn counter for the game.
- * 
+ *
  * @author Walter Kolczynski
  *
  */
@@ -51,13 +52,13 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 	/**
 	 * Create a new dialog to advance AST.
-	 * 
+	 *
 	 * @param client
 	 *            Client with game data handling communication to game server.
 	 * @param controller
 	 *            Master GUI controller for this dialog.
 	 */
-	public AstAlterationDialog(GuiClient client, BubbaGuiController controller) {
+	public AstAlterationDialog(final GuiClient client, final BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
 
@@ -70,11 +71,11 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 		this.civPanels = new ArrayList<CivPanel>();
 
 		// Create panels for each civilization
-		ArrayList<Civilization> civs = this.client.getGame().getCivilizations();
-		for (Civilization civ : civs) {
+		final ArrayList<Civilization> civs = this.client.getGame().getCivilizations();
+		for (final Civilization civ : civs) {
 			constraints.gridx = civ.getName().ordinal() % N_COLUMNS;
 			constraints.gridy = civ.getName().ordinal() / N_COLUMNS;
-			CivPanel panel = new CivPanel(controller, civ);
+			final CivPanel panel = new CivPanel(controller, civ);
 			this.civPanels.add(panel);
 			this.add(panel, constraints);
 		}
@@ -89,21 +90,22 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 	/**
 	 * Retrieve information from dialog panel and send to server if OK was selected. This is triggered by the dialog
 	 * closing.
-	 * 
+	 *
 	 * @param event
 	 *            The event closing the dialog.
 	 */
 
-	public void windowClosed(WindowEvent event) {
+	@Override
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 
 		// If the OK button was pressed, open the question
 		final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 		if (option == JOptionPane.OK_OPTION) {
-			HashMap<Civilization.Name, Civilization.AstChange> advanceAst =
+			final HashMap<Civilization.Name, Civilization.AstChange> advanceAst =
 					new HashMap<Civilization.Name, Civilization.AstChange>();
-			for (CivPanel panel : this.civPanels) {
+			for (final CivPanel panel : this.civPanels) {
 				advanceAst.put(panel.getCivName(), panel.getAstChange());
 			}
 			this.client.log("Sending AST advances to server " + advanceAst);
@@ -114,7 +116,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 	/**
 	 * A panel to show civilization name, the requirements to advance the next AST step and whether each is met, and
 	 * allow user input as to whether the civilization should advance (or possibly regress at advanaced difficulty).
-	 * 
+	 *
 	 * @author Walter Kolczynski
 	 *
 	 */
@@ -129,30 +131,30 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 		/**
 		 * Create a new panel.
-		 * 
+		 *
 		 * @param controller
 		 *            Master GUI controller for this panel.
 		 * @param civ
 		 *            Civilization attached to this panel.
 		 */
-		public CivPanel(BubbaGuiController controller, Civilization civ) {
+		public CivPanel(final BubbaGuiController controller, final Civilization civ) {
 			super(controller, new GridBagLayout());
 			this.name = civ.getName();
 
-			Properties props = controller.getProperties();
-			int civHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Height"));
-			int civWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Width"));
-			float civFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Civ.FontSize"));
+			final Properties props = controller.getProperties();
+			final int civHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Height"));
+			final int civWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Civ.Width"));
+			final float civFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Civ.FontSize"));
 
-			int regressHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Regress.Height"));
-			float regressFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Regress.FontSize"));
+			final int regressHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Regress.Height"));
+			final float regressFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Regress.FontSize"));
 
-			int reqHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Height"));
-			int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
-			float reqFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Req.FontSize"));
+			final int reqHeight = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Height"));
+			final int reqWidth = Integer.parseInt(props.getProperty("AdvanceAstDialog.Req.Width"));
+			final float reqFontSize = Float.parseFloat(props.getProperty("AdvanceAstDialog.Req.FontSize"));
 
-			Color foreground = Game.FOREGROUND_COLORS.get(name); // Secondary color for civilization
-			Color background = Game.BACKGROUND_COLORS.get(name); // Primary color for civilization
+			final Color foreground = Game.FOREGROUND_COLORS.get(this.name); // Secondary color for civilization
+			final Color background = Game.BACKGROUND_COLORS.get(this.name); // Primary color for civilization
 
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.fill = GridBagConstraints.BOTH;
@@ -163,16 +165,16 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			this.setBackground(background);
 
 			// Create a button group to hold the advance and regress checkboxes.
-			ButtonGroup group = new ButtonGroup() {
+			final ButtonGroup group = new ButtonGroup() {
 				private static final long serialVersionUID = 8206407025138465937L;
 
 				@Override
-				public void setSelected(ButtonModel model, boolean selected) {
+				public void setSelected(final ButtonModel model, final boolean selected) {
 					if (selected) {
 						super.setSelected(model, selected);
 					} else {
 						if (this.getSelection() == model) {
-							clearSelection();
+							this.clearSelection();
 						}
 					}
 				}
@@ -181,7 +183,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			// Display advance AST checkbox
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			this.advanceCheckbox = new JCheckBox(WordUtils.capitalizeFully(name.toString()));
+			this.advanceCheckbox = new JCheckBox(WordUtils.capitalizeFully(this.name.toString()));
 			group.add(this.advanceCheckbox);
 			BubbaPanel.setButtonProperties(this.advanceCheckbox, civWidth, civHeight, foreground, background,
 					civFontSize);
@@ -207,15 +209,15 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 			}
 
 			// Display requirements and current status for each
-			String astReqText = civ.astRequirementString(civ.getNextStepAge(), false);
+			final String astReqText = civ.astRequirementString(civ.getNextStepAge(), false);
 			constraints.weightx = 1.0;
 			constraints.weighty = 1.0;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			constraints.gridheight = 3;
 			this.requirementsTextPane = this.scrollableTextPaneFactory("", reqWidth, reqHeight, foreground, Color.WHITE,
-					constraints, reqFontSize, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
-					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+					constraints, reqFontSize, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED,
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.requirementsTextPane.setContentType("text/html");
 			this.requirementsTextPane.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, background));
 			this.requirementsTextPane.setText(astReqText);
@@ -224,7 +226,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 		/**
 		 * Get the civilization name attached to this panel.
-		 * 
+		 *
 		 * @return The civilization's name.
 		 */
 		public Civilization.Name getCivName() {
@@ -233,7 +235,7 @@ public class AstAlterationDialog extends BubbaDialogPanel {
 
 		/**
 		 * Get the type of AST change selected by this panel.
-		 * 
+		 *
 		 * @return The AST change selected.
 		 */
 		public Civilization.AstChange getAstChange() {

@@ -25,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
@@ -41,22 +40,22 @@ public abstract class BubbaPanel extends JPanel {
 
 	protected final BubbaGuiController	controller;
 
-	public BubbaPanel(BubbaGuiController controller) {
+	public BubbaPanel(final BubbaGuiController controller) {
 		super();
 		this.controller = controller;
 	}
 
-	public BubbaPanel(BubbaGuiController controller, boolean isDoubleBuffered) {
+	public BubbaPanel(final BubbaGuiController controller, final boolean isDoubleBuffered) {
 		super(isDoubleBuffered);
 		this.controller = controller;
 	}
 
-	public BubbaPanel(BubbaGuiController controller, LayoutManager layout) {
+	public BubbaPanel(final BubbaGuiController controller, final LayoutManager layout) {
 		super(layout);
 		this.controller = controller;
 	}
 
-	public BubbaPanel(BubbaGuiController controller, LayoutManager layout, boolean isDoubleBuffered) {
+	public BubbaPanel(final BubbaGuiController controller, final LayoutManager layout, final boolean isDoubleBuffered) {
 		super(layout, isDoubleBuffered);
 		this.controller = controller;
 	}
@@ -76,8 +75,8 @@ public abstract class BubbaPanel extends JPanel {
 	 *
 	 * @return The text pane inside the scroll pane
 	 */
-	public JTextPane hyperlinkedTextPaneFactory(String string, GridBagConstraints constraints, int horizontalScroll,
-			int verticalScroll) {
+	public JTextPane hyperlinkedTextPaneFactory(final String string, final GridBagConstraints constraints,
+			final int horizontalScroll, final int verticalScroll) {
 
 		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
 		pane.setBorder(BorderFactory.createEmptyBorder());
@@ -85,20 +84,17 @@ public abstract class BubbaPanel extends JPanel {
 		this.add(pane, constraints);
 		final JTextPane textPane = new JTextPane(new DefaultStyledDocument());
 		textPane.setContentType("text/html");
-		textPane.addHyperlinkListener(new HyperlinkListener() {
-			@Override
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-					try {
-						Desktop.getDesktop().browse(e.getURL().toURI());
-					} catch (IOException | URISyntaxException exception) {}
-				} else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-					BubbaPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				} else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-					BubbaPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-
+		textPane.addHyperlinkListener(e -> {
+			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				try {
+					Desktop.getDesktop().browse(e.getURL().toURI());
+				} catch (IOException | URISyntaxException exception) {}
+			} else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+				BubbaPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			} else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+				BubbaPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
+
 		});
 		textPane.setText(string);
 		textPane.setBorder(BorderFactory.createEmptyBorder());
@@ -124,8 +120,8 @@ public abstract class BubbaPanel extends JPanel {
 	 *
 	 * @return The text pane inside the scroll pane
 	 */
-	public JTextPane scrollableTextPaneFactory(String string, GridBagConstraints constraints, int horizontalScroll,
-			int verticalScroll) {
+	public JTextPane scrollableTextPaneFactory(final String string, final GridBagConstraints constraints,
+			final int horizontalScroll, final int verticalScroll) {
 
 		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
 		pane.setBorder(BorderFactory.createEmptyBorder());
@@ -166,8 +162,9 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The vertical scroll bar policy (JScrollPane constants)
 	 * @return The text area inside the scroll pane
 	 */
-	public JTextPane scrollableTextPaneFactory(String string, int width, int height, Color foreground, Color background,
-			GridBagConstraints constraints, float fontSize, int horizontalScroll, int verticalScroll) {
+	public JTextPane scrollableTextPaneFactory(final String string, final int width, final int height,
+			final Color foreground, final Color background, final GridBagConstraints constraints, final float fontSize,
+			final int horizontalScroll, final int verticalScroll) {
 
 		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
 		pane.setPreferredSize(new Dimension(width, height));
@@ -201,8 +198,8 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The vertical scroll bar policy (JScrollPane constants)
 	 * @return The text area inside the scroll pane
 	 */
-	public JTextArea scrollableTextAreaFactory(String string, GridBagConstraints constraints, int horizontalScroll,
-			int verticalScroll) {
+	public JTextArea scrollableTextAreaFactory(final String string, final GridBagConstraints constraints,
+			final int horizontalScroll, final int verticalScroll) {
 
 		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
 		pane.setBorder(BorderFactory.createEmptyBorder());
@@ -242,8 +239,9 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The vertical scroll bar policy (JScrollPane constants)
 	 * @return The text area inside the scroll pane
 	 */
-	public JTextArea scrollableTextAreaFactory(String string, int width, int height, Color foreground, Color background,
-			GridBagConstraints constraints, float fontSize, int horizontalScroll, int verticalScroll) {
+	public JTextArea scrollableTextAreaFactory(final String string, final int width, final int height,
+			final Color foreground, final Color background, final GridBagConstraints constraints, final float fontSize,
+			final int horizontalScroll, final int verticalScroll) {
 
 		final InternalScrollPane pane = new InternalScrollPane(verticalScroll, horizontalScroll);
 		pane.setPreferredSize(new Dimension(width, height));
@@ -277,8 +275,8 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The vertical alignment for the label (JLabel constants)
 	 * @return The label inside the panel
 	 */
-	protected JLabel enclosedLabelFactory(String string, GridBagConstraints constraints, int labelHAlignment,
-			int labelVAlignment) {
+	protected JLabel enclosedLabelFactory(final String string, final GridBagConstraints constraints,
+			final int labelHAlignment, final int labelVAlignment) {
 		final GridBagConstraints solo = new GridBagConstraints();
 		solo.fill = GridBagConstraints.BOTH;
 		solo.anchor = GridBagConstraints.CENTER;
@@ -320,8 +318,9 @@ public abstract class BubbaPanel extends JPanel {
 	 *            The vertical alignment for the label (JLabel constants)
 	 * @return The label inside the panel
 	 */
-	protected JLabel enclosedLabelFactory(String string, int width, int height, Color foreground, Color background,
-			GridBagConstraints constraints, float fontSize, int labelHAlignment, int labelVAlignment) {
+	protected JLabel enclosedLabelFactory(final String string, final int width, final int height,
+			final Color foreground, final Color background, final GridBagConstraints constraints, final float fontSize,
+			final int labelHAlignment, final int labelVAlignment) {
 		final GridBagConstraints solo = new GridBagConstraints();
 		solo.fill = GridBagConstraints.BOTH;
 		solo.anchor = GridBagConstraints.CENTER;
@@ -360,9 +359,11 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param fontSize
 	 *            The new font size
 	 */
-	protected static void setButtonProperties(Component button, int width, int height, Color foreground,
-			Color background, float fontSize) {
-		if (!( button instanceof JButton || button instanceof JToggleButton )) return;
+	protected static void setButtonProperties(final Component button, final int width, final int height,
+			final Color foreground, final Color background, final float fontSize) {
+		if (!( button instanceof JButton || button instanceof JToggleButton )) {
+			return;
+		}
 		button.setForeground(foreground);
 		button.setBackground(background);
 		button.setFont(button.getFont().deriveFont(fontSize));
@@ -388,8 +389,8 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param fontSize
 	 *            The new font size
 	 */
-	protected static void setComboBoxProperties(JComboBox<String> comboBox, int width, int height, Color foreground,
-			Color background, Color panelBackground, float fontSize) {
+	protected static void setComboBoxProperties(final JComboBox<String> comboBox, final int width, final int height,
+			final Color foreground, final Color background, final Color panelBackground, final float fontSize) {
 		setPanelProperties((JPanel) comboBox.getParent(), width, height, panelBackground);
 		comboBox.setBackground(background);
 		comboBox.setPreferredSize(new Dimension(width, height));
@@ -414,8 +415,8 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param fontSize
 	 *            The new font size
 	 */
-	protected static void setLabelProperties(JLabel label, int width, int height, Color foreground, Color background,
-			float fontSize) {
+	protected static void setLabelProperties(final JLabel label, final int width, final int height,
+			final Color foreground, final Color background, final float fontSize) {
 		setPanelProperties((JPanel) label.getParent(), width, height, background);
 		label.setFont(label.getFont().deriveFont(fontSize));
 		label.setForeground(foreground);
@@ -433,7 +434,8 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param background
 	 *            The new background color
 	 */
-	protected static void setPanelProperties(JPanel panel, int width, int height, Color background) {
+	protected static void setPanelProperties(final JPanel panel, final int width, final int height,
+			final Color background) {
 		panel.setBackground(background);
 		panel.setPreferredSize(new Dimension(width, height));
 		panel.setMinimumSize(new Dimension(width, height));
@@ -455,8 +457,8 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param fontSize
 	 *            The new font size
 	 */
-	protected static void setTextAreaProperties(JTextArea textArea, int width, int height, Color foreground,
-			Color background, float fontSize) {
+	protected static void setTextAreaProperties(final JTextArea textArea, final int width, final int height,
+			final Color foreground, final Color background, final float fontSize) {
 		( (JScrollPane) textArea.getParent().getParent() ).setPreferredSize(new Dimension(width, height));
 
 		textArea.setFont(textArea.getFont().deriveFont(fontSize));
@@ -480,8 +482,8 @@ public abstract class BubbaPanel extends JPanel {
 	 * @param fontSize
 	 *            The new font size
 	 */
-	protected static void setTextPaneProperties(JTextPane textPane, int width, int height, Color foreground,
-			Color background, float fontSize) {
+	protected static void setTextPaneProperties(final JTextPane textPane, final int width, final int height,
+			final Color foreground, final Color background, final float fontSize) {
 		// Scroll pane is two levels up
 		textPane.getParent().getParent().setPreferredSize(new Dimension(width, height));
 		textPane.getParent().getParent().setMinimumSize(new Dimension(width, height));
@@ -507,12 +509,12 @@ public abstract class BubbaPanel extends JPanel {
 
 		private static final long serialVersionUID = -8318646989146037930L;
 
-		public InternalScrollPane(int vsbPolicy, int hsbPolicy) {
+		public InternalScrollPane(final int vsbPolicy, final int hsbPolicy) {
 			super(vsbPolicy, hsbPolicy);
 		}
 
 		@Override
-		protected void processMouseWheelEvent(MouseWheelEvent e) {
+		protected void processMouseWheelEvent(final MouseWheelEvent e) {
 			final boolean scrollUp = e.getWheelRotation() < 0;
 			// If the mouse wheel scrolls up and we are already at top, tell parent to scroll up
 			if (scrollUp && this.verticalScrollBar.getValue() == this.verticalScrollBar.getMinimum()) {

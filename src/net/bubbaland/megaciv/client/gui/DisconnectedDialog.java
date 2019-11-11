@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import net.bubbaland.gui.BubbaDialog;
@@ -22,7 +23,7 @@ public class DisconnectedDialog extends BubbaDialogPanel implements ActionListen
 	private int					secs;
 	private final static int	RETRY_TIME			= 60;
 
-	public DisconnectedDialog(GuiController controller, GuiClient client) {
+	public DisconnectedDialog(final GuiController controller, final GuiClient client) {
 		super(controller);
 
 		this.controller = controller;
@@ -38,13 +39,13 @@ public class DisconnectedDialog extends BubbaDialogPanel implements ActionListen
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		final JLabel label = new JLabel("Disconnected from server!", JLabel.CENTER);
+		final JLabel label = new JLabel("Disconnected from server!", SwingConstants.CENTER);
 		label.setFont(label.getFont().deriveFont(fontSize));
 		this.add(label, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.waitingLabel = new JLabel("Retrying in 60s", JLabel.CENTER);
+		this.waitingLabel = new JLabel("Retrying in 60s", SwingConstants.CENTER);
 		this.add(this.waitingLabel, constraints);
 
 		final Object[] options = { "Retry Now", "Exit" };
@@ -53,13 +54,13 @@ public class DisconnectedDialog extends BubbaDialogPanel implements ActionListen
 		this.dialog.pack();
 		this.dialog.setVisible(true);
 
-		Timer timer = new Timer(1000, this);
+		final Timer timer = new Timer(1000, this);
 		timer.start();
 
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 		this.dialog.setVisible(visible);
 	}
@@ -69,7 +70,7 @@ public class DisconnectedDialog extends BubbaDialogPanel implements ActionListen
 	}
 
 	@Override
-	public void windowClosed(WindowEvent event) {
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 		if (this.dialog.getValue().equals("Exit") || this.dialog.getValue().equals(JOptionPane.CLOSED_OPTION)) {
 			this.controller.endProgram();
@@ -78,7 +79,7 @@ public class DisconnectedDialog extends BubbaDialogPanel implements ActionListen
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		this.secs--;
 		if (this.secs == 0) {
 			this.dispose();

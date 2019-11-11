@@ -13,7 +13,7 @@ public class CivEditMessage implements ClientMessage {
 	private final Civilization civ;
 
 	@JsonCreator
-	public CivEditMessage(@JsonProperty("civ") Civilization civ) {
+	public CivEditMessage(@JsonProperty("civ") final Civilization civ) {
 		this.civ = civ;
 	}
 
@@ -23,7 +23,7 @@ public class CivEditMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return "Civ " + civ.getName() + " edited: " + civ.toFullString();
+		return "Civ " + this.civ.getName() + " edited: " + this.civ.toFullString();
 	}
 
 	@Override

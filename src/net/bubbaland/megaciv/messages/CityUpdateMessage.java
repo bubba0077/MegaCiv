@@ -12,10 +12,10 @@ import net.bubbaland.megaciv.game.GameEvent.EventType;
 public class CityUpdateMessage implements ClientMessage {
 
 	@JsonProperty("cityCount")
-	private HashMap<Civilization.Name, Integer> cityCount;
+	private final HashMap<Civilization.Name, Integer> cityCount;
 
 	@JsonCreator
-	public CityUpdateMessage(@JsonProperty("cityCount") HashMap<Civilization.Name, Integer> cityCount) {
+	public CityUpdateMessage(@JsonProperty("cityCount") final HashMap<Civilization.Name, Integer> cityCount) {
 		this.cityCount = cityCount;
 	}
 
@@ -25,7 +25,7 @@ public class CityUpdateMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return "City Count: " + cityCount.toString();
+		return "City Count: " + this.cityCount.toString();
 	}
 
 	@Override

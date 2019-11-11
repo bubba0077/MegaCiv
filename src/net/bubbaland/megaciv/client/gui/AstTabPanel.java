@@ -7,8 +7,6 @@ import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import net.bubbaland.gui.BubbaMainPanel;
 
@@ -20,7 +18,7 @@ public class AstTabPanel extends BubbaMainPanel {
 	private final AstTablePanel		astTablePanel;
 	private final StopwatchPanel	countdownPanel;
 
-	public AstTabPanel(GuiClient client, GuiController controller, MegaCivFrame frame) {
+	public AstTabPanel(final GuiClient client, final GuiController controller, final MegaCivFrame frame) {
 		super(controller, frame);
 		if (client == null) {
 			System.out.println(this.getClass().getSimpleName() + "Creating " + this.getClass().getSimpleName()
@@ -30,12 +28,9 @@ public class AstTabPanel extends BubbaMainPanel {
 		this.controlPanel = new ControlsPanel(client, controller);
 		this.astTablePanel = new AstTablePanel(client, controller);
 
-		frame.getTabbedPane().addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				controlPanel.resizeFonts();
-				astTablePanel.resizeFonts();
-			}
+		frame.getTabbedPane().addChangeListener(arg0 -> {
+			AstTabPanel.this.controlPanel.resizeFonts();
+			AstTabPanel.this.astTablePanel.resizeFonts();
 		});
 
 		// Set up layout constraints
@@ -46,7 +41,7 @@ public class AstTabPanel extends BubbaMainPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 
-		JPanel panel = new JPanel(new GridBagLayout());
+		final JPanel panel = new JPanel(new GridBagLayout());
 
 		panel.add(this.controlPanel, constraints);
 

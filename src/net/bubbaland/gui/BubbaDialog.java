@@ -39,7 +39,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param title
 	 *            Title for the dialog
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title) {
+	public BubbaDialog(final BubbaGuiController gui, final String title) {
 		this(gui, title, new JOptionPane());
 	}
 
@@ -54,7 +54,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * @param optionPane
 	 *            Option pane to use
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, final JOptionPane optionPane) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final JOptionPane optionPane) {
 		super(null, title, JDialog.ModalityType.TOOLKIT_MODAL);
 		this.optionPane = optionPane;
 		this.gui = gui;
@@ -82,7 +82,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            Panel to display in this dialog
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel) {
 		this(gui, title, new JOptionPane(panel));
 		this.addWindowListener(panel);
 	}
@@ -100,7 +100,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            Dialog message type,
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel,
+			final int messageType) {
 		this(gui, title, new JOptionPane(panel, messageType));
 		this.addWindowListener(panel);
 	}
@@ -121,7 +122,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            Dialog option type
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel,
+			final int messageType, final int optionType) {
 		this(gui, title, new JOptionPane(panel, messageType, optionType));
 		this.addWindowListener(panel);
 	}
@@ -145,8 +147,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            Decorative icon to use for this dialog
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
-			Icon icon) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel,
+			final int messageType, final int optionType, final Icon icon) {
 		this(gui, title, new JOptionPane(panel, messageType, optionType, icon));
 		this.addWindowListener(panel);
 	}
@@ -173,8 +175,8 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            Array of choices for this dialog
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
-			Icon icon, Object[] options) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel,
+			final int messageType, final int optionType, final Icon icon, final Object[] options) {
 		this(gui, title, new JOptionPane(panel, messageType, optionType, icon, options));
 		this.addWindowListener(panel);
 	}
@@ -203,8 +205,9 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 *            The default option
 	 * @see JOptionPane
 	 */
-	public BubbaDialog(BubbaGuiController gui, String title, BubbaDialogPanel panel, int messageType, int optionType,
-			Icon icon, Object[] options, Object initialValue) {
+	public BubbaDialog(final BubbaGuiController gui, final String title, final BubbaDialogPanel panel,
+			final int messageType, final int optionType, final Icon icon, final Object[] options,
+			final Object initialValue) {
 		this.optionPane = new JOptionPane(panel, messageType, optionType, icon, options, initialValue);
 		this.gui = gui;
 		this.addWindowListener(panel);
@@ -239,7 +242,7 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	 * Detect when the state of the option pane has changed and close the dialog.
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent e) {
+	public void propertyChange(final PropertyChangeEvent e) {
 		final String prop = e.getPropertyName();
 		if (this.isVisible() && ( e.getSource() == this.optionPane )
 				&& ( JOptionPane.VALUE_PROPERTY.equals(prop) || JOptionPane.INPUT_VALUE_PROPERTY.equals(prop) )) {
@@ -248,30 +251,30 @@ public class BubbaDialog extends JDialog implements WindowListener, PropertyChan
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {}
+	public void windowActivated(final WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent e) {}
+	public void windowClosed(final WindowEvent e) {}
 
 	/**
 	 * Set the option pane value if the dialog is closed using the window decoration.
 	 */
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public void windowClosing(final WindowEvent e) {
 		this.optionPane.setValue(JOptionPane.CLOSED_OPTION);
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeactivated(final WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {}
+	public void windowDeiconified(final WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) {}
+	public void windowIconified(final WindowEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent e) {
+	public void windowOpened(final WindowEvent e) {
 		this.loadPosition();
 	}
 

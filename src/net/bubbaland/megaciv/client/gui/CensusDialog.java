@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -32,7 +32,7 @@ public class CensusDialog extends BubbaDialogPanel {
 
 	private final static int							N_COLUMNS			= 2;
 
-	public CensusDialog(GameClient client, BubbaGuiController controller) {
+	public CensusDialog(final GameClient client, final BubbaGuiController controller) {
 		super(controller);
 		this.client = client;
 
@@ -44,10 +44,11 @@ public class CensusDialog extends BubbaDialogPanel {
 		constraints.gridx = 0;
 
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
-		ArrayList<Civilization.Name> civNames = Civilization.sortByToName(this.client.getGame().getCivilizations(),
-				Civilization.SortOption.AST, Civilization.SortDirection.DESCENDING);
-		for (Civilization.Name name : civNames) {
-			CivPanel panel = new CivPanel(controller, name);
+		final ArrayList<Civilization.Name> civNames =
+				Civilization.sortByToName(this.client.getGame().getCivilizations(), Civilization.SortOption.AST,
+						Civilization.SortDirection.DESCENDING);
+		for (final Civilization.Name name : civNames) {
+			final CivPanel panel = new CivPanel(controller, name);
 			constraints.gridx = name.ordinal() % N_COLUMNS;
 			constraints.gridy = name.ordinal() / N_COLUMNS;
 			this.add(panel, constraints);
@@ -60,17 +61,18 @@ public class CensusDialog extends BubbaDialogPanel {
 
 	}
 
-	public void windowClosed(WindowEvent event) {
+	@Override
+	public void windowClosed(final WindowEvent event) {
 		super.windowClosed(event);
 
 		// If the OK button was pressed, open the question
 		final int option = ( (Integer) this.dialog.getValue() ).intValue();
 
 		if (option == JOptionPane.OK_OPTION) {
-			HashMap<Civilization.Name, Integer> census = new HashMap<Civilization.Name, Integer>();
-			for (CivPanel panel : this.civPanels.values()) {
-				Civilization.Name name = panel.getCivName();
-				int newPop = panel.getPopulation();
+			final HashMap<Civilization.Name, Integer> census = new HashMap<Civilization.Name, Integer>();
+			for (final CivPanel panel : this.civPanels.values()) {
+				final Civilization.Name name = panel.getCivName();
+				final int newPop = panel.getPopulation();
 				census.put(name, newPop);
 			}
 			this.client.log("Sending new census: " + census);
@@ -85,17 +87,17 @@ public class CensusDialog extends BubbaDialogPanel {
 		private final AutoFocusSpinner	spinner;
 		private final Civilization.Name	name;
 
-		public CivPanel(BubbaGuiController controller, Civilization.Name name) {
+		public CivPanel(final BubbaGuiController controller, final Civilization.Name name) {
 			super(controller);
 			this.name = name;
 
-			Properties props = controller.getProperties();
-			int civHeight = Integer.parseInt(props.getProperty("CensusDialog.Civ.Height"));
-			int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
-			float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
+			final Properties props = controller.getProperties();
+			final int civHeight = Integer.parseInt(props.getProperty("CensusDialog.Civ.Height"));
+			final int civWidth = Integer.parseInt(props.getProperty("CensusDialog.Civ.Width"));
+			final float fontSize = Float.parseFloat(props.getProperty("CensusDialog.FontSize"));
 
-			Color foreground = Game.FOREGROUND_COLORS.get(name);
-			Color background = Game.BACKGROUND_COLORS.get(name);
+			final Color foreground = Game.FOREGROUND_COLORS.get(name);
+			final Color background = Game.BACKGROUND_COLORS.get(name);
 
 			this.setBackground(background);
 
@@ -108,7 +110,7 @@ public class CensusDialog extends BubbaDialogPanel {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			this.enclosedLabelFactory(WordUtils.capitalizeFully(name.toString()), civWidth, civHeight, foreground,
-					background, constraints, fontSize, JLabel.LEFT, JLabel.CENTER);
+					background, constraints, fontSize, SwingConstants.LEFT, SwingConstants.CENTER);
 			constraints.weightx = 0.0;
 
 			constraints.gridx = 1;
