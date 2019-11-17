@@ -391,20 +391,6 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			final boolean isOwned = ownedTechs.contains(tech);
 			checkbox.setSelected(isOwned);
 			checkbox.setEnabled(!isOwned);
-			String techString = "<html>" + tech.getName();
-			if (!isOwned) {
-				if (tech == Technology.LIBRARY || tech == Technology.ANATOMY) {
-					techString = techString + " (" + civ.getCost(tech) + "*/" + tech.getBaseCost() + ") ";
-				} else {
-					techString = techString + " (" + civ.getCost(tech) + "/" + tech.getBaseCost() + ") ";
-				}
-				for (final Type type : tech.getTypes()) {
-					techString = techString + "<img height=\"20\" width=\"20\" style=\"vertical-align:middle\" src=\""
-							+ GuiClient.class.getResource("images/" + type.toString() + ".png");
-				}
-			}
-			techString = techString + "</html>";
-			checkbox.setText(techString);
 		}
 
 		ArrayList<Technology.Type> credits = civ.getTypeCredits(Technology.WRITTEN_RECORD);
