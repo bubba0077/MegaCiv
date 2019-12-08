@@ -108,24 +108,29 @@ public class Game implements Serializable {
 	@JsonProperty("region")
 	private Region							region;
 
+	@JsonProperty("showVP")
+	private boolean					showVP;
+
 	@JsonProperty("gameLog")
 	private final ArrayList<GameEvent>		gameLog;
 
 	public Game() {
-		this(null, new ArrayList<Civilization>(), null, 1, Integer.MAX_VALUE, new ArrayList<GameEvent>());
+		this(null, new ArrayList<Civilization>(), null, 1, Integer.MAX_VALUE, new ArrayList<GameEvent>(), true);
 	}
 
 	@JsonCreator
 	public Game(@JsonProperty("region") final Region region, @JsonProperty("civs") final ArrayList<Civilization> civs,
 			@JsonProperty("difficulty") final Difficulty difficulty,
 			@JsonProperty("currentRound") final int currentRound, @JsonProperty("lastRound") final int lastRound,
-			@JsonProperty("gameLog") final ArrayList<GameEvent> gameLog) {
+			@JsonProperty("gameLog") final ArrayList<GameEvent> gameLog,
+			@JsonProperty("showVP") final boolean showVP) {
 		this.region = region;
 		this.civs = civs;
 		this.currentRound = currentRound;
 		this.lastRound = lastRound;
 		this.difficulty = difficulty;
 		this.gameLog = gameLog;
+		this.showVP = showVP;
 	}
 
 	public ArrayList<GameEvent> getLog() {
@@ -142,6 +147,14 @@ public class Game implements Serializable {
 
 	public Region getRegion() {
 		return this.region;
+	}
+
+	public void setShowVP(final boolean showVP) {
+		this.showVP = showVP;
+	}
+
+	public boolean showVP() {
+		return this.showVP;
 	}
 
 	public TradeCardSet getTradeCards() {

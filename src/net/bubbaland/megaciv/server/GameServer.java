@@ -139,6 +139,8 @@ public class GameServer extends Server {
 				this.game.setDifficulty(difficulty);
 				final Civilization.Region region = ( (NewGameMessage) message ).getRegion();
 				this.game.setRegion(region);
+				final boolean showVP = ( (NewGameMessage) message ).showVP();
+				this.game.setShowVP(showVP);
 
 				// this.log(user + " created new " + WordUtils.capitalizeFully(difficulty.toString())
 				// + " game with the following civilizations: " + startingCivs);

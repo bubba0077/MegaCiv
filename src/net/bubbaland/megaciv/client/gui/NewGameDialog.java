@@ -51,6 +51,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final JCheckBox								useCreditsCheckbox;
+	private final JCheckBox								showVictoryPoints;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 	private final GameClient							client;
 
@@ -88,6 +89,12 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.useCreditsCheckbox = new JCheckBox("Use start game credits");
 		this.useCreditsCheckbox.setSelected(true);
 		this.add(this.useCreditsCheckbox, constraints);
+
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		this.showVictoryPoints = new JCheckBox("Show Victory Points");
+		this.showVictoryPoints.setSelected(true);
+		this.add(this.showVictoryPoints, constraints);
 
 		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Option.FontSize"));
 		final ButtonGroup regionGroup = new ButtonGroup();
@@ -288,7 +295,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			final Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
 			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty,
-					this.useCreditsCheckbox.isSelected()));
+					this.useCreditsCheckbox.isSelected(), this.showVictoryPoints.isSelected()));
 		}
 	}
 
