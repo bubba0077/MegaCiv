@@ -10,6 +10,8 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -115,10 +117,29 @@ public class CensusDialog extends BubbaDialogPanel {
 
 			constraints.gridx = 1;
 			constraints.gridy = 0;
+			/*
+			 * LMandtler: I changed the Spinner Constructor call to allow values between 
+			 * -Game.MAX_POPULATION and Game.MAX_POPULATION
+			 * , so user will be available to type in negative numbers
+			 * Then I added a change listener, which, when negative numbers were typed in, will get the current population count.
+			 */
 			this.spinner = new AutoFocusSpinner(
-					new SpinnerNumberModel(CensusDialog.this.client.getGame().getCivilization(name).getPopulation(), 1,
+					new SpinnerNumberModel(CensusDialog.this.client.getGame().getCivilization(name).getPopulation(), -Game.MAX_POPULATION,
 							Game.MAX_POPULATION, 1));
 			this.spinner.setFont(this.spinner.getFont().deriveFont(fontSize));
+
+			
+			this.spinner.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					AutoFocusSpinner spinner = (AutoFocusSpinner) e.getSource();
+					int currentValue = (int) spinner.getValue();
+					if(currentValue < 0)
+					{
+						spinner.setValue(Game.MAX_POPULATION + currentValue);
+					}
+				}
+			});
+		
 			this.add(this.spinner, constraints);
 		}
 
