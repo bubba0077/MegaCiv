@@ -31,6 +31,7 @@ import net.bubbaland.megaciv.client.GameClient;
 import net.bubbaland.megaciv.game.Civilization;
 import net.bubbaland.megaciv.game.Game;
 import net.bubbaland.megaciv.game.Technology;
+import net.bubbaland.megaciv.game.Civilization.Age;
 import net.bubbaland.megaciv.game.Technology.Type;
 import net.bubbaland.megaciv.messages.AdditionalCreditMessage;
 import net.bubbaland.megaciv.messages.TechPurchaseMessage;
@@ -47,7 +48,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 	private final GameClient						client;
 	private final JFrame							frame;
 	private final JSpinner							spinner;
-	private final JCheckBox							disableUnbuyable;
+	private final JCheckBox							disableUnbuyable, buildingCheckBox;
 	private final JButton							buyNextButton, resetButton, suggestButton;
 	private final ArrayList<TechnologyTypeComboBox>	writtenRecordComboboxes, monumentComboboxes;
 	private final JLabel							writtenRecordLabel, monumentLabel;
@@ -59,6 +60,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.frame = new JFrame();
 		this.client = client;
 		this.civName = civName;
+		Civilization civ = this.client.getGame().getCivilization(civName);
 
 		final Game game = this.client.getGame();
 		final ArrayList<Civilization.Name> civNames = Civilization.sortByToName(game.getCivilizations(),
@@ -187,7 +189,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.suggestButton.addActionListener(this);
 		this.suggestButton.setEnabled(false);
 		this.suggestButton.setToolTipText(
-				"<html>Suggest a purchase that earns the maximum number of VP this turn.<BR>(May take over a minute for large budgets.)</html>");
+				"<html>Suggest a purchase that earns the maximum number of VP this turn. Does not consider building purchases.<BR>(May take over a minute for large budgets.)</html>");
 		this.add(this.suggestButton, constraints);
 
 		constraints.gridx = 2;
@@ -205,6 +207,17 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		constraints.gridheight = 1;
 		this.vpLabel =
 				this.enclosedLabelFactory("VP Gained: 0", constraints, SwingConstants.RIGHT, SwingConstants.CENTER);
+
+		constraints.gridx = 4;
+		constraints.gridy = 4 + N_ROWS;
+		constraints.weighty = 1.0;
+		constraints.gridheight = 1;
+		constraints.gridwidth = 2;
+		this.buildingCheckBox = new JCheckBox("Purchase Building (" + civ.getBuildingCost() + ")");
+		this.buildingCheckBox.setEnabled(!( civ.getCurrentAge() == Age.STONE ));
+		this.buildingCheckBox.setActionCommand("Checkbox Changed");
+		this.buildingCheckBox.addActionListener(this);
+		this.add(this.buildingCheckBox, constraints);
 
 		constraints.gridx = 4;
 		constraints.gridy = 5 + N_ROWS;
@@ -382,6 +395,10 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			techString = techString + "</html>";
 			checkbox.setText(techString);
 		}
+
+		this.buildingCheckBox
+				.setEnabled(!this.disableUnbuyable.isSelected() || budget == 0 || civ.getBuildingCost() <= budget);
+
 	}
 
 	private void resetCheckboxes() {
@@ -393,6 +410,7 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			checkbox.setSelected(isOwned);
 			checkbox.setEnabled(!isOwned);
 		}
+		this.buildingCheckBox.setSelected(false);
 
 		ArrayList<Technology.Type> credits = civ.getTypeCredits(Technology.WRITTEN_RECORD);
 		for (int i = 0; i < 2; i++) {
@@ -426,7 +444,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 			combobox.setEnabled(selectedTechs.contains(Technology.MONUMENT));
 		}
 
-		final int cost = civ.getTotalCost(selectedTechs);
+		final int cost =
+				civ.getTotalCost(selectedTechs) + ( this.buildingCheckBox.isSelected() ? civ.getBuildingCost() : 0 );
 
 		this.buyNextButton.setText("Buy (" + String.format("%04d", cost) + ")");
 		if (cost > 0) {

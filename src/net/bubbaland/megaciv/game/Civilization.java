@@ -29,7 +29,17 @@ import net.bubbaland.megaciv.game.Game.Difficulty;
  */
 public class Civilization implements Serializable, Comparable<Civilization> {
 
-	private static final long serialVersionUID = -9210563148479097901L;
+	private static final long					serialVersionUID	= -9210563148479097901L;
+
+	private static final HashMap<Age, Integer>	BUILDING_COST		= new HashMap<Age, Integer>();
+	static {
+		BUILDING_COST.put(Age.STONE, 30);
+		BUILDING_COST.put(Age.EARLY_BRONZE, 30);
+		BUILDING_COST.put(Age.MIDDLE_BRONZE, 30);
+		BUILDING_COST.put(Age.LATE_BRONZE, 40);
+		BUILDING_COST.put(Age.EARLY_IRON, 50);
+		BUILDING_COST.put(Age.LATE_IRON, 50);
+	}
 
 	/**
 	 * The names of the 18 allowed civilizations.
@@ -1441,6 +1451,10 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		System.out.println("Optimal purchase found in " + ( endTime - startTime ) / 1000000000.0 + " s");
 
 		return optimalTechs;
+	}
+
+	public int getBuildingCost() {
+		return BUILDING_COST.get(this.getCurrentAge());
 	}
 
 	/**
