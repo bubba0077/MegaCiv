@@ -109,7 +109,7 @@ public class Game implements Serializable {
 	private Region							region;
 
 	@JsonProperty("showVP")
-	private boolean					showVP;
+	private boolean							showVP;
 
 	@JsonProperty("gameLog")
 	private final ArrayList<GameEvent>		gameLog;
@@ -122,8 +122,7 @@ public class Game implements Serializable {
 	public Game(@JsonProperty("region") final Region region, @JsonProperty("civs") final ArrayList<Civilization> civs,
 			@JsonProperty("difficulty") final Difficulty difficulty,
 			@JsonProperty("currentRound") final int currentRound, @JsonProperty("lastRound") final int lastRound,
-			@JsonProperty("gameLog") final ArrayList<GameEvent> gameLog,
-			@JsonProperty("showVP") final boolean showVP) {
+			@JsonProperty("gameLog") final ArrayList<GameEvent> gameLog, @JsonProperty("showVP") final boolean showVP) {
 		this.region = region;
 		this.civs = civs;
 		this.currentRound = currentRound;
@@ -180,7 +179,6 @@ public class Game implements Serializable {
 					this.civs.stream().filter(civ -> civ.getCurrentAge() == Age.LATE_IRON)
 							.forEach(civ -> civ.setLateIronBonus(true));
 				}
-
 			}
 		}
 		this.currentRound++;

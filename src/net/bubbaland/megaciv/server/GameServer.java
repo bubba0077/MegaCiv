@@ -42,6 +42,7 @@ import net.bubbaland.megaciv.messages.CityUpdateMessage;
 import net.bubbaland.megaciv.messages.CivEditMessage;
 import net.bubbaland.megaciv.messages.ClientMessage;
 import net.bubbaland.megaciv.messages.GameDataMessage;
+import net.bubbaland.megaciv.messages.GameEndMessage;
 import net.bubbaland.megaciv.messages.LoadGameMessage;
 import net.bubbaland.megaciv.messages.NewGameMessage;
 import net.bubbaland.megaciv.messages.RetireMessage;
@@ -193,6 +194,10 @@ public class GameServer extends Server {
 					this.game.getCivilization(name).changeAst(advanceAst.get(name));
 				}
 				this.game.nextRound();
+				if (this.game.isGameOver()) {
+					this.log("Game is over, sending message to " + this.sessionList.get(session));
+					this.sendMessage(session, new GameEndMessage(this.game));
+				}
 				// this.log("Ast advances triggered by " + user + ": " + advanceAst);
 				// this.broadcastMessage(new GameDataMessage(this.game));
 				break;

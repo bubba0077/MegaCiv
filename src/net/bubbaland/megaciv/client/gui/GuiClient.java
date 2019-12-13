@@ -103,7 +103,6 @@ public class GuiClient extends GameClient implements StopwatchListener {
 				( game != null ) ? game.getCivilizationNames() : new ArrayList<Civilization.Name>();
 		super.onMessage(message, session);
 
-
 		GuiClient.this.gui.updateGui();
 		final ArrayList<Civilization.Name> civNamesAfter = ( GuiClient.this.getGame() != null ) ? GuiClient.this
 				.getGame().getCivilizationNames() : new ArrayList<Civilization.Name>();
@@ -135,6 +134,10 @@ public class GuiClient extends GameClient implements StopwatchListener {
 				}
 			} ).execute();
 		}
+	}
+
+	protected void gameEnd() {
+		new GameEndDialog(this, this.gui);
 	}
 
 	private void updateTabs() {

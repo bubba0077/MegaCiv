@@ -232,6 +232,9 @@ public class GameClient implements Runnable, SntpListener {
 	public void onMessage(final ServerMessage message, final Session session) {
 		final String messageType = message.getClass().getSimpleName();
 		switch (messageType) {
+			case "GameEndMessage":
+				this.log("Game has ended, spawning dialog");
+				this.gameEnd();
 			case "GameDataMessage": // Received updated game data
 				this.game = ( (GameDataMessage) message ).getGame();
 				// this.log(this.game.toString());
@@ -245,6 +248,10 @@ public class GameClient implements Runnable, SntpListener {
 			default:
 				this.log("ERROR: Unknown message type received: " + message.getClass().getSimpleName());
 		}
+	}
+
+	protected void gameEnd() {
+
 	}
 
 	/**

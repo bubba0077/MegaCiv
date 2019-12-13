@@ -126,40 +126,76 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static enum SortDirection {
 		DESCENDING, ASCENDING;
 	}
-	
+
 	/**
 	 * The civilization name
 	 */
 	@JsonProperty("name")
-	private final Name												name;
+	private final Name							name;
 	/**
 	 * The name of the player controlling this civilization.
 	 */
 	@JsonProperty("player")
-	private String													player;
+	private String								player;
 	/**
 	 * The AST Position of the civilization (number of spaces advanced).
 	 */
 	@JsonProperty("astPosition")
-	private int														astPosition;
+	private int									astPosition;
 	/**
 	 * The population of this civilization.
 	 */
 	@JsonProperty("population")
-	private int														population;
+	private int									population;
 	/**
 	 * The number of cities this civilization controls.
 	 */
 	@JsonProperty("nCities")
-	private int														nCities;
+	private int									nCities;
 	/**
 	 * A list of the advances the civilization has purchased.
 	 */
 	@JsonProperty("techs")
-	private final HashMap<Technology, Integer>						techs;
+	private final HashMap<Technology, Integer>	techs;
 
 	@JsonProperty("lateIronBonus")
-	private boolean													lateIronBonus;
+	private boolean								lateIronBonus;
+
+	@JsonProperty("buildingOwned")
+	private boolean								buildingOwned;
+
+	/**
+	 * @return the buildingOwned
+	 */
+	public boolean isBuildingOwned() {
+		return this.buildingOwned;
+	}
+
+	/**
+	 * @param buildingOwned
+	 *            the buildingOwned to set
+	 */
+	public void setBuildingOwned(boolean buildingOwned) {
+		this.buildingOwned = buildingOwned;
+	}
+
+	@JsonProperty("buildingControlled")
+	private boolean buildingControlled;
+
+	/**
+	 * @return the buildingControlled
+	 */
+	public boolean isBuildingControlled() {
+		return this.buildingControlled;
+	}
+
+	/**
+	 * @param buildingControlled
+	 *            the buildingControlled to set
+	 */
+	public void setBuildingControlled(boolean buildingControlled) {
+		this.buildingControlled = buildingControlled;
+	}
 
 	/**
 	 * Some advances ({@link Technology#MONUMENT Monument} and {@link Technology#WRITTEN_RECORD Written Record}) provide
@@ -233,7 +269,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				});
 			}
-		}, 0, difficulty, false, false);
+		}, 0, difficulty, false, false, false, false);
 	}
 
 	/**
@@ -267,7 +303,9 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			@JsonProperty("typeCredits") final HashMap<Technology, ArrayList<Technology.Type>> typeCredits,
 			@JsonProperty("astPosition") final int astPosition, @JsonProperty("difficulty") final Difficulty difficulty,
 			@JsonProperty("hasPurchased") final boolean hasPurchased,
-			@JsonProperty("lateIronBonus") final boolean lateIronBonus) {
+			@JsonProperty("lateIronBonus") final boolean lateIronBonus,
+			@JsonProperty("buildingOwned") final boolean buildingOwned,
+			@JsonProperty("buildingControlled") final boolean buildingControlled) {
 		this.name = name;
 		this.player = player;
 		this.population = population;
@@ -279,6 +317,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		this.hasPurchased = hasPurchased;
 		this.difficulty = difficulty;
 		this.lateIronBonus = lateIronBonus;
+		this.buildingOwned = buildingOwned;
+		this.buildingControlled = buildingControlled;
 	}
 
 	/**
@@ -605,7 +645,8 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 					}
 				};
 		return new Civilization(this.name, this.player, this.population, this.nCities, techs, this.smallGameCredits,
-				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased, this.lateIronBonus);
+				extraTypeCredits, this.astPosition, this.difficulty, this.hasPurchased, this.lateIronBonus,
+				this.buildingOwned, this.buildingControlled);
 	}
 
 	/**
@@ -914,14 +955,21 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		return this.techs.keySet().stream().mapToInt(t -> t.getVP()).sum();
 	}
 
+	public int getVPfromBuilding() {
+		int buildingBonus = this.isBuildingOwned() ? 3 : 0;
+		buildingBonus = buildingBonus + ( this.isBuildingControlled() ? 2 : 0 );
+		return buildingBonus;
+	}
+
 	/**
 	 * Get the number of victory points from all sources except the Late Iron Age bonus.
 	 *
 	 * @return The number of victory points.
 	 */
 	public int getVP() {
-		final int pointsFromBonus = this.lateIronBonus ? 5 : 0;
-		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + this.getVPfromTech() + pointsFromBonus;
+		final int ironBonus = this.lateIronBonus ? 5 : 0;
+		return this.nCities + this.astPosition * Game.VP_PER_AST_STEP + this.getVPfromTech() + ironBonus
+				+ getVPfromBuilding();
 	}
 
 	/**
@@ -950,6 +998,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 				+ this.astPosition * Game.VP_PER_AST_STEP + "</td></tr>";
 		s = s + "<tr><td>Tech</td><td align='right'>" + this.getVPfromTech() + "</td></tr>";
 		s = s + "<tr><td>Cities</td><td align='right'>" + this.getCityCount() + "</td></tr>";
+		s = s + "<tr><td>Building</td><td align='right'>" + this.getVPfromBuilding() + "</td></tr>";
 		if (this.lateIronBonus) {
 			s = s + "<tr><td>Bonus</td><td align='right'>5</td></tr>";
 		}
