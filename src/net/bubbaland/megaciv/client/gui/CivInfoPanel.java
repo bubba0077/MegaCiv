@@ -258,9 +258,10 @@ public class CivInfoPanel extends BubbaMainPanel {
 			this.cityLabel.setText(civ.getCityCount() + "");
 			this.techLabel.setText(String.format("%02d", civ.getTechs().size()));
 
-			final String text = String.format("%03d", civ.getVP());
-			this.vpLabel.setText(text);
-
+			if(CivInfoPanel.this.client.getGame().isGameOver() || CivInfoPanel.this.client.getGame().showVP()) {
+				final String text = String.format("%03d", civ.getVP());
+				this.vpLabel.setText(text);
+			}
 			// this.techDetailL1Label.setText(civ.getTechCountByVP(1) + "");
 			// this.techDetailL2Label.setText(civ.getTechCountByVP(3) + "");
 			// this.techDetailL3Label.setText(civ.getTechCountByVP(6) + "");

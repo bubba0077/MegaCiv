@@ -335,7 +335,9 @@ public class CivEditPanel extends BubbaPanel implements ActionListener, ChangeLi
 
 		public void updateGui() {
 			final String text = String.format("%03d", CivEditPanel.this.civ.getVP());
-			this.vpLabel.setText(text);
+			if(CivEditPanel.this.client.getGame().isGameOver() || CivEditPanel.this.client.getGame().showVP()) {
+				this.vpLabel.setText(text);
+			}
 
 			for (final Technology.Type type : EnumSet.allOf(Technology.Type.class)) {
 				this.creditLabels.get(type).setText(CivEditPanel.this.civ.getTypeCredit(type) + "");

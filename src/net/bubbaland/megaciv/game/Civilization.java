@@ -126,7 +126,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	public static enum SortDirection {
 		DESCENDING, ASCENDING;
 	}
-
+	
 	/**
 	 * The civilization name
 	 */
