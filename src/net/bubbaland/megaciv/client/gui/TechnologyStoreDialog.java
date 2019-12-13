@@ -99,7 +99,8 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 
 		for (int i = 0; i < EnumSet.allOf(Technology.class).size(); i++) {
 			final TechnologyCheckBox checkbox = new TechnologyCheckBox();
-			checkbox.addChangeListener(this);
+			checkbox.setActionCommand("Checkbox Changed");
+			checkbox.addActionListener(this);
 			constraints.gridx = ( 0 + i / N_ROWS ) * constraints.gridwidth;
 			constraints.gridy = 1 + i % N_ROWS;
 
@@ -500,6 +501,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 				break;
 			case "Maximize VP":
 				this.selectOptimal();
+				break;
+			case "Checkbox Changed":
+				this.updateTotalCost();
 				break;
 		}
 	}
