@@ -2,6 +2,7 @@ package net.bubbaland.megaciv.client.gui;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.EnumSet;
@@ -124,6 +125,11 @@ public class GuiController extends BubbaGuiController {
 	@Override
 	public void endProgram() {
 		this.saveProperties();
+		try {
+			this.client.getSession().close();
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 		System.exit(0);
 	}
 
