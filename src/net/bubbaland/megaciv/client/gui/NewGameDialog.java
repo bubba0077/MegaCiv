@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
@@ -51,6 +52,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 	private final JRadioButton							eastRadioButton, westRadioButton;
 	private final JRadioButton							basicRadioButton, expertRadioButton;
 	private final JCheckBox								useCreditsCheckbox;
+	private final JCheckBox								useBuildingsCheckbox;
 	private final JCheckBox								showVictoryPoints;
 	private final HashMap<Civilization.Name, CivPanel>	civPanels;
 	private final GameClient							client;
@@ -68,12 +70,18 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		final Properties props = controller.getProperties();
 		float fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Number.FontSize"));
 
+		JPanel topPanel = new JPanel();
+		JPanel bottomPanel = new JPanel();
+
+		topPanel.setLayout(new GridBagLayout());
+		bottomPanel.setLayout(new GridBagLayout());
+
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridheight = 1;
+		constraints.gridheight = 2;
 		final JLabel label = new JLabel("Number of civilizations:");
 		label.setFont(label.getFont().deriveFont(fontSize));
-		this.add(label, constraints);
+		topPanel.add(label, constraints);
 
 		constraints.weightx = 0.0;
 		constraints.gridx = 1;
@@ -81,32 +89,40 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.nCivSpinner = new JSpinner(new SpinnerNumberModel(5, 5, 18, 1));
 		this.nCivSpinner.setFont(this.nCivSpinner.getFont().deriveFont(fontSize));
 		this.nCivSpinner.addChangeListener(this);
-		this.add(this.nCivSpinner, constraints);
+		topPanel.add(this.nCivSpinner, constraints);
 		constraints.gridheight = 1;
 
-		constraints.gridx = 0;
+		constraints.gridx = 5;
 		constraints.gridy = 1;
+		this.useBuildingsCheckbox = new JCheckBox("Use special buildings");
+		this.useBuildingsCheckbox.setSelected(true);
+		topPanel.add(this.useBuildingsCheckbox, constraints);
+
+		constraints.gridx = 5;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
 		this.useCreditsCheckbox = new JCheckBox("Use start game credits");
 		this.useCreditsCheckbox.setSelected(true);
-		this.add(this.useCreditsCheckbox, constraints);
+		topPanel.add(this.useCreditsCheckbox, constraints);
+		constraints.gridwidth = 1;
 
-		constraints.gridx = 1;
+		constraints.gridx = 6;
 		constraints.gridy = 1;
 		this.showVictoryPoints = new JCheckBox("Show Victory Points");
 		this.showVictoryPoints.setSelected(true);
-		this.add(this.showVictoryPoints, constraints);
+		topPanel.add(this.showVictoryPoints, constraints);
 
 		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Option.FontSize"));
 		final ButtonGroup regionGroup = new ButtonGroup();
 
-		constraints.gridx = 3;
-		constraints.gridy = 1;
+		constraints.gridx = 4;
+		constraints.gridy = 0;
 		this.westRadioButton = new JRadioButton("West");
 		this.westRadioButton.setSelected(true);
 		this.westRadioButton.setActionCommand("West");
 		this.westRadioButton.addActionListener(this);
 		this.westRadioButton.setFont(this.westRadioButton.getFont().deriveFont(fontSize));
-		this.add(this.westRadioButton, constraints);
+		topPanel.add(this.westRadioButton, constraints);
 
 		constraints.gridx = 4;
 		constraints.gridy = 1;
@@ -114,7 +130,7 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.eastRadioButton.setActionCommand("East");
 		this.eastRadioButton.addActionListener(this);
 		this.eastRadioButton.setFont(this.eastRadioButton.getFont().deriveFont(fontSize));
-		this.add(this.eastRadioButton, constraints);
+		topPanel.add(this.eastRadioButton, constraints);
 
 		regionGroup.add(this.eastRadioButton);
 		regionGroup.add(this.westRadioButton);
@@ -129,44 +145,37 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.basicRadioButton.setSelected(true);
 		this.basicRadioButton.addActionListener(this);
 		this.basicRadioButton.setFont(this.basicRadioButton.getFont().deriveFont(fontSize));
-		this.add(this.basicRadioButton, constraints);
+		topPanel.add(this.basicRadioButton, constraints);
 
-		constraints.gridx = 4;
-		constraints.gridy = 0;
+		constraints.gridx = 3;
+		constraints.gridy = 1;
 		this.expertRadioButton = new JRadioButton("Expert");
 		this.expertRadioButton.setActionCommand("Expert");
 		this.expertRadioButton.addActionListener(this);
 		this.expertRadioButton.setFont(this.expertRadioButton.getFont().deriveFont(fontSize));
-		this.add(this.expertRadioButton, constraints);
+		topPanel.add(this.expertRadioButton, constraints);
 
 		difficultyGroup.add(this.basicRadioButton);
 		difficultyGroup.add(this.expertRadioButton);
 
 		fontSize = Float.parseFloat(props.getProperty("NewGameDialog.Button.FontSize"));
 
-		constraints.gridx = 5;
+		constraints.gridx = 7;
 		constraints.gridy = 0;
 		this.randomizeButton = new JButton("Randomize Players");
 		this.randomizeButton.setActionCommand("Randomize");
 		this.randomizeButton.addActionListener(this);
 		this.randomizeButton.setFont(this.randomizeButton.getFont().deriveFont(fontSize));
-		this.add(this.randomizeButton, constraints);
+		topPanel.add(this.randomizeButton, constraints);
+		constraints.gridheight = 1;
 
-		constraints.gridx = 5;
+		constraints.gridx = 7;
 		constraints.gridy = 1;
 		this.customButton = new JToggleButton("Custom Setup");
 		this.customButton.setActionCommand("Custom");
 		this.customButton.addActionListener(this);
 		this.customButton.setFont(this.customButton.getFont().deriveFont(fontSize));
-		this.add(this.customButton, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 6;
-		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
-		separator.setPreferredSize(new Dimension(10, 10));
-		this.add(separator, constraints);
-		constraints.gridwidth = 1;
+		topPanel.add(this.customButton, constraints);
 
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.5;
@@ -174,13 +183,28 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 		this.civPanels = new HashMap<Civilization.Name, CivPanel>();
 		for (final Civilization.Name name : EnumSet.allOf(Civilization.Name.class)) {
 			constraints.gridx = name.ordinal() % 2 * constraints.gridwidth;
-			constraints.gridy = 4 + name.ordinal() / 2;
+			constraints.gridy = 5 + name.ordinal() / 2;
 			final CivPanel panel = new CivPanel(controller, name);
 			this.civPanels.put(name, panel);
-			this.add(panel, constraints);
+			bottomPanel.add(panel, constraints);
 		}
 
 		this.setDefaultCivs();
+
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(topPanel, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+		separator.setPreferredSize(new Dimension(10, 10));
+		this.add(separator, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		this.add(bottomPanel, constraints);
+
 
 		this.dialog = new BubbaDialog(this.controller, "New Game Setup", this, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
@@ -294,8 +318,9 @@ public class NewGameDialog extends BubbaDialogPanel implements ActionListener, C
 			}
 			final Difficulty difficulty = this.basicRadioButton.isSelected() ? Difficulty.BASIC : Difficulty.EXPERT;
 			this.client.log("Starting new game with the following civilizations: " + startingCivs);
-			this.client.sendMessage(new NewGameMessage(this.getRegion(), startingCivs, difficulty,
-					this.useCreditsCheckbox.isSelected(), this.showVictoryPoints.isSelected()));
+			this.client.sendMessage(
+					new NewGameMessage(this.getRegion(), startingCivs, difficulty, this.useCreditsCheckbox.isSelected(),
+							this.useBuildingsCheckbox.isSelected(), this.showVictoryPoints.isSelected()));
 		}
 	}
 

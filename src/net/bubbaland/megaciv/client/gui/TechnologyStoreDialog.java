@@ -217,7 +217,9 @@ public class TechnologyStoreDialog extends BubbaPanel implements ActionListener,
 		this.buildingCheckBox.setEnabled(!( civ.getCurrentAge() == Age.STONE ));
 		this.buildingCheckBox.setActionCommand("Checkbox Changed");
 		this.buildingCheckBox.addActionListener(this);
-		this.add(this.buildingCheckBox, constraints);
+		if (game.useBuildings()) {
+			this.add(this.buildingCheckBox, constraints);
+		}
 
 		constraints.gridx = 4;
 		constraints.gridy = 5 + N_ROWS;

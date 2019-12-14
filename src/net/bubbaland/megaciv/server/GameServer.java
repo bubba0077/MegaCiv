@@ -142,6 +142,8 @@ public class GameServer extends Server {
 				this.game.setRegion(region);
 				final boolean showVP = ( (NewGameMessage) message ).showVP();
 				this.game.setShowVP(showVP);
+				final boolean useBuildings = ( (NewGameMessage) message ).useBuildings();
+				this.game.setUseBuildings(useBuildings);
 
 				// this.log(user + " created new " + WordUtils.capitalizeFully(difficulty.toString())
 				// + " game with the following civilizations: " + startingCivs);
@@ -194,7 +196,7 @@ public class GameServer extends Server {
 					this.game.getCivilization(name).changeAst(advanceAst.get(name));
 				}
 				this.game.nextRound();
-				if (this.game.isGameOver()) {
+				if (this.game.isGameOver() && this.game.useBuildings()) {
 					this.log("Game is over, sending message to " + this.sessionList.get(session));
 					this.sendMessage(session, new GameEndMessage(this.game));
 				}
