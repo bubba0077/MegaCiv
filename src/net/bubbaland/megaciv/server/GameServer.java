@@ -236,7 +236,7 @@ public class GameServer extends Server {
 				this.sessionList.get(session).setUser(newUser);
 				// this.log(user.getUserName() + " changed name to " + newUser.getUserName());
 				break;
-			case "KeepAliveMessage":
+			case "HeartbeatMessage":
 				break;
 			default:
 				this.log("ERROR: Unknown message type received: " + message.getClass().getSimpleName());

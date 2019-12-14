@@ -8,6 +8,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 import javax.websocket.ClientEndpoint;
@@ -35,7 +38,7 @@ import net.bubbaland.megaciv.game.Stopwatch;
 import net.bubbaland.megaciv.game.User;
 import net.bubbaland.megaciv.messages.ClientMessage;
 import net.bubbaland.megaciv.messages.GameDataMessage;
-import net.bubbaland.megaciv.messages.KeepAliveMessage;
+import net.bubbaland.megaciv.messages.HeartbeatMessage;
 import net.bubbaland.megaciv.messages.LoadGameMessage;
 import net.bubbaland.megaciv.messages.ServerMessage;
 import net.bubbaland.megaciv.messages.SetUserMessage;
@@ -54,10 +57,13 @@ import net.bubbaland.sntp.SntpListener;
 @ClientEndpoint(decoders = { ServerMessage.MessageDecoder.class }, encoders = { ClientMessage.MessageEncoder.class })
 public class GameClient implements Runnable, SntpListener {
 
-	// Frequency (in secs) of synchronization of time with server
+	// Frequency of synchronization of time with server
 	private final static Duration		SNTP_POLL_INTERVAL		= Duration.ofMinutes(5);
 
-	// Default trade timer length (in secs)
+	// Frequency of synchronization of time with server
+	private final static Duration		HEARTBEAT_INTERVAL		= Duration.ofMinutes(5);
+
+	// Default trade timer length
 	private final static Duration		STARTING_TIMER_LENGTH	= Duration.ofMinutes(5);
 
 	// Format for log timestamps
@@ -100,6 +106,11 @@ public class GameClient implements Runnable, SntpListener {
 		this.uri = URI.create(serverUrl);
 		this.sntpClient = new SntpClient(this.uri.getHost(), 123, SNTP_POLL_INTERVAL);
 		this.sntpClient.addSntpListener(this);
+
+		ScheduledExecutorService heartbeatScheduler = Executors.newScheduledThreadPool(1);
+		heartbeatScheduler.scheduleAtFixedRate(() -> {
+			sendMessage(new HeartbeatMessage());
+		}, HEARTBEAT_INTERVAL.toMillis(), HEARTBEAT_INTERVAL.toMillis(), TimeUnit.MILLISECONDS);
 	}
 
 	/**
@@ -371,7 +382,7 @@ public class GameClient implements Runnable, SntpListener {
 	@Override
 	public void onSntpError(final Instant when) {
 		this.log("SNTP error at " + when.toString());
-		this.sendMessage(new KeepAliveMessage());
+		this.sendMessage(new HeartbeatMessage());
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package net.bubbaland.megaciv.messages;
 import net.bubbaland.megaciv.game.GameEvent;
 import net.bubbaland.megaciv.game.GameEvent.EventType;
 
-public class KeepAliveMessage implements ClientMessage {
+public class HeartbeatMessage implements ClientMessage {
 
 	@Override
 	public EventType getEventType() {
@@ -12,7 +12,7 @@ public class KeepAliveMessage implements ClientMessage {
 
 	@Override
 	public String toString() {
-		return "Keep-Alive Message";
+		return "Heartbeat";
 	}
 
 }
