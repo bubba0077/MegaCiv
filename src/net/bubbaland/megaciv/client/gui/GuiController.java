@@ -125,10 +125,12 @@ public class GuiController extends BubbaGuiController {
 	@Override
 	public void endProgram() {
 		this.saveProperties();
-		try {
-			this.client.getSession().close();
-		} catch (IOException exception) {
-			exception.printStackTrace();
+		if (client.getSession() != null) {
+			try {
+				this.client.getSession().close();
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
 		}
 		System.exit(0);
 	}
