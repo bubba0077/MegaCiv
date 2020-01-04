@@ -1473,7 +1473,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			
 			// Find a tech to discount, if possible (will choose first, so most expensive)
 			for (int i = 0; i < availableTechs.size(); i++) {
-				if (availableTechs.get(i).getTypes().contains(Type.SCIENCE) &&
+				if (availableTechs.get(i).getTypes().contains(Technology.Type.SCIENCE) &&
 						availableTechs.get(i).getVP() == 1) {
 					costs.set(i, 0);
 					break;
@@ -1503,7 +1503,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 			
 			// Find a tech to discount, if possible (will choose first, so most expensive)
 			for (int i = 0; i < availableTechs.size(); i++) {
-				if (availableTechs.get(i).getTypes().contains(Type.SCIENCE) &&
+				if (availableTechs.get(i).getTypes().contains(Technology.Type.SCIENCE) &&
 						availableTechs.get(i).getVP() == 1) {
 					discountedIdx = i;
 					costs.set(i, 0);
