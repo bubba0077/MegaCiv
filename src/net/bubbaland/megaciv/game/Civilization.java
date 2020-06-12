@@ -1291,6 +1291,21 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 
 		return cost;
 	}
+	
+	/**
+	 * Returns the optimal tech purchase, in terms of maximizing VP, for a given budget.
+	 * 
+	 * @param budget
+	 *            Amount of money available to spend
+	 * @return List of technologies worth the most VP at the lowest cost
+	 */
+	public List<Technology> getOptimalTechs(int budget) {
+		/* Legacy call to "permuting" solution
+		return getOptimalTechsPerm(budget);
+		*/
+
+		return getOptimalCheckDiscounted(budget);
+	}
 
 	/**
 	 * Get the lowest cost list of techs that are worth a given number of VP total
@@ -1363,7 +1378,7 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 	 *            Amount of money available to spend
 	 * @return List of technologies worth the most VP at the lowest cost
 	 */
-	public List<Technology> getOptimalTechs(final int budget) {
+	public List<Technology> getOptimalTechsPerm(final int budget) {
 		final ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
 		availableTechs.removeAll(this.getTechs());
 
@@ -1392,8 +1407,205 @@ public class Civilization implements Serializable, Comparable<Civilization> {
 		System.out.println("Optimal purchase found in " + ( endTime - startTime ) / 1000000000.0 + " s");
 
 		return optimalTechs;
-	}
+	}	
+	
+	/**
+	 * Returns the optimal tech purchase, in terms of maximizing VP, for a given budget.
+	 * 
+	 * Checks different combinations of Library and Anatomy to find the best discounts
+	 * even in the situation where both techs should be taken.
+	 * 
+	 * @param budget
+	 *            Amount of money available to spend
+	 * @return List of technologies worth the most VP at the lowest cost
+	 */
+	public List<Technology> getOptimalCheckDiscounted(int budget) {
+		ArrayList<Technology> availableTechs = new ArrayList<Technology>(EnumSet.allOf(Technology.class));
+		availableTechs.removeAll(this.getTechs());
+		
+		// Try without either special case
+		availableTechs.remove(Technology.LIBRARY);
+		availableTechs.remove(Technology.ANATOMY);
+		
+		System.out.println("Simple approach");
+		List<Technology> bestOption = getOptimalTechsKS(budget, availableTechs, 
+				availableTechs.stream().mapToInt(t -> this.getCost(t)).boxed().collect(Collectors.toList()));
+		int bestVP = bestOption.stream().mapToInt(t -> t.getVP()).sum();
+		int bestCost = this.getTotalCost(bestOption);
+		System.out.println("VP: " + bestVP + " Cost: " + bestCost);
 
+		int libraryCost = this.getCost(Technology.LIBRARY);
+		int anatomyCost = this.getCost(Technology.ANATOMY);
+		
+		// Try with Library
+		if (!this.hasTech(Technology.LIBRARY) && libraryCost <= budget) {
+			System.out.println("Library discount");
+			List<Integer> costs = availableTechs.stream().mapToInt(t -> this.getCost(t)).boxed().collect(Collectors.toList());
+			
+			// Find best tech to discount by trying them all
+			for (int i = 0; i < availableTechs.size(); i++) {
+				// reduce this weight by 40 to test effects
+				costs.set(i, (costs.get(i) < 40) ? 0 : costs.get(i) - 40);
+				
+				// calculate and keep if better
+				List<Technology> testOption = getOptimalTechsKS(budget - libraryCost, availableTechs, costs);
+				testOption.add(Technology.LIBRARY);
+				int testVP = testOption.stream().mapToInt(t -> t.getVP()).sum();
+				int testCost = this.getTotalCost(testOption);
+				System.out.println("VP: " + testVP + " Cost: " + testCost);
+				if (testVP > bestVP || (testVP == bestVP && testCost < bestCost)) {
+					bestOption = testOption;
+					bestVP = testVP;
+					bestCost = testCost;
+					System.out.println("New best");
+				}
+				
+				// reset weight
+				costs.set(i, this.getCost(availableTechs.get(i)));
+			}
+		}
+		
+		// Try with Anatomy
+		if (!this.hasTech(Technology.ANATOMY) && anatomyCost <= budget) {
+			System.out.println("Anatomy discount");
+			availableTechs.sort((Technology t1, Technology t2)->this.getCost(t2)-this.getCost(t1)); // sort most expensive to least expensive
+			List<Integer> costs = availableTechs.stream().mapToInt(t -> this.getCost(t)).boxed().collect(Collectors.toList());
+			
+			// Find a tech to discount, if possible (will choose first, so most expensive)
+			for (int i = 0; i < availableTechs.size(); i++) {
+				if (availableTechs.get(i).getTypes().contains(Technology.Type.SCIENCE) &&
+						availableTechs.get(i).getVP() == 1) {
+					costs.set(i, 0);
+					break;
+				}
+			}
+			
+			List<Technology> testOption = getOptimalTechsKS(budget - anatomyCost, availableTechs, costs);
+			testOption.add(Technology.ANATOMY);
+			int testVP = testOption.stream().mapToInt(t -> t.getVP()).sum();
+			int testCost = this.getTotalCost(testOption);
+			System.out.println("VP: " + testVP + " Cost: " + testCost);
+			if (testVP > bestVP || (testVP == bestVP && testCost < bestCost)) {
+				bestOption = testOption;
+				bestVP = testVP;
+				bestCost = testCost;
+				System.out.println("New best");
+			}
+		}
+		
+		// Try with both
+		if (!this.hasTech(Technology.LIBRARY) && !this.hasTech(Technology.ANATOMY) && libraryCost + anatomyCost <= budget) {
+			System.out.println("Library+Anatomy discount");
+			availableTechs.sort((Technology t1, Technology t2)->this.getCost(t2)-this.getCost(t1)); // sort most expensive to least expensive
+			List<Integer> costs = availableTechs.stream().mapToInt(t -> this.getCost(t)).boxed().collect(Collectors.toList());
+			
+			int discountedIdx = -1;
+			
+			// Find a tech to discount, if possible (will choose first, so most expensive)
+			for (int i = 0; i < availableTechs.size(); i++) {
+				if (availableTechs.get(i).getTypes().contains(Technology.Type.SCIENCE) &&
+						availableTechs.get(i).getVP() == 1) {
+					discountedIdx = i;
+					costs.set(i, 0);
+					break;
+				}
+			}
+			
+			// Find best tech to discount by trying them all
+			for (int i = 0; i < availableTechs.size(); i++) {
+				// Skip the item chosen by Anatomy
+				if (i != discountedIdx) {
+					// reduce this weight by 40 to test effects
+					costs.set(i, (costs.get(i) < 40) ? 0 : costs.get(i) - 40);
+					
+					// Calculate and keep if better
+					List<Technology> testOption = getOptimalTechsKS(budget - libraryCost - anatomyCost, availableTechs, costs);
+					testOption.add(Technology.LIBRARY);
+					testOption.add(Technology.ANATOMY);
+					int testVP = testOption.stream().mapToInt(t -> t.getVP()).sum();
+					int testCost = this.getTotalCost(testOption);
+					System.out.println("VP: " + testVP + " Cost: " + testCost);
+					if (testVP > bestVP || (testVP == bestVP && testCost < bestCost)) {
+						bestOption = testOption;
+						bestVP = testVP;
+						bestCost = testCost;
+						System.out.println("New best");
+					}
+					
+					// Reset weight
+					costs.set(i, this.getCost(availableTechs.get(i)));
+				}
+			}
+		}
+		
+		return bestOption;
+	}
+	
+	/**
+	 * Returns the optimal tech purchase, in terms of maximizing VP.
+	 * 
+	 * Uses the 0-1 Knapsack Dynamic Programming algorithm to quickly find the best possible subset
+	 * (trades memory usage for CPU time, but even at the upper limit of 7790 budget, this is a very 
+	 * manageable array size to fill). Optimizes a bit by "rounding" costs to nearest 5.
+	 * 
+	 * @param budget
+	 *          Amount of money available to spend
+	 * @param availableTechs
+	 * 			List of technologies available to buy
+	 * @param costs
+	 * 			Parallel list of costs for each available tech 
+	 * @return List of technologies worth the most VP at the lowest cost
+	 */
+	public List<Technology> getOptimalTechsKS(int budget, ArrayList<Technology> availableTechs, List<Integer> costs) {
+		List<Technology> optimalTechs = new ArrayList<Technology>();
+		int n = availableTechs.size();
+		
+		List<Integer> values = availableTechs.stream().mapToInt(t -> t.getVP()).boxed().collect(Collectors.toList());
+		
+		// Knapsack storage of subproblem results
+		// maxVP[i][c] indicates the most VP that can be earned among the first i items where the
+		// total cost is at most c
+		int maxVP[][] = new int[n + 1][budget / 5 + 1];
+		
+		// find all optimal choices for each possible weight
+		for (int i = 0; i <= n; i++) {
+			for (int c = 0; c <= budget / 5; c++) {
+				if (i == 0 || c == 0) { // clear default row
+					maxVP[i][c] = 0;
+				}
+				else if ((costs.get(i-1)/5) <= c) { // can afford to take this tech
+					maxVP[i][c] = Math.max(values.get(i-1) + maxVP[i-1][c - (costs.get(i-1)/5)], maxVP[i-1][c]); // choose to take or not
+				}
+				else {
+					maxVP[i][c] = maxVP[i-1][c]; // can't afford this tech
+				}
+			}
+		}
+		
+		// backtrack to determine which techs are chosen
+		int res = maxVP[n][budget / 5];
+		int c = budget / 5;
+		int i = n;
+		while (i > 0 && res > 0) {
+			// choose a cheaper route if possible
+			while (c > 0 && maxVP[i][c] == maxVP[i][c-1]) { 
+				c--;
+			}
+			
+			// item is "chosen" if the maxVP improves by taking it
+			if (res != maxVP[i-1][c]) {
+				optimalTechs.add(availableTechs.get(i-1));
+				
+				res -= values.get(i-1);
+				c -= (costs.get(i-1)/5);
+			}
+			
+			i--;
+		}
+		
+		return optimalTechs;
+	}
+	
 	/**
 	 * Returns the minimum cost technology list for all possible combinations of list provided
 	 *
